@@ -1,0 +1,419 @@
+{
+  "springbootquestsons1":[
+    {
+    "question": "Spring Boot nədir?",
+    "answer1": "A)Mikroservislər üçün bir çərçivədir.",
+    "answer2": "B)Spring Framework-ə əlavə olaraq avtomatik konfiqurasiya və tətbiqi sürətlə başlatmaq üçün bir platformadır.",
+    "answer3": "C)Məlumat bazalarını idarə etmək üçün bir vasitədir.",
+    "answer4": "D)Sadəcə bir veb serverdir.",
+    "correct": "B)Spring Framework-ə əlavə olaraq avtomatik konfiqurasiya və tətbiqi sürətlə başlatmaq üçün bir platformadır."
+    },
+    {
+      "question": "@SpringBootApplication anotasiyasının əsas funksiyası nədir?",
+      "answer1": "A)Spring Boot tətbiqində yalnız konfiqurasiya fayllarını oxuyur.",
+      "answer2": "B)Tətbiqi test etmək üçün istifadə olunur.",
+      "answer3": "C)Spring Boot tətbiqini başlatmaq üçün əsas konfiqurasiyanı təmin edir və @Configuration, @EnableAutoConfiguration, və @ComponentScan anotasiyalarını birləşdirir.",
+      "answer4": "D)Verilənlər bazası əlaqələrini idarə edir.",
+      "correct": "C)Spring Boot tətbiqini başlatmaq üçün əsas konfiqurasiyanı təmin edir və @Configuration, @EnableAutoConfiguration, və @ComponentScan anotasiyalarını birləşdirir."
+    },
+    {
+      "question": "Auto-configuration nədir?",
+      "answer1": "A)Spring Boot tətbiqində bütün konfiqurasiyaları əl ilə idarə etməkdir.",
+      "answer2": "B)Tətbiqin ehtiyaclarını təxmin edərək uyğun konfiqurasiyaları avtomatik təmin edir.",
+      "answer3": "C)Yalnız məlumat bazası ilə əlaqəli konfiqurasiyaları idarə edir.",
+      "answer4": "D)Sadəcə application.properties faylını idarə edir.",
+      "correct": "B)Tətbiqin ehtiyaclarını təxmin edərək uyğun konfiqurasiyaları avtomatik təmin edir."
+    },
+    {
+      "question": "application.properties faylı nə üçün istifadə olunur?",
+      "answer1": "A)Spring Boot tətbiqində yalnız port nömrəsini təyin etmək üçün.",
+      "answer2": "B)Veb serverini idarə etmək üçün.",
+      "answer3": "C)Yalnız verilənlər bazası bağlantısını idarə etmək üçün.",
+      "answer4": "D)Tətbiqə aid bütün konfiqurasiya parametrlərini təyin etmək üçün.",
+      "correct": "D)Tətbiqə aid bütün konfiqurasiya parametrlərini təyin etmək üçün."
+    },
+    {
+      "question": "@RestController anotasiyası nə edir?",
+      "answer1": "A)Sinifin yalnız konfiqurasiya kimi işləməsini təmin edir.",
+      "answer2": "B)Sinifin yalnız məlumat bazasına bağlantısını idarə edir.",
+      "answer3": "C)JSON məlumatlarını qaytararaq sinfi RESTful veb xidməti kimi işlədməyə imkan verir.",
+      "answer4": "D)Tətbiqi yalnız başlanğıcda çalışdırır.",
+      "correct": "C)JSON məlumatlarını qaytararaq sinfi RESTful veb xidməti kimi işlədməyə imkan verir."
+    },
+    {
+      "question": "Spring Boot-da @RequestMapping nə edir?",
+      "answer1": "A)Yalnız GET sorğularını qəbul edir.",
+      "answer2": "B)HTTP sorğularını müəyyən bir URI ilə xəritələndirir və xüsusi bir metodu həmin sorğuya uyğun olaraq icra edir.",
+      "answer3": "C)POST sorğularını avtomatik olaraq qaytarır.",
+      "answer4": "D)Sinfin başında əlavə edilir.",
+      "correct": "B)HTTP sorğularını müəyyən bir URI ilə xəritələndirir və xüsusi bir metodu həmin sorğuya uyğun olaraq icra edir."
+    },
+    {
+      "question": "Spring Boot-da profillər nə üçün istifadə olunur?",
+      "answer1": "A)Yalnız təhlükəsizlik parametrlərini idarə etmək üçün.",
+      "answer2": "B)Fərqli mühitlər (məsələn, dev, test, prod) üçün fərqli konfiqurasiyaları idarə etmək üçün.",
+      "answer3": "C)Yalnız verilənlər bazası əlaqələrini idarə edir.",
+      "answer4": "D)Sinifləri avtomatik olaraq tanımaq üçün.",
+      "correct": "B)Fərqli mühitlər (məsələn, dev, test, prod) üçün fərqli konfiqurasiyaları idarə etmək üçün."
+    },
+    {
+      "question": "@Value anotasiyası nə edir?",
+      "answer1": "A)application.properties faylında təyin olunmuş dəyərləri Java dəyişənlərinə əlavə edir.",
+      "answer2": "B)Java tətbiqində yalnız ədədi dəyərləri oxumaq üçün istifadə olunur.",
+      "answer3": "C)Yalnız String dəyərlərini təyin edir.",
+      "answer4": "D)Veb serverinin portunu təyin edir.",
+      "correct": "A)application.properties faylında təyin olunmuş dəyərləri Java dəyişənlərinə əlavə edir."
+    },
+    {
+      "question": "Spring Boot-da əsas konfiqurasiya faylı hansıdır?",
+      "answer1": "A)application.properties",
+      "answer2": "B)config.yaml",
+      "answer3": "C)web.xml",
+      "answer4": "D)app.json",
+      "correct": "A)application.properties"
+    },
+    {
+      "question": "Spring Boot-da @Autowired anotasiyasının funksiyası nədir?",
+      "answer1": "A)Verilənlər bazasına bağlantı yaradır.",
+      "answer2": "B)Yalnız main metodunda istifadə olunur.",
+      "answer3": "C)Tətbiqi yenidən başlatmağa məcbur edir.",
+      "answer4": "D)Sinif və ya metodlarda avtomatik olaraq asılılıqları yerinə qoyur.",
+      "correct": "D)Sinif və ya metodlarda avtomatik olaraq asılılıqları yerinə qoyur."
+    }
+
+  ],
+  "springbootquestsons2":[
+    {
+      "question": "Spring Boot nə üçün “Microservices” arxitekturasında populyardır?",
+      "answer1": "A)Avtomatik konfiqurasiya təmin etdiyi üçün",
+      "answer2": "B)Yalnız Tomcat serverini dəstəklədiyi üçün",
+      "answer3": "C)Böyük tətbiqlər üçün daha uyğundur deyə",
+      "answer4": "D)Hər hansı bir proqramlaşdırma dilində işlədiyi üçün",
+      "correct": "A)Avtomatik konfiqurasiya təmin etdiyi üçün"
+    },
+    {
+      "question": "Spring Boot-da əsas tətbiq sinfi necə işə salınır?",
+      "answer1": "A)System.startApplication() ilə",
+      "answer2": "B)MainApplication.launch() ilə",
+      "answer3": "C)Application.start() ilə",
+      "answer4": "D)SpringApplication.run() ilə",
+      "correct": "D)SpringApplication.run() ilə"
+    },
+    {
+      "question": "Spring Boot-da “@RestController” anotasiya nə iş görür?",
+      "answer1": "A)HTTP sorğularını idarə edən sinfi təyin edir",
+      "answer2": "B)Tətbiqə profil əlavə edir",
+      "answer3": "C)Yalnız GET sorğularını emal edir",
+      "answer4": "D)Spring tətbiqində session idarəçiliyini təmin edir",
+      "correct": "A)HTTP sorğularını idarə edən sinfi təyin edir"
+    },
+    {
+      "question": "Spring Boot tətbiqi üçün hansı fayl tipik olaraq giriş nöqtəsidir?",
+      "answer1": "A)index.html",
+      "answer2": "B)pom.xml",
+      "answer3": "C)application.yml",
+      "answer4": "D)MainApplication.java",
+      "correct": "D)MainApplication.java"
+    },
+    {
+      "question": "Spring Boot-da “banner.txt” faylı nə üçün istifadə olunur?",
+      "answer1": "A)Tətbiqin loqotipini dəyişmək üçün",
+      "answer2": "B)Loq fayllarını saxlamaq üçün",
+      "answer3": "C)Tətbiqin başlanğıc ekranında xüsusi bir mesaj göstərmək üçün",
+      "answer4": "D)Profil parametrlərini təyin etmək üçün",
+      "correct": "C)Tətbiqin başlanğıc ekranında xüsusi bir mesaj göstərmək üçün"
+    },
+    {
+      "question": "“Spring Initializr” nədir?",
+      "answer1": "A)Spring Boot tətbiqini başlatmaq üçün bir Maven plaqini",
+      "answer2": "B)Asılılıqları avtomatik əlavə edən bir vasitə",
+      "answer3": "C)Spring Boot tətbiqləri yaratmaq üçün veb alət",
+      "answer4": "D)Spring Framework-in daxili xüsusiyyəti",
+      "correct": "C)Spring Boot tətbiqləri yaratmaq üçün veb alət"
+    },
+    {
+      "question": "Spring Boot-da “logging.level” parametri nə üçün istifadə olunur?",
+      "answer1": "A)Tətbiqin portunu dəyişmək üçün",
+      "answer2": "B)Profil parametrlərini göstərmək üçün",
+      "answer3": "C)Giriş səviyyələrini (DEBUG, INFO, WARN) idarə etmək üçün",
+      "answer4": "D)Hibernate konfiqurasiyasını idarə etmək üçün",
+      "correct": "C)Giriş səviyyələrini (DEBUG, INFO, WARN) idarə etmək üçün"
+    },
+    {
+      "question": "Spring Boot-da “SpringApplicationBuilder” nə edir?",
+      "answer1": "A)Tətbiqin giriş nöqtəsini müəyyən edir",
+      "answer2": "B)Loq fayllarını idarə edir",
+      "answer3": "C)Tətbiq konfiqurasiyasını daha incə şəkildə tənzimləməyə imkan verir",
+      "answer4": "D)Yalnız profil parametrlərini təyin edir",
+      "correct": "C)Tətbiq konfiqurasiyasını daha incə şəkildə tənzimləməyə imkan verir"
+    },
+    {
+      "question": "Spring Boot-da “Thymeleaf” nə üçün istifadə olunur?",
+      "answer1": "A)Verilənlər bazasını idarə etmək üçün",
+      "answer2": "B)Tətbiqin loqlarını saxlamaq üçün",
+      "answer3": "C)HTML şablonlarını emal etmək üçün",
+      "answer4": "D)Profil aktivləşdirmək üçün",
+      "correct": "C)HTML şablonlarını emal etmək üçün"
+    },
+    {
+      "question": "Spring Boot-da asılılıqları necə idarə edirsiniz?",
+      "answer1": "A)Konfiqurasiya faylında əl ilə əlavə etməklə",
+      "answer2": "B)Yalnız “@Dependency” anotasiya istifadə edərək",
+      "answer3": "C)Spring Initializr-in daxilində dəyişiklik edərək",
+      "answer4": "D)Maven və ya Gradle vasitəsilə",
+      "correct": "D)Maven və ya Gradle vasitəsilə"
+    }
+
+  ],
+  "springbootquestsons3":[
+    {
+      "question": "Spring Boot-da avtomatik konfiqurasiya necə işləyir?",
+      "answer1": "A)Tətbiqin hər bir parametrini əl ilə yazaraq",
+      "answer2": "B)@EnableAutoConfiguration anotasiya vasitəsilə, ehtiyac duyulan asılılıqların avtomatik yüklənməsi ilə",
+      "answer3": "C)Yalnız JPA ilə işləyən tətbiqlərdə işləyir",
+      "answer4": "D)Profil parametrlərini dəyişməklə",
+      "correct": "B)@EnableAutoConfiguration anotasiya vasitəsilə, ehtiyac duyulan asılılıqların avtomatik yüklənməsi ilə"
+    },
+    {
+      "question": "Spring Boot Profillər nə üçün istifadə olunur?",
+      "answer1": "A)Müxtəlif mühitlər (məsələn, inkişaf, test, istehsal) üçün fərqli konfiqurasiya təmin etmək üçün",
+      "answer2": "B)İstifadəçi identifikasiyasını saxlamaq üçün",
+      "answer3": "C)Tətbiqin başlanğıc parametrlərini idarə etmək üçün",
+      "answer4": "D)Log səviyyələrini idarə etmək üçün",
+      "correct": "A)Müxtəlif mühitlər (məsələn, inkişaf, test, istehsal) üçün fərqli konfiqurasiya təmin etmək üçün"
+    },
+    {
+      "question": "Spring Boot-da Logging səviyyəsini necə təyin edə bilərsiniz?",
+      "answer1": "A)Java kodunda setLogLevel() metodu ilə",
+      "answer2": "B)application.properties faylında logging.level parametri ilə",
+      "answer3": "C)Tətbiq başlanğıcında konsolda --logLevel flag istifadə etməklə",
+      "answer4": "D)@Log anotasiya ilə",
+      "correct": "B)application.properties faylında logging.level parametri ilə"
+    },
+    {
+      "question": "Maven-də Spring Boot tətbiqi üçün hansı parent dependency istifadə olunur?",
+      "answer1": "A)spring-boot-dependencies",
+      "answer2": "B)spring-maven-plugin",
+      "answer3": "C)spring-parent-starter",
+      "answer4": "D)spring-boot-starter-parent",
+      "correct": "D)spring-boot-starter-parent"
+    },
+    {
+      "question": "RESTful API yaratmaq üçün hansı anotasiya istifadə olunur?",
+      "answer1": "A)@Controller",
+      "answer2": "B)@Api",
+      "answer3": "C)@RestController",
+      "answer4": "D)@RequestMapping",
+      "correct": "C)@RestController"
+    },
+    {
+      "question": "JPA ilə verilənlər bazasına qoşulmaq üçün hansı əsas anotasiya istifadə olunur?",
+      "answer1": "A)@Repository",
+      "answer2": "B)@Table",
+      "answer3": "C)@Database",
+      "answer4": "D)@Entity",
+      "correct": "D)@Entity"
+    },
+    {
+      "question": "Spring Boot Actuator hansı məqsədlə istifadə olunur?",
+      "answer1": "A)Mikroservislərin sağlamlıq və metrik məlumatlarını təmin etmək üçün",
+      "answer2": "B)HTTP sorğularını emal etmək üçün",
+      "answer3": "C)Verilənlər bazası əməliyyatlarını idarə etmək üçün",
+      "answer4": "D)Asılılıqları yeniləmək üçün",
+      "correct": "A)Mikroservislərin sağlamlıq və metrik məlumatlarını təmin etmək üçün"
+    },
+    {
+      "question": "Spring Boot-da Externalized Configuration nədir?",
+      "answer1": "A)Verilənlər bazası bağlantısını xarici fayldan təmin etmək",
+      "answer2": "B)Mikroservislər arasında məlumat paylaşımı",
+      "answer3": "C)Loqların xarici fayllara yazılması",
+      "answer4": "D)Konfiqurasiyanın koddan ayrılıb, xarici fayllarda (məsələn, application.properties) saxlanması",
+      "correct": "D)Konfiqurasiyanın koddan ayrılıb, xarici fayllarda (məsələn, application.properties) saxlanması"
+    },
+    {
+      "question": "Spring Boot CLI (Command Line Interface) nə üçün istifadə olunur?",
+      "answer1": "A)Tətbiqləri daha sürətli yaratmaq və işə salmaq üçün",
+      "answer2": "B)Tətbiqin loq fayllarını idarə etmək üçün",
+      "answer3": "C)Profil aktivləşdirmək üçün",
+      "answer4": "D)Spring Boot tətbiqlərini Maven ilə birləşdirmək üçün",
+      "correct": "A)Tətbiqləri daha sürətli yaratmaq və işə salmaq üçün"
+    },
+    {
+      "question": "Spring Boot Security ilə hansı annotasiya istifadə edərək URL-ləri qorumaq olar?",
+      "answer1": "A)@EnableSecurity",
+      "answer2": "B)@Secure",
+      "answer3": "C)@Secured",
+      "answer4": "D)@Protected",
+      "correct": "C)@Secured"
+    }
+
+  ],
+  "springbootquestsons4":[
+    {
+      "question": "Spring Boot-da \"starter\" nədir?",
+      "answer1": "A)Yalnız başlanğıc ekranını dəyişmək üçün bir alət",
+      "answer2": "B)Tətbiqin başlanğıcını idarə edən fayl",
+      "answer3": "C)Müəyyən bir funksionallıq üçün asılılıqları təmin edən əvvəlcədən təyin olunmuş paketlər",
+      "answer4": "D)Mikroservis tətbiqləri arasında məlumat paylaşımı vasitəsi",
+      "correct": "C)Müəyyən bir funksionallıq üçün asılılıqları təmin edən əvvəlcədən təyin olunmuş paketlər"
+    },
+    {
+      "question": "Spring Boot-da CommandLineRunner nə üçün istifadə olunur?",
+      "answer1": "A)Tətbiq başlanğıcında xüsusi kodu icra etmək üçün",
+      "answer2": "B)REST sorğularını idarə etmək üçün",
+      "answer3": "C)Loqların səviyyəsini təyin etmək üçün",
+      "answer4": "D)Verilənlər bazası əlaqələrini saxlamaq üçün",
+      "correct": "A)Tətbiq başlanğıcında xüsusi kodu icra etmək üçün"
+    },
+    {
+      "question": "Spring Boot-da hansı embedded server standart olaraq istifadə olunur?",
+      "answer1": "A)Jetty",
+      "answer2": "B)Netty",
+      "answer3": "C)Tomcat",
+      "answer4": "D)Undertow",
+      "correct": "C)Tomcat"
+    },
+    {
+      "question": "Spring Boot-da Asinxron əməliyyatlar üçün hansı annotasiya istifadə olunur?",
+      "answer1": "A)@Async",
+      "answer2": "B)@Asynchronous",
+      "answer3": "C)@EnableAsync",
+      "answer4": "D)@AsyncOperation",
+      "correct": "A)@Async"
+    },
+    {
+      "question": "Spring Boot-da application.yml faylı nə üçün istifadə olunur?",
+      "answer1": "A)Tətbiqdə müvəqqəti verilənlər bazası saxlamaq üçün",
+      "answer2": "B)Mikroservisləri birləşdirmək üçün",
+      "answer3": "C)Loq fayllarını idarə etmək üçün",
+      "answer4": "D)Konfiqurasiya parametrlərini daha çevik şəkildə təyin etmək üçün",
+      "correct": "D)Konfiqurasiya parametrlərini daha çevik şəkildə təyin etmək üçün"
+    },
+    {
+      "question": "Spring Boot-da Dependency Injection-ı təmin etmək üçün hansı annotasiya istifadə olunur?",
+      "answer1": "A)@Autowired",
+      "answer2": "B)@InjectDependency",
+      "answer3": "C)@Dependency",
+      "answer4": "D)@Provide",
+      "correct": "A)@Autowired"
+    },
+    {
+      "question": "DevTools nə üçün istifadə olunur?",
+      "answer1": "A)Tətbiqin performansını artırmaq üçün",
+      "answer2": "B)İnkişaf zamanı tətbiqi yenidən işə salmadan yenilikləri tətbiq etmək üçün",
+      "answer3": "C)Yalnız verilənlər bazası əməliyyatlarını idarə etmək üçün",
+      "answer4": "D)Loqların saxlanması üçün",
+      "correct": "B)İnkişaf zamanı tətbiqi yenidən işə salmadan yenilikləri tətbiq etmək üçün"
+    },
+    {
+      "question": "Spring Boot-da Qlobal Exception Handling üçün hansı annotasiya istifadə olunur?",
+      "answer1": "A)@ControllerAdvice",
+      "answer2": "B)@ExceptionHandler",
+      "answer3": "C)@GlobalExceptionHandler",
+      "answer4": "D)@ErrorHandler",
+      "correct": "A)@ControllerAdvice"
+    },
+    {
+      "question": "Spring Boot tətbiqini test etmək üçün hansı anotasiya istifadə olunur?",
+      "answer1": "A)@RunWith",
+      "answer2": "B)@SpringBootTest",
+      "answer3": "C)@TestConfig",
+      "answer4": "D)@BootTest",
+      "correct": "B)@SpringBootTest"
+    },
+    {
+      "question": "Actuator-da xüsusi endpoint yaratmaq üçün hansı annotasiya istifadə olunur?",
+      "answer1": "A)@CustomEndpoint",
+      "answer2": "B)@RestController",
+      "answer3": "C)@Actuator",
+      "answer4": "D)@Endpoint",
+      "correct": "D)@Endpoint"
+    }
+
+  ],
+  "springbootquestsons5":[
+    {
+      "question": "Spring Boot-da application.properties faylı necə istifadə olunur?",
+      "answer1": "A)Kodun versiyasını təyin etmək üçün",
+      "answer2": "B)Konfiqurasiya parametrlərini saxlamaq üçün",
+      "answer3": "C)Loq səviyyəsini azaltmaq üçün",
+      "answer4": "D)REST API-ləri qorumaq üçün",
+      "correct": "B)Konfiqurasiya parametrlərini saxlamaq üçün"
+    },
+    {
+      "question": "YAML faylında konfiqurasiya application.properties ilə müqayisədə hansı üstünlüyü təmin edir?",
+      "answer1": "A)Daha çevik və oxunaqlı struktur",
+      "answer2": "B)Daha çox təhlükəsizlik təmin edir",
+      "answer3": "C)Performansı artırır",
+      "answer4": "D)JSON faylı ilə birbaşa işləyir",
+      "correct": "A)Daha çevik və oxunaqlı struktur"
+    },
+    {
+      "question": "JPA repository-lərini aktivləşdirmək üçün hansı annotasiya istifadə olunur?",
+      "answer1": "A)@EnableJpaRepositories",
+      "answer2": "B)@EnableRepositories",
+      "answer3": "C)@JpaRepository",
+      "answer4": "D)@RepositoryEnable",
+      "correct": "A)@EnableJpaRepositories"
+    },
+    {
+      "question": "@Configuration annotasiyası nə üçün istifadə olunur?",
+      "answer1": "A)Tətbiqin konfiqurasiya siniflərini təyin etmək üçün",
+      "answer2": "B)Loq səviyyələrini idarə etmək üçün",
+      "answer3": "C)Yalnız verilənlər bazası bağlantılarını idarə etmək üçün",
+      "answer4": "D)Profil seçmək üçün",
+      "correct": "A)Tətbiqin konfiqurasiya siniflərini təyin etmək üçün"
+    },
+    {
+      "question": "Spring Boot-da Tətbiqdə input doğrulaması üçün hansı anotasiya istifadə olunur?",
+      "answer1": "A)@Validate",
+      "answer2": "B)@Valid",
+      "answer3": "C)@Validation",
+      "answer4": "D)@InputCheck",
+      "correct": "B)@Valid"
+    },
+    {
+      "question": "Spring Boot Actuator-un health endpointi nə üçün istifadə olunur?",
+      "answer1": "A)Tətbiqin performansını artırmaq üçün",
+      "answer2": "B)Tətbiqin sağlamlıq vəziyyətini yoxlamaq üçün",
+      "answer3": "C)Loq fayllarını təmizləmək üçün",
+      "answer4": "D)Konfiqurasiya məlumatlarını göstərmək üçün",
+      "correct": "B)Tətbiqin sağlamlıq vəziyyətini yoxlamaq üçün"
+    },
+    {
+      "question": "Mikroservislər arasında məlumat mübadiləsi üçün Spring Boot-da hansı modul istifadə olunur?",
+      "answer1": "A)Spring Security",
+      "answer2": "B)Spring Cloud",
+      "answer3": "C)Spring Data",
+      "answer4": "D)Spring MVC",
+      "correct": "B)Spring Cloud"
+    },
+    {
+      "question": "Hansı embedded verilənlər bazası Spring Boot ilə standart olaraq inteqrasiya olunur?",
+      "answer1": "A)PostgreSQL",
+      "answer2": "B)MySQL",
+      "answer3": "C)MongoDB",
+      "answer4": "D)H2",
+      "correct": "D)H2"
+    },
+    {
+      "question": "Bean lifecycle-də xüsusi işləri icra etmək üçün hansı annotasiya istifadə olunur?",
+      "answer1": "A)@PreDestroy",
+      "answer2": "B)@BeforeBean",
+      "answer3": "C)@InitBean",
+      "answer4": "D)@BeanStart",
+      "correct": "A)@PreDestroy"
+    },
+    {
+      "question": "Spring Security ilə xüsusi konfiqurasiya yazmaq üçün hansı sinifdən istifadə olunur?",
+      "answer1": "A)WebSecurityConfigurerAdapter",
+      "answer2": "B)SecurityConfigAdapter",
+      "answer3": "C)CustomSecurityAdapter",
+      "answer4": "D)SecurityFilterChain",
+      "correct": "A)WebSecurityConfigurerAdapter"
+    }
+
+  ]
+
+
+}

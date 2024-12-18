@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Java Quiz</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="dark_mode">Theme</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="system_default">System Default</string>
+    <string name="set_battery">Set by Battery Saver</string>
+
+
+</resources>

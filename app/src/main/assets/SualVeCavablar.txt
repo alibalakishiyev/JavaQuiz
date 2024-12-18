@@ -1,0 +1,511 @@
+1. Java nədir?
+
+Cavab: Java, yüksək səviyyəli, obyekt yönümlü və platformadan asılı olmayan proqramlaşdırma dilidir. Əsasən veb, masaüstü və mobil tətbiqlər üçün istifadə olunur.
+
+2. JDK, JRE və JVM arasındakı fərq nədir?
+
+Cavab:
+
+	•	JDK (Java Development Kit) - Java proqramlarını yaratmaq və inkişaf etdirmək üçün lazım olan alətləri təmin edir.
+	•	JRE (Java Runtime Environment) - Java proqramlarının işləməsi üçün lazım olan mühiti təmin edir.
+	•	JVM (Java Virtual Machine) - Java kodunu bytecode-dan yerli maşın koduna çevirərək çalışdıran mühərrikdir.
+
+3. Niyə Java platformadan asılı deyil?
+
+Cavab: Java platformadan asılı deyil, çünki JVM Java kodunu hər platformada işləyə bilən bytecode-a çevirir. Hər bir əməliyyat sistemi üçün uyğun JVM olduğundan Java kodu müxtəlif sistemlərdə dəyişiklik etmədən işləyə bilir.
+
+4. Obyekt yönümlü proqramlaşdırma nədir?
+
+Cavab: Obyekt yönümlü proqramlaşdırma (OOP), məlumatları obyektlər şəklində təşkil edən proqramlaşdırma üsuludur. Əsas prinsipləri “inheritance” (miras alma), “polymorphism” (çoxşəkillilik), “abstraction” (abstraksiya) və “encapsulation” (kapsullama)-dır.
+
+5. Java-da “class” və “object” nədir?
+
+Cavab:
+
+	•	Class - Obraz və ya strukturu müəyyən edən şablondur. İçində metodlar və dəyişənlər olur.
+	•	Object - Class-dan yaradılan, onun xüsusiyyətlərini və funksiyalarını təmsil edən konkret bir nümunədir.
+
+6. Java-da “constructor” nədir və hansı növləri var?
+
+Cavab: Constructor class-dan obyekt yaradılarkən çağırılan xüsusi metoddur. İki növü var:
+
+	•	Default Constructor - Parametrləri olmayan konstruktor.
+	•	Parameterized Constructor - Parametrləri olan konstruktor.
+
+7. Java-da “inheritance” nədir və niyə istifadə olunur?
+
+Cavab: Inheritance (miras alma), bir class-ın başqa bir class-ın xüsusiyyətlərini və metodlarını əldə etməsinə imkan verir. Yenidən istifadəyə və kodun daha səmərəli təşkilinə kömək edir.
+
+8. Java-da “polymorphism” nədir?
+
+Cavab: Polymorphism (çoxşəkillilik), bir metodun fərqli formalar almasına imkan verir. İki növü var:
+
+	•	Compile-time polymorphism (method overloading)
+	•	Run-time polymorphism (method overriding)
+
+9. “Method overloading” və “method overriding” arasındakı fərq nədir?
+
+Cavab:
+
+	•	Method overloading - Eyni adda, lakin fərqli parametrlərlə metodlar yazılması.
+	•	Method overriding - Valideyn class-da olan metodun övlad class-da yenidən yazılması.
+
+10. “Abstraction” nədir və niyə istifadə olunur?
+
+Cavab: Abstraction (abstraksiya), lazımsız detalları gizlədərək yalnız vacib məlumatları göstərməyə imkan verir. Kodun daha səliqəli və daha az xətalı olmasını təmin edir.
+11. “Encapsulation” nədir və hansı faydaları var?
+
+Cavab: Encapsulation (kapsullama), verilənləri və metodları birlikdə saxlayaraq bir obyekti qorumaq üsuludur. Faydalıdır, çünki verilənləri təhlükəsiz saxlayır və onların xarici müdaxilədən qorunmasını təmin edir.
+
+12. Java-da “interface” nədir və nə üçün istifadə olunur?
+
+Cavab: Interface, metod imzalarını saxlayan, lakin onların bədənini təyin etməyən bir strukturdur. Klassın hansı funksiyaları dəstəklədiyini göstərmək üçün istifadə olunur və çoxlu miras (multiple inheritance) təmin edir.
+
+13. “Abstract class” və “interface” arasındakı fərq nədir?
+
+Cavab: Abstract class həm adi metodlara, həm də abstrakt metodlara malikdir və müəyyən bir xüsusiyyətləri paylaşmaq üçün istifadə olunur. Interface isə yalnız metod imzalarını saxlayır və klassın hansı funksiyaları təmin etməli olduğunu müəyyən edir.
+
+14. Java-da “static” keyword-u nədir və nə üçün istifadə olunur?
+
+Cavab: Static keyword-u, dəyişən və ya metodun obyektə bağlı deyil, klassın özünə bağlı olduğunu bildirir. Static dəyişənlər və metodlar klass səviyyəsində təyin olunur və hər bir obyekt üçün ortaqdır.
+
+15. Java-da “final” keyword-u nədir və necə istifadə olunur?
+
+Cavab: Final keyword-u dəyişən, metod və ya klassın dəyişdirilməsini məhdudlaşdırır:
+
+	•	Final dəyişənlər bir dəfə təyin edilə bilər və sonradan dəyişdirilə bilməz.
+	•	Final metodlar override oluna bilməz.
+	•	Final klasslar miras alına bilməz.
+
+16. “This” və “super” keyword-ləri nədir?
+
+Cavab:
+
+	•	This - Cari obyektə istinad edir və konstruktorlar arasında çağırışlar üçün istifadə olunur.
+	•	Super - Valideyn klassın dəyişənlərinə və metodlarına istinad edir və miras alınmış metod və konstruktorlara çatmaq üçün istifadə olunur.
+
+17. “String” immutable-dur, bu nə deməkdir?
+
+Cavab: Immutable deməkdir ki, bir dəfə yaradıldıqdan sonra String obyekti dəyişdirilə bilməz. Yeni dəyişikliklər üçün yeni String obyekti yaradılır.
+
+18. Java-da “Array” və “ArrayList” arasındakı fərq nədir?
+
+Cavab:
+
+	•	Array sabit ölçülüdür və yaradıldıqdan sonra ölçüsü dəyişdirilə bilməz.
+	•	ArrayList dəyişkən ölçülüdür və element əlavə edildikcə avtomatik genişlənir.
+
+19. Java-da “HashMap” və “HashSet” arasındakı fərq nədir?
+
+Cavab:
+
+	•	HashMap açar və dəyər cütlüklərini saxlayır.
+	•	HashSet isə yalnız unikal dəyərləri saxlayır və açar yoxdur.
+
+20. Java-da “synchronized” keyword-u nədir?
+
+Cavab: Synchronized keyword-u, bir metod və ya blokun eyni zamanda yalnız bir thread tərəfindən icra olunmasını təmin edir və çox axınlı (multithreaded) proqramlarda sinxronizasiya üçün istifadə olunur.
+
+21. “Garbage Collection” nədir və necə işləyir?
+
+Cavab: Garbage Collection, yaddaşda istifadə olunmayan obyektlərin avtomatik olaraq silinməsini təmin edən bir mexanizmdir. Java-da JVM tərəfindən idarə olunur və developer-lərin yaddaşı əl ilə idarə etməsinə ehtiyac qalmır.
+
+22. Java-da istisna (exception) nədir və necə idarə olunur?
+
+Cavab: Exception, proqram icrası zamanı meydana gələn bir səhvdir. try-catch-finally blokları istifadə edərək idarə olunur və proqramın çökməsinin qarşısını alır.
+
+23. Checked və unchecked exceptions arasındakı fərq nədir?
+
+Cavab:
+
+	•	Checked exceptions kompilasiya zamanı yoxlanılır və try-catch ilə idarə olunmalıdır (məsələn, IOException).
+	•	Unchecked exceptions runtime zamanı yaranır və kompilator tərəfindən yoxlanılmır (məsələn, NullPointerException).
+
+24. Java-da “try-catch-finally” blokları necə işləyir?
+
+Cavab: try bloku potensial problemli kodu icra edir, catch bloku istisnaları tutur, finally bloku isə istisna olub-olmamasından asılı olmayaraq həmişə icra olunur.
+
+25. “Throwable” nədir?
+
+Cavab: Throwable Java-da istisnaların əsas sinfidir və Exception və Error siniflərinin ortaq valideyni sayılır.
+26. Multithreading nədir və necə yaradılır?
+
+Cavab: Multithreading bir proqramın bir neçə iş parçacığında (thread) eyni anda işləməsinə imkan verir. Java-da Thread sinfi və ya Runnable interfeysi istifadə edilərək yaradılır.
+
+27. “Runnable” və “Thread” interfeysləri arasındakı fərq nədir?
+
+Cavab:
+	•	Thread birbaşa bir iş parçacığını təmsil edir və genişləndirilə bilər.
+	•	Runnable isə bir interfeysdir və yalnız run() metodu tərtib edir. Runnable istifadə edilərək iş parçacığı daha çevik bir şəkildə idarə olunur.
+
+28. Java-da “synchronized block” nədir və nə üçün istifadə olunur?
+
+Cavab: Synchronized block, kodun müəyyən bir hissəsinin eyni anda yalnız bir iş parçacığı tərəfindən icra olunmasını təmin edir. Yaddaşa çıxışın və ya məlumatların düzgünlüyünü qorumaq üçün istifadə olunur.
+
+29. Java-da Lambda ifadələri nədir?
+
+Cavab: Lambda ifadələri, qısa və səliqəli bir şəkildə anonim funksiyalar yaratmağa imkan verir və xüsusilə funksional interfeyslərlə (bir metodlu interfeyslər) istifadə olunur. Məsələn: (int x, int y) -> x + y.
+
+30. Stream API nədir və necə istifadə olunur?
+
+Cavab: Stream API, kolleksiyalar və digər verilənlər üzərində funksional əməliyyatlar aparmağa imkan verən bir interfeysdir. Stream-lər verilənlərin axını (stream) üzərində əməliyyatlar yerinə yetirmək üçün nəzərdə tutulub. Məlumatları filtrləmək, çevirmək və toplamaq üçün istifadə olunur. Məsələn, List.stream().filter(...).collect(...).
+
+31. Java-da “Optional” sinfi nədir və nə üçün istifadə olunur?
+
+Cavab: Optional sinfi, null dəyərləri idarə etmək üçün istifadə olunur. Bu, kodu daha az səhvə meyilli edir və null yoxlanışlarını azaltmağa kömək edir.
+
+32. Java-da əsas kolleksiya interfeysləri hansılardır?
+
+Cavab: Java-nın əsas kolleksiya interfeysləri bunlardır: List, Set, Queue, Map. Hər biri müxtəlif verilənlər strukturlarını və əməliyyatlarını dəstəkləyir.
+
+33. “HashMap” və “TreeMap” arasındakı fərq nədir?
+
+Cavab:
+
+	•	HashMap unsort edilmiş (təsadüfi qaydada), null açarı və dəyəri qəbul edən bir xəritədir.
+	•	TreeMap isə sort edilmiş (düzülmüş) bir xəritədir və null açarı qəbul etmir.
+
+34. Java-da “default” və “private” metodları nədir və necə istifadə olunur?
+
+Cavab:
+
+	•	Default metod Java 8-də interfeyslərə əlavə edilən metod növüdür və interfeysdə birbaşa kod bədəni ola bilər.
+	•	Private metod isə interfeysdə yalnız digər metodlar tərəfindən istifadə oluna bilən metodları gizlətməyə imkan verir.
+
+35. “public”, “protected”, “default” və “private” erişim modifikatorları arasındakı fərq nədir?
+
+Cavab:
+	•	Public hər yerdən görünə bilir.
+	•	Protected yalnız eyni paketdə və ya subclass-da görünür.
+	•	Default yalnız eyni paket daxilində görünür.
+	•	Private yalnız olduğu class daxilində görünür.
+
+36. Java-da “ClassLoader” nədir və hansı növləri var?
+
+Cavab: ClassLoader JVM tərəfindən istifadə edilən və Java siniflərini yükləyən bir mexanizmdir. Növləri:
+
+	•	Bootstrap ClassLoader
+	•	Extension ClassLoader
+	•	Application ClassLoader
+
+37. “Java Reflection API” nədir və nə üçün istifadə olunur?
+
+Cavab: Java Reflection API siniflərin və obyektlərin strukturunu runtime-da əldə etməyə imkan verir. Məsələn, metodların adlarını, dəyişənləri və ya konstruktorları öyrənmək üçün istifadə edilir.
+
+38. Java-da “Serialization” nədir və necə işləyir?
+
+Cavab: Serialization, obyektlərin yaddaşa və ya fayla “stream” şəklində çevrilməsi prosesidir. Obyektin sonradan bərpa edilməsinə imkan verir.
+
+39. “transient” keyword-u nədir və hansı hallarda istifadə olunur?
+
+Cavab: Transient keyword-u, serialization zamanı müəyyən dəyişənlərin serialize edilməməsi üçün istifadə olunur. Məsələn, parol kimi həssas məlumatlar üçün.
+
+40. “volatile” keyword-u nədir və nə üçün istifadə olunur?
+
+Cavab: Volatile keyword-u, dəyişənin eyni anda bir neçə thread tərəfindən dəqiq şəkildə görünməsini təmin edir. Sinxronizasiya olmadan verilənlərin dəqiqliyini qorumaq üçün istifadə olunur.
+
+41. Java-da “enum” nədir və nə üçün istifadə olunur?
+
+Cavab: Enum xüsusi bir sinif növüdür və sabit dəyərləri (məsələn, günlər, rənglər) təmsil etmək üçün istifadə olunur.
+
+42. “Marker Interface” nədir və nə üçün istifadə olunur?
+
+Cavab: Marker Interface metodları olmayan bir interfeysdir. Xüsusi bir davranışı və ya xüsusiyyəti ifadə etmək üçün istifadə edilir. Məsələn, Serializable və Cloneable marker interfeyslərdir.
+43. Java-da “Dependency Injection” nədir və nə üçün istifadə olunur?
+
+Cavab: Dependency Injection obyektlərin öz asılılıqlarını özlərinin yaratmaması, əksinə kənardan ötürülməsidir. Bu, kodu daha elastik və test edilə bilən edir, çünki obyektlər asılılıqlarını birbaşa idarə etmirlər.
+
+44. “Factory Pattern” nədir?
+
+Cavab: Factory Pattern, obyektləri yaratmaq üçün istifadə olunan dizayn nümunəsidir. Bu, yaratma loqikasını bir yerə cəmləyir və yeni obyekt yaratma prosesini asanlaşdırır.
+
+45. “Singleton Pattern” nədir və Java-da necə həyata keçirilir?
+
+Cavab: Singleton Pattern, bir sinfin yalnız bir nümunəsinin yaradılmasını təmin edir. Java-da bunu private konstruktor, static metod və static dəyişənlərlə həyata keçirmək mümkündür.
+
+public class Singleton {
+    private static Singleton instance = new Singleton();
+    
+    private Singleton() {}  // Private constructor
+    
+    public static Singleton getInstance() {
+        return instance;
+    }
+}
+
+46. Java-da “Garbage Collector”-u necə çağırmaq olar?
+
+Cavab: Java-da Garbage Collector JVM tərəfindən avtomatik işlədilir, lakin System.gc() və ya Runtime.getRuntime().gc() metodları ilə manual olaraq çağırmaq mümkündür.
+
+47. Java-da “Immutable” obyektlər nədir?
+
+Cavab: Immutable obyektlər, yaradıldıqdan sonra dəyişdirilə bilməyən obyektlərdir. Məsələn, String sinfi immutabledir. Immutable obyektlərin yaradılması kodun təhlükəsizliyini və sabitliyini artırır.
+
+48. Java-da “Comparator” və “Comparable” interfeysləri arasındakı fərq nədir?
+
+Cavab:
+
+	•	Comparable bir obyektin təbii sıralanması üçün istifadə olunur və obyektin özündə compareTo metodunu həyata keçirir.
+	•	Comparator isə obyektləri xüsusi kriteriyalara görə sıralamaq üçün istifadə olunur və ayrı bir sinifdə compare metodunu həyata keçirir.
+
+49. “Thread Safety” nədir və Java-da necə təmin olunur?
+
+Cavab: Thread Safety, bir proqramın çoxlu iş parçacığı tərəfindən təhlükəsiz şəkildə icra olunması deməkdir. Java-da bunu synchronized, volatile, concurrent collections və ya Lock interfeysi ilə təmin etmək olar.
+
+50. Java-da “ConcurrentHashMap” və “Hashtable” arasındakı fərq nədir?
+
+Cavab:
+	•	ConcurrentHashMap sinxronlaşdırılmış xəritədir, amma daha effektiv işləyir və yalnız müəyyən seqmentlərə kilid qoyur.
+	•	Hashtable isə tam sinxronlaşdırılıb və daha yavaşdır.
+
+51. “Deadlock” nədir və necə qarşısını almaq olar?
+
+Cavab: Deadlock, iki və ya daha çox thread-in bir-birini gözləməsi nəticəsində proqramın sonsuz gözləmə vəziyyətinə düşməsidir. Qarşısını almaq üçün kilidləmə qaydalarına əməl etmək və tryLock() metodundan istifadə etmək tövsiyə olunur.
+
+52. Java-da “Annotations” nədir və necə istifadə olunur?
+
+Cavab: Annotations xüsusi işarələrdir və metodlara, dəyişənlərə əlavə məlumat vermək üçün istifadə olunur. Məsələn, @Override, @Deprecated, @SuppressWarnings.
+
+53. “JDBC” nədir və nə üçün istifadə olunur?
+
+Cavab: JDBC (Java Database Connectivity) Java tətbiqlərinin verilənlər bazası ilə əlaqə qurması üçün istifadə olunan bir API-dır. Verilənlər bazasında sorğular göndərmək və məlumat almaq üçün istifadə olunur.
+
+54. “PreparedStatement” və “Statement” arasındakı fərq nədir?
+
+Cavab:
+
+	•	Statement SQL sorğularını göndərmək üçün istifadə edilir.
+	•	PreparedStatement isə təkrar istifadə edilə bilən və təhlükəsiz sorğular yaratmaq üçün istifadə olunur. SQL injection hücumlarının qarşısını alır.
+
+55. Java-da “Exception Handling Best Practices” hansılardır?
+
+Cavab:
+
+	•	Müəyyən istisnaları tutmaq və lazım olduqda mesaj əlavə etmək.
+	•	Exception-un səbəbini logging etmək.
+	•	Unchecked exception-lardan ehtiyatlı olmaq və lazımsız try-catch bloklarından çəkinmək.
+
+56. “Fail-fast” və “fail-safe” kolleksiyalar arasındakı fərq nədir?
+
+Cavab:
+
+	•	Fail-fast kolleksiyalar, dəyişiklik zamanı ConcurrentModificationException atır (məsələn, ArrayList, HashMap).
+	•	Fail-safe kolleksiyalar isə dəyişiklik olsa belə səhv atmır (məsələn, CopyOnWriteArrayList, ConcurrentHashMap).
+
+57. Java-da “Design Patterns” nədir və nümunə verin.
+
+Cavab: Design Patterns təkrarlanan proqramlaşdırma problemlərini həll etmək üçün istifadə edilən standartlaşdırılmış yanaşmalardır. Məsələn: Singleton Pattern, Factory Pattern, Observer Pattern.
+
+58. “Wrapper Classes” nədir və nə üçün istifadə olunur?
+
+Cavab: Wrapper Classes primitv tipləri obyektə çevirmək üçün istifadə olunur (məsələn, int üçün Integer, double üçün Double). Bu, primitv tiplərlə obyektlərin birlikdə işləməsinə imkan verir.
+
+59. Java-da “Autoboxing” və “Unboxing” nədir?
+
+Cavab: Autoboxing, primitv tiplərin avtomatik olaraq wrapper siniflərinə çevrilməsidir, Unboxing isə əksinə wrapper siniflərdən primitv tiplərə çevrilməsidir.
+
+60. Java-da “String Pool” nədir?
+
+Cavab: String Pool, yaddaşda String obyektlərinin saxlanıldığı xüsusi bir yerdir. Eyni məzmunlu String-lər burada saxlanılır və bu, yaddaşa qənaət edir.
+
+61. Java-da “clone()” metodu nədir və nə üçün istifadə olunur?
+
+Cavab: clone() metodu bir obyektin dəqiq surətini yaratmaq üçün istifadə olunur. Cloneable interfeysini həyata keçirən obyektlər üçün mümkündür və obyektlərin dərin və ya səthi nüsxələrini almaq üçün istifadə olunur.
+
+62. “Deep copy” və “shallow copy” arasındakı fərq nədir?
+
+Cavab:
+
+	•	Shallow copy obyektin yalnız əsas səviyyədəki dəyişənlərini nüsxələyir. Əgər obyekt daxilində digər obyektlər varsa, onların yalnız referansları kopyalanır.
+	•	Deep copy isə obyekti və daxilindəki bütün obyektləri tamamilə yeni bir obyekt olaraq kopyalayır.
+
+63. Java-da “varargs” nədir və necə istifadə olunur?
+
+Cavab: Varargs (variable arguments), metodlara dəyişən sayda arqument ötürmək üçün istifadə olunur. ... üç nöqtə ilə göstərilir və metod çağırışında arqumentlərin sayını məhdudlaşdırmır.
+
+public void printNumbers(int... numbers) {
+    for (int num : numbers) {
+        System.out.println(num);
+    }
+}
+
+64. “Serialization” və “Deserialization” nədir?
+
+Cavab:
+
+	•	Serialization obyektləri byte stream-ə çevirmək və yaddaşa yazmaq prosesidir.
+	•	Deserialization isə byte stream-dən obyekti bərpa etməkdir. Bu proseslər məlumatların saxlanması və ötürülməsi üçün istifadə olunur.
+
+65. “Method Overloading” və “Method Overriding” arasındakı fərq nədir?
+
+Cavab:
+
+	•	Method Overloading eyni sinif daxilində eyni adda, lakin fərqli parametr dəstlərinə sahib metodların olmasıdır.
+	•	Method Overriding isə subclass-da valideyn sinifin metodunu eyni metod adı və parametr dəsti ilə yenidən təyin etməkdir.
+
+66. Java-da “Polymorphism” nədir?
+
+Cavab: Polymorphism (çoxşəkillilik), bir obyektin müxtəlif formalarda davranış göstərə bilməsidir. İki əsas növü var: compile-time polymorphism (method overloading) və runtime polymorphism (method overriding).
+
+67. Java-da “abstract class” və “interface” arasındakı əsas fərqlər hansılardır?
+
+Cavab:
+
+	•	Abstract class həm adi, həm də abstrakt metodları dəstəkləyir və bir sinif yalnız bir abstract class-dan miras ala bilər.
+	•	Interface yalnız abstrakt metodları və ya Java 8-dən sonra default metodları dəstəkləyir və bir sinif bir neçə interfeysdən miras ala bilər.
+
+68. Java-da “exception” və “error” arasındakı fərq nədir?
+
+Cavab:
+
+	•	Exception proqramın icrasında baş verən problemli hallardır və idarə oluna bilər.
+	•	Error isə daha ciddi problemlərdir və adətən JVM tərəfindən idarə olunur. Məsələn, OutOfMemoryError.
+
+69. Java-da “try-with-resources” nədir və nə üçün istifadə olunur?
+
+Cavab: Try-with-resources resursların avtomatik bağlanmasını təmin edən bir blokdur. Java 7-dən təqdim olunub və AutoCloseable interfeysini həyata keçirən resurslarla istifadə olunur. Məsələn:
+
+try (BufferedReader br = new BufferedReader(new FileReader("file.txt"))) {
+    // faylı oxuma əməliyyatları
+}
+
+70. Java-da “LocalDate”, “LocalTime” və “LocalDateTime” sinifləri nədir?
+
+Cavab: Java 8-də təqdim edilən LocalDate, LocalTime və LocalDateTime sinifləri tarix, zaman və hər ikisinin birləşməsini idarə etmək üçün istifadə olunur. Bunlar immutabledir və daha təhlükəsiz tarix-zaman əməliyyatları təmin edir.
+
+71. Java-da “Atomic” siniflər nə üçün istifadə olunur?
+
+Cavab: Atomic siniflər (məsələn, AtomicInteger, AtomicLong) çox sayda iş parçacığı ilə təhlükəsiz əməliyyatlar təmin etmək üçün istifadə olunur. Bu siniflərdəki əməliyyatlar atomik olduğundan, əlavə sinxronizasiya tələb etmir.
+
+72. Java-da “finalize()” metodu nədir?
+
+Cavab: finalize() metodu obyektin Garbage Collector tərəfindən silinmədən əvvəl çağırılan xüsusi bir metoddur. Lakin Java-da artıq deprecated sayılır, çünki proqrama nəzarət çətinləşir və etibarlı deyil.
+
+73. “Proxy Pattern” nədir və nə üçün istifadə olunur?
+
+Cavab: Proxy Pattern obyektə nəzarət etmək və ya əlavə funksionallıq təmin etmək üçün həmin obyektin əvəzedicisini istifadə edən dizayn nümunəsidir. Məsələn, uzaq serverlə əlaqə zamanı, performansı artırmaq və təhlükəsizlik üçün istifadə edilə bilər.
+
+74. Java-da “SoftReference”, “WeakReference” və “PhantomReference” nədir?
+
+Cavab:
+
+	•	SoftReference - Garbage Collector yalnız yaddaş az olanda obyektləri silir.
+	•	WeakReference - Garbage Collector obyektləri aktiv referans olmadığı halda silir.
+	•	PhantomReference - Obyekt silinməzdən əvvəl müəyyən əməliyyatlar həyata keçirmək üçün istifadə olunur.
+
+75. “Enum Singleton” nədir?
+
+Cavab: Enum Singleton singleton yaratmaq üçün enum-dan istifadə etməkdir. Java-da ən etibarlı singleton yaratma üsuludur, çünki enum-lar yalnız bir dəfə instansiyalanır.
+
+public enum Singleton {
+    INSTANCE;
+    public void someMethod() {
+        // iş görən metod
+    }
+}
+
+76. Java-da “Executor Framework” nədir?
+
+Cavab: Executor Framework Java-da çox iş parçacığı idarə etmə prosesini sadələşdirən bir mexanizmdir. İş parçacığı hovuzları yaratmağa və işləri bu hovuzlara göndərməyə imkan verir, beləliklə resurs istifadəsini optimallaşdırır.
+
+77. Java-da “CountDownLatch” və “CyclicBarrier” arasındakı fərq nədir?
+
+Cavab:
+
+	•	CountDownLatch müəyyən sayda əməliyyat tamamlanana qədər gözləmək üçün istifadə edilir.
+	•	CyclicBarrier isə müəyyən sayda iş parçacığı bir nöqtəyə çatanda hərəkətə keçmək üçün istifadə edilir və təkrar istifadə edilə bilir.
+
+78. “Spring Framework” nədir və nə üçün istifadə olunur?
+
+Cavab: Spring Framework Java platformasında geniş istifadə olunan bir framework-dür və asanlıqla enterprise səviyyəli tətbiqlər yaratmağa kömək edir. Dependency Injection, aspekt yönümlü proqramlaşdırma və müxtəlif modullar (məsələn, Spring Boot) ilə tanınır.
+
+79. “Dependency Injection” ilə “Inversion of Control” (IoC) arasındakı fərq nədir?
+
+Cavab: Dependency Injection, Inversion of Control (IoC) prinsipinin həyata keçirilmə üsuludur. IoC obyektlərin öz asılılıqlarını idarə etməsini yox, başqa mexanizm tərəfindən idarə edilməsini ifadə edir, və DI bu məqsədə çatmaq üçün bir üsuldur.
+
+80. “Java Stream API” ilə “Iterator” arasındakı əsas fərqlər hansılardır?
+
+Cavab:
+
+	•	Iterator daha az funksionallıq təmin edir və əl ilə elementləri keçməyə imkan verir.
+	•	Stream API isə daha funksional və paralel işləməyi dəstəkləyən metodlar təqdim edir (məsələn, map, filter, collect), və təkcə elementləri keçməklə qalmır, onları emal etməyə də imkan verir.
+81. Java-da “Optional” nədir və necə istifadə olunur?
+
+Cavab: Optional, null olan obyektlərin qarşısını almaq üçün istifadə olunan bir konteyner sinifidir. O, iki vəziyyəti (dəyər var və ya yoxdur) təmsil edir və isPresent(), ifPresent(), orElse() kimi metodlarla dəyərin mövcudluğunu yoxlamağa imkan verir.
+
+82. Java-da “Map” interfeysi nədir və hansı implementasiyaları var?
+
+Cavab: Map interfeysi açar-dəyər cütlərini saxlamaq üçün istifadə olunur. Ən çox istifadə olunan implementasiyaları HashMap, TreeMap, və LinkedHashMap-dır.
+
+83. “Java Collections Framework” nədir?
+
+Cavab: Java Collections Framework müxtəlif kolleksiyaların (məsələn, siyahılar, dəstlər, xəritələr) istifadəsini standartlaşdıran bir API-dir. Bu framework kolleksiyaların yaradılması, manipulyasiyası və emalı üçün müxtəlif siniflər və interfeyslər təqdim edir.
+
+84. “HashSet” və “TreeSet” arasındakı fərq nədir?
+
+Cavab:
+
+	•	HashSet obyektləri hash-cədvəl vasitəsilə saxlayır və elementlərin sırasını qoruyub saxlamır.
+	•	TreeSet isə elementləri sıralı şəkildə saxlayır (natural order və ya comparator-ə görə) və ağac strukturuna əsaslanır.
+
+85. “StringBuilder” və “StringBuffer” arasındakı fərq nədir?
+
+Cavab:
+	•	StringBuilder tək iş parçacığı üçün təhlükəsizdir və daha sürətlidir.
+	•	StringBuffer isə çox iş parçacığı üçün təhlükəsizdir, lakin performansı daha aşağıdır.
+
+86. Java-da “default” metodlar nədir?
+
+Cavab: Default metodlar, interfeyslərdə müəyyən edilmiş, lakin implementasiya edilən metodlardır. Bu metodlar Java 8-dən etibarən tanınmışdır və interfeyslərin geri uyğunluğunu təmin edir.
+
+87. Java-da “Method References” nədir?
+
+Cavab: Method References, Java 8-dən sonra lambda ifadələrinin qısa bir yazılış formasıdır. Onlar mövcud metodların istifadə olunmasını sadələşdirir. Məsələn, ClassName::methodName sintaksisi ilə istifadə olunur.
+
+88. Java-da “Functional Interfaces” nədir?
+
+Cavab: Functional Interfaces yalnız bir abstrakt metod olan interfeyslərdir. Lambda ifadələrinin istifadəsi üçün hazırlanmışdır. Məsələn, Runnable, Callable, Comparator.
+
+89. Java-da “Stream” necə yaradılır və istifadə olunur?
+
+Cavab: Stream, koleksiya üzərində stream() metodu ilə yaradılır. Bu, verilənlər toplusu üzərində emal əməliyyatları aparmaq üçün istifadə edilir, məsələn, filter(), map(), collect() və s.
+
+90. Java-da “Immutable Collection” nədir?
+Immutable Collection (dəyişməz kolleksiya) Java-da bir dəfə yaradıldıqdan sonra dəyişdirilə bilməyən kolleksiyaları ifadə edir. Bu kolleksiyalar yarandıqdan sonra onların elementləri əlavə edilə, silinə və ya dəyişdirilə bilmir. Bu, kodun təhlükəsizliyini artırır, çünki dəyişməz kolleksiyalar yan təsirləri aradan qaldırır və eyni zamanda proqramın paralel işlənməsi zamanı daha stabil nəticələr təmin edir.
+
+Java-da Immutable Collection-ların nümunələri
+
+	1.	Collections.unmodifiableList():
+Java Collections Framework, mövcud kolleksiyanın dəyişməz bir görünüşünü yaratmaq üçün istifadə edilə bilən metod təqdim edir.
+
+List<String> list = new ArrayList<>();
+list.add("Element 1");
+list.add("Element 2");
+
+List<String> immutableList = Collections.unmodifiableList(list);
+
+Burada immutableList dəyişməzdir. Bu kolleksiyanın elementlərini dəyişdirmək cəhdi bir UnsupportedOperationException atacaq.
+
+	2.	Java 9-dan etibarən yaradılan Immutable Kolleksiyalar:
+Java 9 ilə birlikdə birbaşa immutable kolleksiyalar yaratmaq üçün yeni metodlar təqdim edildi:
+	•	List.of()
+	•	Set.of()
+	•	Map.of()
+Məsələn:
+
+List<String> immutableList = List.of("Element 1", "Element 2", "Element 3");
+Set<String> immutableSet = Set.of("Element A", "Element B");
+Map<String, String> immutableMap = Map.of("Key1", "Value1", "Key2", "Value2");
+
+Bu metodlarla yaradılan kolleksiyalar dəyişdirilə bilmir.
+
+Niyə Immutable Collection-lar istifadə olunur?
+
+	1.	Təhlükəsizlik: Dəyişməz kolleksiyalar, onları paylaşan çoxlu iş parçacığı üçün daha təhlükəsizdir, çünki onların vəziyyəti dəyişmir.
+	2.	Təkrarlanma: Kolleksiyanın eyni nüsxəsini bir neçə yerdə istifadə etmək istəyirsinizsə, dəyişməz versiya daha əlverişlidir.
+	3.	Performans: Bəzi vəziyyətlərdə, dəyişməz kolleksiyalar, optimallaşdırma məqsədilə istifadə edildikdə daha yaxşı performans göstərə bilər.
+	4.	Təhlil: Dəyişməz kolleksiyalar proqramın davranışını daha asan başa düşməyə kömək edir, çünki onların dəyəri dəyişmir.
+
+Nəticə
+
+Immutable Collection-lar Java proqramlaşdırma dilində təhlükəsiz, etibarlı və performans baxımından səmərəli kolleksiyalardır. Dəyişməz kolleksiyaların istifadə edilməsi, proqramın strukturunu və aydınlığını artırır, eyni zamanda xətaların qarşısını almağa kömək edir. Başqa sualınız varsa, mənə bildirin!

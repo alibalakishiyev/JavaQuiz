@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/blackvv"
+    android:orientation="vertical"
+    tools:context=".Derslik">
+
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/material_on_background_disabled">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/returnHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/teal_200"
+                android:text="Back"
+                android:textColor="@color/black"
+                android:textSize="18sp">
+            </com.google.android.material.button.MaterialButton>
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:layout_width="270dp"
+                android:layout_height="match_parent"
+                app:title="Dərslik"
+                app:titleCentered="true"
+                app:titleTextColor="@color/text_color" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right">
+                <ImageButton
+                    android:id="@+id/editorFile"
+                    android:layout_width="35dp"
+                    android:layout_height="45dp"
+                    android:src="@drawable/editfile" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/material_on_background_disabled"
+        android:elevation="0dp"
+        android:gravity="left">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="650dp"
+            android:layout_marginTop="10dp">
+
+            <!-- LinearLayout konteyneri, digər elementləri burada yerləşdirin -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background"
+                android:orientation="vertical">
+
+                <!-- Bütün digər UI elementləriniz burada olacaq -->
+                <TextView
+                    android:id="@+id/myTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Initial text"
+                    android:textColor="@color/wrong"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:visibility="visible"/>
+
+                <EditText
+                    android:id="@+id/myEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:textColor="@color/wrong"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-5367924704859976/3560387975">
+
+        </com.google.android.gms.ads.AdView>
+
+    </LinearLayout>
+
+
+</LinearLayout>

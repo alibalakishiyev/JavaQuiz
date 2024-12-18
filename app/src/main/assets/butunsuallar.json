@@ -1,0 +1,85 @@
+{
+  "Butunsuallar":[
+    {
+      "question": "Hansı JVM (Java Virtual Machine) funksiyası Java kodunu işlədər?",
+      "answer1": "A)Kompilyator",
+      "answer2": "B)İcra",
+      "answer3": "C)İstifadəçi İnterfeysi",
+      "answer4": "D)Yaddaş İdarəetməsi",
+      "correct": "A)İcra"
+    },
+    {
+      "question": "Hansı anahtar sözü bir sinfi miras almaq üçün istifadə olunur?",
+      "answer1": "A)inherit",
+      "answer2": "B)extends",
+      "answer3": "C)implements",
+      "answer4": "D)final",
+      "correct": "B)extends"
+    },
+    {
+      "question": "ArrayList hansı paketə aiddir?",
+      "answer1": "A)java.util",
+      "answer2": "B)java.io",
+      "answer3": "C)java.net",
+      "answer4": "D)java.lang",
+      "correct": "C)java.util"
+    },
+    {
+      "question": "Java-da hansı metod bir obyektin yaradılması zamanı avtomatik çağrılır?",
+      "answer1": "A)main()",
+      "answer2": "B)start()",
+      "answer3": "C)constructor()",
+      "answer4": "D)init()",
+      "correct": "D)constructor()"
+    },
+    {
+      "question": "Java-da try-catch bloku nə üçün istifadə olunur?",
+      "answer1": "A)Sinif yaratmaq",
+      "answer2": "B)Məlumat saxlamaq",
+      "answer3": "C)Səhvləri idarə etmək",
+      "answer4": "D)Məlumat göndərmək",
+      "correct": "C)Səhvləri idarə etmək"
+    },
+    {
+      "question": "public static void main(String[] args) metodunun rolu nədir?",
+      "answer1": "A)Verilənlərin oxunması",
+      "answer2": "B)Tətbiqin giriş nöqtəsi",
+      "answer3": "C)Sinifdəki dəyişənləri təyin etmək",
+      "answer4": "D)Yaddaşı təmizləmək",
+      "correct": "B)Tətbiqin giriş nöqtəsi"
+    },
+    {
+      "question": "Java-da əsas məlumat tipi olmayan sinif hansıdır?",
+      "answer1": "A)int",
+      "answer2": "B)float",
+      "answer3": "C)String",
+      "answer4": "D)double",
+      "correct": "C)String"
+    },
+    {
+      "question": "Hansı Java əsas operatoru iki dəyərin bərabərliyini yoxlayır?",
+      "answer1": "A)==",
+      "answer2": "B)!=",
+      "answer3": "C)<>",
+      "answer4": "D)=>",
+      "correct": "A)=="
+    },
+    {
+      "question": "Hansı təyin edici (modifier) ilə dəyişən bir sinifdə dəyişdirilə bilməz?",
+      "answer1": "A)private",
+      "answer2": "B)protected",
+      "answer3": "C)final",
+      "answer4": "D)abstract",
+      "correct": "C)final"
+    },
+    {
+      "question": "9.Java-da bir sinif interfeysi necə miras alır?",
+      "answer1": "A)extends",
+      "answer2": "B)inherit",
+      "answer3": "C)implements",
+      "answer4": "D)uses",
+      "correct": "C)implements"
+    }
+
+  ]
+}

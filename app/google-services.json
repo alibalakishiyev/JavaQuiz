@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "236010131781",
+    "project_id": "javaquiz-c42cf",
+    "storage_bucket": "javaquiz-c42cf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:236010131781:android:cd44f1a8dd7dea580d6e2c",
+        "android_client_info": {
+          "package_name": "com.ali.javaquizbyali"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQ6p6et6djYknsIbIDqgyD-MVMAW3RXnA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
