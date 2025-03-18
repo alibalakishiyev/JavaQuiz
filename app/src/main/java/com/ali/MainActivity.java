@@ -1,6 +1,6 @@
-package com.ali.javaquizbyali;
+package com.ali;
 
-import static com.ali.javaquizbyali.AboutActivity.MyPREFERENCES;
+import static com.ali.quizutility.AboutActivity.MyPREFERENCES;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,8 +10,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -19,27 +18,28 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import com.ali.javaquizbyali.BasicQuiz;
+import com.ali.javaquizbyali.Derslik;
+import com.ali.javaquizbyali.Hazirliq;
+import com.ali.javaquizbyali.JavaMain;
+import com.ali.javaquizbyali.JuniorQuiz;
+import com.ali.javaquizbyali.R;
+import com.ali.javaquizbyali.SpringBootQuiz;
+import com.ali.quizutility.AboutActivity;
 import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
-import com.google.android.gms.ads.nativead.NativeAd;
-import com.google.android.gms.ads.rewarded.RewardedAd;
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
-import com.google.android.gms.ads.rewarded.ServerSideVerificationOptions;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    MaterialButton seniorcard, juniorcard, derslikk,hazirliq, springbootcard, aboutcard;
+    ImageButton javamain,aboutcard;
     public static int checked;
     private AdView mAdView;
     private InterstitialAd mInterstitialAd;
@@ -87,56 +87,19 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
-        seniorcard = findViewById(R.id.seniorcard);
-        juniorcard = findViewById(R.id.juniorcard);
-        derslikk = findViewById(R.id.myTextView);
-        hazirliq = findViewById(R.id.hazirliq);
-        springbootcard = findViewById(R.id.springbootcard);
+        javamain = findViewById(R.id.javamain);
         aboutcard = findViewById(R.id.aboutCard);
 
 
-        seniorcard.setOnClickListener(new View.OnClickListener() {
+        javamain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadInterstitialAd();
-                startActivity(new Intent(MainActivity.this, BasicQuiz.class));
+                startActivity(new Intent(MainActivity.this, JavaMain.class));
 
             }
         });
 
-        juniorcard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadInterstitialAd();
-                startActivity(new Intent(MainActivity.this, JuniorQuiz.class));
-
-            }
-        });
-
-        springbootcard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadInterstitialAd();
-                startActivity(new Intent(MainActivity.this, SpringBootQuiz.class));
-            }
-        });
-
-        derslikk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadInterstitialAd();
-                startActivity(new Intent(MainActivity.this, Derslik.class));
-            }
-        });
-
-        hazirliq.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadInterstitialAd();
-                startActivity(new Intent(MainActivity.this, Hazirliq.class));
-
-            }
-        });
 
         aboutcard = findViewById(R.id.aboutCard);
         aboutcard.setOnClickListener(new View.OnClickListener() {

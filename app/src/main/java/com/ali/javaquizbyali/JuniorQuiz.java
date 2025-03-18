@@ -1,6 +1,6 @@
 package com.ali.javaquizbyali;
 
-import static com.ali.javaquizbyali.AboutActivity.MyPREFERENCES;
+import static com.ali.quizutility.AboutActivity.MyPREFERENCES;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,28 +8,22 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import com.google.android.gms.ads.AdError;
+import com.ali.MainActivity;
+import com.ali.quizutility.QuesitionsItem;
+import com.ali.quizutility.ResultActivity;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.FullScreenContentCallback;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.google.android.gms.ads.interstitial.InterstitialAd;
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textview.MaterialTextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,17 +37,18 @@ import java.util.List;
 
 public class JuniorQuiz extends AppCompatActivity {
 
-    TextView quiztext,aans,bans,cans,dans;
+    MaterialTextView quiztext,aans,bans,cans,dans;
+    MaterialButton nextButton;
 
     List<QuesitionsItem> quesitionsItems;
     private int questionCount = 0;
     private static final int MAX_QUESTIONS = 10;
     int currentQuestions = 0;
     int correct= 0,wrong=0;
-    Intent intent;
     public static int checked;
-    List<String> wrongAnswersList = new ArrayList<>();
+    List<String> correctAnswersList = new ArrayList<>();
     private AdView mAdView;
+    boolean isAnswered = false;
 
 
 
@@ -99,6 +94,8 @@ public class JuniorQuiz extends AppCompatActivity {
         bans = findViewById(R.id.banswer);
         cans = findViewById(R.id.cnswer);
         dans = findViewById(R.id.dnswer);
+        nextButton = findViewById(R.id.next_btn);
+
 
         loadAllQuestions();
         Collections.shuffle(quesitionsItems);
@@ -109,149 +106,297 @@ public class JuniorQuiz extends AppCompatActivity {
         aans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(quesitionsItems.get(currentQuestions).getAnswer1().equals(quesitionsItems.get(currentQuestions).getCorrect())){
+                String correctAnswer = quesitionsItems.get(currentQuestions).getCorrect();
+                isAnswered = true;
+                if (quesitionsItems.get(currentQuestions).getAnswer1().equals(quesitionsItems.get(currentQuestions).getCorrect())) {
                     correct++;
+                    correctAnswersList.add(quesitionsItems.get(currentQuestions).getAnswer1());
                     aans.setBackgroundResource(R.color.green);
                     aans.setTextColor(getResources().getColor(R.color.white));
-                }else {
+                } else {
                     wrong++;
-                    wrongAnswersList.add(quesitionsItems.get(currentQuestions).getAnswer1());
                     aans.setBackgroundResource(R.color.red);
                     aans.setTextColor(getResources().getColor(R.color.white));
-                }
-                if(currentQuestions<quesitionsItems.size()-1){
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            currentQuestions++;
-                            setQuestionScreen(currentQuestions);
-                            aans.setBackgroundResource(R.color.card_background);
-                            aans.setTextColor(getResources().getColor(R.color.text_secondery_color));
 
+                    if (bans.getText().toString().equals(correctAnswer)) {
+                        bans.setBackgroundResource(R.color.green);
+                        bans.setTextColor(getResources().getColor(R.color.white));
+                    } else if (cans.getText().toString().equals(correctAnswer)) {
+                        cans.setBackgroundResource(R.color.green);
+                        cans.setTextColor(getResources().getColor(R.color.white));
+                    } else if (dans.getText().toString().equals(correctAnswer)) {
+                        dans.setBackgroundResource(R.color.green);
+                        dans.setTextColor(getResources().getColor(R.color.white));
+                    }
+
+
+                }
+
+                nextButton.setVisibility(View.VISIBLE);
+                aans.setEnabled(false);
+                bans.setEnabled(false);
+                cans.setEnabled(false);
+                dans.setEnabled(false);
+
+                nextButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!isAnswered){
+                            Toast.makeText(JuniorQuiz.this, "Cavab seçin", Toast.LENGTH_SHORT).show();
+                        }else {
+                            isAnswered = false;
+                            if (currentQuestions < quesitionsItems.size() - 1) {
+                                currentQuestions++;
+                                setQuestionScreen(currentQuestions);
+                                aans.setBackgroundResource(R.color.card_background);
+                                aans.setTextColor(getResources().getColor(R.color.text_secondery_color));
+
+                                // Bütün düymələri yenidən aktivləşdiririk və rənglərini sıfırlayırıq
+                                resetButtonState(aans);
+                                resetButtonState(bans);
+                                resetButtonState(cans);
+                                resetButtonState(dans);
+
+                                nextButton.setVisibility(View.VISIBLE);
+                                aans.setEnabled(true);
+                                bans.setEnabled(true);
+                                cans.setEnabled(true);
+                                dans.setEnabled(true);
+                            } else {
+                                Intent intent = new Intent(JuniorQuiz.this, ResultActivity.class);
+                                intent.putStringArrayListExtra("correctAnswersList", (ArrayList<String>) correctAnswersList);
+                                intent.putExtra("correct", correct);
+                                intent.putExtra("wrong", wrong);
+                                startActivity(intent);
+                            }
                         }
-                    },500);
-                }else {  Intent intent = new Intent(JuniorQuiz.this, ResultActivity.class);
-                    intent.putExtra("correct", correct);
-                    intent.putExtra("wrong", wrong);
-                    intent.putStringArrayListExtra("wrongAnswersList", (ArrayList<String>) wrongAnswersList);
-                    startActivity(intent);
-                    finish();
-                }
-
-
+                    }
+                });
             }
         });
-
 
 
         bans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(quesitionsItems.get(currentQuestions).getAnswer2().equals(quesitionsItems.get(currentQuestions).getCorrect())){
+                isAnswered = true;
+                String correctAnswer = quesitionsItems.get(currentQuestions).getCorrect();
+                if (quesitionsItems.get(currentQuestions).getAnswer2().equals(quesitionsItems.get(currentQuestions).getCorrect())) {
                     correct++;
+                    correctAnswersList.add(quesitionsItems.get(currentQuestions).getAnswer2());
                     bans.setBackgroundResource(R.color.green);
                     bans.setTextColor(getResources().getColor(R.color.white));
-                }else {
+
+                } else {
                     wrong++;
-                    wrongAnswersList.add(quesitionsItems.get(currentQuestions).getAnswer2());
                     bans.setBackgroundResource(R.color.red);
                     bans.setTextColor(getResources().getColor(R.color.white));
-                }
-                if(currentQuestions<quesitionsItems.size()-1){
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            currentQuestions++;
-                            setQuestionScreen(currentQuestions);
-                            bans.setBackgroundResource(R.color.card_background);
-                            bans.setTextColor(getResources().getColor(R.color.text_secondery_color));
 
-                        }
-                    },500);
-                }else {
-                    Intent intent = new Intent(JuniorQuiz.this, ResultActivity.class);
-                    intent.putExtra("correct", correct);
-                    intent.putExtra("wrong", wrong);
-                    intent.putStringArrayListExtra("wrongAnswersList", (ArrayList<String>) wrongAnswersList);
-                    startActivity(intent);
-                    finish();
+                    if (aans.getText().toString().equals(correctAnswer)) {
+                        aans.setBackgroundResource(R.color.green);
+                        aans.setTextColor(getResources().getColor(R.color.white));
+                    } else if (cans.getText().toString().equals(correctAnswer)) {
+                        cans.setBackgroundResource(R.color.green);
+                        cans.setTextColor(getResources().getColor(R.color.white));
+                    } else if (dans.getText().toString().equals(correctAnswer)) {
+                        dans.setBackgroundResource(R.color.green);
+                        dans.setTextColor(getResources().getColor(R.color.white));
+                    }
                 }
+
+                nextButton.setVisibility(View.VISIBLE);
+                aans.setEnabled(false);
+                bans.setEnabled(false);
+                cans.setEnabled(false);
+                dans.setEnabled(false);
+
+                nextButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!isAnswered) {
+                            Toast.makeText(JuniorQuiz.this, "Cavab seçin", Toast.LENGTH_SHORT).show();
+                        } else {
+                            isAnswered = false;
+                            if (currentQuestions < quesitionsItems.size() - 1) {
+                                currentQuestions++;
+                                setQuestionScreen(currentQuestions);
+                                bans.setBackgroundResource(R.color.card_background);
+                                bans.setTextColor(getResources().getColor(R.color.text_secondery_color));
+
+                                // Bütün düymələri yenidən aktivləşdiririk və rənglərini sıfırlayırıq
+                                resetButtonState(aans);
+                                resetButtonState(bans);
+                                resetButtonState(cans);
+                                resetButtonState(dans);
+
+                                // "Next" düyməsini gizlət və cavab düymələrini aktiv et
+                                nextButton.setVisibility(View.VISIBLE);
+                                aans.setEnabled(true);
+                                bans.setEnabled(true);
+                                cans.setEnabled(true);
+                                dans.setEnabled(true);
+                            } else {
+                                Intent intent = new Intent(JuniorQuiz.this, ResultActivity.class);
+                                intent.putStringArrayListExtra("correctAnswersList", (ArrayList<String>) correctAnswersList);
+                                intent.putExtra("correct", correct);
+                                intent.putExtra("wrong", wrong);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                });
             }
         });
+
 
         cans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(quesitionsItems.get(currentQuestions).getAnswer3().equals(quesitionsItems.get(currentQuestions).getCorrect())){
+                isAnswered = true;
+                String correctAnswer = quesitionsItems.get(currentQuestions).getCorrect();
+
+                if (quesitionsItems.get(currentQuestions).getAnswer3().equals(quesitionsItems.get(currentQuestions).getCorrect())) {
                     correct++;
+                    correctAnswersList.add(quesitionsItems.get(currentQuestions).getAnswer3());
                     cans.setBackgroundResource(R.color.green);
                     cans.setTextColor(getResources().getColor(R.color.white));
-                }else {
+
+                } else {
                     wrong++;
-                    wrongAnswersList.add(quesitionsItems.get(currentQuestions).getAnswer3());
                     cans.setBackgroundResource(R.color.red);
                     cans.setTextColor(getResources().getColor(R.color.white));
-                }
-                if(currentQuestions<quesitionsItems.size()-1){
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            currentQuestions++;
-                            setQuestionScreen(currentQuestions);
-                            cans.setBackgroundResource(R.color.card_background);
-                            cans.setTextColor(getResources().getColor(R.color.text_secondery_color));
 
-                        }
-                    },500);
-                }else {
-                    Intent intent = new Intent(JuniorQuiz.this, ResultActivity.class);
-                    intent.putExtra("correct", correct);
-                    intent.putExtra("wrong", wrong);
-                    intent.putStringArrayListExtra("wrongAnswersList", (ArrayList<String>) wrongAnswersList);
-                    startActivity(intent);
-                    finish();
+                    if (aans.getText().toString().equals(correctAnswer)) {
+                        aans.setBackgroundResource(R.color.green);
+                        aans.setTextColor(getResources().getColor(R.color.white));
+                    } else if (bans.getText().toString().equals(correctAnswer)) {
+                        bans.setBackgroundResource(R.color.green);
+                        bans.setTextColor(getResources().getColor(R.color.white));
+                    } else if (dans.getText().toString().equals(correctAnswer)) {
+                        dans.setBackgroundResource(R.color.green);
+                        dans.setTextColor(getResources().getColor(R.color.white));
+                    }
                 }
+
+
+                nextButton.setVisibility(View.VISIBLE);
+                aans.setEnabled(false);
+                bans.setEnabled(false);
+                cans.setEnabled(false);
+                dans.setEnabled(false);
+
+                nextButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!isAnswered) {
+                            Toast.makeText(JuniorQuiz.this, "Cavab seçin", Toast.LENGTH_SHORT).show();
+                        } else {
+                            isAnswered = false;
+                            if (currentQuestions < quesitionsItems.size() - 1) {
+                                currentQuestions++;
+                                setQuestionScreen(currentQuestions);
+                                cans.setBackgroundResource(R.color.card_background);
+                                cans.setTextColor(getResources().getColor(R.color.text_secondery_color));
+
+                                // Bütün düymələri yenidən aktivləşdiririk və rənglərini sıfırlayırıq
+                                resetButtonState(aans);
+                                resetButtonState(bans);
+                                resetButtonState(cans);
+                                resetButtonState(dans);
+
+                                // "Next" düyməsini gizlət və cavab düymələrini aktiv et
+                                nextButton.setVisibility(View.VISIBLE);
+                                aans.setEnabled(true);
+                                bans.setEnabled(true);
+                                cans.setEnabled(true);
+                                dans.setEnabled(true);
+                            } else {
+                                Intent intent = new Intent(JuniorQuiz.this, ResultActivity.class);
+                                intent.putStringArrayListExtra("correctAnswersList", (ArrayList<String>) correctAnswersList);
+                                intent.putExtra("correct", correct);
+                                intent.putExtra("wrong", wrong);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                });
             }
         });
 
         dans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(quesitionsItems.get(currentQuestions).getAnswer4().equals(quesitionsItems.get(currentQuestions).getCorrect())){
+                isAnswered = true;
+
+                String correctAnswer = quesitionsItems.get(currentQuestions).getCorrect();
+
+                if (quesitionsItems.get(currentQuestions).getAnswer4().equals(correctAnswer)) {
                     correct++;
+                    correctAnswersList.add(quesitionsItems.get(currentQuestions).getAnswer4());
                     dans.setBackgroundResource(R.color.green);
                     dans.setTextColor(getResources().getColor(R.color.white));
-                }else {
+                } else {
                     wrong++;
-                    wrongAnswersList.add(quesitionsItems.get(currentQuestions).getAnswer4());
                     dans.setBackgroundResource(R.color.red);
                     dans.setTextColor(getResources().getColor(R.color.white));
-                }
-                if(currentQuestions<quesitionsItems.size()-1){
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            currentQuestions++;
-                            setQuestionScreen(currentQuestions);
-                            dans.setBackgroundResource(R.color.card_background);
-                            dans.setTextColor(getResources().getColor(R.color.text_secondery_color));
 
-                        }
-                    },500);
-                }else {
-                    Intent intent = new Intent(JuniorQuiz.this, ResultActivity.class);
-                    intent.putExtra("correct", correct);
-                    intent.putExtra("wrong", wrong);
-                    intent.putStringArrayListExtra("wrongAnswersList", (ArrayList<String>) wrongAnswersList);
-                    startActivity(intent);
-                    finish();
+                    // Düzgün cavabı tapıb yaşıllaşdırırıq
+                    if (aans.getText().toString().equals(correctAnswer)) {
+                        aans.setBackgroundResource(R.color.green);
+                        aans.setTextColor(getResources().getColor(R.color.white));
+                    } else if (bans.getText().toString().equals(correctAnswer)) {
+                        bans.setBackgroundResource(R.color.green);
+                        bans.setTextColor(getResources().getColor(R.color.white));
+                    } else if (cans.getText().toString().equals(correctAnswer)) {
+                        cans.setBackgroundResource(R.color.green);
+                        cans.setTextColor(getResources().getColor(R.color.white));
+                    }
                 }
+
+
+                // Bütün cavab düymələrini qeyri-aktiv edirik
+                nextButton.setVisibility(View.VISIBLE);
+                aans.setEnabled(false);
+                bans.setEnabled(false);
+                cans.setEnabled(false);
+                dans.setEnabled(false);
+
+                nextButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!isAnswered) {
+                            Toast.makeText(JuniorQuiz.this, "Cavab seçin", Toast.LENGTH_SHORT).show();
+                        } else {
+                            isAnswered = false;
+                            if (currentQuestions < quesitionsItems.size() - 1) {
+                                currentQuestions++;
+                                setQuestionScreen(currentQuestions);
+
+                                // Bütün düymələri yenidən aktivləşdiririk və rənglərini sıfırlayırıq
+                                resetButtonState(aans);
+                                resetButtonState(bans);
+                                resetButtonState(cans);
+                                resetButtonState(dans);
+
+                                nextButton.setVisibility(View.INVISIBLE);
+                                aans.setEnabled(true);
+                                bans.setEnabled(true);
+                                cans.setEnabled(true);
+                                dans.setEnabled(true);
+                            } else {
+                                Intent intent = new Intent(JuniorQuiz.this, ResultActivity.class);
+                                intent.putStringArrayListExtra("correctAnswersList", (ArrayList<String>) correctAnswersList);
+                                intent.putExtra("correct", correct);
+                                intent.putExtra("wrong", wrong);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                });
             }
         });
+
+
 
 
         mAdView = findViewById(R.id.adView2);
@@ -261,6 +406,12 @@ public class JuniorQuiz extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this, callback);
 
 
+    }
+
+    // **Yeni əlavə edilmiş metod** - bütün düymələrin rənglərini və mətn rənglərini sıfırlayır
+    private void resetButtonState(MaterialTextView button) {
+        button.setBackgroundResource(R.color.card_background);
+        button.setTextColor(getResources().getColor(R.color.text_secondery_color));
     }
 
 
@@ -277,7 +428,7 @@ public class JuniorQuiz extends AppCompatActivity {
             Intent intent = new Intent(JuniorQuiz.this, ResultActivity.class);
             intent.putExtra("correct", correct);
             intent.putExtra("wrong", wrong);
-            intent.putStringArrayListExtra("wrongAnswersList", (ArrayList<String>) wrongAnswersList);
+            intent.putStringArrayListExtra("wrongAnswersList", (ArrayList<String>) correctAnswersList);
             startActivity(intent);
             finish();
         }

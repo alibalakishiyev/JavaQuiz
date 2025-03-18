@@ -62,6 +62,9 @@ dependencies {
     implementation(libs.interactivemedia)
     implementation(libs.firebase.database)
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+//    code
+    implementation ("org.codehaus.janino:janino:3.1.6")
+
 
 }
 

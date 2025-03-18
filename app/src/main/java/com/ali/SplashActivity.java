@@ -1,6 +1,6 @@
-package com.ali.javaquizbyali;
+package com.ali;
 
-import static com.ali.javaquizbyali.AboutActivity.MyPREFERENCES;
+import static com.ali.quizutility.AboutActivity.MyPREFERENCES;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,12 +8,10 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import com.ali.javaquizbyali.R;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -64,7 +62,7 @@ public class SplashActivity extends AppCompatActivity {
                 }catch (InterruptedException ignored){
 
                 }finally {
-                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();
                 }
             }

@@ -1,6 +1,6 @@
 package com.ali.javaquizbyali;
 
-import static com.ali.javaquizbyali.AboutActivity.MyPREFERENCES;
+import static com.ali.quizutility.AboutActivity.MyPREFERENCES;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,13 +10,18 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import com.ali.MainActivity;
+import com.ali.quizutility.QuesitionsItem;
+import com.ali.quizutility.ResultActivity;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -24,7 +29,9 @@ import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textview.MaterialTextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,44 +45,44 @@ import java.util.List;
 
 public class SpringBootQuiz extends AppCompatActivity {
 
-    TextView quiztext, aans, bans, cans, dans;
+
+    MaterialTextView quiztext,aans,bans,cans,dans;
+    MaterialButton nextButton;
 
     List<QuesitionsItem> quesitionsItems;
     private int questionCount = 0;
     private static final int MAX_QUESTIONS = 10;
     int currentQuestions = 0;
-    int correct = 0, wrong = 0;
-    Intent intent;
+    int correct= 0,wrong=0;
     public static int checked;
-    List<String> wrongAnswersList = new ArrayList<>();
-    private InterstitialAd mInterstitialAd;
+    List<String> correctAnswersList = new ArrayList<>();
     private AdView mAdView;
+    boolean isAnswered = false;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
-        showInterstitialAd();
-        loadInterstitialAd();
 
-        SharedPreferences sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
+        SharedPreferences sharedPreferences =getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPreferences.edit();
         int default1;
-        switch (Configuration.UI_MODE_NIGHT_MASK & AppCompatDelegate.getDefaultNightMode()) {
+        switch (Configuration.UI_MODE_NIGHT_MASK & AppCompatDelegate.getDefaultNightMode()){
             case AppCompatDelegate.MODE_NIGHT_NO:
-                default1 = 0;
+                default1=0;
                 break;
             case AppCompatDelegate.MODE_NIGHT_YES:
-                default1 = 1;
+                default1=1;
                 break;
             default:
-                default1 = 2;
+                default1=2;
         }
-        getOnBackPressedDispatcher().addCallback(this, callback);
 
-        checked = sharedPreferences.getInt("checked", default1);
-        switch (checked) {
+        checked=sharedPreferences.getInt("checked",default1);
+        switch (checked){
             case 0:
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 break;
@@ -91,198 +98,331 @@ public class SpringBootQuiz extends AppCompatActivity {
         }
 
 
-        quiztext = findViewById(R.id.quizText);
+        quiztext=findViewById(R.id.quizText);
         aans = findViewById(R.id.answer);
         bans = findViewById(R.id.banswer);
         cans = findViewById(R.id.cnswer);
         dans = findViewById(R.id.dnswer);
+        nextButton = findViewById(R.id.next_btn);
+
 
         loadAllQuestions();
         Collections.shuffle(quesitionsItems);
         setQuestionScreen(currentQuestions);
 
+
+
         aans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String correctAnswer = quesitionsItems.get(currentQuestions).getCorrect();
+                isAnswered = true;
                 if (quesitionsItems.get(currentQuestions).getAnswer1().equals(quesitionsItems.get(currentQuestions).getCorrect())) {
                     correct++;
+                    correctAnswersList.add(quesitionsItems.get(currentQuestions).getAnswer1());
                     aans.setBackgroundResource(R.color.green);
                     aans.setTextColor(getResources().getColor(R.color.white));
                 } else {
                     wrong++;
-                    wrongAnswersList.add(quesitionsItems.get(currentQuestions).getAnswer1());
                     aans.setBackgroundResource(R.color.red);
                     aans.setTextColor(getResources().getColor(R.color.white));
-                }
-                if (currentQuestions < quesitionsItems.size() - 1) {
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            currentQuestions++;
-                            setQuestionScreen(currentQuestions);
-                            aans.setBackgroundResource(R.color.card_background);
-                            aans.setTextColor(getResources().getColor(R.color.text_secondery_color));
 
-                        }
-                    }, 500);
-                } else {
-                    Intent intent = new Intent(SpringBootQuiz.this, ResultActivity.class);
-                    intent.putExtra("correct", correct);
-                    intent.putExtra("wrong", wrong);
-                    intent.putStringArrayListExtra("wrongAnswersList", (ArrayList<String>) wrongAnswersList);
-                    startActivity(intent);
-                    finish();
+                    if (bans.getText().toString().equals(correctAnswer)) {
+                        bans.setBackgroundResource(R.color.green);
+                        bans.setTextColor(getResources().getColor(R.color.white));
+                    } else if (cans.getText().toString().equals(correctAnswer)) {
+                        cans.setBackgroundResource(R.color.green);
+                        cans.setTextColor(getResources().getColor(R.color.white));
+                    } else if (dans.getText().toString().equals(correctAnswer)) {
+                        dans.setBackgroundResource(R.color.green);
+                        dans.setTextColor(getResources().getColor(R.color.white));
+                    }
+
+
                 }
+
+                nextButton.setVisibility(View.VISIBLE);
+                aans.setEnabled(false);
+                bans.setEnabled(false);
+                cans.setEnabled(false);
+                dans.setEnabled(false);
+
+                nextButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!isAnswered){
+                            Toast.makeText(SpringBootQuiz.this, "Cavab seçin", Toast.LENGTH_SHORT).show();
+                        }else {
+                            isAnswered = false;
+                            if (currentQuestions < quesitionsItems.size() - 1) {
+                                currentQuestions++;
+                                setQuestionScreen(currentQuestions);
+                                aans.setBackgroundResource(R.color.card_background);
+                                aans.setTextColor(getResources().getColor(R.color.text_secondery_color));
+
+                                // Bütün düymələri yenidən aktivləşdiririk və rənglərini sıfırlayırıq
+                                resetButtonState(aans);
+                                resetButtonState(bans);
+                                resetButtonState(cans);
+                                resetButtonState(dans);
+
+                                nextButton.setVisibility(View.VISIBLE);
+                                aans.setEnabled(true);
+                                bans.setEnabled(true);
+                                cans.setEnabled(true);
+                                dans.setEnabled(true);
+                            } else {
+                                Intent intent = new Intent(SpringBootQuiz.this, ResultActivity.class);
+                                intent.putStringArrayListExtra("correctAnswersList", (ArrayList<String>) correctAnswersList);
+                                intent.putExtra("correct", correct);
+                                intent.putExtra("wrong", wrong);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                });
             }
         });
+
 
         bans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isAnswered = true;
+                String correctAnswer = quesitionsItems.get(currentQuestions).getCorrect();
                 if (quesitionsItems.get(currentQuestions).getAnswer2().equals(quesitionsItems.get(currentQuestions).getCorrect())) {
                     correct++;
+                    correctAnswersList.add(quesitionsItems.get(currentQuestions).getAnswer2());
                     bans.setBackgroundResource(R.color.green);
                     bans.setTextColor(getResources().getColor(R.color.white));
+
                 } else {
                     wrong++;
-                    wrongAnswersList.add(quesitionsItems.get(currentQuestions).getAnswer2());
                     bans.setBackgroundResource(R.color.red);
                     bans.setTextColor(getResources().getColor(R.color.white));
-                }
-                if (currentQuestions < quesitionsItems.size() - 1) {
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            currentQuestions++;
-                            setQuestionScreen(currentQuestions);
-                            bans.setBackgroundResource(R.color.card_background);
-                            bans.setTextColor(getResources().getColor(R.color.text_secondery_color));
 
-                        }
-                    }, 500);
-                } else {
-                    Intent intent = new Intent(SpringBootQuiz.this, ResultActivity.class);
-                    intent.putExtra("correct", correct);
-                    intent.putExtra("wrong", wrong);
-                    intent.putStringArrayListExtra("wrongAnswersList", (ArrayList<String>) wrongAnswersList);
-                    startActivity(intent);
-                    finish();
+                    if (aans.getText().toString().equals(correctAnswer)) {
+                        aans.setBackgroundResource(R.color.green);
+                        aans.setTextColor(getResources().getColor(R.color.white));
+                    } else if (cans.getText().toString().equals(correctAnswer)) {
+                        cans.setBackgroundResource(R.color.green);
+                        cans.setTextColor(getResources().getColor(R.color.white));
+                    } else if (dans.getText().toString().equals(correctAnswer)) {
+                        dans.setBackgroundResource(R.color.green);
+                        dans.setTextColor(getResources().getColor(R.color.white));
+                    }
                 }
+
+                nextButton.setVisibility(View.VISIBLE);
+                aans.setEnabled(false);
+                bans.setEnabled(false);
+                cans.setEnabled(false);
+                dans.setEnabled(false);
+
+                nextButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!isAnswered) {
+                            Toast.makeText(SpringBootQuiz.this, "Cavab seçin", Toast.LENGTH_SHORT).show();
+                        } else {
+                            isAnswered = false;
+                            if (currentQuestions < quesitionsItems.size() - 1) {
+                                currentQuestions++;
+                                setQuestionScreen(currentQuestions);
+                                bans.setBackgroundResource(R.color.card_background);
+                                bans.setTextColor(getResources().getColor(R.color.text_secondery_color));
+
+                                // Bütün düymələri yenidən aktivləşdiririk və rənglərini sıfırlayırıq
+                                resetButtonState(aans);
+                                resetButtonState(bans);
+                                resetButtonState(cans);
+                                resetButtonState(dans);
+
+                                // "Next" düyməsini gizlət və cavab düymələrini aktiv et
+                                nextButton.setVisibility(View.VISIBLE);
+                                aans.setEnabled(true);
+                                bans.setEnabled(true);
+                                cans.setEnabled(true);
+                                dans.setEnabled(true);
+                            } else {
+                                Intent intent = new Intent(SpringBootQuiz.this, ResultActivity.class);
+                                intent.putStringArrayListExtra("correctAnswersList", (ArrayList<String>) correctAnswersList);
+                                intent.putExtra("correct", correct);
+                                intent.putExtra("wrong", wrong);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                });
             }
         });
+
 
         cans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isAnswered = true;
+                String correctAnswer = quesitionsItems.get(currentQuestions).getCorrect();
+
                 if (quesitionsItems.get(currentQuestions).getAnswer3().equals(quesitionsItems.get(currentQuestions).getCorrect())) {
                     correct++;
+                    correctAnswersList.add(quesitionsItems.get(currentQuestions).getAnswer3());
                     cans.setBackgroundResource(R.color.green);
                     cans.setTextColor(getResources().getColor(R.color.white));
+
                 } else {
                     wrong++;
-                    wrongAnswersList.add(quesitionsItems.get(currentQuestions).getAnswer3());
                     cans.setBackgroundResource(R.color.red);
                     cans.setTextColor(getResources().getColor(R.color.white));
-                }
-                if (currentQuestions < quesitionsItems.size() - 1) {
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            currentQuestions++;
-                            setQuestionScreen(currentQuestions);
-                            cans.setBackgroundResource(R.color.card_background);
-                            cans.setTextColor(getResources().getColor(R.color.text_secondery_color));
 
-                        }
-                    }, 500);
-                } else {
-                    Intent intent = new Intent(SpringBootQuiz.this, ResultActivity.class);
-                    intent.putExtra("correct", correct);
-                    intent.putExtra("wrong", wrong);
-                    intent.putStringArrayListExtra("wrongAnswersList", (ArrayList<String>) wrongAnswersList);
-                    startActivity(intent);
-                    finish();
+                    if (aans.getText().toString().equals(correctAnswer)) {
+                        aans.setBackgroundResource(R.color.green);
+                        aans.setTextColor(getResources().getColor(R.color.white));
+                    } else if (bans.getText().toString().equals(correctAnswer)) {
+                        bans.setBackgroundResource(R.color.green);
+                        bans.setTextColor(getResources().getColor(R.color.white));
+                    } else if (dans.getText().toString().equals(correctAnswer)) {
+                        dans.setBackgroundResource(R.color.green);
+                        dans.setTextColor(getResources().getColor(R.color.white));
+                    }
                 }
+
+
+                nextButton.setVisibility(View.VISIBLE);
+                aans.setEnabled(false);
+                bans.setEnabled(false);
+                cans.setEnabled(false);
+                dans.setEnabled(false);
+
+                nextButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!isAnswered) {
+                            Toast.makeText(SpringBootQuiz.this, "Cavab seçin", Toast.LENGTH_SHORT).show();
+                        } else {
+                            isAnswered = false;
+                            if (currentQuestions < quesitionsItems.size() - 1) {
+                                currentQuestions++;
+                                setQuestionScreen(currentQuestions);
+                                cans.setBackgroundResource(R.color.card_background);
+                                cans.setTextColor(getResources().getColor(R.color.text_secondery_color));
+
+                                // Bütün düymələri yenidən aktivləşdiririk və rənglərini sıfırlayırıq
+                                resetButtonState(aans);
+                                resetButtonState(bans);
+                                resetButtonState(cans);
+                                resetButtonState(dans);
+
+                                // "Next" düyməsini gizlət və cavab düymələrini aktiv et
+                                nextButton.setVisibility(View.VISIBLE);
+                                aans.setEnabled(true);
+                                bans.setEnabled(true);
+                                cans.setEnabled(true);
+                                dans.setEnabled(true);
+                            } else {
+                                Intent intent = new Intent(SpringBootQuiz.this, ResultActivity.class);
+                                intent.putStringArrayListExtra("correctAnswersList", (ArrayList<String>) correctAnswersList);
+                                intent.putExtra("correct", correct);
+                                intent.putExtra("wrong", wrong);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                });
             }
         });
 
         dans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (quesitionsItems.get(currentQuestions).getAnswer4().equals(quesitionsItems.get(currentQuestions).getCorrect())) {
+                isAnswered = true;
+
+                String correctAnswer = quesitionsItems.get(currentQuestions).getCorrect();
+
+                if (quesitionsItems.get(currentQuestions).getAnswer4().equals(correctAnswer)) {
                     correct++;
+                    correctAnswersList.add(quesitionsItems.get(currentQuestions).getAnswer4());
                     dans.setBackgroundResource(R.color.green);
-                    dans.setTextColor(getResources().getColor(R.color.card_background));
+                    dans.setTextColor(getResources().getColor(R.color.white));
                 } else {
                     wrong++;
-                    wrongAnswersList.add(quesitionsItems.get(currentQuestions).getAnswer4());
                     dans.setBackgroundResource(R.color.red);
-                    dans.setTextColor(getResources().getColor(R.color.card_background));
-                }
-                if (currentQuestions < quesitionsItems.size() - 1) {
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            currentQuestions++;
-                            setQuestionScreen(currentQuestions);
-                            dans.setBackgroundResource(R.color.card_background);
-                            dans.setTextColor(getResources().getColor(R.color.text_secondery_color));
+                    dans.setTextColor(getResources().getColor(R.color.white));
 
-                        }
-                    }, 500);
-                } else {
-                    Intent intent = new Intent(SpringBootQuiz.this, ResultActivity.class);
-                    intent.putExtra("correct", correct);
-                    intent.putExtra("wrong", wrong);
-                    intent.putStringArrayListExtra("wrongAnswersList", (ArrayList<String>) wrongAnswersList);
-                    startActivity(intent);
-                    finish();
+                    // Düzgün cavabı tapıb yaşıllaşdırırıq
+                    if (aans.getText().toString().equals(correctAnswer)) {
+                        aans.setBackgroundResource(R.color.green);
+                        aans.setTextColor(getResources().getColor(R.color.white));
+                    } else if (bans.getText().toString().equals(correctAnswer)) {
+                        bans.setBackgroundResource(R.color.green);
+                        bans.setTextColor(getResources().getColor(R.color.white));
+                    } else if (cans.getText().toString().equals(correctAnswer)) {
+                        cans.setBackgroundResource(R.color.green);
+                        cans.setTextColor(getResources().getColor(R.color.white));
+                    }
                 }
+
+
+                // Bütün cavab düymələrini qeyri-aktiv edirik
+                nextButton.setVisibility(View.VISIBLE);
+                aans.setEnabled(false);
+                bans.setEnabled(false);
+                cans.setEnabled(false);
+                dans.setEnabled(false);
+
+                nextButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!isAnswered) {
+                            Toast.makeText(SpringBootQuiz.this, "Cavab seçin", Toast.LENGTH_SHORT).show();
+                        } else {
+                            isAnswered = false;
+                            if (currentQuestions < quesitionsItems.size() - 1) {
+                                currentQuestions++;
+                                setQuestionScreen(currentQuestions);
+
+                                // Bütün düymələri yenidən aktivləşdiririk və rənglərini sıfırlayırıq
+                                resetButtonState(aans);
+                                resetButtonState(bans);
+                                resetButtonState(cans);
+                                resetButtonState(dans);
+
+                                nextButton.setVisibility(View.INVISIBLE);
+                                aans.setEnabled(true);
+                                bans.setEnabled(true);
+                                cans.setEnabled(true);
+                                dans.setEnabled(true);
+                            } else {
+                                Intent intent = new Intent(SpringBootQuiz.this, ResultActivity.class);
+                                intent.putStringArrayListExtra("correctAnswersList", (ArrayList<String>) correctAnswersList);
+                                intent.putExtra("correct", correct);
+                                intent.putExtra("wrong", wrong);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                });
             }
         });
+
+
+
 
         mAdView = findViewById(R.id.adView2);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
+        getOnBackPressedDispatcher().addCallback(this, callback);
+
+
     }
 
-    private void loadInterstitialAd() {
-        AdRequest adRequest = new AdRequest.Builder().build();
-        InterstitialAd.load(this, "ca-app-pub-5367924704859976/2123097507", adRequest, new InterstitialAdLoadCallback() {
-            @Override
-            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                mInterstitialAd = interstitialAd;
-            }
-
-            @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                mInterstitialAd = null;
-            }
-        });
+    // **Yeni əlavə edilmiş metod** - bütün düymələrin rənglərini və mətn rənglərini sıfırlayır
+    private void resetButtonState(MaterialTextView button) {
+        button.setBackgroundResource(R.color.card_background);
+        button.setTextColor(getResources().getColor(R.color.text_secondery_color));
     }
 
-    private void showInterstitialAd() {
-        if (mInterstitialAd != null) {
-            mInterstitialAd.show(SpringBootQuiz.this);
-            mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                @Override
-                public void onAdDismissedFullScreenContent() {
-                    super.onAdDismissedFullScreenContent();
-
-                }
-
-                @Override
-                public void onAdFailedToShowFullScreenContent(AdError adError) {
-                    super.onAdFailedToShowFullScreenContent(adError);
-                }
-            });
-        }
-    }
 
     private void setQuestionScreen(int currentQuestions) {
         if (questionCount < MAX_QUESTIONS) {
@@ -293,10 +433,11 @@ public class SpringBootQuiz extends AppCompatActivity {
             dans.setText(quesitionsItems.get(currentQuestions).getAnswer4());
             questionCount++;
         } else {
+            // 10 sualdan sonra göstərilən hər hansı bir sualı keçmə
             Intent intent = new Intent(SpringBootQuiz.this, ResultActivity.class);
             intent.putExtra("correct", correct);
             intent.putExtra("wrong", wrong);
-            intent.putStringArrayListExtra("wrongAnswersList", (ArrayList<String>) wrongAnswersList);
+            intent.putStringArrayListExtra("wrongAnswersList", (ArrayList<String>) correctAnswersList);
             startActivity(intent);
             finish();
         }
@@ -304,17 +445,17 @@ public class SpringBootQuiz extends AppCompatActivity {
 
     private void loadAllQuestions() {
         quesitionsItems = new ArrayList<>();
-        addQuestionsFromJsonArray("springbootquestsons1");
-        addQuestionsFromJsonArray("springbootquestsons2");
-        addQuestionsFromJsonArray("springbootquestsons3");
-        addQuestionsFromJsonArray("springbootquestsons4");
-        addQuestionsFromJsonArray("springbootquestsons5");
-
+        addQuestionsFromJsonArray("juniorquestions1");
+        addQuestionsFromJsonArray("juniorquestions2");
+        addQuestionsFromJsonArray("juniorquestions3");
+        addQuestionsFromJsonArray("juniorquestions4");
+        addQuestionsFromJsonArray("juniorquestions5");
+        addQuestionsFromJsonArray("juniorquestions6");
 
     }
 
     private void addQuestionsFromJsonArray(String arrayName) {
-        String jsonquiz = loadJsonFromAsset("SpringBootQuestions.json");
+        String jsonquiz = loadJsonFromAsset("JuniorQuestions.json");
         try {
             JSONObject jsonObject = new JSONObject(jsonquiz);
             if(jsonObject.has(arrayName)){
@@ -337,22 +478,25 @@ public class SpringBootQuiz extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
     }
+
 
     private String loadJsonFromAsset(String s) {
         String json = "";
         try {
-            InputStream inputStream = getAssets().open(s);
+            InputStream inputStream= getAssets().open(s);
             int size = inputStream.available();
-            byte[] buffer = new byte[size];
+            byte[]buffer = new byte[size];
             inputStream.read(buffer);
             inputStream.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException e) {
+            json = new String(buffer,"UTF-8");
+        }catch (IOException e){
             e.printStackTrace();
         }
         return json;
     }
+
 
     OnBackPressedCallback callback = new OnBackPressedCallback(true) {
         @Override
@@ -369,11 +513,13 @@ public class SpringBootQuiz extends AppCompatActivity {
             materialAlertDialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int i) {
-                    startActivity(new Intent(SpringBootQuiz.this, MainActivity.class));
+                    startActivity(new Intent(SpringBootQuiz.this , MainActivity.class));
                     finish();
                 }
             });
+
             materialAlertDialogBuilder.show();
         }
+
     };
 }

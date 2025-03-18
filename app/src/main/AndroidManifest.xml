@@ -17,20 +17,33 @@
         android:theme="@style/Theme.JavaQuiz"
         tools:targetApi="31">
         <activity
+            android:name=".codemodel.CodeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".codemodel.Task"
+            android:exported="false" />
+        <activity
+            android:name=".JavaMain"
+            android:exported="false" />
+        <activity
             android:name=".Hazirliq"
             android:exported="false" />
         <activity
             android:name=".SpringBootQuiz"
             android:exported="false" />
         <activity
+            android:name=".SpringBootQuiz"
+            android:exported="false"
+            tools:ignore="DuplicateActivity" />
+        <activity
             android:name=".Derslik"
             android:exported="false" />
         <activity
-            android:name=".AboutActivity"
+            android:name="com.ali.quizutility.AboutActivity"
             android:exported="false"
             android:launchMode="singleTask" />
         <activity
-            android:name=".ResultActivity"
+            android:name="com.ali.quizutility.ResultActivity"
             android:exported="false" />
         <activity
             android:name=".BasicQuiz"
@@ -39,15 +52,11 @@
             android:name=".JuniorQuiz"
             android:exported="false" />
         <activity
-            android:name=".SpringBootQuiz"
-            android:exported="false"
-            tools:ignore="DuplicateActivity" />
-        <activity
-            android:name=".MainActivity"
+            android:name="com.ali.MainActivity"
             android:exported="false"
             android:launchMode="singleTask" />
         <activity
-            android:name=".SplashActivity"
+            android:name="com.ali.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

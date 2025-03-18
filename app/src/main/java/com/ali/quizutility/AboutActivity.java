@@ -1,4 +1,4 @@
-package com.ali.javaquizbyali;
+package com.ali.quizutility;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -10,14 +10,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.ali.MainActivity;
+import com.ali.javaquizbyali.JavaMain;
+import com.ali.javaquizbyali.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;

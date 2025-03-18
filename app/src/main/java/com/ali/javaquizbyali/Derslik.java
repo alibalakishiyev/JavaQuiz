@@ -1,6 +1,6 @@
 package com.ali.javaquizbyali;
 
-import static com.ali.javaquizbyali.AboutActivity.MyPREFERENCES;
+import static com.ali.quizutility.AboutActivity.MyPREFERENCES;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,16 +18,12 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.ads.AdError;
+import com.ali.MainActivity;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.FullScreenContentCallback;
-import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.google.android.gms.ads.interstitial.InterstitialAd;
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 

@@ -1,6 +1,6 @@
-package com.ali.javaquizbyali;
+package com.ali.quizutility;
 
-import static com.ali.javaquizbyali.AboutActivity.MyPREFERENCES;
+import static com.ali.quizutility.AboutActivity.MyPREFERENCES;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,16 +12,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.ali.MainActivity;
+import com.ali.javaquizbyali.JavaMain;
+import com.ali.javaquizbyali.R;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 
@@ -122,7 +120,7 @@ public class ResultActivity extends AppCompatActivity {
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ResultActivity.this , MainActivity.class));
+                startActivity(new Intent(ResultActivity.this , JavaMain.class));
             }
         });
     }

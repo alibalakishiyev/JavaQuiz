@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:orientation="vertical"
-    tools:context=".AboutActivity">
+    tools:context="com.ali.quizutility.AboutActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"

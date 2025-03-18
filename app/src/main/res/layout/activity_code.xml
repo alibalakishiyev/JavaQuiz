@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <EditText
+        android:id="@+id/codeInput"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:hint="Buraya Java kodunu yaz..."
+        android:gravity="top"
+        android:inputType="textMultiLine" />
+
+    <Button
+        android:id="@+id/runCodeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Run"/>
+
+    <TextView
+        android:id="@+id/outputResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:paddingTop="10dp"/>
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"/>
+</LinearLayout>

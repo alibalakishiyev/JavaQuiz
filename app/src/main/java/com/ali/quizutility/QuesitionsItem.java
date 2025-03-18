@@ -1,6 +1,4 @@
-package com.ali.javaquizbyali;
-
-import com.google.android.gms.ads.AdView;
+package com.ali.quizutility;
 
 public class QuesitionsItem {
 
