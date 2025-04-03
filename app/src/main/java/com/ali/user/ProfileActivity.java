@@ -15,15 +15,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ali.MainActivity;
+import com.ali.autorized.Login;
 import com.ali.systemIn.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -37,9 +40,8 @@ import com.squareup.picasso.Picasso;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private static final int GALLERY_INTENT_CODE=1023;
-    private TextView email,nname,nphone;
-    private ImageButton resendCode,resetPassword,changeProfileImg,backBtn;
+    private TextView email, nname, nphone;
+    private ImageButton resendCode, resetPassword, changeProfileImg, backBtn;
     private ImageView verifydImg;
     private FirebaseAuth fAuth;
     FirebaseFirestore fStore;
@@ -47,7 +49,6 @@ public class ProfileActivity extends AppCompatActivity {
     FirebaseUser user;
     ImageView profileImage;
     StorageReference storageReference;
-
 
 
     @Override
@@ -58,7 +59,7 @@ public class ProfileActivity extends AppCompatActivity {
         email = findViewById(R.id.txtEmail);
         nname = findViewById(R.id.txtName);
         nphone = findViewById(R.id.txtPhone);
-        resetPassword =findViewById(R.id.resetPas);
+        resetPassword = findViewById(R.id.resetPas);
         backBtn = findViewById(R.id.backBtn);
 
 
@@ -66,16 +67,15 @@ public class ProfileActivity extends AppCompatActivity {
         changeProfileImg = findViewById(R.id.changeProfile);
 
 
-
-        resendCode =findViewById(R.id.verfyEmailBtn);
-        verifydImg =findViewById(R.id.checkMarkImage);
+        resendCode = findViewById(R.id.verfyEmailBtn);
+        verifydImg = findViewById(R.id.checkMarkImage);
 
         // Firebase Auth instance
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        StorageReference profileRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"profile.jpg");
+        StorageReference profileRef = storageReference.child("users/" + fAuth.getCurrentUser().getUid() + "profile.jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -84,9 +84,9 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         userId = fAuth.getCurrentUser().getUid();
-         user =fAuth.getCurrentUser();
+        user = fAuth.getCurrentUser();
 
-        if (!user.isEmailVerified()){
+        if (!user.isEmailVerified()) {
             resendCode.setVisibility(View.VISIBLE);
             resendCode.setVisibility(View.VISIBLE);
 
@@ -102,17 +102,17 @@ public class ProfileActivity extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.d(TAG,"onFailure: Email not sent"+e.getMessage());
+                            Log.d(TAG, "onFailure: Email not sent" + e.getMessage());
                         }
                     });
                 }
             });
-        }else {
+        } else {
             verifydImg.setImageResource(R.drawable.greenreceived24);
             resendCode.setVisibility(View.GONE);
         }
 
-        DocumentReference documentReference =fStore.collection("users").document(userId);
+        DocumentReference documentReference = fStore.collection("users").document(userId);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -184,9 +184,9 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //open gallery
                 Intent i = new Intent(view.getContext(), EditProfile.class);
-                i.putExtra("name",nname.getText());
-                i.putExtra("email",email.getText().toString());
-                i.putExtra("phone",nphone.getText().toString());
+                i.putExtra("name", nname.getText());
+                i.putExtra("email", email.getText().toString());
+                i.putExtra("phone", nphone.getText().toString());
 
 
                 startActivity(i);
@@ -202,15 +202,38 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        getOnBackPressedDispatcher().addCallback(this, callback);
+
+
     }
 
-
-
-
-
-    public void logout(View view){
+    public void logout(View view) {
         FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        startActivity(new Intent(getApplicationContext(), Login.class));
         finish();
     }
+
+    OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ProfileActivity.this);
+            materialAlertDialogBuilder.setTitle(R.string.app_name);
+            materialAlertDialogBuilder.setMessage("Are you sure want to exit the app?");
+            materialAlertDialogBuilder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+                    dialog.dismiss();
+                }
+            });
+            materialAlertDialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    finish();
+                }
+            });
+            materialAlertDialogBuilder.show();
+        }
+    };
 }

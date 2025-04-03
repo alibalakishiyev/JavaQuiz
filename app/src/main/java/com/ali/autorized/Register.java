@@ -2,6 +2,7 @@ package com.ali.autorized;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,14 +15,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ali.MainActivity;
 import com.ali.systemIn.R;
+import com.ali.user.EditProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -76,8 +81,23 @@ public class Register extends AppCompatActivity {
                 String phone = mPhone.getText().toString();
 
                 // Validasiya
+                if (TextUtils.isEmpty(name)) {
+                    mName.setError("Name is Required.");
+                    return;
+                }
+
                 if (TextUtils.isEmpty(email)) {
                     mEmail.setError("Email is Required.");
+                    return;
+                }
+
+                if (TextUtils.isEmpty(phone)) {
+                    mPhone.setError("Phone number Must be 13 numbers ");
+                    return;
+                }
+
+                if (phone.length() > 14 || phone.length() < 13){
+                    mPhone.setError("Phone number must be at least 13 digits long");
                     return;
                 }
 
@@ -149,5 +169,40 @@ public class Register extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), Login.class));
             }
         });
+
+
+        getOnBackPressedDispatcher().addCallback(this, callback);
+
     }
+
+
+    OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(Register.this);
+            materialAlertDialogBuilder.setTitle(R.string.app_name);
+            materialAlertDialogBuilder.setMessage("Are you sure want to exit the app?");
+            materialAlertDialogBuilder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+                    dialog.dismiss();
+                }
+            });
+            materialAlertDialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+                    if (fAuth.getCurrentUser() != null) {
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        finish();
+                    }else {
+                        startActivity(new Intent(Register.this, Login.class));
+                        finish();
+                    }
+
+
+                }
+            });
+            materialAlertDialogBuilder.show();
+        }
+    };
 }

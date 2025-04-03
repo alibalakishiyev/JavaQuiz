@@ -2,6 +2,7 @@ package com.ali.user;
 
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,13 +16,17 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ali.MainActivity;
+import com.ali.autorized.Login;
 import com.ali.systemIn.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,12 +43,12 @@ import java.util.Map;
 
 public class EditProfile extends AppCompatActivity {
 
-    public static  final  String TAG = "TAG";
+    public static final String TAG = "TAG";
     EditText proName, proEmail, proPhone;
     ImageView proImage;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
-    ImageButton saveProBtn,backProBtn;
+    ImageButton saveProBtn, backProBtn;
     FirebaseUser user;
     StorageReference storageReference;
 
@@ -71,7 +76,7 @@ public class EditProfile extends AppCompatActivity {
         saveProBtn = findViewById(R.id.editSaveProf);
         backProBtn = findViewById(R.id.editBackPro);
 
-        StorageReference profileRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"profile.jpg");
+        StorageReference profileRef = storageReference.child("users/" + fAuth.getCurrentUser().getUid() + "profile.jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -83,13 +88,14 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(openGalleryIntent,1000);            }
+                startActivityForResult(openGalleryIntent, 1000);
+            }
         });
 
         saveProBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (proName.getText().toString().isEmpty() || proEmail.getText().toString().isEmpty() || proPhone.getText().toString().isEmpty()){
+                if (proName.getText().toString().isEmpty() || proEmail.getText().toString().isEmpty() || proPhone.getText().toString().isEmpty()) {
                     Toast.makeText(EditProfile.this, "Bütün sahələri doldurun", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -111,20 +117,24 @@ public class EditProfile extends AppCompatActivity {
         backProBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(EditProfile.this,ProfileActivity.class);
+                Intent intent = new Intent(EditProfile.this, ProfileActivity.class);
                 startActivity(intent);
             }
         });
-
 
 
         proEmail.setText(mEmail);
         proName.setText(mName);
         proPhone.setText(mPhone);
 
-        Log.d(TAG,"onCreate; "+mName+" "+mEmail+" "+mPhone);
+        Log.d(TAG, "onCreate; " + mName + " " + mEmail + " " + mPhone);
+
+        getOnBackPressedDispatcher().addCallback(this, callback);
+
 
     }
+
+
     private void showPasswordDialog(final String newEmail) {
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
         builder.setTitle("Təsdiqləmə");
@@ -147,6 +157,7 @@ public class EditProfile extends AppCompatActivity {
 
         builder.create().show();
     }
+
     private void reauthenticateAndUpdateEmail(final String newEmail, String password) {
         AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), password);
 
@@ -169,6 +180,7 @@ public class EditProfile extends AppCompatActivity {
                     Log.e(TAG, "Reauthentication failed", e);
                 });
     }
+
     private void updateProfileWithoutEmail() {
         DocumentReference docRef = fStore.collection("users").document(user.getUid());
         Map<String, Object> updates = new HashMap<>();
@@ -207,8 +219,8 @@ public class EditProfile extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1000){
-            if (resultCode == Activity.RESULT_OK){
+        if (requestCode == 1000) {
+            if (resultCode == Activity.RESULT_OK) {
                 Uri imageUri = data.getData();
 //                profileImage.setImageURI(imageUri);
 
@@ -222,11 +234,11 @@ public class EditProfile extends AppCompatActivity {
 
     private void uploadImageToFirebase(Uri imageUri) {
         //upload image to firebase storge
-        StorageReference fileRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"profile.jpg");
+        StorageReference fileRef = storageReference.child("users/" + fAuth.getCurrentUser().getUid() + "profile.jpg");
         fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(EditProfile.this,"Image Uploaded",Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditProfile.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
@@ -243,4 +255,30 @@ public class EditProfile extends AppCompatActivity {
         });
 
     }
+
+
+    OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(EditProfile.this);
+            materialAlertDialogBuilder.setTitle(R.string.app_name);
+            materialAlertDialogBuilder.setMessage("Are you sure want to exit the app?");
+            materialAlertDialogBuilder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+                    dialog.dismiss();
+                }
+            });
+            materialAlertDialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+
+                    startActivity(new Intent(EditProfile.this, ProfileActivity.class));
+                    finish();
+
+                }
+            });
+            materialAlertDialogBuilder.show();
+        }
+    };
 }

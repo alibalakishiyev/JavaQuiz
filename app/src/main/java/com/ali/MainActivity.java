@@ -525,7 +525,15 @@ public class MainActivity extends AppCompatActivity {
             materialAlertDialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int i) {
-                    finish();
+
+                    if (fAuth.getCurrentUser() != null) {
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        finish();
+                    }else{
+                        startActivity(new Intent(MainActivity.this, Login.class));
+                        finish();
+                    }
+
                 }
             });
             materialAlertDialogBuilder.show();

@@ -11,16 +11,23 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import com.ali.autorized.Login;
+import com.ali.autorized.Register;
 import com.ali.systemIn.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SplashActivity extends AppCompatActivity {
 
     public static int checked;
+    private FirebaseAuth fAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        fAuth = FirebaseAuth.getInstance();
+
 
         SharedPreferences sharedPreferences =getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -62,8 +69,15 @@ public class SplashActivity extends AppCompatActivity {
                 }catch (InterruptedException ignored){
 
                 }finally {
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    finish();
+
+                    if (fAuth.getCurrentUser() != null) {
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        finish();
+                    }else {
+                        startActivity(new Intent(getApplicationContext(), Login.class));
+                        finish();
+                    }
+
                 }
             }
         };
