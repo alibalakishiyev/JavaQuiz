@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "JavaQuiz"
+rootProject.name = "System in"
 include(":app")

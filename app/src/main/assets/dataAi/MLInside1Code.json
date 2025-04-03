@@ -1,20 +1,20 @@
 {
-  "Butunsuallar":[
+  "juniorquestions1":[
     {
-      "question": "Hansı JVM (Java Virtual Machine) funksiyası Java kodunu işlədər?",
-      "answer1": "A)Kompilyator",
-      "answer2": "B)İcra",
-      "answer3": "C)İstifadəçi İnterfeysi",
-      "answer4": "D)Yaddaş İdarəetməsi",
-      "correct": "A)İcra"
+    "question": "Hansı JVM (Java Virtual Machine) funksiyası Java kodunu işlədər?",
+    "answer1": "A)Kompilyator",
+    "answer2": "B)Yaddaş İdarəetməsi",
+    "answer3": "C)İstifadəçi İnterfeysi",
+    "answer4": "D)İcra",
+    "correct": "D)İcra"
     },
     {
       "question": "Hansı anahtar sözü bir sinfi miras almaq üçün istifadə olunur?",
       "answer1": "A)inherit",
-      "answer2": "B)extends",
+      "answer2": "B)final",
       "answer3": "C)implements",
-      "answer4": "D)final",
-      "correct": "B)extends"
+      "answer4": "D)extends",
+      "correct": "D)extends"
     },
     {
       "question": "ArrayList hansı paketə aiddir?",
@@ -22,7 +22,7 @@
       "answer2": "B)java.io",
       "answer3": "C)java.net",
       "answer4": "D)java.lang",
-      "correct": "C)java.util"
+      "correct": "A)java.util"
     },
     {
       "question": "Java-da hansı metod bir obyektin yaradılması zamanı avtomatik çağrılır?",
@@ -30,7 +30,7 @@
       "answer2": "B)start()",
       "answer3": "C)constructor()",
       "answer4": "D)init()",
-      "correct": "D)constructor()"
+      "correct": "C)constructor()"
     },
     {
       "question": "Java-da try-catch bloku nə üçün istifadə olunur?",
@@ -43,10 +43,10 @@
     {
       "question": "public static void main(String[] args) metodunun rolu nədir?",
       "answer1": "A)Verilənlərin oxunması",
-      "answer2": "B)Tətbiqin giriş nöqtəsi",
+      "answer2": "B)Yaddaşı təmizləmək",
       "answer3": "C)Sinifdəki dəyişənləri təyin etmək",
-      "answer4": "D)Yaddaşı təmizləmək",
-      "correct": "B)Tətbiqin giriş nöqtəsi"
+      "answer4": "D)Tətbiqin giriş nöqtəsi",
+      "correct": "D)Tətbiqin giriş nöqtəsi"
     },
     {
       "question": "Java-da əsas məlumat tipi olmayan sinif hansıdır?",
@@ -73,7 +73,7 @@
       "correct": "C)final"
     },
     {
-      "question": "9.Java-da bir sinif interfeysi necə miras alır?",
+      "question": "Java-da bir sinif interfeysi necə miras alır?",
       "answer1": "A)extends",
       "answer2": "B)inherit",
       "answer3": "C)implements",
@@ -82,4 +82,5 @@
     }
 
   ]
+
 }

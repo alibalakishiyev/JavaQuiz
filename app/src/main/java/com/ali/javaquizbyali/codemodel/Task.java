@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ali.javaquizbyali.R;
+import com.ali.systemIn.R;
 
 public class Task extends AppCompatActivity {
     @Override

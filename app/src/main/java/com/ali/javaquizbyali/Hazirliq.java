@@ -3,15 +3,11 @@ package com.ali.javaquizbyali;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.ali.systemIn.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.button.MaterialButton;
@@ -41,7 +37,7 @@ public class Hazirliq extends AppCompatActivity {
         quizText = findViewById(R.id.quizText);
         cavablarText = findViewById(R.id.cavablar);
 
-        HashMap<String, String> qaMap = loadQuestionsWithAnswers(this, "SualVeCavablar.txt");
+        HashMap<String, String> qaMap = loadQuestionsWithAnswers(this, "dataJava/SualVeCavablar.txt");
         questionIterator = qaMap.entrySet().iterator();
 
         // İlk sualı göstəririk

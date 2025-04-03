@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import com.ali.MainActivity;
 import com.ali.javaquizbyali.JavaMain;
-import com.ali.javaquizbyali.R;
+import com.ali.systemIn.R;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;

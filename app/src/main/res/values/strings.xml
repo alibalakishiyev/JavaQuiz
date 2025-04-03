@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Java Quiz</string>
+    <string name="app_name">System In</string>
     <!-- Strings used for fragments for navigation -->
     <string name="dark_mode">Theme</string>
     <string name="light">Light</string>

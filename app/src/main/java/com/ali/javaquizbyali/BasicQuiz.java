@@ -8,19 +8,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import com.ali.MainActivity;
 import com.ali.quizutility.QuesitionsItem;
 import com.ali.quizutility.ResultActivity;
+import com.ali.systemIn.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.button.MaterialButton;
@@ -438,17 +435,18 @@ public class BasicQuiz extends AppCompatActivity {
 
     private void loadAllQuestions() {
         quesitionsItems = new ArrayList<>();
-        addQuestionsFromJsonArray("juniorquestions1");
-        addQuestionsFromJsonArray("juniorquestions2");
-        addQuestionsFromJsonArray("juniorquestions3");
-        addQuestionsFromJsonArray("juniorquestions4");
-        addQuestionsFromJsonArray("juniorquestions5");
-        addQuestionsFromJsonArray("juniorquestions6");
+        addQuestionsFromJsonArray("seniorquestions1");
+        addQuestionsFromJsonArray("seniorquestions2");
+        addQuestionsFromJsonArray("seniorquestions3");
+        addQuestionsFromJsonArray("seniorquestions4");
+        addQuestionsFromJsonArray("seniorquestions5");
+        addQuestionsFromJsonArray("seniorquestions6");
+        addQuestionsFromJsonArray("seniorquestions7");
 
     }
 
     private void addQuestionsFromJsonArray(String arrayName) {
-        String jsonquiz = loadJsonFromAsset("JuniorQuestions.json");
+        String jsonquiz = loadJsonFromAsset("dataJava/SeniorQuestions.json");
         try {
             JSONObject jsonObject = new JSONObject(jsonquiz);
             if(jsonObject.has(arrayName)){
@@ -506,7 +504,7 @@ public class BasicQuiz extends AppCompatActivity {
             materialAlertDialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int i) {
-                    startActivity(new Intent(BasicQuiz.this , MainActivity.class));
+                    startActivity(new Intent(BasicQuiz.this , JavaMain.class));
                     finish();
                 }
             });

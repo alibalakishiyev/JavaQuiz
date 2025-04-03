@@ -1,42 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.ali.javaquizbyali">
+    package="com.ali.systemIn">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="Java Quiz"
+        android:label="System in"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.JavaQuiz"
         tools:targetApi="31">
         <activity
-            android:name=".codemodel.CodeActivity"
+            android:name="com.ali.chatBot.ChatBotActivity"
             android:exported="false" />
         <activity
-            android:name=".codemodel.Task"
+            android:name="com.ali.kali.LinuxMain"
             android:exported="false" />
         <activity
-            android:name=".JavaMain"
+            android:name="com.ali.user.EditProfile"
             android:exported="false" />
         <activity
-            android:name=".Hazirliq"
+            android:name="com.ali.user.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".SpringBootQuiz"
+            android:name="com.ali.autorized.Login"
             android:exported="false" />
         <activity
-            android:name=".SpringBootQuiz"
-            android:exported="false"
-            tools:ignore="DuplicateActivity" />
+            android:name="com.ali.autorized.Register"
+            android:exported="false" />
         <activity
-            android:name=".Derslik"
+            android:name="com.ali.javaquizbyali.codemodel.CodeActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.ali.javaquizbyali.codemodel.Task"
+            android:exported="false" />
+        <activity
+            android:name="com.ali.javaquizbyali.JavaMain"
+            android:exported="false" />
+        <activity
+            android:name="com.ali.aimain.AiMain"
+            android:exported="false" />
+        <activity
+            android:name="com.ali.aimain.MLCours"
+            android:exported="false" />
+        <activity
+            android:name="com.ali.pymain.PythonMain"
+            android:exported="false" />
+        <activity
+            android:name="com.ali.javaquizbyali.Hazirliq"
+            android:exported="false" />
+        <activity
+            android:name="com.ali.javaquizbyali.SpringBootQuiz"
+            android:exported="false" />
+        <activity
+            android:name="com.ali.javaquizbyali.Derslik"
             android:exported="false" />
         <activity
             android:name="com.ali.quizutility.AboutActivity"
@@ -46,11 +72,23 @@
             android:name="com.ali.quizutility.ResultActivity"
             android:exported="false" />
         <activity
-            android:name=".BasicQuiz"
+            android:name="com.ali.javaquizbyali.BasicQuiz"
             android:exported="false" />
         <activity
-            android:name=".JuniorQuiz"
+            android:name="com.ali.javaquizbyali.JuniorQuiz"
             android:exported="false" />
+        <activity
+            android:name="com.ali.pymain.SplashPyActivity"
+            android:exported="true" />
+        <activity
+            android:name="com.ali.aimain.SplashAiActivity"
+            android:exported="true" />
+        <activity
+            android:name="com.ali.kali.SplashLinuxActivity"
+            android:exported="true" />
+        <activity
+            android:name="com.ali.javaquizbyali.SplashJavaActivity"
+            android:exported="true" />
         <activity
             android:name="com.ali.MainActivity"
             android:exported="false"
@@ -63,7 +101,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity> <!-- Add tools:replace to resolve merge conflict between resources -->
+        <property
+            android:name="android.adservices.AD_SERVICES_CONFIG"
+            android:resource="@xml/gma_ad_services_config"
+            tools:replace="android:resource" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

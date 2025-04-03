@@ -11,7 +11,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import com.ali.javaquizbyali.R;
+import com.ali.systemIn.R;
 
 public class SplashActivity extends AppCompatActivity {
 

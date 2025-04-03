@@ -1,0 +1,507 @@
+{
+  "juniorquestions1":[
+    {
+    "question": "Hansı JVM (Java Virtual Machine) funksiyası Java kodunu işlədər?",
+    "answer1": "A)Kompilyator",
+    "answer2": "B)Yaddaş İdarəetməsi",
+    "answer3": "C)İstifadəçi İnterfeysi",
+    "answer4": "D)İcra",
+    "correct": "D)İcra"
+    },
+    {
+      "question": "Hansı anahtar sözü bir sinfi miras almaq üçün istifadə olunur?",
+      "answer1": "A)inherit",
+      "answer2": "B)final",
+      "answer3": "C)implements",
+      "answer4": "D)extends",
+      "correct": "D)extends"
+    },
+    {
+      "question": "ArrayList hansı paketə aiddir?",
+      "answer1": "A)java.util",
+      "answer2": "B)java.io",
+      "answer3": "C)java.net",
+      "answer4": "D)java.lang",
+      "correct": "A)java.util"
+    },
+    {
+      "question": "Java-da hansı metod bir obyektin yaradılması zamanı avtomatik çağrılır?",
+      "answer1": "A)main()",
+      "answer2": "B)start()",
+      "answer3": "C)constructor()",
+      "answer4": "D)init()",
+      "correct": "C)constructor()"
+    },
+    {
+      "question": "Java-da try-catch bloku nə üçün istifadə olunur?",
+      "answer1": "A)Sinif yaratmaq",
+      "answer2": "B)Məlumat saxlamaq",
+      "answer3": "C)Səhvləri idarə etmək",
+      "answer4": "D)Məlumat göndərmək",
+      "correct": "C)Səhvləri idarə etmək"
+    },
+    {
+      "question": "public static void main(String[] args) metodunun rolu nədir?",
+      "answer1": "A)Verilənlərin oxunması",
+      "answer2": "B)Yaddaşı təmizləmək",
+      "answer3": "C)Sinifdəki dəyişənləri təyin etmək",
+      "answer4": "D)Tətbiqin giriş nöqtəsi",
+      "correct": "D)Tətbiqin giriş nöqtəsi"
+    },
+    {
+      "question": "Java-da əsas məlumat tipi olmayan sinif hansıdır?",
+      "answer1": "A)int",
+      "answer2": "B)float",
+      "answer3": "C)String",
+      "answer4": "D)double",
+      "correct": "C)String"
+    },
+    {
+      "question": "Hansı Java əsas operatoru iki dəyərin bərabərliyini yoxlayır?",
+      "answer1": "A)==",
+      "answer2": "B)!=",
+      "answer3": "C)<>",
+      "answer4": "D)=>",
+      "correct": "A)=="
+    },
+    {
+      "question": "Hansı təyin edici (modifier) ilə dəyişən bir sinifdə dəyişdirilə bilməz?",
+      "answer1": "A)private",
+      "answer2": "B)protected",
+      "answer3": "C)final",
+      "answer4": "D)abstract",
+      "correct": "C)final"
+    },
+    {
+      "question": "Java-da bir sinif interfeysi necə miras alır?",
+      "answer1": "A)extends",
+      "answer2": "B)inherit",
+      "answer3": "C)implements",
+      "answer4": "D)uses",
+      "correct": "C)implements"
+    }
+
+  ],
+
+  "juniorquestions2":[
+
+    {
+      "question": "Java-da dəyişənlər necə təyin olunur?",
+      "answer1": "A) int x;",
+      "answer2": "B) integer x;",
+      "answer3": "C) int x = null;",
+      "answer4": "D) variable int x;",
+      "correct": "A) int x;"
+    },
+    {
+      "question": "Hansi növ obyektlər null qiymətinə verilə bilər?",
+      "answer1": "A)int",
+      "answer2": "B)String",
+      "answer3": "C)boolean",
+      "answer4": "D)char",
+      "correct": "B)String"
+    },
+    {
+      "question": "Aşağıdakilerdən hansı for dövrünün doğru istifadə nümunəsidir?",
+      "answer1": "A)for (int i = 0; i < 10; i++) {}",
+      "answer2": "B)for (int i = 10; i < 0; i--) {}",
+      "answer3": "C)for i in range(0,10): {}",
+      "answer4": "D)for (int i = 0; i == 10; i++) {}",
+      "correct": "A)for (int i = 0; i < 10; i++) {}"
+    },
+    {
+      "question": "Hansi metod bir obyektin müqayisəsi üçün istifadə olunur?",
+      "answer1": "A)equals()",
+      "answer2": "B)compareTo()",
+      "answer3": "C)hashCode()",
+      "answer4": "D)compare()",
+      "correct": "A)equals()"
+    },
+    {
+      "question": "Java-da String ilə əlaqədar hansı metod doğru deyil?",
+      "answer1": "A)length()",
+      "answer2": "B)charAt()",
+      "answer3": "C)substring()",
+      "answer4": "D)add()",
+      "correct": "D)add()"
+    },
+    {
+      "question": "Aşağıdakı ifadələrdən hansının nəticəsi true olacaq?\n int a = 5;\nint b = 10;",
+      "answer1": "A)a > b",
+      "answer2": "B)a < b",
+      "answer3": "C)a == b",
+      "answer4": "D)a != b",
+      "correct": "B)a < b"
+    },
+    {
+      "question": "Java-da ArrayList-i necə yaratmaq olar?",
+      "answer1": "A)ArrayList<String> list = new ArrayList();",
+      "answer2": "B)List<String> list = new ArrayList<>();",
+      "answer3": "C)List<String> list = new ArrayList();",
+      "answer4": "D)ArrayList list = new ArrayList<String>();",
+      "correct": "B)List<String> list = new ArrayList<>();"
+    },
+    {
+      "question": "Hansi metod bir HashMap-ə yeni bir element əlavə etmək üçün istifadə olunur?",
+      "answer1": "A)add()",
+      "answer2": "B)put()",
+      "answer3": "C)insert()",
+      "answer4": "D)addElement()",
+      "correct": "B)put()"
+    },
+    {
+      "question": "Aşağıdakılardan hansı NullPointerException-a səbəb ola bilər?",
+      "answer1": "A)String str = null; str.length();",
+      "answer2": "B)int x = 10 / 0;",
+      "answer3": "C)int[] arr = new int[5]; arr[10] = 5;",
+      "answer4": "System.out.println(\"Hello World\");",
+      "correct": "A)String str = null; str.length()"
+    },
+    {
+      "question": "Java-da bir while dövrünün təməl quruluşu necədir?",
+      "answer1": "A)while (condition) { // code }",
+      "answer2": "B)while condition { // code }",
+      "answer3": "C)loop (condition) { // code }",
+      "answer4": "D)repeat (condition) { // code }",
+      "correct": "A)while (condition) { // code }"
+    }
+
+  ],
+  "juniorquestions3":[
+
+    {
+      "question": "Java-da bir try-catch blokunun doğru istifadəsi necədir?",
+      "answer1": "A)try { } catch { }",
+      "answer2": "B)try { } catch (Exception e) { }",
+      "answer3": "C)try (Exception e) { } catch { }",
+      "answer4": "D)try (Exception e) { }",
+      "correct": "B)try { } catch (Exception e) { }"
+    },
+    {
+      "question": "Aşağıdakı kod parçası hansı nəticəni verəcək?\nString s = \"Java\";\ns = s + \" Programming\";\nSystem.out.println(s);",
+      "answer1": "A)Java",
+      "answer2": "B)Programming",
+      "answer3": "C)Java Programming",
+      "answer4": "D)null Programming",
+      "correct": "C)Java Programming"
+    },
+    {
+      "question": "Java-da hansı növ sabitlər final sözü ilə təyin olunur?",
+      "answer1": "A)Dəyişənlər",
+      "answer2": "B)Siniflər",
+      "answer3": "C)Metodlar",
+      "answer4": "D)Hamısı",
+      "correct": "D)Hamısı"
+    },
+    {
+      "question": "Hangi metod Scanner sinifində istifadə edilərək istifadəçidən bir tam ədəd oxunur?",
+      "answer1": "A)next()",
+      "answer2": "B)nextDouble()",
+      "answer3": "C)nextLine()",
+      "answer4": "D)nextInt()",
+      "correct": "D)nextInt()"
+    },
+    {
+      "question": "Aşağıdakı kod parçası nə edəcək?\nint[] arr = {1, 2, 3, 4};\nSystem.out.println(arr[4]);",
+      "answer1": "A)1",
+      "answer2": "B)4",
+      "answer3": "C)ArrayIndexOutOfBoundsException",
+      "answer4": "D)null",
+      "correct": "C)ArrayIndexOutOfBoundsException"
+    },
+    {
+      "question": "Java-da bir sinif extends sözünü istifadə edərək hansı məqsədlə istifadə olunur?",
+      "answer1": "A)Sinifləri birləşdirmək",
+      "answer2": "B)Sinifin metodlarını çağırmaq",
+      "answer3": "C)Sinifin başqa bir sinifdən miras alması",
+      "answer4": "D)Sinifin bütün metodlarını gizlətmək",
+      "correct": "C)Sinifin başqa bir sinifdən miras alması"
+    },
+    {
+      "question": "Java-da bir interface necə təyin olunur?",
+      "answer1": "A)public class MyInterface { }",
+      "answer2": "B)public interface MyInterface { }",
+      "answer3": "C)public class MyInterface extends Interface { }",
+      "answer4": "D)public interface MyClass { }",
+      "correct": "B)public interface MyInterface { }"
+    },
+    {
+      "question": "Java-da StringBuilder və String arasındakı fərq nədir?",
+      "answer1": "A)String dəyişkən olan obyektlərdir, StringBuilder isə dəyişməzdir.",
+      "answer2": "B)String dəyişməzdir, StringBuilder isə dəyişkəndir.",
+      "answer3": "C)StringBuilder daha yavaşdır, String isə daha sürətlidir.",
+      "answer4": "D)String çox sayda metod təqdim edir, StringBuilder isə az metod təmin edir.",
+      "correct": "B)String dəyişməzdir, StringBuilder isə dəyişkəndir."
+    },
+    {
+      "question": "Java-da aşağıdakı kod parçası nə edəcək?\nint x = 10;\nint y = 5;\nint z = x / y;\nSystem.out.println(z);\n",
+      "answer1": "A)15",
+      "answer2": "B)5",
+      "answer3": "C)2",
+      "answer4": "D)50",
+      "correct": "C)2"
+    },
+    {
+      "question": "Hansi növ metodu abstract olaraq təyin etmək mümkündür?",
+      "answer1": "A)Statik metod",
+      "answer2": "B)Final metod",
+      "answer3": "C)abstract method",
+      "answer4": "D)Public metod",
+      "correct": "C)abstract method"
+    }
+
+  ],
+  "juniorquestions4":[
+
+    {
+      "question": "Aşağıdakı kod parçası hansı növ səhvi yaradacaq?\nString s = \"Hello\";\ns = s.substring(5, 3);\nSystem.out.println(s);",
+      "answer1": "A)StringIndexOutOfBoundsException",
+      "answer2": "B)NullPointerException",
+      "answer3": "C)ArrayIndexOutOfBoundsException",
+      "answer4": "D)No error",
+      "correct": "A)StringIndexOutOfBoundsException"
+    },
+    {
+      "question": "Aşağıdakilerdən hansı, Java-da bir sinifin nümunəsini yaratmaq üçün istifadə edilir?",
+      "answer1": "A)new MyClass()",
+      "answer2": "B)create MyClass()",
+      "answer3": "C)instantiate MyClass()",
+      "answer4": "D)class MyClass()",
+      "correct": "A)new MyClass()"
+    },
+    {
+      "question": "Java-da bir obyektin metoduna müraciət etmək üçün hansı operator istifadə olunur?",
+      "answer1": "A).",
+      "answer2": "B)::",
+      "answer3": "C)->",
+      "answer4": "D)#",
+      "correct": "A)."
+    },
+    {
+      "question": "Aşağıdakı kod parçası hansı nəticəni verəcək?\nint[] arr = new int[3];\nSystem.out.println(arr[0]);\n",
+      "answer1": "A)0",
+      "answer2": "B)null",
+      "answer3": "C)ArrayIndexOutOfBoundsException",
+      "answer4": "D)0.0",
+      "correct": "A)0"
+    },
+    {
+      "question": "Aşağıdakı kod parçasında hansı dəyişiklik edilməlidir ki, proqram düzgün işləsin?\nint x = 10;\nif(x = 5) {\nSystem.out.println(\"Correct\");\n}\n",
+      "answer1": "A)if(x == 5) olmalıdır",
+      "answer2": "B)if(x = 5) dəyişməlidir",
+      "answer3": "C)if(x != 5) olmalıdır",
+      "answer4": "D)if(x >= 5) olmalıdır",
+      "correct": "A)if(x == 5) olmalıdır"
+    },
+    {
+      "question": "Aşağıdakılardan hansı Java-da səhv verəcəkdir?",
+      "answer1": "A)int a = 5;",
+      "answer2": "B)double b = 3.14;",
+      "answer3": "C)char c = \"A\";",
+      "answer4": "D)String s = \"Hello\";",
+      "correct": "C)char c = \"A\";"
+    },
+    {
+      "question": "Java-da static dəyişənlər haqqında hansı məlumat doğrudur?",
+      "answer1": "A)static dəyişənlər sinifin bütün nümunələri üçün ortaqdır.",
+      "answer2": "B)static dəyişənlər yalnız müəyyən bir nümunəyə aiddir.",
+      "answer3": "C)static dəyişənlər heç vaxt dəyişdirilə bilməz.",
+      "answer4": "D)static dəyişənlər yalnız metodlar üçün istifadə olunur.",
+      "correct": "A)static dəyişənlər sinifin bütün nümunələri üçün ortaqdır."
+    },
+    {
+      "question": "Aşağıdakı kod parçası nə edəcək?\nString s = \"Java\";\ns = s.concat(\" Programming\");\nSystem.out.println(s);\n",
+      "answer1": "A)Java",
+      "answer2": "B)Java Programming",
+      "answer3": "C)Programming",
+      "answer4": "D)null Programming",
+      "correct": "B)Java Programming"
+    },
+    {
+      "question": "Java-da this keyword nəyi ifadə edir?",
+      "answer1": "A)Cari metodun adını",
+      "answer2": "B)Cari sinifi",
+      "answer3": "C)Cari obyektin instansiyasını",
+      "answer4": "D)Cari dəyişəni",
+      "correct": "C)Cari obyektin instansiyasını"
+    },
+    {
+      "question": "Java-da ArrayList necə təyin olunur?",
+      "answer1": "A)ArrayList<int> list = new ArrayList<int>();",
+      "answer2": "B)ArrayList list = new ArrayList();",
+      "answer3": "C)List<String> list = new ArrayList<>();",
+      "answer4": "D)ArrayList<String> list = new List<>();",
+      "correct": "C)List<String> list = new ArrayList<>();"
+    }
+
+  ],
+  "juniorquestions5":[
+
+    {
+      "question": "Aşağıdakı kodun nəticəsi nə olacaq?\nint a = 5;\nint b = 2;\nSystem.out.println(a % b);\n",
+      "answer1": "A)2",
+      "answer2": "B)5",
+      "answer3": "C)2.5",
+      "answer4": "D)1",
+      "correct": "D)1"
+    },
+    {
+      "question": "StringBuilder sinifinin hansı metodundan istifadə edərək bir String obyektinin sonuna yeni mətn əlavə edə bilərsiniz?",
+      "answer1": "A)append()",
+      "answer2": "B)concat()",
+      "answer3": "C)add()",
+      "answer4": "D)insert()",
+      "correct": "A)append()"
+    },
+    {
+      "question": "Aşağıdakı kodun nəticəsi nə olacaq?\nint[] arr = {1, 2, 3, 4};\nSystem.out.println(arr[4]);\n",
+      "answer1": "A)4",
+      "answer2": "B)ArrayIndexOutOfBoundsException",
+      "answer3": "C)null",
+      "answer4": "D)0",
+      "correct": "B)ArrayIndexOutOfBoundsException"
+    },
+    {
+      "question": "Java-da HashMap sinifinin hansı metodundan istifadə edərək bir dəyəri aça bilərsiniz?",
+      "answer1": "A)getValue()",
+      "answer2": "B)retrieve()",
+      "answer3": "C)get()",
+      "answer4": "D)fetch()",
+      "correct": "C)get()"
+    },
+    {
+      "question": "Aşağıdakı kodda hansı səhv var?\nString s = \"Java\";\ns[0] = 'j';\n",
+      "answer1": "A)String dəyişəni final olduğu üçün dəyişdirilə bilməz",
+      "answer2": "B)String obyektləri dəyişdirilə bilməz, bu kod səhv olacaq",
+      "answer3": "C)Bu kod işləyəcək, çünki String dəyişənləri dəyişdirilə bilər",
+      "answer4": "D)Həmişə səhv olacaq",
+      "correct": "B)String obyektləri dəyişdirilə bilməz, bu kod səhv olacaq"
+    },
+    {
+      "question": "Java-da try-catch blokları ilə əlaqəli aşağıdakı ifadələrdən hansısı yanlışdır?",
+      "answer1": "A)try blokunda istisna baş verərsə, catch bloku işə düşər",
+      "answer2": "B)catch blokunda heç bir istisna baş verməzsə, finally bloku işə düşər",
+      "answer3": "C)catch blokunda yalnız bir növ istisna tutulur (bir neçə istisna növü da tutulabilir)",
+      "answer4": "D)finally bloku həmişə işə düşür",
+      "correct": "C)catch blokunda yalnız bir növ istisna tutulur (bir neçə istisna növü da tutulabilir)"
+    },
+    {
+      "question": "Java-da super açar sözünün məqsədi nədir?",
+      "answer1": "A)Yalnız sabitləri təyin etmək üçün istifadə edilir",
+      "answer2": "B)Üst sinifin metodlarına və ya konstruktorlarına müraciət etmək üçün istifadə olunur",
+      "answer3": "C)static metodlarına müraciət etmək üçün istifadə edilir",
+      "answer4": "D)Yeni metodlar yaratmaq üçün istifadə edilir",
+      "correct": "B)Üst sinifin metodlarına və ya konstruktorlarına müraciət etmək üçün istifadə olunur"
+    },
+    {
+      "question": "Aşağıdakı kodun nəticəsi nə olacaq?\nString str = \"Java\";\nstr.toLowerCase();\nSystem.out.println(str);\n",
+      "answer1": "A)java",
+      "answer2": "B)JAVA",
+      "answer3": "C)Java",
+      "answer4": "D)NullPointerException",
+      "correct": "A)java"
+    },
+    {
+      "question": "Java-da ArrayList-ə element əlavə etmək üçün hansı metod istifadə olunur?",
+      "answer1": "A)add()",
+      "answer2": "B)insert()",
+      "answer3": "C)put()",
+      "answer4": "D)addElement()",
+      "correct": "A)add()"
+    },
+    {
+      "question": "Aşağıdakı kodun nəticəsi nə olacaq?\nint x = 10;\nint y = 5;\nSystem.out.println(x / y * 2);\n",
+      "answer1": "A)2.0",
+      "answer2": "B)2",
+      "answer3": "C)4",
+      "answer4": "D)0",
+      "correct": "C)4"
+    }
+
+  ],
+  "juniorquestions6":[
+
+    {
+      "question": "SQL nədir?",
+      "answer1": "A)Proqramlaşdırma dili",
+      "answer2": "B)Məlumat bazasının idarə edilməsi üçün istifadə olunan dil",
+      "answer3": "C)Hər hansı bir verilənlər bazasını yaratmaq üçün istifadə olunur",
+      "answer4": "D)Cədvəl qurma dili",
+      "correct": "B)Məlumat bazasının idarə edilməsi üçün istifadə olunan dil"
+    },
+    {
+      "question": "SQL-də hansı əməliyyatlar verilənlər bazasında məlumatları manipulyasiya etmək üçün istifadə olunur?",
+      "answer1": "A)SELECT, INSERT, UPDATE, DELETE",
+      "answer2": "B)CREATE, DROP, ALTER",
+      "answer3": "C)JOIN, UNION, GROUP BY",
+      "answer4": "D)SELECT, HAVING, WHERE",
+      "correct": "A)SELECT, INSERT, UPDATE, DELETE"
+    },
+    {
+      "question": "INNER JOIN SQL-də nə işə yarayır?",
+      "answer1": "A)İki cədvəlin bütün qeydlərini birləşdirir",
+      "answer2": "B)Yalnız hər iki cədvəldəki uyğun qeydləri birləşdirir",
+      "answer3": "C)Bir cədvəlin yalnız sağ hissəsini birləşdirir",
+      "answer4": "D)Cədvəllərin heç bir əlaqəsi olmadan birləşdirir",
+      "correct": "B)Yalnız hər iki cədvəldəki uyğun qeydləri birləşdirir"
+    },
+    {
+      "question": "SQL-də DISTINCT əmri nə edir?",
+      "answer1": "A)Yalnız ən son qeydləri göstərir",
+      "answer2": "B)Hər hansı bir qeydin dublikatını silir",
+      "answer3": "C)Hər hansı bir cədvəl üzərində qruplaşdırma əməliyyatı edir",
+      "answer4": "D)Cədvəldən yalnız unikal dəyərləri seçir",
+      "correct": "D)Cədvəldən yalnız unikal dəyərləri seçir"
+    },
+    {
+      "question": "INDEX SQL-də nədir?",
+      "answer1": "A)Cədvəl arasında əlaqə yaratmaq üçün istifadə olunur",
+      "answer2": "B)Cədvəlin strukturunu dəyişdirmək üçün istifadə olunur",
+      "answer3": "C)Cədvəlin bütün məlumatlarını birləşdirir",
+      "answer4": "D)Cədvəl içindəki məlumatların sürətli axtarışını təmin edir",
+      "correct": "D)Cədvəl içindəki məlumatların sürətli axtarışını təmin edir"
+    },
+    {
+      "question": "GROUP BY SQL əmri nə üçün istifadə olunur?",
+      "answer1": "A)Məlumatları təkrarlamaq",
+      "answer2": "B)Cədvəl arasında əlaqə qurmaq",
+      "answer3": "C)Qruplaşdırılmış nəticələrə əməliyyatlar tətbiq etmək",
+      "answer4": "D)Qeydləri silmək",
+      "correct": "C)Qruplaşdırılmış nəticələrə əməliyyatlar tətbiq etmək"
+    },
+    {
+      "question": "SQL-də ALTER TABLE əmri nə edir?",
+      "answer1": "A)Cədvəl içindəki bütün məlumatları silir",
+      "answer2": "B)Cədvəldə yeni cədvəl əlavə edər",
+      "answer3": "C)Cədvəlin strukturu üzərində dəyişikliklər edər",
+      "answer4": "D)Cədvəli silir",
+      "correct": "C)Cədvəlin strukturu üzərində dəyişikliklər edər"
+    },
+    {
+      "question": "SQL-də HAVING və WHERE arasındakı fərq nədir?",
+      "answer1": "A)HAVING cədvəldən müəyyənləşdirilmiş şərtləri silir, WHERE isə nəticələri filtrləyir",
+      "answer2": "B)WHERE yalnız SELECT əmri üçün istifadə olunur, HAVING isə INSERT əmri üçün istifadə olunur",
+      "answer3": "C)WHERE yalnız INSERT əmri üçün istifadə olunur, HAVING isə DELETE üçün",
+      "answer4": "D)HAVING yalnız qruplaşdırılmış nəticələr üçün istifadə edilir, WHERE isə bütün qeydlər üçün istifadə olunur",
+      "correct": "D)HAVING yalnız qruplaşdırılmış nəticələr üçün istifadə edilir, WHERE isə bütün qeydlər üçün istifadə olunur"
+    },
+    {
+      "question": "SQL-də UNION əmri necə işləyir?",
+      "answer1": "A)İki cədvəlin bütün qeydlərini birləşdirir və yalnız fərqli qeydləri saxlayır",
+      "answer2": "B)İki cədvəlin qeydlərini birləşdirir, yalnız bir cədvəlin məlumatlarını saxlayır",
+      "answer3": "C)İki cədvəl arasında əlaqə qurur",
+      "answer4": "D)İki cədvəlin bütün qeydlərini birləşdirir və bütün dublikatları saxlayır",
+      "correct": "A)İki cədvəlin bütün qeydlərini birləşdirir və yalnız fərqli qeydləri saxlayır"
+    },
+    {
+      "question": "LIMIT əmri SQL-də nə üçün istifadə olunur?",
+      "answer1": "A)Cədvəlin bütün məlumatlarını dəyişmək",
+      "answer2": "B)Cədvəldən müəyyən sayda qeydləri seçmək",
+      "answer3": "C)Cədvəl strukturu üzərində dəyişikliklər etmək",
+      "answer4": "D)Bütün cədvəldən yalnız bir qeydi silmək",
+      "correct": "B)Cədvəldən müəyyən sayda qeydləri seçmək"
+    }
+
+  ]
+
+}

@@ -1,0 +1,31 @@
+Maşın Öyrənməsi (ML) Kursu
+Modul 1: Giriş və Əsas Anlayışlar
+
+Maşın öyrənməsi nədir?
+
+Supervised, Unsupervised və Reinforcement Learning anlayışları
+
+Python və ML üçün əsas kitabxanalar: NumPy, pandas, scikit-learn
+
+Modul 2: Data Hazırlığı və Analizi
+4. Datasetlərin yüklənməsi və işlənməsi
+5. Data təmizləmə və preprocess (NaN dəyərlərin emalı, normalizasiya)
+6. Data vizuallaşdırılması (Matplotlib, Seaborn)
+
+Modul 3: Supervised Learning - Nəzarətli Öyrənmə
+7. Lineer Regressiya və çoxlu dəyişənli regressiya
+8. Klassifikasiya alqoritmləri: Logistic Regression, Decision Trees, Random Forest
+9. Modelin qiymətləndirilməsi (Accuracy, Precision, Recall, F1-score)
+
+Modul 4: Unsupervised Learning - Nəzarətsiz Öyrənmə
+10. K-Means Clustering
+11. Principal Component Analysis (PCA)
+
+Modul 5: Sinir Şəbəkələri və Dərin Öyrənmə
+12. Neyron şəbəkələrin qurulması (TensorFlow, Keras)
+13. Convolutional Neural Networks (CNN)
+14. Recurrent Neural Networks (RNN)
+
+Modul 6: Real Layihələr və Deploy
+15. Real dataset üzərində proqnoz modeli qurmaq
+16. Flask və ya FastAPI ilə ML modelini deploy etmək

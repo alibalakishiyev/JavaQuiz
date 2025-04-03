@@ -1,0 +1,593 @@
+{
+  "seniorquestions1":[
+    {
+    "question": "volatile açar sözünün istifadəsi nə üçündür?",
+    "answer1": "A)Performansı artırmaq üçün dəyişənlərin keşlənməsini təmin edir",
+    "answer2": "B)Multi-threaded (çox-saylı iplik) mühitlərdə dəyişənlərin sinxronizasiyasını təmin edir",
+    "answer3": "C)Metodları sinifdən kənarda istifadə etmək üçün",
+    "answer4": "D)Kodun kompilyasiya sürətini artırmaq üçün",
+    "correct": "B)Multi-threaded (çox-saylı iplik) mühitlərdə dəyişənlərin sinxronizasiyasını təmin edir"
+    },
+    {
+      "question": "Java-da bir sinifin yalnız bir instansiyasının yaradılmasını necə təmin edə bilərsiniz?",
+      "answer1": "A)static açar sözündən istifadə etməklə",
+      "answer2": "B)final açar sözündən istifadə etməklə",
+      "answer3": "C)Singleton Pattern istifadə edərək",
+      "answer4": "D)Sinfi public təyin etməklə",
+      "correct": "C)Singleton Pattern istifadə edərək"
+    },
+    {
+      "question": "Aşağıdakı hallardan hansı Immutable obyekt yaratmağa uyğundur?",
+      "answer1": "A)Dəyişənləri public və static olaraq təyin etmək",
+      "answer2": "B)Bütün dəyişənləri final və private olaraq təyin etmək",
+      "answer3": "C)Dəyişənləri yalnız protected olaraq təyin etmək",
+      "answer4": "D)Set metodları olmadan obyekt yaratmaq",
+      "correct": "B)Bütün dəyişənləri final və private olaraq təyin etmək"
+    },
+    {
+      "question": "Java-da bir obyektin equals() metodu təyin edilmədən hashCode() metodunu yenidən yazılması hansı nəticələrə gətirib çıxara bilər?",
+      "answer1": "A)Yaddaşda sızıntıya səbəb ola bilər",
+      "answer2": "B)Obyektin bərabərliyinin düzgün müqayisə olunmaması",
+      "answer3": "C)NullPointerException atması",
+      "answer4": "D)Kodun daha yavaş işləməsi",
+      "correct": "B)Obyektin bərabərliyinin düzgün müqayisə olunmaması"
+    },
+    {
+      "question": "Java-da CompletableFuture nə üçün istifadə olunur?",
+      "answer1": "A)Giriş-çıxış əməliyyatlarını sürətləndirmək üçün",
+      "answer2": "B)Sinxron kod icrası üçün",
+      "answer3": "C)Asinxron və paralel hesablama üçün",
+      "answer4": "D)JVM-də yaddaşı təmizləmək üçün",
+      "correct": "C)Asinxron və paralel hesablama üçün"
+    },
+    {
+      "question": "Bir HashMap-də ConcurrentModificationException baş verməməsi üçün hansı üsuldan istifadə edə bilərsiniz?",
+      "answer1": "A)synchronized açar sözündən istifadə",
+      "answer2": "B)ConcurrentHashMap istifadə etmək",
+      "answer3": "C)Collections.synchronizedMap metodundan istifadə",
+      "answer4": "D)TreeMap istifadə etmək",
+      "correct": "B)ConcurrentHashMap istifadə etmək"
+    },
+    {
+      "question": "Aşağıdakılardan hansı Stream API ilə parallelStream() istifadəsi üçün doğrudur?",
+      "answer1": "A)Həmişə daha sürətli performans təmin edir",
+      "answer2": "B)Multi-core prosessorlarda paralel işləməni təmin edir",
+      "answer3": "C)Hər zaman sıralı əməliyyat üçün uyğundur",
+      "answer4": "D)Düzgün nəticə üçün heç bir əlavə təlimat tələb etmir",
+      "correct": "B)Multi-core prosessorlarda paralel işləməni təmin edir"
+    },
+    {
+      "question": "Java-da ForkJoinPool nə üçün istifadə olunur?",
+      "answer1": "A)Siniflər arasında əlaqə yaratmaq üçün",
+      "answer2": "B)Paralel hesablama və tapşırıqları daha kiçik tapşırıqlara bölmək üçün",
+      "answer3": "C)Üst səviyyə siniflərin təyin edilməsi üçün",
+      "answer4": "D)Giriş-çıxış əməliyyatları üçün",
+      "correct": "B)Paralel hesablama və tapşırıqları daha kiçik tapşırıqlara bölmək üçün"
+    },
+    {
+      "question": "AtomicInteger sinfinin istifadəsi hansı halda məqsədəuyğundur?",
+      "answer1": "A)Paralel və thread-safe artımlı dəyişənlər üçün",
+      "answer2": "B)Sürətli giriş-çıxış əməliyyatları üçün",
+      "answer3": "C)Obyektlərin sinxronizasiyası üçün",
+      "answer4": "D)Paralel Stream icrası üçün",
+      "correct": "A)Paralel və thread-safe artımlı dəyişənlər üçün"
+    },
+    {
+      "question": "@FunctionalInterface annotasiyasının məqsədi nədir?",
+      "answer1": "A)Annotasiya metodu yaratmaq",
+      "answer2": "B)Sinfi birdən çox interfeyslə uzlaşmağa məcbur etmək",
+      "answer3": "C)İnterfeysə yalnız bir abstrakt metod əlavə etməyə",
+      "answer4": "D)İnterfeysi yalnız bir dəfə istifadə etmək",
+      "correct": "C)İnterfeysə yalnız bir abstrakt metod əlavə etməyə"
+    }
+  ],
+
+  "seniorquestions2":[
+    {
+    "question": "Java-da synchronized açar sözünün əsas məqsədi nədir?",
+    "answer1": "A)Məlumatları şifrələmək",
+    "answer2": "B)Eyni anda bir neçə thread-in bir obyektə girişini məhdudlaşdırmaq *",
+    "answer3": "C)Kodu kompilyasiya zamanı optimallaşdırmaq",
+    "answer4": "D)Yaddaşı təmizləmək üçün istifadə olunur",
+    "correct": "B)Eyni anda bir neçə thread-in bir obyektə girişini məhdudlaşdırmaq *"
+    },
+    {
+      "question": "CompletableFuture sinifinin Java-da əsas üstünlüyü nədir?",
+      "answer1": "A)Asinxron kod yazmağı asanlaşdırır",
+      "answer2": "B)Mətbuat paralel işləmə performansını 100% artırır",
+      "answer3": "C)Tamamilə Thread-i əvəz edir",
+      "answer4": "D)Java-da fayl idarəsini asanlaşdırır",
+      "correct": "A)Asinxron kod yazmağı asanlaşdırır"
+    },
+    {
+      "question": "Java 8-də Optional haqqında aşağıdakilerdən hansı doğrudur?",
+      "answer1": "A)Optional yalnız kolleksiyalarla istifadə olunur",
+      "answer2": "B)Optional NullPointerException-dən qaçmağa imkan verir",
+      "answer3": "C)Optional yalnız lambda ifadələrində istifadə olunur",
+      "answer4": "D)Optional Java 9-da köhnəlmişdir",
+      "correct": "B)Optional NullPointerException-dən qaçmağa imkan verir"
+    },
+    {
+      "question": "Java-da volatile açar sözü bir dəyişənin hansı xüsusiyyətini təmin edir?",
+      "answer1": "A)Dəyişən yalnız oxunur",
+      "answer2": "B)Bütün iş parçaları dəyişənin sabit bir dəyərini görür",
+      "answer3": "C)Dəyişən CPU yaddaşında saxlanılır",
+      "answer4": "D)Dəyişən yalnız synchronized metodunda istifadə edilə bilər",
+      "correct": "B)Bütün iş parçaları dəyişənin sabit bir dəyərini görür"
+    },
+    {
+      "question": "Hansı vəziyyətdə HashMap-i ConcurrentHashMap-ə üstün tutmalısınız?",
+      "answer1": "A)İş parçalarının təhlükəsizliyi tələb olunarsa",
+      "answer2": "B)Yüksək paralellik tələb olunduqda",
+      "answer3": "C)Performans kritikdir və iş parçalarının təhlükəsizliyinə ehtiyac yoxdur",
+      "answer4": "D)Atomik əməliyyatlar tələb olunduqda",
+      "correct": "C)Performans kritikdir və iş parçalarının təhlükəsizliyinə ehtiyac yoxdur"
+    },
+    {
+      "question": "Java-da ForkJoinPool-un məqsədi nədir?",
+      "answer1": "A)Verilənlər bazası əlaqələrini idarə etmək",
+      "answer2": "B)Paralel çərçivədə vəzifələr yaratmaq və idarə etmək",
+      "answer3": "C)Giriş/çıxış əməliyyatlarını daha səmərəli idarə etmək",
+      "answer4": "D)Yığıcı əməliyyatlarının sürətini artırmaq",
+      "correct": "B)Paralel çərçivədə vəzifələr yaratmaq və idarə etmək"
+    },
+    {
+      "question": "Java-da aşağıdakilerdən hansı String-in dəyişdirilə bilməyəcəyini göstərir?",
+      "answer1": "A)StringBuilder",
+      "answer2": "B)StringBuffer",
+      "answer3": "C)String",
+      "answer4": "D)StringBuilder və StringBuffer",
+      "correct": "C)String"
+    },
+    {
+      "question": "Java-da final açar sözü hansı hallarda istifadə olunur?",
+      "answer1": "A)Dəyişənin dəyəri dəyişdirilə bilməz",
+      "answer2": "B)Sinifin alt siniflər tərəfindən irsən götürülə bilməz\n",
+      "answer3": "C)Metodun alt siniflər tərəfindən dəyişdirilə bilməz\n",
+      "answer4": "D)Hamısı doğrudur",
+      "correct": "D)Hamısı doğrudur"
+    },
+    {
+      "question": "Java 8-də Stream-in məqsədi nədir?",
+      "answer1": "A)Fayl əməliyyatlarını idarə etmək",
+      "answer2": "B)Verilənlər bazasında sorğular yazmaq",
+      "answer3": "C)Funksional interfeyslərin istifadəsini məhdudlaşdırmaq",
+      "answer4": "D)Kolleksiyalarda ardıcıl və paralel işləməyi asanlaşdırmaq",
+      "correct": "D)Kolleksiyalarda ardıcıl və paralel işləməyi asanlaşdırmaq"
+    },
+    {
+      "question": "Java-da hansı tiplər checked exceptions olaraq tanınır?",
+      "answer1": "A)ArithmeticException, NullPointerException",
+      "answer2": "B)ArrayIndexOutOfBoundsException",
+      "answer3": "C)IOException, SQLException",
+      "answer4": "D)IllegalArgumentException",
+      "correct": "C)IOException, SQLException"
+    }
+  ],
+
+  "seniorquestions3":[
+    {
+      "question": "Java-da synchronized açar sözü hansı məqsədlə istifadə olunur?",
+      "answer1": "A) Yalnız siniflərdə istifadə oluna bilər",
+      "answer2": "B) Bir metodun yalnız bir iş parçası tərəfindən eyni anda işlədilməsini təmin edir",
+      "answer3": "C) Yalnız final metodlarda istifadə edilə bilər",
+      "answer4": "D) Çox sayda Thread-in paralel işləməsini təmin edir",
+      "correct": "B) Bir metodun yalnız bir iş parçası tərəfindən eyni anda işlədilməsini təmin edir"
+    },
+    {
+      "question": "Java-da hashCode() və equals() metodlarının eyni anda necə işləməli olduğunu əsas gətirən düzgün ifadə hansıdır?",
+      "answer1": "A) hashCode() və equals() metodları müstəqil işləyə bilər",
+      "answer2": "B) equals() metodunu dəyişdirsək, hashCode() metodunu da dəyişdirməliyik",
+      "answer3": "C) hashCode() metodunun tərtibi equals() metodundan asılıdır",
+      "answer4": "D) hashCode() dəyişsə də, equals() metodu dəyişməlidir",
+      "correct": "B) equals() metodunu dəyişdirsək, hashCode() metodunu da dəyişdirməliyik"
+    },
+    {
+      "question": "Java-da aşağıdakilerdən hansı mətnin (string) müqayisəsi üçün ən yaxşı üsuldur?",
+      "answer1": "A) ==",
+      "answer2": "B) Object.equals()",
+      "answer3": "C) String.equals()",
+      "answer4": "D) String.compareTo()",
+      "correct": "C) String.equals()"
+    },
+    {
+      "question": "Java-da hansı zaman NoClassDefFoundError xətası meydana gəlir?",
+      "answer1": "A) Sinif düzgün yazılmayıb",
+      "answer2": "B) Sinifin interfeysini düzgün təyin etmədikdə",
+      "answer3": "C) Sinif artıq mövcud olduqda",
+      "answer4": "D) Sinif təyin edilmiş .class faylı tapılmadıqda",
+      "correct": "D) Sinif təyin edilmiş .class faylı tapılmadıqda"
+    },
+    {
+      "question": "Java-da Thread.sleep() metodunun əsas məqsədi nədir?",
+      "answer1": "A) Yalnız Thread-i bir saniyə dayandırmaq",
+      "answer2": "B) Thread-i müəyyən bir müddətə dayandırmaq",
+      "answer3": "C) Thread-i öldürmək",
+      "answer4": "D) Thread-in əvvəldən başlamasını təxirə salmaq",
+      "correct": "B) Thread-i müəyyən bir müddətə dayandırmaq"
+    },
+    {
+      "question": "Java-da Interface ilə Abstract sinif arasındakı fərq nədir?",
+      "answer1": "A) Abstract sinif yalnız metodları təyin edir, lakin Interface sinifləri metodları tamamilə tətbiq edir",
+      "answer2": "B) Interface sinifi yalnız metodların başlıqlarını verir, lakin Abstract sinif həm metodları təyin edir, həm də müəyyən tətbiqləri verə bilər",
+      "answer3": "C) Abstract siniflər yalnız verilənlər üzərində işləyir, lakin Interface sinifləri yalnız metodlarla işləyir",
+      "answer4": "D) Abstract sinifləri yalnız siniflərdə istifadə edilə bilər",
+      "correct": "B) Interface sinifi yalnız metodların başlıqlarını verir, lakin Abstract sinif həm metodları təyin edir, həm də müəyyən tətbiqləri verə bilər"
+    },
+    {
+      "question": "Java-da super açar sözü nəyi ifadə edir?",
+      "answer1": "A) Yalnız alt sinifdə metodları çağırmaq",
+      "answer2": "B) Yalnız ana sinifdə dəyişənləri çağırmaq",
+      "answer3": "C) Ana sinifin konstruktorunu və metodlarını çağırmaq",
+      "answer4": "D) Sinifdə yeni dəyişənlər yaratmaq",
+      "correct": "C) Ana sinifin konstruktorunu və metodlarını çağırmaq"
+    },
+    {
+      "question": "ArrayList və LinkedList arasındakı əsas fərq hansıdır?",
+      "answer1": "A) ArrayList daha yavaşdır, çünki dinamik olaraq yaddaşın ölçüsünü dəyişdirir",
+      "answer2": "B) ArrayList sıralı, amma LinkedList sırasızdır",
+      "answer3": "C) LinkedList daha az yaddaş istifadə edir, amma ArrayList daha sürətlidir",
+      "answer4": "D) ArrayList elementləri indekslə idarə edir, LinkedList isə hər elementə pointerlə müraciət edir",
+      "correct": "D) ArrayList elementləri indekslə idarə edir, LinkedList isə hər elementə pointerlə müraciət edir"
+    },
+    {
+      "question": "Java-da try-catch-finally bloklarında hansı ardıcıllıqla istifadə edilir?",
+      "answer1": "A) try, catch, finally",
+      "answer2": "B) catch, finally, try",
+      "answer3": "C) finally, catch, try",
+      "answer4": "D) try, finally, catch",
+      "correct": "A) try, catch, finally"
+    },
+    {
+      "question": "Java-da hansı tip dəyişənlər null dəyərini ala bilər?",
+      "answer1": "A) primitive tipləri",
+      "answer2": "B) reference tipləri",
+      "answer3": "C) Həm primitive, həm də reference tipləri",
+      "answer4": "D) Yalnız String tipi",
+      "correct": "B) reference tipləri"
+    }
+
+  ],
+
+  "seniorquestions4":[
+
+    {
+      "question": "Java-da default metodları hansı interfeyslərdə istifadə olunur?",
+      "answer1": "A) abstract interfeyslərdə",
+      "answer2": "B) Yalnız functional interfeyslərdə",
+      "answer3": "C) Hər hansı bir interfeysdə",
+      "answer4": "D) interface daxilində metodları implementasiya etməyə imkan verir",
+      "correct": "D) interface daxilində metodları implementasiya etməyə imkan verir"
+    },
+    {
+      "question": "Java-da Collections.sort() metodunun əslində hansı növ verilənlər üzərində işlədiyi doğrudur?",
+      "answer1": "A) List",
+      "answer2": "B) Yalnız Set",
+      "answer3": "C) Yalnız Map",
+      "answer4": "D) Queue və Stack",
+      "correct": "A) List"
+    },
+    {
+      "question": "Java-da hansı sinif Comparable interfeysini implement edir?",
+      "answer1": "A) String",
+      "answer2": "B) Integer",
+      "answer3": "C) Double",
+      "answer4": "D) Hamısı",
+      "correct": "D) Hamısı"
+    },
+    {
+      "question": "Java-da volatile açar sözü hansı məqsəd ilə istifadə olunur?",
+      "answer1": "A) Dəyişənin dəyəri hər zaman sonuncu vəziyyətini göstərir, sinxronizasiya tələb etmir",
+      "answer2": "B) Dəyişəni mütləq olaraq təkrarlamağı təmin edir",
+      "answer3": "C) Metodun dəyişdirilməsinə məhdudiyyət qoyur",
+      "answer4": "D) Yalnız instansiya dəyişənləri üçün istifadə olunur",
+      "correct": "A) Dəyişənin dəyəri hər zaman sonuncu vəziyyətini göstərir, sinxronizasiya tələb etmir"
+    },
+    {
+      "question": "Java-da hansı sinif Runnable interfeysini implement edir?",
+      "answer1": "A) Thread",
+      "answer2": "B) String",
+      "answer3": "C) Runnable",
+      "answer4": "D) Process",
+      "correct": "A) Thread"
+    },
+    {
+      "question": "Java-da transient açar sözü nə məqsədlə istifadə olunur?",
+      "answer1": "A) Dəyişəni serializasiya etməmək",
+      "answer2": "B) Dəyişəni sinxronizasiya etmək",
+      "answer3": "C) Dəyişəni avtomatik olaraq sıfırlamaq",
+      "answer4": "D) Dəyişəni final etmək",
+      "correct": "A) Dəyişəni serializasiya etməmək"
+    },
+    {
+      "question": "Java-da hansı məntiqi operator daha əvvəl işləyir: && (və) yoxsa || (vəya)?\n\n",
+      "answer1": "A) && (və)",
+      "answer2": "B) || (vəya)",
+      "answer3": "C) Hər ikisi eyni vaxtda işləyir",
+      "answer4": "D) Operator sırası kodun strukturu ilə müəyyən olunur",
+      "correct": "A) && (və)"
+    },
+    {
+      "question": "Java-da finally blokunda hansı vəziyyətlərdə kod işlədilmir?",
+      "answer1": "A) System.exit() çağırıldıqda",
+      "answer2": "B) try blokunda heç bir istisna baş vermədikdə",
+      "answer3": "C) catch blokunun sonunda break istifadə edildikdə",
+      "answer4": "D) Heç biri",
+      "correct": "A) System.exit() çağırıldıqda"
+    },
+    {
+      "question": "Java-da hansı metod equals() metodunun düzgün işləməsi üçün vacibdir?",
+      "answer1": "A) compareTo()",
+      "answer2": "B) hashCode()",
+      "answer3": "C) clone()",
+      "answer4": "D) toString()",
+      "correct": "B) hashCode()"
+    },
+    {
+      "question": "Java-da final açar sözü hansı vəziyyətlərdə istifadə oluna bilər?",
+      "answer1": "A) Yalnız dəyişənlər üçün",
+      "answer2": "B) Yalnız metodlar üçün",
+      "answer3": "C) Yalnız siniflər üçün",
+      "answer4": "D) Dəyişənlər, metodlar və siniflər üçün",
+      "correct": "D) Dəyişənlər, metodlar və siniflər üçün"
+    }
+
+  ],
+
+  "seniorquestions5":[
+
+    {
+      "question": "Java-da HashMap sinifi necə işləyir?",
+      "answer1": "A) Siniflərə görə tərtib edir",
+      "answer2": "B) Xüsusi açar-dəyər cütləri üzrə sətir tərtibatı edir",
+      "answer3": "C) Yalnız integer dəyərlərini saxlayır",
+      "answer4": "D) Dəyişənlərə görə əlaqələndirir",
+      "correct": "B) Xüsusi açar-dəyər cütləri üzrə sətir tərtibatı edir"
+    },
+    {
+      "question": "Java-da String və StringBuilder arasındakı əsas fərq hansıdır?",
+      "answer1": "A) StringBuilder dəyişkəndir, String isə dəyişməzdir",
+      "answer2": "B) String dəyişkəndir, StringBuilder isə dəyişməzdir",
+      "answer3": "C) String daha sürətlidir, StringBuilder isə daha yavaşdır",
+      "answer4": "D) StringBuilder yalnız boş mətnlərlə işləyir",
+      "correct": "A) StringBuilder dəyişkəndir, String isə dəyişməzdir"
+    },
+    {
+      "question": "Java-da ClassNotFoundException nə zaman yaranır?",
+      "answer1": "A) Sinifin başqa bir sinifdə çağırılması",
+      "answer2": "B) Həmin sinifin yüklənə bilməməsi",
+      "answer3": "C) Hər hansı bir metodun tapılmaması",
+      "answer4": "D) try-catch bloklarının düzgün istifadə olunmaması",
+      "correct": "B) Həmin sinifin yüklənə bilməməsi"
+    },
+    {
+      "question": "Java-da Exception və Error arasındakı fərq nədir?",
+      "answer1": "A) Exception proqramın işləməsini dayandıra bilər, amma Error bunu etməz",
+      "answer2": "B) Error proqramın işləməsini dayandıra bilər, amma Exception bunu etməz",
+      "answer3": "C) Exception yalnız qeyri-kritik vəziyyətlərdə yaranır, amma Error kritik vəziyyətlərdə yaranır",
+      "answer4": "D) Error yalnız tərtibatçılar tərəfindən yaranır",
+      "correct": "B) Error proqramın işləməsini dayandıra bilər, amma Exception bunu etməz"
+    },
+    {
+      "question": "Java-da hansı interfeys tək bir metod təyin edir?",
+      "answer1": "A) Runnable",
+      "answer2": "B) Comparable",
+      "answer3": "C) Serializable",
+      "answer4": "D) Iterable",
+      "correct": "A) Runnable"
+    },
+    {
+      "question": "Java-da hansı metod bir istisna (exception) baş verdikdə avtomatik olaraq çağırılır?",
+      "answer1": "A) finally()",
+      "answer2": "B) main()",
+      "answer3": "C) catch()",
+      "answer4": "D) onError()",
+      "correct": "A) finally()"
+    },
+    {
+      "question": "Java-da this açar sözü hansı məqsədlə istifadə olunur?",
+      "answer1": "A) Sinifin statik metodlarında istifadə olunur",
+      "answer2": "B) Sinifin nümunəsini göstərmək üçün istifadə olunur",
+      "answer3": "C) Metodları asinxron işə salmaq üçün istifadə olunur",
+      "answer4": "D) Yalnız null qiymətini göstərmək üçün istifadə olunur",
+      "correct": "B) Sinifin nümunəsini göstərmək üçün istifadə olunur"
+    },
+    {
+      "question": "Java-da hansı kolleksiya sinifi elementləri təkrarlanmayan şəkildə saxlayır?",
+      "answer1": "A) HashMap",
+      "answer2": "B) ArrayList",
+      "answer3": "C) HashSet",
+      "answer4": "D) LinkedList",
+      "correct": "C) HashSet"
+    },
+    {
+      "question": "Java-da super açar sözü nəyi göstərir?",
+      "answer1": "A) Yalnız bir metodun üst sinifdəki versiyasını göstərir",
+      "answer2": "B) Sinifin özünün metodlarını göstərir",
+      "answer3": "C) Alt sinifin metodunu çağırır",
+      "answer4": "D) Üst sinifin konstruktorunu çağırır",
+      "correct": "D) Üst sinifin konstruktorunu çağırır"
+    },
+    {
+      "question": "Java-da String sinifi hansı növ məlumat növünə aiddir?",
+      "answer1": "A) Dəyişkən (mutable)",
+      "answer2": "B) Yalnız obyektlər üçün",
+      "answer3": "C) Dəyişməz (immutable)",
+      "answer4": "D) Çoxistifadəli (multithreaded)",
+      "correct": "B) Dəyişməz (immutable)"
+    }
+
+
+  ],
+
+   "seniorquestions6":[
+
+     {
+       "question": "Java-da static açar sözü hansı məqsədlə istifadə olunur?",
+       "answer1": "A) Yalnız bir sinifin metodlarını çağırmaq üçün",
+       "answer2": "B) Sinifin bütün instansiyaları tərəfindən paylaşılan dəyişənlər və metodlar təyin etmək üçün",
+       "answer3": "C) Yalnız bir dəfə təyin edilə bilən siniflər yaratmaq üçün",
+       "answer4": "D) İstifadəçi girişi üçün",
+       "correct": "B) Sinifin bütün instansiyaları tərəfindən paylaşılan dəyişənlər və metodlar təyin etmək üçün"
+     },
+
+     {
+       "question": "Java-da default açar sözü hansı vəziyyətdə istifadə olunur?",
+       "answer1": "A) Yalnız metod parametrlərini təyin etmək üçün",
+       "answer2": "B) Hər hansı bir blokda dəyişənləri təyin etmək üçün",
+       "answer3": "C) Sinifin daxili dəyişənlərini təyin etmək üçün",
+       "answer4": "D) Interface-də metod bədənini təmin etmək üçün",
+       "correct": "D) Interface-də metod bədənini təmin etmək üçün"
+     },
+
+     {
+       "question": "Java-da Optional sinifi hansı məqsədlə istifadə olunur?",
+       "answer1": "A) Yalnız null olmayan dəyərləri saxlamaq üçün",
+       "answer2": "B) İstisnaları idarə etmək üçün",
+       "answer3": "C) null dəyərləri işləmək və qeyri-müəyyən vəziyyətləri idarə etmək üçün",
+       "answer4": "D) Yalnız dəyişkənlərin sıfır olunması üçün",
+       "correct": "C) null dəyərləri işləmək və qeyri-müəyyən vəziyyətləri idarə etmək üçün"
+     },
+
+     {
+       "question": "Java-da synchronized açar sözü hansı məqsədlə istifadə olunur?",
+       "answer1": "A) Yalnız dəyişənlərin sıfırlanması üçün",
+       "answer2": "B) Multithreading (çoxtərəfli işləmə) vəziyyətlərində sinxronizasiya təmin etmək üçün",
+       "answer3": "C) Yalnız sinifin metodlarını təkrarlamağı təmin etmək üçün",
+       "answer4": "D) Dinamik metodları təyin etmək üçün",
+       "correct": "B) Multithreading (çoxtərəfli işləmə) vəziyyətlərində sinxronizasiya təmin etmək üçün"
+     },
+     {
+       "question": "Java-da finally blokunun məqsədi nədir?",
+       "answer1": "A) Yalnız istisna (exception) baş verdikdə işləyir",
+       "answer2": "B) Yalnız metodun sonunda işləyir",
+       "answer3": "C) İstisna baş versə belə hər zaman işləyir",
+       "answer4": "D) Yalnız sinifin konstruktorunda işləyir",
+       "correct": "C) İstisna baş versə belə hər zaman işləyir"
+     },
+     {
+       "question": "Java-da interface və abstract class arasındakı fərq nədir?",
+       "answer1": "A) interface metodları bədənlə təyin edilir, amma abstract class metodlar bədensizdir",
+       "answer2": "B) interface yalnız metod imzaları təyin edir, amma abstract class həm metodlar, həm də dəyişənlər təyin edir",
+       "answer3": "C) abstract class yalnız bir sinifdən miras alınır, amma interface çoxsaylı siniflərdən implementasiya edilə bilər",
+       "answer4": "D) Heç bir fərq yoxdur",
+       "correct": "B) interface yalnız metod imzaları təyin edir, amma abstract class həm metodlar, həm də dəyişənlər təyin edir"
+     },
+     {
+       "question": "Java-da StringBuilder sinifi hansı məqsədlə istifadə olunur?",
+       "answer1": "A) String sinifini daha tez işlətmək üçün",
+       "answer2": "B) String obyektləri arasında müqayisə etmək üçün",
+       "answer3": "C) Dəyişkən uzunluqlu mətnləri tez və səmərəli şəkildə manipulyasiya etmək üçün",
+       "answer4": "D) Yalnız şablonları yaratmaq üçün",
+       "correct": "C) Dəyişkən uzunluqlu mətnləri tez və səmərəli şəkildə manipulyasiya etmək üçün"
+     },
+     {
+       "question": "Java-da assert açar sözü nə zaman istifadə olunur?",
+       "answer1": "A) Test və debug məqsədləri üçün",
+       "answer2": "B) Yalnız sinifin konstruktoru zamanı",
+       "answer3": "C) Yeni obyekt yaradılması zamanı",
+       "answer4": "D) null dəyərləri ilə işləyərkən",
+       "correct": "A) Test və debug məqsədləri üçün"
+     },
+     {
+       "question": "Java-da clone() metodu nə edir?",
+       "answer1": "A) Obyekti dondurur (freeze)",
+       "answer2": "B) Sinifin metodlarını kopyalayır",
+       "answer3": "C) Yalnız sinifin obyektini silir",
+       "answer4": "D) Obyekti kopyalayır",
+       "correct": "D) Obyekti kopyalayır"
+     },
+     {
+       "question": "Java-da var açar sözü hansı məqsədlə istifadə olunur?",
+       "answer1": "A) Yalnız dəyişən növünü təyin etmək üçün",
+       "answer2": "B) Sinifdə təkrarlanan metodları təyin etmək üçün",
+       "answer3": "C) Tipi avtomatik olaraq təyin etmək üçün",
+       "answer4": "D) Sinifləri dinamik şəkildə yaratmaq üçün",
+       "correct": "C) Tipi avtomatik olaraq təyin etmək üçün"
+     }
+   ],
+  "seniorquestions7":[
+
+    {
+      "question": "SQL-də LEFT JOIN əmri hansı məqsəd ilə istifadə olunur?",
+      "answer1": "A)Cədvəlin bütün qeydlərini sağdan sola birləşdirir",
+      "answer2": "B)Yalnız bir cədvəlin bütün qeydlərini birləşdirir",
+      "answer3": "C)Sol cədvəlin bütün qeydlərini və sağ cədvəldən uyğun gələn qeydləri birləşdirir",
+      "answer4": "D)Yalnız sağ cədvəlin qeydlərini birləşdirir",
+      "correct": "C)Sol cədvəlin bütün qeydlərini və sağ cədvəldən uyğun gələn qeydləri birləşdirir"
+    },
+    {
+      "question": "SQL-də COUNT funksiyası nə edir?",
+      "answer1": "A)Məlumat bazasında qeydlərin sayını hesablayır",
+      "answer2": "B)Cədvəldəki cümlələri sayır",
+      "answer3": "C)Yalnız boş qeydləri sayır",
+      "answer4": "D)Yalnız unikal qeydləri sayır",
+      "correct": "A)Məlumat bazasında qeydlərin sayını hesablayır"
+    },
+    {
+      "question": "SQL-də BETWEEN operatoru necə işləyir?",
+      "answer1": "A)Verilənlər arasında kiçikdən böyüyə doğru sıralama edir",
+      "answer2": "B)İki dəyər arasında verilənləri seçir",
+      "answer3": "C)Yalnız müəyyən dəyərlər arasında axtarış edir",
+      "answer4": "D)Dəyişənlər arasında əlaqə qurur",
+      "correct": "B)İki dəyər arasında verilənləri seçir"
+    },
+    {
+      "question": "SQL-də ORDER BY əmri nə edir?",
+      "answer1": "A)Cədvəl strukturu dəyişir",
+      "answer2": "B)Yalnız şərti nəticələri göstərir",
+      "answer3": "C)Nəticələri müəyyən bir sıraya düzür",
+      "answer4": "D)Cədvəldən qeydləri silir",
+      "correct": "C)Nəticələri müəyyən bir sıraya düzür"
+    },
+    {
+      "question": "SQL-də SELECT * FROM table_name əmri nə edir?",
+      "answer1": "A)table_name adlı cədvəldəki bütün məlumatları seçir",
+      "answer2": "B)table_name adlı cədvəlin yalnız sütun adlarını seçir",
+      "answer3": "C)table_name adlı cədvəlin yalnız başlıq hissəsini seçir",
+      "answer4": "D)Cədvəlin strukturunu dəyişdirir",
+      "correct": "A)table_name adlı cədvəldəki bütün məlumatları seçir"
+    },
+    {
+      "question": "SQL-də NULL nədir?",
+      "answer1": "A)Cədvəlin boş sahəsini təmsil edir",
+      "answer2": "B)Cədvəlin doldurulmuş sahəsini təmsil edir",
+      "answer3": "C)Qeydlərin sırasız olduğunu göstərir",
+      "answer4": "D)Yalnız müsbət ədədləri təmsil edir",
+      "correct": "A)Cədvəlin boş sahəsini təmsil edir"
+    },
+    {
+      "question": "SQL-də DROP əmri nə işə yarayır?",
+      "answer1": "A)Cədvəli silir",
+      "answer2": "B)Cədvəlin məlumatlarını silir, amma strukturu saxlayır",
+      "answer3": "C)Cədvəl yaratmaq üçün istifadə olunur",
+      "answer4": "D)Cədvəl üzərində əməliyyatlar tətbiq edir",
+      "correct": "A)Cədvəli silir"
+    },
+    {
+      "question": "SQL-də INNER JOIN əmri hansı halda istifadə olunur?",
+      "answer1": "A)İki cədvəlin bütün qeydlərini birləşdirir",
+      "answer2": "B)Yalnız sağ cədvəldən qeydləri birləşdirir",
+      "answer3": "C)İki cədvəldən yalnız bənzər qeydləri birləşdirir",
+      "answer4": "D)Cədvəl arasında əlaqəni yoxlayır",
+      "correct": "C)İki cədvəldən yalnız bənzər qeydləri birləşdirir"
+    },
+    {
+      "question": "SQL-də UPDATE əmri nə edir?",
+      "answer1": "A)Cədvəldən məlumatları silir",
+      "answer2": "B)Cədvəlin strukturunu dəyişdirir",
+      "answer3": "C)Cədvəlin qeydlərini dəyişdirir",
+      "answer4": "D)Cədvəlin məlumatlarını yeniləyir",
+      "correct": "D)Cədvəlin məlumatlarını yeniləyir"
+    },
+    {
+      "question": "SQL-də LIKE operatoru necə işləyir?",
+      "answer1": "A)Təkrarlanan qeydləri seçir",
+      "answer2": "B)Xüsusi simvollardan istifadə edərək axtarış edir",
+      "answer3": "C)Yalnız müsbət ədədləri seçir",
+      "answer4": "D)Dəqiq uyğunluğu təmin edir",
+      "correct": "D)Xüsusi simvollardan istifadə edərək axtarış edir"
+    }
+
+  ]
+}

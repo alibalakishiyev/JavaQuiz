@@ -8,18 +8,19 @@
     tools:context="com.ali.SplashActivity">
 
     <LinearLayout
-        android:background="@drawable/cof"
+        android:background="@drawable/spbackg"
         android:orientation="vertical"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ImageView
             android:src="@mipmap/ic_launcher"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
+            android:background="@color/material_on_background_disabled"
             android:layout_height="100dp"/>
         <TextView
             android:background="@color/material_on_background_disabled"
-            android:textColor="@color/teal_700"
+            android:textColor="@color/green"
             android:textStyle="bold"
             android:layout_marginTop="20dp"
             android:textSize="40sp"

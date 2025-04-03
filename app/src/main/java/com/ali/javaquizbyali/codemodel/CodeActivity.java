@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import com.ali.javaquizbyali.R;
+import com.ali.systemIn.R;
 import org.codehaus.janino.SimpleCompiler;
 
 import java.lang.reflect.Method;

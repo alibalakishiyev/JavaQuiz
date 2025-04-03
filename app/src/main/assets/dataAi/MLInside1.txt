@@ -1,0 +1,64 @@
+Maşın Öyrənməsinə Giriş 🚀
+Bu dərsdə Maşın Öyrənməsi (ML) nədir və onun əsas növləri haqqında danışacağıq.
+
+1. Maşın Öyrənməsi nədir?
+Maşın Öyrənməsi (ML) süni intellektin bir hissəsidir və əsas məqsədi kompüterin təcrübədən öyrənməsi və insan müdaxiləsi olmadan qərar verməsidir.
+
+Ən sadə misal:
+
+Spam filteri: E-poçtlardakı məlumatları analiz edərək, hansı məktubların spam olduğunu müəyyənləşdirir.
+
+Başqa nümunələr:
+
+Səs tanıma (Siri, Google Assistant)
+
+Avtomatik maşın sürmə (Tesla, Waymo)
+
+Tövsiyə sistemləri (Netflix, YouTube, Amazon)
+
+2. ML-in Əsas Növləri
+1️⃣ Supervised Learning (Nəzarətli Öyrənmə)
+
+Model etiketli verilənlər üzərində öyrənir.
+
+Məsələn, maşın nömrələri dataseti varsa, input olaraq şəkil veririk, output isə maşının nömrəsi olur.
+
+Misal: E-poçtların spam və ya normal olduğunu müəyyənləşdirmək.
+
+2️⃣ Unsupervised Learning (Nəzarətsiz Öyrənmə)
+
+Model etiketsiz verilənlər üzərində işləyir.
+
+Qruplaşdırma (Clustering) və nümunələrin tapılması üçün istifadə olunur.
+
+Misal: Müştəriləri oxşar xüsusiyyətlərinə görə qruplaşdırmaq.
+
+3️⃣ Reinforcement Learning (Möhkəmləndirici Öyrənmə)
+
+Agent mühitdən aldığı məlumatlara əsasən qərarlar verir və mükafat və ya cəza alır.
+
+Misal: Şahmat və ya maşın sürən süni intellekt.
+
+3. Python və ML üçün Lazımlı Kitabxanalar
+Maşın öyrənməsi üçün əsas kitabxanalar:
+
+NumPy – Rəqəmsal hesablamalar üçün
+
+pandas – Data analiz üçün
+
+Matplotlib & Seaborn – Qrafiklər və vizuallaşdırma üçün
+
+scikit-learn – Klassik ML alqoritmləri üçün
+
+TensorFlow & Keras – Sinir şəbəkələri üçün
+
+Tapşırıq (Kod icrası)
+Python-da bu kitabxanaları quraşdır və yoxla:
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import sklearn
+
+print("Bütün kitabxanalar uğurla quraşdırılıb!")

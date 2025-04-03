@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ali.MainActivity;
+import com.ali.systemIn.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -53,7 +54,7 @@ public class Derslik extends AppCompatActivity {
 
 
         TextView textView = findViewById(R.id.myTextView); // TextView-i tapın
-        String text = loadTextFromAssets(this, "SualVeCavablar.txt"); // Faylın məzmununu yükləyin
+        String text = loadTextFromAssets(this, "dataJava/SualVeCavablar.txt"); // Faylın məzmununu yükləyin
         textView.setText(text);
 
         editor.putString("key", text);
@@ -90,7 +91,7 @@ public class Derslik extends AppCompatActivity {
                 } else {
                     // EditText-dən dəyişiklikləri alıb, TextView-ə yazın
                     textView.setText(editText.getText());
-                    saveTextToFile(editText.getText().toString(), "SualVeCavablar.txt");
+                    saveTextToFile(editText.getText().toString(), "dataJava/SualVeCavablar.txt");
                     Toast.makeText(Derslik.this, "Dəyişikliklər uğurla yadda saxlanıldı!", Toast.LENGTH_SHORT).show();
                     // EditText-i gizlədin və TextView-i yenidən göstərin
                     textView.setVisibility(View.VISIBLE);

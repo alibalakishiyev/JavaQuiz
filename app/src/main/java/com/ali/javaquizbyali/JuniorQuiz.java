@@ -9,16 +9,15 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import com.ali.MainActivity;
 import com.ali.quizutility.QuesitionsItem;
 import com.ali.quizutility.ResultActivity;
+import com.ali.systemIn.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.button.MaterialButton;
@@ -446,7 +445,7 @@ public class JuniorQuiz extends AppCompatActivity {
     }
 
     private void addQuestionsFromJsonArray(String arrayName) {
-        String jsonquiz = loadJsonFromAsset("JuniorQuestions.json");
+        String jsonquiz = loadJsonFromAsset("dataJava/JuniorQuestions.json");
         try {
             JSONObject jsonObject = new JSONObject(jsonquiz);
             if(jsonObject.has(arrayName)){
@@ -504,7 +503,7 @@ public class JuniorQuiz extends AppCompatActivity {
             materialAlertDialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int i) {
-                    startActivity(new Intent(JuniorQuiz.this , MainActivity.class));
+                    startActivity(new Intent(JuniorQuiz.this , JavaMain.class));
                     finish();
                 }
             });

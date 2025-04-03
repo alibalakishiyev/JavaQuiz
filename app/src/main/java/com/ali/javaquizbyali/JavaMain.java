@@ -1,5 +1,6 @@
 package com.ali.javaquizbyali;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,13 +9,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.ali.MainActivity;
 import com.ali.javaquizbyali.codemodel.Task;
+import com.ali.systemIn.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +33,7 @@ public class JavaMain extends AppCompatActivity implements AlgoListener {
         setContentView(R.layout.activity_java_main);
 
         ArrayList<Algo> arrayList = new ArrayList<>();
-        arrayList.add(new Algo(R.drawable.junior64, "Junio Quiz", JuniorQuiz.class));
+        arrayList.add(new Algo(R.drawable.junior64, "Junior Quiz", JuniorQuiz.class));
         arrayList.add(new Algo(R.drawable.senior64, "Senior Quiz", BasicQuiz.class));
         arrayList.add(new Algo(R.drawable.springboot64, "Spring Boot Quiz", SpringBootQuiz.class));
         arrayList.add(new Algo(R.drawable.book64, "Derslik", Derslik.class));
@@ -40,6 +45,8 @@ public class JavaMain extends AppCompatActivity implements AlgoListener {
         RecyclerView recyclerView = findViewById(R.id.main_recycler_view);
         recyclerView.setAdapter(algoAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+
+        getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
     @Override
@@ -48,6 +55,31 @@ public class JavaMain extends AppCompatActivity implements AlgoListener {
         intent.putExtra("name", algo.algoText);
         startActivity(intent);
     }
+
+    OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(JavaMain.this);
+            materialAlertDialogBuilder.setTitle(R.string.app_name);
+            materialAlertDialogBuilder.setMessage("Are you sure want to exit the quiz?");
+            materialAlertDialogBuilder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+                    dialog.dismiss();
+                }
+            });
+            materialAlertDialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+                    startActivity(new Intent(JavaMain.this , MainActivity.class));
+                    finish();
+                }
+            });
+
+            materialAlertDialogBuilder.show();
+        }
+
+    };
 }
 
 class AlgoAdapter extends RecyclerView.Adapter<AlgoViewHolder> {
@@ -106,6 +138,8 @@ class AlgoViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
             algoListener.onAlgoSelected(algo);
         }
     }
+
+
 }
 
 class Algo<T extends JuniorQuiz> {
