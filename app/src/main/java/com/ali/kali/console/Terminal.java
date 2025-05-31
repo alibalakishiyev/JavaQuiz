@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
@@ -33,10 +34,10 @@ import java.util.Random;
 
 public class Terminal extends AppCompatActivity {
 
-    private TextView terminalOutput;
+    private TextView terminalOutput,questionText,answerText;
     private EditText commandInput;
-    private TextView questionText;
     private ImageButton btnNextQuest;
+    ScrollView scrollView;
 
     private List<Question> questionList = new ArrayList<>();
     private Question currentQuestion;
@@ -57,6 +58,8 @@ public class Terminal extends AppCompatActivity {
         commandInput = findViewById(R.id.command_input);
         questionText = findViewById(R.id.question_text);
         btnNextQuest = findViewById(R.id.btnNextQuestions);
+        answerText = findViewById(R.id.answerText);
+        scrollView = findViewById(R.id.scrollView);
         fAuth = FirebaseAuth.getInstance();
 
         mediaPlayerBingo = MediaPlayer.create(this, R.raw.accept);
@@ -83,6 +86,15 @@ public class Terminal extends AppCompatActivity {
             }
         });
 
+        questionText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (questionText != null){
+                    answerText.setText("Answer code :"+currentQuestion.getAnswer());
+                }
+            }
+        });
+
 
         mAdView6 = findViewById(R.id.adView6);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -95,11 +107,10 @@ public class Terminal extends AppCompatActivity {
     private void handleCommand(String cmd) {
         if (cmd.isEmpty()) return;
 
-        terminalOutput.append("\n> " + cmd + "\n");
-
+        String newOutput = "> " + cmd + "\n";
 
         if (cmd.equalsIgnoreCase(currentQuestion.getAnswer())) {
-            terminalOutput.append("✅ Bingo! " + currentQuestion.getDescription() + "\n");
+            newOutput += "->" + currentQuestion.getDescription() + "\n";
 
             if (mediaPlayerBingo != null) {
                 mediaPlayerBingo.start();
@@ -107,13 +118,23 @@ public class Terminal extends AppCompatActivity {
 
             showRandomQuestion();
         } else {
-            terminalOutput.append("❌ Error: Səhv cavab\n");
+            newOutput += "Error:bash:Command not found\n";
 
             if (mediaPlayerError != null) {
                 mediaPlayerError.start();
             }
         }
+
+        // Mövcud mətni əvvəlki kimi saxla
+        String previous = terminalOutput.getText().toString();
+
+        // Yenini yuxarı yaz
+        terminalOutput.setText(newOutput + previous);
+
+        // ScrollView-un başına çıx
+        scrollView.post(() -> scrollView.fullScroll(View.FOCUS_UP));
     }
+
 
 
     private void loadCommandsFromJson() {
@@ -150,7 +171,7 @@ public class Terminal extends AppCompatActivity {
         }
         int randomIndex = new Random().nextInt(questionList.size());
         currentQuestion = questionList.get(randomIndex);
-        questionText.setText("💡 Sual: " + currentQuestion.getQuestion());
+        questionText.setText("💡Questions: " + currentQuestion.getQuestion());
     }
 
     @Override
