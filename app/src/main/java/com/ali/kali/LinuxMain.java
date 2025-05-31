@@ -19,10 +19,13 @@ import com.ali.MainActivity;
 import com.ali.javaquizbyali.Derslik;
 import com.ali.javaquizbyali.Hazirliq;
 import com.ali.javaquizbyali.JuniorQuiz;
+import com.ali.kali.comandlist.CommandList;
 import com.ali.kali.console.Terminal;
 import com.ali.systemIn.R;
 import com.ali.javaquizbyali.codemodel.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +40,7 @@ public class LinuxMain extends AppCompatActivity implements AlgoListener {
 
         ArrayList<Algo> arrayList = new ArrayList<>();
         arrayList.add(new Algo(R.drawable.terminal40, "Terminal", Terminal.class));
-        arrayList.add(new Algo(R.drawable.book64, "Derslik", Derslik.class));
-        arrayList.add(new Algo(R.drawable.quiz64, "Hazirliq", Hazirliq.class));
-        arrayList.add(new Algo(R.drawable.code64, "Code", Task.class));
+        arrayList.add(new Algo(R.drawable.code64 , "Code List" , CommandList.class));
 
 
         AlgoAdapter algoAdapter = new AlgoAdapter(arrayList, this);
@@ -53,7 +54,11 @@ public class LinuxMain extends AppCompatActivity implements AlgoListener {
     @Override
     public void onAlgoSelected(Algo algo) {
         Intent intent = new Intent(this, algo.activityClazz);
-        intent.putExtra("name", algo.algoText);
+        // Məsələn, JSON faylının adı CommandList üçün "commands.json" olacaq:
+        if (algo.activityClazz == CommandList.class) {
+            intent.putExtra("jsonFile", "terminalCode/linux_commandlist.json");
+        }
+        // Lazımdırsa, digər activity-lər üçün fərqli extras da əlavə et
         startActivity(intent);
     }
 

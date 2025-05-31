@@ -1,0 +1,294 @@
+{
+  "linux_commands": [
+    {
+      "category": "Fayl və Qovluq İdarəetməsi",
+      "commands": [
+        {
+          "command": "ls",
+          "description": "Qovluqdakı fayl və qovluqları siyahıya alır.",
+          "example": "ls -la",
+          "details": "‘-l’ uzun formada siyahı verir, faylların icazələri, ölçüsü və tarixini göstərir. ‘-a’ gizli faylları da göstərir (adları nöqtə ilə başlayan)."
+        },
+        {
+          "command": "cd",
+          "description": "Qovluqlar arasında keçid edir.",
+          "example": "cd /home/user",
+          "details": "'cd ..' ilə yuxarıdakı (üst) qovluğa keçə bilərsən, 'cd ~' istifadəçi ev qovluğuna gedir."
+        },
+        {
+          "command": "pwd",
+          "description": "Cari iş qovluğunun tam yolunu göstərir.",
+          "example": "pwd",
+          "details": "Misal: /home/user/Documents kimi tam yol çıxar."
+        },
+        {
+          "command": "mkdir",
+          "description": "Yeni qovluq yaradır.",
+          "example": "mkdir yeni_qovluq",
+          "details": "Əgər təkcə qovluq adı verilsə, cari qovluqda yaradılır. ‘mkdir -p /tmp/test/dir’ ilə lazım olan bütün qovluqlar yaradılır."
+        },
+        {
+          "command": "rm",
+          "description": "Fayl və ya qovluğu silir.",
+          "example": "rm fayl.txt",
+          "details": "Qovluğu silmək üçün ‘rm -r qovluq’ istifadə olunur (rekursiv olaraq içindəkilərlə birlikdə). Diqqətli olmaq lazımdır!"
+        },
+        {
+          "command": "cp",
+          "description": "Fayl və ya qovluğu kopyalayır.",
+          "example": "cp fayl.txt /tmp/",
+          "details": "Qovluq kopyalamaq üçün ‘cp -r qovluq1 qovluq2’ istifadə edilir."
+        },
+        {
+          "command": "mv",
+          "description": "Fayl və ya qovluğu köçürür və ya adını dəyişir.",
+          "example": "mv fayl.txt /tmp/",
+          "details": "Eyni qovluqda istifadə edilərsə, faylın adı dəyişir."
+        },
+        {
+          "command": "touch",
+          "description": "Yeni boş fayl yaradır və ya mövcud faylın zaman möhürünü yeniləyir.",
+          "example": "touch yeni_fayl.txt",
+          "details": "Əgər fayl yoxdursa, yaradılır; varsa, son dəyişiklik vaxtı yenilənir."
+        },
+        {
+          "command": "find",
+          "description": "Faylları və qovluqları axtarır.",
+          "example": "find /home -name '*.txt'",
+          "details": "Verilən qovluq altında .txt ilə bitən faylları tapır."
+        },
+        {
+          "command": "locate",
+          "description": "Faylları sürətli şəkildə axtarır (əvvəlcədən yaradılmış indeksə əsaslanır).",
+          "example": "locate fayl.txt",
+          "details": "İndeks ayda bir dəfə yenilənir; ‘updatedb’ əmri ilə əllə yeniləmək olar."
+        }
+      ]
+    },
+    {
+      "category": "🧑‍💻 İstifadəçi və İcazə İdarəetməsi",
+      "commands": [
+        {
+          "command": "whoami",
+          "description": "Hazırda daxil olmuş istifadəçi adını göstərir.",
+          "example": "whoami",
+          "details": "Əmri işlədəndə terminalda hazırda aktiv istifadəçi adı görünür."
+        },
+        {
+          "command": "id",
+          "description": "İstifadəçi və qrup identifikatorlarını göstərir.",
+          "example": "id user1",
+          "details": "Bu əmr istifadəçinin UID, GID və aid olduğu qrupları göstərir."
+        },
+        {
+          "command": "chmod",
+          "description": "Fayl və ya qovluğun icazələrini dəyişdirir.",
+          "example": "chmod 755 fayl.sh",
+          "details": "‘755’ icazəsi: sahibə oxuma, yazma, icra; qrupa və digərlərə oxuma və icra icazəsi verir."
+        },
+        {
+          "command": "chown",
+          "description": "Fayl və ya qovluğun sahibini və ya qrupunu dəyişdirir.",
+          "example": "chown user1:group1 fayl.txt",
+          "details": "Faylın sahibini user1, qrupunu isə group1 olaraq dəyişdirir."
+        },
+        {
+          "command": "passwd",
+          "description": "İstifadəçi parolunu dəyişdirir.",
+          "example": "passwd",
+          "details": "Əmri icra etdikdə, sistem sizdən yeni parol təyin etməyi xahiş edir."
+        },
+        {
+          "command": "adduser",
+          "description": "Yeni istifadəçi əlavə edir.",
+          "example": "adduser yeniistifadeci",
+          "details": "Yeni istifadəçi hesabı yaradılır və sistem parametrləri təyin olunur."
+        },
+        {
+          "command": "deluser",
+          "description": "Mövcud istifadəçini silir.",
+          "example": "deluser istifadeci",
+          "details": "İstifadəçi hesabını və əlaqəli faylları silmək üçün əlavə parametrlər istifadə edilə bilər."
+        },
+        {
+          "command": "usermod",
+          "description": "İstifadəçi hesabını dəyişdirir.",
+          "example": "usermod -aG sudo user1",
+          "details": "'-aG sudo' istifadəçini sudo qrupuna əlavə edir, yəni idarəçi hüquqları verir."
+        }
+      ]
+    },
+    {
+      "category": "🖥️ Sistem Məlumatı və Proses İdarəetməsi",
+      "commands": [
+        {
+          "command": "top",
+          "description": "Aktiv prosesləri və sistem resurs istifadəsini göstərir.",
+          "example": "top",
+          "details": "Real vaxtda CPU, RAM istifadəsi və proseslərin vəziyyəti göstərilir. Prosesləri idarə etmək üçün klaviatura qısa yollarından istifadə olunur (məsələn, 'k' ilə proses öldürmək)."
+        },
+        {
+          "command": "ps",
+          "description": "Cari işləyən prosesləri siyahıya alır.",
+          "example": "ps aux",
+          "details": "‘a’ – bütün istifadəçilərin prosesləri, ‘u’ – istifadəçi məlumatları ilə, ‘x’ – terminala bağlı olmayan prosesləri də göstərir."
+        },
+        {
+          "command": "kill",
+          "description": "Prosesləri dayandırır.",
+          "example": "kill -9 1234",
+          "details": "1234 – dayandırmaq istədiyin prosesin PID-si. '-9' siqnalı prosesi məcburi dayandırmaq üçündür."
+        },
+        {
+          "command": "uptime",
+          "description": "Sistem işə düşdükdən bəri keçən vaxtı göstərir.",
+          "example": "uptime",
+          "details": "Əlavə olaraq aktiv istifadəçi sayı və orta sistem yüklənmə səviyyəsini də göstərir."
+        },
+        {
+          "command": "free",
+          "description": "RAM və swap yaddaş istifadəsini göstərir.",
+          "example": "free -h",
+          "details": "‘-h’ insan üçün oxunaqlı formatda göstərir (MB, GB şəklində)."
+        },
+        {
+          "command": "df",
+          "description": "Fayl sistemlərinin disk sahəsi istifadəsini göstərir.",
+          "example": "df -h",
+          "details": "Disk bölmələrinin ümumi, istifadə olunan və boş sahələrini MB/GB şəklində göstərir."
+        },
+        {
+          "command": "du",
+          "description": "Fayl və qovluqların disk sahəsi istifadəsini göstərir.",
+          "example": "du -sh *",
+          "details": "Hər bir fayl və qovluğun diskdə nə qədər yer tutduğunu göstərir. ‘-s’ yekun, ‘-h’ insan oxunaqlı formatdır."
+        },
+        {
+          "command": "uname",
+          "description": "Sistem haqqında ümumi məlumat verir.",
+          "example": "uname -a",
+          "details": "Kernel, host adı, arxitektura, əməliyyat sistemi və digər məlumatları göstərir."
+        },
+        {
+          "command": "lscpu",
+          "description": "CPU haqqında məlumat verir.",
+          "example": "lscpu",
+          "details": "CPU nüvələrinin sayı, model, arxitektura, virtualizasiya dəstəyi və s. barədə məlumat verir."
+        },
+        {
+          "command": "lsblk",
+          "description": "Blok cihazlarını siyahıya alır.",
+          "example": "lsblk",
+          "details": "Disk və bölmələrin strukturunu ağac şəklində göstərir. Montaj nöqtələri və ölçüləri də göstərilir."
+        }
+      ]
+    },
+    {
+      "category": "🌐 Şəbəkə Əmrləri",
+      "commands": [
+        {
+          "command": "ping",
+          "description": "Şəbəkə bağlantısını yoxlayır.",
+          "example": "ping google.com",
+          "details": "Verilmiş domenə və ya IP-ə ICMP siqnalı göndərərək cavab vaxtını ölçür. Bağlantının aktiv olub-olmadığını yoxlamaq üçün istifadə olunur."
+        },
+        {
+          "command": "ifconfig",
+          "description": "Şəbəkə interfeyslərinin konfiqurasiyasını göstərir.",
+          "example": "ifconfig",
+          "details": "IPv4, IPv6 ünvanları, MAC adres, şəbəkə vəziyyəti və statistikalar göstərilir. Yeni sistemlərdə 'ip' əmrini əvəzləyib."
+        },
+        {
+          "command": "ip",
+          "description": "Şəbəkə interfeyslərini idarə edir.",
+          "example": "ip a",
+          "details": "‘ip a’ interfeyslərin IP ünvanlarını göstərir. 'ip link' interfeys vəziyyətini, 'ip route' isə marşrutları göstərir."
+        },
+        {
+          "command": "netstat",
+          "description": "Şəbəkə bağlantılarını və portları siyahıya alır.",
+          "example": "netstat -tuln",
+          "details": "‘-tuln’ TCP/UDP portlarını, dinlənən bağlantıları nömrə formatında göstərir. Yeni sistemlərdə 'ss' əmrilə əvəz olunub."
+        },
+        {
+          "command": "ss",
+          "description": "Aktiv şəbəkə bağlantılarını göstərir.",
+          "example": "ss -tuln",
+          "details": "‘ss’ əmri 'netstat'-dan daha sürətli və dəqiqdir. Aktiv TCP/UDP portları və dinlənən servisləri siyahıya alır."
+        },
+        {
+          "command": "curl",
+          "description": "URL-lərdən məlumat alır və ya göndərir.",
+          "example": "curl https://example.com",
+          "details": "HTTP, FTP, SMTP kimi protokollarla işləyə bilir. Saytlardan məlumat oxumaq və API sorğuları göndərmək üçün istifadə olunur."
+        },
+        {
+          "command": "wget",
+          "description": "Faylları internetdən yükləyir.",
+          "example": "wget https://example.com/file.zip",
+          "details": "Uzaq serverdən fayl yükləmək üçün istifadə olunur. ‘-c’ parametri ilə yarımçıq yükləməni davam etdirmək olur."
+        },
+        {
+          "command": "traceroute",
+          "description": "Şəbəkə marşrutunu izləyir.",
+          "example": "traceroute google.com",
+          "details": "Bir IP-yə və ya domendə gedən yol boyu keçilən bütün şəbəkə nöqtələrini göstərir. Diagnoz üçün faydalıdır."
+        }
+      ]
+    },
+
+    {
+      "category": "🧰 Digər Faydalı Əmrlər",
+      "commands": [
+        {
+          "command": "man",
+          "description": "Əmr haqqında təlimatı göstərir.",
+          "example": "man ls",
+          "details": "Verilmiş əmr üçün ətraflı sənədləşmə göstərir. ‘man’ açması ‘manual’dır. Çıxmaq üçün ‘q’ düyməsini basın."
+        },
+        {
+          "command": "history",
+          "description": "Əvvəlki daxil edilmiş əmrləri siyahıya alır.",
+          "example": "history",
+          "details": "Əvvəlki istifadə olunmuş əmrlərin nömrəli siyahısını göstərir. ‘!nömrə’ ilə təkrar istifadə etmək mümkündür."
+        },
+        {
+          "command": "alias",
+          "description": "Əmr üçün qısa ad yaradır.",
+          "example": "alias ll='ls -la'",
+          "details": "Mürəkkəb və ya uzun əmrlər üçün qısa adlar təyin etmək üçündür. ‘unalias ad’ ilə silinir."
+        },
+        {
+          "command": "echo",
+          "description": "Mətn və ya dəyişən dəyərini çıxışa verir.",
+          "example": "echo $HOME",
+          "details": "Əsasən dəyişənlərin dəyərlərini görmək və skriptlərdə istifadə üçün faydalıdır."
+        },
+        {
+          "command": "date",
+          "description": "Cari tarixi və saatı göstərir.",
+          "example": "date",
+          "details": "Sistemin hazırkı tarix və saatını göstərir. Format dəyişmək üçün 'date \"+%Y-%m-%d\"' istifadə olunur."
+        },
+        {
+          "command": "cal",
+          "description": "Təqvimi göstərir.",
+          "example": "cal 2025",
+          "details": "Cari və ya istənilən ilin ay-ay təqvimini göstərir."
+        },
+        {
+          "command": "clear",
+          "description": "Terminal ekranını təmizləyir.",
+          "example": "clear",
+          "details": "Terminaldakı bütün görünən yazıları silir və ekranı təmizləyir. Klaviaturadan ‘Ctrl+L’ da eyni işi görür."
+        },
+        {
+          "command": "exit",
+          "description": "Terminal sessiyasını bağlayır.",
+          "example": "exit",
+          "details": "Cari terminal pəncərəsini və ya SSH sessiyasını bağlayır. Çıxmaq üçün istifadə olunur."
+        }
+      ]
+    }
+  ]
+}

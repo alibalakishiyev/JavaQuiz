@@ -60,7 +60,7 @@
                         android:background="#000000"
                         android:padding="8dp"
                         android:textColor="#00FF00"
-                        android:textSize="16sp" />
+                        android:textSize="18sp" />
                 </ScrollView>
 
                 <EditText

@@ -21,6 +21,9 @@
         android:theme="@style/Theme.SystemIn"
         tools:targetApi="31">
         <activity
+            android:name="com.ali.kali.comandlist.CommandList"
+            android:exported="false" />
+        <activity
             android:name="com.ali.kali.console.Terminal"
             android:exported="false" />
         <activity

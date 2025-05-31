@@ -187,7 +187,7 @@
     },
     {
       "question": "Cari qovluqdan başlayaraq bütün alt qovluqlarda 'notes.txt' faylını axtarmaq üçün hansı əmr istifadə olunur?",
-      "answer": "find . -name notes.txt",
+      "answer": "find -name notes.txt",
       "description": "Finds files by name recursively. Example: find . -name file.txt"
     },
     {

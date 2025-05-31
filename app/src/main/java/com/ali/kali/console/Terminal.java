@@ -2,6 +2,7 @@ package com.ali.kali.console;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
@@ -90,7 +91,9 @@ public class Terminal extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (questionText != null){
+                    answerText.setTextColor(Color.parseColor("#00FF00"));
                     answerText.setText("Answer code :"+currentQuestion.getAnswer());
+
                 }
             }
         });
@@ -110,7 +113,7 @@ public class Terminal extends AppCompatActivity {
         String newOutput = "> " + cmd + "\n";
 
         if (cmd.equalsIgnoreCase(currentQuestion.getAnswer())) {
-            newOutput += "->" + currentQuestion.getDescription() + "\n";
+            newOutput += "Success ->" + currentQuestion.getDescription() + "\n";
 
             if (mediaPlayerBingo != null) {
                 mediaPlayerBingo.start();
@@ -172,6 +175,7 @@ public class Terminal extends AppCompatActivity {
         int randomIndex = new Random().nextInt(questionList.size());
         currentQuestion = questionList.get(randomIndex);
         questionText.setText("💡Questions: " + currentQuestion.getQuestion());
+        answerText.setText(" ");
     }
 
     @Override
