@@ -1,0 +1,52 @@
+[
+  {
+    "category": "Neuron Şəbəkələri və Aktivasiya Funksiyaları",
+    "gradient": "linear-gradient(to right, #43e97b, #38f9d7)",
+    "questions": [
+      {
+        "text": "Sigmoid aktivasiya funksiyasının tərifi necədir?",
+        "correctAnswer": "σ(x) = 1 / (1 + exp(-x))"
+      }
+    ]
+  },
+  {
+    "category": "Gradient Descent",
+    "gradient": "linear-gradient(to right, #ff5f6d, #ffc371)",
+    "questions": [
+      {
+        "text": "Gradient descent metodu nədir?",
+        "correctAnswer": "Gradient descent, xəta funksiyasını minimuma endirmək üçün istifadə olunan optimallaşdırma metodudur."
+      }
+    ]
+  },
+  {
+    "category": "Lineer Regresiya",
+    "gradient": "linear-gradient(to right, #00c6ff, #0072ff)",
+    "questions": [
+      {
+        "text": "Lineer regresiya modelində xəta funksiyasının tərifi necədir?",
+        "correctAnswer": "J(θ) = (1 / 2m) * Σ(hθ(x) - y)^2"
+      }
+    ]
+  },
+  {
+    "category": "K-Means Clustering",
+    "gradient": "linear-gradient(to right, #ff6a00, #ee0979)",
+    "questions": [
+      {
+        "text": "K-means clustering alqoritmasında hansı addımlar izlənir?",
+        "correctAnswer": "1. K ilə klasterləri seçmək, 2. Hər bir məlumat nöqtəsini ən yaxın klasterə təyin etmək, 3. Klaster mərkəzlərini yeniləmək."
+      }
+    ]
+  },
+  {
+    "category": "Backpropagation",
+    "gradient": "linear-gradient(to right, #f7971e, #ffd200)",
+    "questions": [
+      {
+        "text": "Backpropagation nədir və hansı məqsədlə istifadə olunur?",
+        "correctAnswer": "Backpropagation, neuron şəbəkələrinin öyrədilməsində istifadə olunan alqoritmdir. Bu alqoritm şəbəkənin ağırlıqlarını düzəltmək üçün xəta funksiyasının gradientlərini hesablamağa kömək edir."
+      }
+    ]
+  }
+]

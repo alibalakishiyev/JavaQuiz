@@ -245,7 +245,9 @@ public class MainActivity extends AppCompatActivity {
 
                             fAuth.signOut();
                             clearChatHistory(); // Çıxış edildikdə dərhal sil
+                            startActivity(new Intent(MainActivity.this, Login.class));
                             Toast.makeText(MainActivity.this, "Uğurla çıxış edildi!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(MainActivity.this, Login.class));
                             userIcon.setVisibility(View.VISIBLE);
                             return true;
                         } else if (item.getItemId() == R.id.menu_login) {

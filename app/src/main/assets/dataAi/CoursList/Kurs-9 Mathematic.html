@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyTorch CNN Modeli - İzah</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1,h2,h3,h4,h5 {
+            color: #e74c3c;
+        }
+        pre {
+            background-color: #333; /* Qaranlıq arxa fon */
+            color: #fff; /* Ağ yazı */
+            padding: 10px; /* Hüdudlar */
+            border-radius: 5px; /* Künclərin yuvarlaq olması */
+            font-family: Consolas, monaco, monospace; /* Kod yazı tipi */
+            font-size: 16px; /* Yazı ölçüsü */
+            overflow: auto; /* Uzun kodun sürüşdürülməsi */
+            white-space: pre-wrap; /* Kodu avtomatik olaraq sarmalayıb göstərmək */
+        }
+        p {
+            line-height: 1.6;
+        }
+        strong {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <h2>Riyazi Hesablama:</h2>
+    <p><strong>Dataset:</strong> datasetin hesablaması</p>
+
+    <p>Tutaq ki sən <code>dataset/train/</code> qovluğunda bu siniflər var:</p>
+    <pre>
+dataset/train/
+    cat/
+    cow/
+    dog/
+    rat/
+        </pre>
+
+    <p><code>ImageFolder</code> bunlara bu cür indeks verir:</p>
+    <pre>{'cat': 0, 'cow': 1, 'dog': 2, 'rat': 3}</pre>
+
+    <p>Bu sıralamaya görə sən weight-ləri yazırsan:</p>
+    <pre>
+weights = [0.2, 0.3, 0.1, 0.4]
+# cat  -> 0.2
+# cow  -> 0.3
+# dog  -> 0.1
+# rat  -> 0.4
+        </pre>
+
+    <p><strong>Nəyə görə belə yazılır?</strong></p>
+    <p>Əgər bir sinifin şəkilləri azdırsa, onun weight-i daha böyük yazılır ki, model onu da yaxşı
+        öyrənsin.</p>
+    <p>Əgər çox şəkilli sinifdirsə, onun weight-i kiçik yazılır.</p>
+
+    <h3>Necə hesablamaq olar?</h3>
+    <p>Şəkil sayları belədir:</p>
+    <ul>
+        <li>cat: 100 şəkil</li>
+        <li>cow: 300 şəkil</li>
+        <li>dog: 50 şəkil</li>
+        <li>rat: 200 şəkil</li>
+    </ul>
+    <p>Ümumi şəkil sayı: <strong>650</strong></p>
+    <pre>
+weights = [0.846, 0.538, 0.923, 0.692]
+weights = torch.tensor(weights).to(device)
+criterion = nn.CrossEntropyLoss(weight=weights)
+        </pre>
+
+    <h3>Törəmələr:</h3>
+    <pre>
+weight_cat = 1 - (100 / 650) = 0.846
+weight_cow = 1 - (300 / 650) = 0.538
+weight_dog = 1 - (50 / 650)  = 0.923
+weight_rat = 1 - (200 / 650) = 0.692
+        </pre>
+</div>
+
+<div class="section">
+    <h2>Gradient Descent: gradientləri hesablamaq</h2>
+
+    <h3>Funksiya:</h3>
+    <p><code>y = x^2</code></p>
+
+    <h3>Məqsəd:</h3>
+    <p>Minimum nöqtəni tapmaq (yəni, y = 0 olacaq yer).</p>
+
+    <h3>Törəmə:</h3>
+    <p><code>dy/dx = 2x</code></p>
+
+    <h3>Addım-addım Hesablama:</h3>
+    <ul>
+        <li>x = 5</li>
+        <li>learning_rate = 0.1</li>
+    </ul>
+
+    <h4>Kod nümunəsi (Python):</h4>
+    <pre>
+x = 5.0
+learning_rate = 0.1
+
+for i in range(10):
+    y = x**2
+    gradient = 2 * x
+    x = x - learning_rate * gradient
+    print(f"Addım {i+1}: x = {x:.4f}, y = {y:.4f}, gradient = {gradient:.4f}")
+        </pre>
+
+    <p><strong>Qeyd:</strong> <code>{x:.4f}</code> → x dəyərini vergüldən sonra 4 rəqəmli göstər
+        deməkdir.</p>
+</div>
+
+<div class="section">
+    <h2>3. Sinus və Kosinus</h2>
+
+    <h3>Düzbucaqlı Üçbucaqda:</h3>
+    <pre>
+sin(θ) = qarşı tərəf / hipotenüs = a / c
+cos(θ) = bitişik tərəf / hipotenüs = b / c
+        </pre>
+
+    <h3>Vahid Dairə və Koordinatlar:</h3>
+    <p>Nöqtə: <code>(cosθ, sinθ)</code></p>
+
+    <h3>Sinus və Kosinusun Qrafiki:</h3>
+    <ul>
+        <li>sin(x) → 0-dan başlayır, +1, -1 arasında dalğalanır</li>
+        <li>cos(x) → 1-dən başlayır, -1-ə enir və geri qayıdır</li>
+    </ul>
+
+    <h3>Dərəcə və Radian çevrilməsi:</h3>
+    <pre>
+180° = π radian
+360° = 2π radian
+90° = π/2 radian
+1°   = π/180 radian
+        </pre>
+
+    <h4>Python ilə hesablamalar:</h4>
+    <pre>
+import torch
+
+theta = torch.tensor(30 * 3.14 / 180)  # radian çevrilməsi
+print(torch.sin(theta))  # sinus
+print(torch.cos(theta))  # kosinus
+        </pre>
+</div>
+
+ <pre>
+     <table>
+    <thead>
+    <tr>
+        <th>Dərəcə (°)</th>
+        <th>Radian</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>0°</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>30°</td>
+        <td>&#960;/6</td>
+    </tr>
+    <tr>
+        <td>45°</td>
+        <td>&#960;/4</td>
+    </tr>
+    <tr>
+        <td>60°</td>
+        <td>&#960;/3</td>
+    </tr>
+    <tr>
+        <td>90°</td>
+        <td>&#960;/2</td>
+    </tr>
+    <tr>
+        <td>180°</td>
+        <td>&#960;</td>
+    </tr>
+    <tr>
+        <td>360°</td>
+        <td>2&#960;</td>
+    </tr>
+    </tbody>
+   </table>
+ </pre>
+
+
+
+</body>
+</html>

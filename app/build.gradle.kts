@@ -1,9 +1,7 @@
 plugins {
-
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.google.gms.google.services)
-
-
+    id("com.android.application")
+    id("com.google.gms.google-services")
+    id("com.chaquo.python") version "16.0.0"
 }
 
 android {
@@ -17,7 +15,15 @@ android {
         versionCode = 3
         versionName = "0.3"
 
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters.add("armeabi-v7a")
+            abiFilters.add("arm64-v8a")
+            abiFilters.add("x86")
+            abiFilters.add("x86_64")
+        }
     }
 
     buildTypes {
@@ -30,31 +36,21 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     buildFeatures {
         viewBinding = true
     }
-
-    dependencies {
-
-        implementation(libs.appcompat)
-        implementation(libs.material)
-        implementation(libs.activity)
-        implementation(libs.constraintlayout)
-        implementation(libs.navigation.fragment)
-        implementation(libs.navigation.ui)
-        testImplementation(libs.junit)
-        androidTestImplementation(libs.ext.junit)
-        androidTestImplementation(libs.espresso.core)
-        implementation(libs.play.services.ads.lite)
+    ndkVersion = "28.0.13004108"
+    buildToolsVersion = "35.0.0"
 
 
-
-    }
 }
+
 dependencies {
     // Firebase Libraries
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))  // Firebase BOM (Bill of Materials)
@@ -65,12 +61,11 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore:25.1.3")
 
     // Google Play Services and Ads
-    implementation("com.google.android.gms:play-services-ads-lite:23.5.0")
-    implementation("com.google.android.gms:play-services-ads:23.5.0")
+    implementation("com.google.android.gms:play-services-ads-lite:24.0.0")
 
     // Picasso for image loading
     implementation("com.squareup.picasso:picasso:2.8")
-    implementation ("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("androidx.recyclerview:recyclerview:1.4.0")
 
     // Other Libraries
     implementation(libs.appcompat)
@@ -79,6 +74,8 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+
+    // Testing Libraries
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -92,8 +89,10 @@ dependencies {
     // Code Libraries
     implementation("org.codehaus.janino:janino:3.1.6")
 
-    //chat bot
-    implementation ("com.google.code.gson:gson:2.8.9")
+    // Chat bot
+    implementation("com.google.code.gson:gson:2.8.9")
+
+//    terminal
+    testImplementation ("junit:junit:4.13.2")
+
 }
-
-

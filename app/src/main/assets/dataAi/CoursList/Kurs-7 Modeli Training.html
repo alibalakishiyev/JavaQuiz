@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyTorch CNN Modeli - İzah</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        pre {
+            background-color: #333; /* Qaranlıq arxa fon */
+            color: #fff; /* Ağ yazı */
+            padding: 10px; /* Hüdudlar */
+            border-radius: 5px; /* Künclərin yuvarlaq olması */
+            font-family: Consolas, monaco, monospace; /* Kod yazı tipi */
+            font-size: 16px; /* Yazı ölçüsü */
+            overflow: auto; /* Uzun kodun sürüşdürülməsi */
+            white-space: pre-wrap; /* Kodu avtomatik olaraq sarmalayıb göstərmək */
+        }
+        p {
+            line-height: 1.6;
+        }
+        strong {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+<h1>PyTorch ilə Şəkil Təsnifatı üçün Konvolyusional Neyron Şəbəkəsi (CNN)</h1>
+
+<p>Bu kod, PyTorch ilə şəkil təsnifatı üçün Konvolyusional Neyron Şəbəkəsi (CNN) qurmaq və öyrətmək üçün hazırlanmışdır. Gəlin bu kodu addım-addım izah edək:</p>
+
+<h2>1. Şəkil Dönüşümləri (transform)</h2>
+<pre>
+transform = transforms.Compose([
+    transforms.Resize((64, 64)),
+    transforms.ToTensor(),
+    transforms.Normalize((0.5,), (0.5,))
+])
+    </pre>
+<p><strong>Resize((64, 64)):</strong> Şəkilin ölçüsünü 64x64 ölçüsünə endirir. Bu, modelin giriş ölçüsünə uyğunlaşdırır.</p>
+<p><strong>ToTensor():</strong> Şəkili PyTorch tensor-una çevirir. Tensorlar PyTorch-da verilənləri təmsil edən əsas məlumat strukturlarındandır.</p>
+<p><strong>Normalize((0.5,), (0.5,)):</strong> Şəkilin piksellərini normalizə edir. Bu halda, şəkil pikselləri [-1, 1] aralığına çəkilir (çünki mean=0.5 və std=0.5 verilib).</p>
+
+<h2>2. Dataset Yüklənməsi (ImageFolder)</h2>
+<pre>
+train_data = ImageFolder(r"C:\Users\Mafia\PycharmProjects\AiCourse\dataset\train", transform=transform)
+train_loader = DataLoader(train_data, batch_size=16, shuffle=True)
+    </pre>
+<p><strong>ImageFolder:</strong> Bu, şəkillərin saxlandığı qovluğu istifadə edərək dataset yaradır. Hər bir sinif üçün şəkillər bir qovluqda saxlanılır.</p>
+<p><strong>DataLoader:</strong> Bu obyekt, datasetin batch-lara bölünməsini və hər batch-ın modelə göndərilməsini təmin edir. Burada batch ölçüsü 16-dır, yəni hər dəfə modelə 16 şəkil təqdim edilir.</p>
+
+<h2>3. Modelin Seçilməsi</h2>
+<pre>
+model = CustomCNN().to(device)
+    </pre>
+<p>Burada, əvvəlcə yaratdığınız <code>CustomCNN</code> modeli device-ə (GPU və ya CPU) köçürülür. Bu, modelin təliminin daha sürətli olmasına kömək edir.</p>
+
+<h2>4. Zərər Funksiyası (Loss Function)</h2>
+<pre>
+criterion = nn.CrossEntropyLoss(weight=torch.tensor([0.4, 0.6]).to(device))
+    </pre>
+<p><strong>CrossEntropyLoss:</strong> Bu, çox sinifli təsnifat üçün geniş istifadə olunan bir zərər funksiyasıdır. Modelin çıxışı ilə düzgün etiket arasında fərqi ölçür.</p>
+<p><strong>weight=torch.tensor([0.4, 0.6]):</strong> Bu, balanssız siniflər üçün çəkilər tətbiq edir. Məsələn, 0.6 çəki "dog" sinifinə, 0.4 isə "cat" sinifinə verilmişdir. Bu, modelin nadir siniflərə daha çox diqqət etməsini təmin edir.</p>
+
+<h2>5. Optimizer</h2>
+<pre>
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+    </pre>
+<p>Adam optimizatoru, modelin çəkilərini öyrətmək üçün istifadə olunur. Bu optimizator, öyrənmə sürətini (learning rate) dinamik olaraq tənzimləyir və ümumiyyətlə daha yaxşı nəticələr verir.</p>
+<p><strong>lr=0.001:</strong> Bu, optimizatorun öyrənmə sürətini göstərir. Kiçik öyrənmə sürəti, hər iterasiyada daha kiçik addımlarla optimallaşdırma aparır.</p>
+
+<h2>6. Təlim Dövrü (Epoch)</h2>
+<pre>
+for epoch in range(20):
+    running_loss = 0.0
+    for images, labels in train_loader:
+        images, labels = images.to(device), labels.to(device)
+        optimizer.zero_grad()
+        outputs = model(images)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()
+        running_loss += loss.item()
+
+    epoch_loss = running_loss / len(train_loader)
+    losses.append(epoch_loss)
+    print(f"Epoch {epoch+1}, Loss: {running_loss:.3f}")
+    </pre>
+<p>Bu dövr 20 dəfə (epoch) təkrarlanacaq.</p>
+<p><strong>images.to(device), labels.to(device):</strong> Verilənləri GPU ya da CPU-ya göndərir.</p>
+<p><strong>optimizer.zero_grad():</strong> İterasiya başında əvvəlki gradientləri sıfırlayır.</p>
+<p><strong>outputs = model(images):</strong> Modeli şəkillərlə işləyərək nəticə (çıxış) əldə edir.</p>
+<p><strong>loss = criterion(outputs, labels):</strong> Çıxış ilə doğru etiket arasındakı zərəri hesablayır.</p>
+<p><strong>loss.backward():</strong> Geriyə yayılma (backpropagation) ilə zərərin gradientlərini hesablayır.</p>
+<p><strong>optimizer.step():</strong> Optimizator gradientləri istifadə edərək modelin çəkilərini yeniləyir.</p>
+<p><strong>running_loss:</strong> Hər epoch boyunca cəm zərəri saxlayır.</p>
+<p><strong>epoch_loss:</strong> Hər epoch üçün zərərin ortalamasını hesablayır və çap edir.</p>
+
+<h2>7. Zərər Qrafiki</h2>
+<pre>
+plt.plot(range(1, 21), losses, marker='o')
+plt.title("Loss per Epoch")
+plt.xlabel("Epoch")
+plt.ylabel("Loss")
+plt.grid(True)
+plt.show()
+    </pre>
+<p>matplotlib istifadə edərək, hər epoch üçün zərərin necə dəyişdiyini göstərən bir qrafik çəkir.</p>
+
+<h2>9. Modelin Yadda Saxlanması</h2>
+<pre>
+torch.save(model.state_dict(), "./cnn_model.pth")
+print("Model yadda saxlanıldı ✅")
+    </pre>
+<p><strong>torch.save:</strong> Modelin çəkilərini (state_dict) .pth faylında saxlayır. Bu fayl daha sonra modeli yükləmək və istifadə etmək üçün lazım olacaq.</p>
+
+<h2>Nəticə</h2>
+<p>Bu kod, şəkillərlə təsnifat etmək üçün CNN modelini qurur, təlim etdirir və nəticələri loss şəklində izləyir. Təlim prosesi bitdikdən sonra modelin çəkiləri faylda saxlanılır. Bu model, yeni şəkilləri təsnif etmək üçün istifadə oluna bilər.</p>
+</body>
+</html>

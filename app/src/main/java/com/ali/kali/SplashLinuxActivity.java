@@ -69,7 +69,7 @@ public class SplashLinuxActivity extends AppCompatActivity {
         new Handler().postDelayed(() -> {
             startActivity(new Intent(SplashLinuxActivity.this, LinuxMain.class));
             finish();
-        }, 5000); // 5000 millisekund = 5 saniyə
+        }, 3000); // 5000 millisekund = 5 saniyə
 
         videoView.start();
     }

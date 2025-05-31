@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dərs: Tensorlarla işləmə və modelin test edilməsi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        pre {
+            background-color: #333; /* Kod üçün tünd fon */
+            color: #fff; /* Ağ rəngli mətn */
+            padding: 10px; /* Kod üçün iç margin */
+            border-radius: 5px; /* Yuvarlaq künclər */
+            font-family: Consolas, monaco, monospace; /* Kod şrifti */
+            font-size: 16px; /* Şrift ölçüsü */
+            overflow: auto; /* Uzun kod üçün skroll */
+            white-space: pre-wrap; /* Uzun kod xəttində sarmak */
+        }
+        p {
+            line-height: 1.6;
+        }
+        strong {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+<h1>Dərs: Tensorlarla işləmə və modelin test edilməsi — səhnəyə Tensorlar çıxır! 🎭</h1>
+<div class="content">
+    <p>🎓 Tensorlarla İşləmə (PyTorch nümunəsi ilə):</p>
+    <p>Tensorlar sadə dillə desək, Numpy array-lərinə bənzəyirlər, amma onlar GPU-da işləyə bilir, bu da deep learning üçün çox vacibdir.</p>
+
+    <div class="section">
+        <h2>✅ Nümunə: Tensor yaratmaq</h2>
+        <pre>
+import torch
+
+# 1D tensor
+a = torch.tensor([1.0, 2.0, 3.0])
+print(a)
+
+# 2D tensor
+b = torch.tensor([[1, 2], [3, 4]])
+print(b)
+
+# Zəruri hallarda Random tensor:
+c = torch.rand((2, 3))  # 2x3 ölçülü təsadüfi ədədlərlə dolu tensor
+print(c)
+            </pre>
+    </div>
+
+    <div class="section">
+        <h2>⚙ Tensorlarla riyazi əməliyyatlar:</h2>
+        <pre>
+x = torch.tensor([1.0, 2.0, 3.0])
+y = torch.tensor([3.0, 2.0, 1.0])
+
+print(x + y)         # Toplama
+print(x * y)         # Hər elementə görə vurma
+print(torch.dot(x, y))  # Skalyar hasil
+            </pre>
+    </div>
+
+    <div class="section">
+        <h2>🎯 Modelin Test Edilməsi</h2>
+        <p>Öyrətdiyin modeli test etmək üçün sənə aşağıdakı kimi bir yanaşma lazımdır:</p>
+        <pre>
+# model artıq öyrədilib və test mərhələsindəyik
+model.eval()  # Modeli "eval" rejiminə keçirt
+
+with torch.no_grad():  # Gradient hesablanmasın
+    y_pred = model(X_test)
+    predicted = torch.round(y_pred)  # Əgər Binary classification-dursa
+    accuracy = (predicted == y_test).float().mean()
+    print(f"Modelin düzgünlük faizi: {accuracy:.4f}")
+            </pre>
+    </div>
+
+    <div class="task">
+        <p>🔥 Növbəti dərs: CNN modellərinin əsasları</p>
+        <p>Bu dərsdə öyrənəcəksən:</p>
+        <ul>
+            <li>Convolution nədir?</li>
+            <li>CNN-lər niyə şəkil tanıma üçün bu qədər güclüdür?</li>
+            <li>PyTorch ilə sadə CNN modeli necə qurulur?</li>
+        </ul>
+        <p>Deyirsən CNN dərsinə başlayaq, yoxsa Tensorlarla bağlı hissədə daha dərinə gedək?</p>
+        <p>Söz səndədir, qardaşım! 💪</p>
+    </div>
+</div>
+</body>
+</html>

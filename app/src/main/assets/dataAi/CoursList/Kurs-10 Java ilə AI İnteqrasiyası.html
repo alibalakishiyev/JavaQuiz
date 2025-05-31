@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyTorch CNN Modeli - İzah</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1,h2,h3,h4,h5 {
+            color: #e74c3c;
+        }
+        pre {
+            background-color: #333; /* Qaranlıq arxa fon */
+            color: #fff; /* Ağ yazı */
+            padding: 10px; /* Hüdudlar */
+            border-radius: 5px; /* Künclərin yuvarlaq olması */
+            font-family: Consolas, monaco, monospace; /* Kod yazı tipi */
+            font-size: 16px; /* Yazı ölçüsü */
+            overflow: auto; /* Uzun kodun sürüşdürülməsi */
+            white-space: pre-wrap; /* Kodu avtomatik olaraq sarmalayıb göstərmək */
+        }
+        p {
+            line-height: 1.6;
+        }
+        strong {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+
+<h2>5️⃣ Java ilə AI İnteqrasiyası – Plan</h2>
+<p>Burada məqsədimiz <code>.pth</code> və ya <code>.h5</code> formatında təlim olunmuş AI modelini Java backend-ə qoşmaqdır. Aşağıdakı yollarla mümkündür:</p>
+
+<h3>🔌 Variant 1: Python Backend ilə Rest API yaratmaq</h3>
+<ul>
+    <li>Python-da <strong>Flask</strong> və ya <strong>FastAPI</strong> ilə AI model yüklə (məsələn: <code>torch.load()</code>).</li>
+    <li><code>POST</code> sorğusu ilə Java-dan şəkil/giriş verisini Python serverinə göndər.</li>
+    <li>Python modeli nəticəni çıxarır, Java onu alır və istifadə edir.</li>
+</ul>
+<p><strong>➡️ Bu üsul ən çox istifadə edilən yoldur</strong> – çünki PyTorch modelini birbaşa Java-da işlətmək çətindir.</p>
+
+<h3>🛠️ Variant 2: ONNX (Open Neural Network Exchange)</h3>
+<ul>
+    <li><code>.pth</code> modelini ONNX formatına çevir.</li>
+    <li>Java-da <code>onnxruntime</code> kitabxanası ilə modeli işlə.</li>
+</ul>
+
+<h4>Bash (Python) kodu:</h4>
+<pre><code># PyTorch modelini ONNX formatına çevirmək
+torch.onnx.export(model, input_tensor, "model.onnx")
+</code></pre>
+
+<h4>Java kodu:</h4>
+<pre><code>OrtEnvironment env = OrtEnvironment.getEnvironment();
+OrtSession.SessionOptions opts = new OrtSession.SessionOptions();
+OrtSession session = env.createSession("model.onnx", opts);
+</code></pre>
+
+<h3>🌐 Variant 3: TensorFlow Java</h3>
+<p>Əgər model <code>.h5</code> formatındadırsa və TensorFlow modelidirsə:</p>
+<ul>
+    <li><strong>TensorFlow Lite</strong> və ya <strong>TensorFlow Java API</strong> istifadə oluna bilər.</li>
+</ul>
+<p><strong>Amma PyTorch üçün ən yaxşı yol</strong> ya <strong>REST API</strong>, ya da <strong>ONNX</strong> ilə inteqrasiyadır.</p>
+
+<h3>💻 Kurs Tapşırığı 5️⃣ – Sən nə etməlisən?</h3>
+<ol>
+    <li>Öz <code>.pth</code> modelini ya Flask/FastAPI serverdə yüklə və <code>predict</code> API yaz.</li>
+    <li>Java ilə bir HTTP sorğu göndərərək bu API-dən nəticəni al.</li>
+    <li>Nəticəni Java frontend və ya backend-də göstər.</li>
+</ol>
+
+</body>
+</html>

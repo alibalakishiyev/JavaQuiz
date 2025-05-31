@@ -1,0 +1,254 @@
+[
+  {
+    "category": "Bucaqların Radiana Çevrilməsi",
+    "gradient": "linear-gradient(to right, #00c6ff, #0072ff)",
+    "questions": [
+      {
+        "text": "60° neçə radian edir?",
+        "correctAnswer": 1.0472
+      },
+      {
+        "text": "90° neçə radian edir?",
+        "correctAnswer": 1.5708
+      },
+      {
+        "text": "360° neçə radian edir?",
+        "correctAnswer": 6.2832
+      },
+      {
+        "text": "180° neçə radian edir?",
+        "correctAnswer": 3.1416
+      },
+      {
+        "text": "120° neçə radian edir?",
+        "correctAnswer": "2π/3"
+      }
+    ]
+  },
+  {
+    "category": "Trigonometrik Funksiyalar",
+    "gradient": "linear-gradient(to right, #ff6a00, #ee0979)",
+    "questions": [
+      {
+        "text": "sin(0) neçədir?",
+        "correctAnswer": 0
+      },
+      {
+        "text": "cos(0) neçədir?",
+        "correctAnswer": 1
+      },
+      {
+        "text": "sin(90°) neçədir?",
+        "correctAnswer": 1
+      },
+      {
+        "text": "cos(180°) neçədir?",
+        "correctAnswer": -1
+      },
+      {
+        "text": "tan(45°) neçədir?",
+        "correctAnswer": 1
+      },
+      {
+        "text": "cot(45°) neçədir?",
+        "correctAnswer": 1
+      },
+      {
+        "text": "tan(90°) müəyyən olunubmu?",
+        "correctAnswer": 0
+      },
+      {
+        "text": "sin(45°) neçədir?",
+        "correctAnswer": 0.7071
+      }
+    ]
+  },
+  {
+    "category": "Radianın Dərəcəyə Çevrilməsi",
+    "gradient": "linear-gradient(to right, #43e97b, #38f9d7)",
+    "questions": [
+      {
+        "text": "π radian neçə dərəcədir?",
+        "correctAnswer": 180
+      },
+      {
+        "text": "2π radian neçə dərəcədir?",
+        "correctAnswer": 360
+      },
+      {
+        "text": "π/4 radian neçə dərəcədir?",
+        "correctAnswer": 45
+      }
+    ]
+  },
+  {
+    "category": "Əks Trigonometrik Funksiyalar",
+    "gradient": "linear-gradient(to right, #f7971e, #ffd200)",
+    "questions": [
+      {
+        "text": "arcsin(1) neçə dərəcədir?",
+        "correctAnswer": 90
+      },
+      {
+        "text": "arccos(0) neçə dərəcədir?",
+        "correctAnswer": 90
+      },
+      {
+        "text": "arctan(1) neçə dərəcədir?",
+        "correctAnswer": 45
+      },
+      {
+        "text": "arcsin(0.5) neçə dərəcədir?",
+        "correctAnswer": 30
+      }
+    ]
+  },
+  {
+    "category": "Qrafiklər və Dönmə",
+    "gradient": "linear-gradient(to right, #ff5f6d, #ffc371)",
+    "questions": [
+      {
+        "text": "sin(x) funksiyasının periodu neçədir?",
+        "correctAnswer": 6.2832
+      },
+      {
+        "text": "cos(x) funksiyası hansı ox ətrafında simmetrikdir?",
+        "correctAnswer": "y"
+      },
+      {
+        "text": "tan(x) funksiyasının periodu neçədir?",
+        "correctAnswer": 3.1416
+      },
+      {
+        "text": "sin(x) funksiyasının periodu neçədir?",
+        "correctAnswer": "2π"
+      }
+    ]
+  },
+  {
+    "category": "Bucaqların Radiana Çevrilməsi",
+    "gradient": "linear-gradient(to right, #00c6ff, #0072ff)",
+    "questions": [
+      {
+        "text": "60° neçə radian edir?",
+        "correctAnswer": 1.0472
+      },
+      {
+        "text": "90° neçə radian edir?",
+        "correctAnswer": 1.5708
+      },
+      {
+        "text": "360° neçə radian edir?",
+        "correctAnswer": 6.2832
+      },
+      {
+        "text": "180° neçə radian edir?",
+        "correctAnswer": 3.1416
+      },
+      {
+        "text": "120° neçə radian edir?",
+        "correctAnswer": "2π/3"
+      }
+    ]
+  },
+  {
+    "category": "Trigonometrik Funksiyalar",
+    "gradient": "linear-gradient(to right, #ff6a00, #ee0979)",
+    "questions": [
+      {
+        "text": "sin(0) neçədir?",
+        "correctAnswer": 0
+      },
+      {
+        "text": "cos(0) neçədir?",
+        "correctAnswer": 1
+      },
+      {
+        "text": "sin(90°) neçədir?",
+        "correctAnswer": 1
+      },
+      {
+        "text": "cos(180°) neçədir?",
+        "correctAnswer": -1
+      },
+      {
+        "text": "tan(45°) neçədir?",
+        "correctAnswer": 1
+      },
+      {
+        "text": "cot(45°) neçədir?",
+        "correctAnswer": 1
+      },
+      {
+        "text": "tan(90°) müəyyən olunubmu?",
+        "correctAnswer": null
+      },
+      {
+        "text": "sin(45°) neçədir?",
+        "correctAnswer": 0.7071
+      }
+    ]
+  },
+  {
+    "category": "Radianın Dərəcəyə Çevrilməsi",
+    "gradient": "linear-gradient(to right, #43e97b, #38f9d7)",
+    "questions": [
+      {
+        "text": "π radian neçə dərəcədir?",
+        "correctAnswer": 180
+      },
+      {
+        "text": "2π radian neçə dərəcədir?",
+        "correctAnswer": 360
+      },
+      {
+        "text": "π/4 radian neçə dərəcədir?",
+        "correctAnswer": 45
+      }
+    ]
+  },
+  {
+    "category": "Əks Trigonometrik Funksiyalar",
+    "gradient": "linear-gradient(to right, #f7971e, #ffd200)",
+    "questions": [
+      {
+        "text": "arcsin(1) neçə dərəcədir?",
+        "correctAnswer": 90
+      },
+      {
+        "text": "arccos(0) neçə dərəcədir?",
+        "correctAnswer": 90
+      },
+      {
+        "text": "arctan(1) neçə dərəcədir?",
+        "correctAnswer": 45
+      },
+      {
+        "text": "arcsin(0.5) neçə dərəcədir?",
+        "correctAnswer": 30
+      }
+    ]
+  },
+  {
+    "category": "Qrafiklər və Dönmə",
+    "gradient": "linear-gradient(to right, #ff5f6d, #ffc371)",
+    "questions": [
+      {
+        "text": "sin(x) funksiyasının periodu neçədir?",
+        "correctAnswer": 6.2832
+      },
+      {
+        "text": "cos(x) funksiyası hansı ox ətrafında simmetrikdir?",
+        "correctAnswer": "y"
+      },
+      {
+        "text": "tan(x) funksiyasının periodu neçədir?",
+        "correctAnswer": 3.1416
+      },
+      {
+        "text": "sin(x) funksiyasının periodu neçədir?",
+        "correctAnswer": "2π"
+      }
+    ]
+  }
+]

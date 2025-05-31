@@ -19,6 +19,7 @@ import com.ali.MainActivity;
 import com.ali.javaquizbyali.Derslik;
 import com.ali.javaquizbyali.Hazirliq;
 import com.ali.javaquizbyali.JuniorQuiz;
+import com.ali.kali.console.Terminal;
 import com.ali.systemIn.R;
 import com.ali.javaquizbyali.codemodel.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -35,7 +36,7 @@ public class LinuxMain extends AppCompatActivity implements AlgoListener {
         setContentView(R.layout.activity_linux_main);
 
         ArrayList<Algo> arrayList = new ArrayList<>();
-        arrayList.add(new Algo(R.drawable.junior64, "Tezlikle", JuniorQuiz.class));
+        arrayList.add(new Algo(R.drawable.terminal40, "Terminal", Terminal.class));
         arrayList.add(new Algo(R.drawable.book64, "Derslik", Derslik.class));
         arrayList.add(new Algo(R.drawable.quiz64, "Hazirliq", Hazirliq.class));
         arrayList.add(new Algo(R.drawable.code64, "Code", Task.class));

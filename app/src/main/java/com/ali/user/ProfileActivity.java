@@ -41,13 +41,11 @@ import com.squareup.picasso.Picasso;
 public class ProfileActivity extends AppCompatActivity {
 
     private TextView email, nname, nphone;
-    private ImageButton resendCode, resetPassword, changeProfileImg, backBtn;
-    private ImageView verifydImg;
+    private ImageView profileImage,changeProfileImg,backBtn,resetPassword,resendCode,verifydImg;
     private FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     String userId;
     FirebaseUser user;
-    ImageView profileImage;
     StorageReference storageReference;
 
 
@@ -60,7 +58,9 @@ public class ProfileActivity extends AppCompatActivity {
         nname = findViewById(R.id.txtName);
         nphone = findViewById(R.id.txtPhone);
         resetPassword = findViewById(R.id.resetPas);
-        backBtn = findViewById(R.id.backBtn);
+        backBtn = findViewById(R.id.homePage);
+
+
 
 
         profileImage = findViewById(R.id.profilImage);
@@ -68,7 +68,6 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         resendCode = findViewById(R.id.verfyEmailBtn);
-        verifydImg = findViewById(R.id.checkMarkImage);
 
         // Firebase Auth instance
         fAuth = FirebaseAuth.getInstance();

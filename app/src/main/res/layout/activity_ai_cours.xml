@@ -1,0 +1,75 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:background="@drawable/coursbckground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Kurs seçimi üçün ComboBox (Spinner) -->
+    <Spinner
+        android:id="@+id/courseSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp" />
+
+    <WebView
+        android:id="@+id/courseWebView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/text_secondery_color"
+        android:padding="8dp"
+        app:layout_constraintTop_toBottomOf="@id/courseSpinner"
+        app:layout_constraintBottom_toTopOf="@id/homeBack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- LinearLayout içərisində olan reklam -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/adLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-5367924704859976/8399396085"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Back düyməsi -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/homeBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:background="@color/metinler"
+        android:text="Back"
+        app:layout_constraintBottom_toTopOf="@+id/adLayout"
+        app:layout_constraintEnd_toStartOf="@+id/btnPyConsole"
+        app:layout_constraintHorizontal_bias="0.562"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Python konsolu düyməsi -->
+    <ImageButton
+        android:id="@+id/btnPyConsole"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="19dp"
+        app:layout_constraintBottom_toTopOf="@+id/adLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/homeBack"
+        app:srcCompat="@drawable/pythoncon32"
+        android:background="@color/material_on_background_disabled"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

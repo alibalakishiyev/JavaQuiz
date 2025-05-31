@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kod İzahı</title>
+    <style>
+        pre {
+            background-color: #333; /* Qaranlıq arxa fon */
+            color: #fff; /* Ağ yazı */
+            padding: 10px; /* Hüdudlar */
+            border-radius: 5px; /* Künclərin yuvarlaq olması */
+            font-family: Consolas, monaco, monospace; /* Kod yazı tipi */
+            font-size: 16px; /* Yazı ölçüsü */
+            overflow: auto; /* Uzun kodun sürüşdürülməsi */
+        }
+    </style>
+</head>
+<body>
+<h1>PyTorch Modeli Testi</h1>
+
+<h2>Kitabxanaların İdxalı</h2>
+<pre>
+import torch  # PyTorch — əsas DL kitabxanası
+import torchvision.transforms as transforms  # şəkilləri hazırlamaq üçün
+from PIL import Image  # şəkilləri açmaq üçün
+from cnn_model import CustomCNN  # öz yaratdığınız CNN modeli
+import matplotlib.pyplot as plt  # şəkli göstərmək üçün
+import torch.nn.functional as F  # ehtimallar üçün softmax
+from tkinter import Tk, filedialog  # şəkil seçimi üçün GUI pəncərə
+    </pre>
+
+<h2>Device Seçimi (GPU ya da CPU)</h2>
+<pre>
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  # GPU varsa istifadə et, yoxsa CPU
+    </pre>
+
+<h2>Şəkil Dönüşümü</h2>
+<pre>
+transform = transforms.Compose([
+    transforms.Resize((64, 64)),  # şəkli 64x64 ölçüsünə sal
+    transforms.ToTensor(),        # şəkli tensora çevir
+    transforms.Normalize((0.5,), (0.5,))  # normalizasiya
+])
+    </pre>
+
+<h2>Şəkil Seçimi üçün GUI</h2>
+<pre>
+root = Tk()
+root.withdraw()  # əsas GUI pəncərəsini gizlə
+file_path = filedialog.askopenfilename(title="Bir şəkil seçin", filetypes=[("Image files", "*.jpg *.png *.jpeg")])
+    </pre>
+
+<h2>Şəkili Yüklə və Hazırlıq</h2>
+<pre>
+image = Image.open(file_path).convert("RGB")  # şəkili aç və RGB formatına çevir
+image_tensor = transform(image).unsqueeze(0).to(device)  # batch ölçüsü əlavə et [1, 3, 64, 64]
+    </pre>
+
+<h2>Modeli Yüklə və Təxmin et</h2>
+<pre>
+model = CustomCNN().to(device)  # modeli yüklə
+model.load_state_dict(torch.load("cnn_model.pth", map_location=device))  # modelin çəkilərini yüklə
+model.eval()  # qiymətləndirmə rejiminə keç
+
+with torch.no_grad():  # gradient hesablamamaq üçün
+    output = model(image_tensor)  # model ilə nəticəni əldə et
+    probabilities = F.softmax(output, dim=1)  # ehtimalları hesabla
+    predicted_class = torch.argmax(probabilities, dim=1).item()  # ən yüksək ehtimallı sinifi seç
+    </pre>
+
+<h2>Nəticələri Çap Et və Şəkili Göstər</h2>
+<pre>
+print(f"Seçilmiş şəkil: {file_path}")
+print(f"Təxmin edilən sinif: {class_names[predicted_class]}")
+print(f"Ehtimallar: {probabilities.cpu().numpy()[0]}")
+
+plt.imshow(image)  # şəkili göstər
+plt.title(f"Təxmin: {class_names[predicted_class]}")  # başlıq əlavə et
+plt.axis('off')  # oxları gizlə
+plt.show()  # şəkili göstər
+    </pre>
+
+</body>
+</html>

@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>Real time Voice Cloning</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1,h2,h3,h4,h5 {
+            color: #e74c3c;
+        }
+        pre {
+            background-color: #333; /* Qaranlıq arxa fon */
+            color: #fff; /* Ağ yazı */
+            padding: 10px; /* Hüdudlar */
+            border-radius: 5px; /* Künclərin yuvarlaq olması */
+            font-family: Consolas, monaco, monospace; /* Kod yazı tipi */
+            font-size: 16px; /* Yazı ölçüsü */
+            overflow: auto; /* Uzun kodun sürüşdürülməsi */
+            white-space: pre-wrap; /* Kodu avtomatik olaraq sarmalayıb göstərmək */
+        }
+        p {
+            line-height: 1.6;
+        }
+        strong {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Real time Voice Cloning</h1>
+
+<h2 class="section-title">Dataset necə olmalıdır?</h2>
+<p><strong>VCTK Corpus</strong> ən yaxşı datasetlərdən biridir encoder üçün, çünki:</p>
+<ul>
+    <li>Çox sayda spiker var (110 nəfər).</li>
+    <li>Hər biri ~400 cümə oxuyur.</li>
+    <li>Bu cür speaker-diverse dataset encoder üçün idealdır.</li>
+</ul>
+
+<h2 class="section-title">🎧 Format tələbləri:</h2>
+<ul>
+    <li>Audio formatı: .wav</li>
+    <li>Sampling rate: 16kHz</li>
+    <li>Mono kanal</li>
+    <li>16-bit PCM (standard .wav formatı)</li>
+</ul>
+
+<h2 class="section-title">Dataset strukturu:</h2>
+<pre>
+C:\Users\Mafia\Datasets\
+├── LibriSpeech\
+│   └── train-other-500\
+├── VoxCeleb1\
+│   ├── wav\
+│   └── vox1_meta.csv
+└── VoxCeleb2\
+    └── dev\
+    </pre>
+<p>Bu strukturu saxla, çünki hər spikerin səsi ayrı qovluqda olmalıdır. <code>p225</code>, <code>p226</code>, ... <code>p315</code> və s.</p>
+
+<h3>Terminal komandası:</h3>
+<code>python encoder_preprocess.py "C:\Users\Mafia\Datasets"</code>
+
+<h2 class="section-title">Encoder preprocess — Mel spectrogram-lar yaratmaq üçün</h2>
+<p>Səndə artıq <code>encoder_preprocess.py</code> faylı var. Bu fayl təmiz audio faylları alır və mel spectrogram yaratmaq üçün lazım olan fayllara çevirir.</p>
+
+<h3>1. Encoder qovluğu:</h3>
+<p>Bu qovluq səsin kodlaşdırılması və tərzi ilə əlaqəlidir. Burada <strong>Speaker Encoding</strong> prosesi həyata keçirilir.</p>
+
+<h3>encoder_train.py faylından parçalar:</h3>
+<pre>
+# Lazım olan kitabxanaları əlavə edirik
+import argparse
+from pathlib import Path
+
+from encoder.train import train
+from utils.argutils import print_args
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Səslərə görə istifadəçi tanıyan modeli öyrədir.",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+
+    parser.add_argument("run_id", type=str, help="Model üçün ad.")
+    parser.add_argument("clean_data_root", type=Path, help="Emal edilmiş dataların yolu.")
+    parser.add_argument("-m", "--models_dir", type=Path, default="saved_models", help="Modellərin saxlandığı qovluq.")
+    parser.add_argument("-v", "--vis_every", type=int, default=10, help="Vizualizasiya hər neçə addımdan bir.")
+    parser.add_argument("-u", "--umap_every", type=int, default=100, help="UMAP yeniləmə tezliyi.")
+    parser.add_argument("-s", "--save_every", type=int, default=500, help="Model saxlama tezliyi.")
+    parser.add_argument("-b", "--backup_every", type=int, default=7500, help="Backup tezliyi.")
+    parser.add_argument("-f", "--force_restart", action="store_true", help="Sıfırdan başlamaq üçün.")
+    parser.add_argument("--visdom_server", type=str, default="http://localhost", help="Vizdom server.")
+    parser.add_argument("--no_visdom", action="store_true", help="Vizdom-u söndür.")
+
+    args = parser.parse_args()
+    print_args(args, parser)
+    train(**vars(args))
+    </pre>
+
+<h2 class="section-title">VoxCeleb1 — Frame Məlumatları</h2>
+<p><strong>Identity:</strong> id11251<br>
+    <strong>Reference:</strong> 9h3PzQ9kL4w<br>
+    <strong>Offset:</strong> -5<br>
+    <strong>FV Conf:</strong> 17.383<br>
+    <strong>ASD Conf:</strong> 5.357</p>
+
+<h3>Frames:</h3>
+<table>
+    <thead>
+    <tr>
+        <th>Frame</th>
+        <th>X</th>
+        <th>Y</th>
+        <th>W</th>
+        <th>H</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr><td>001282</td><td>137</td><td>96</td><td>75</td><td>75</td></tr>
+    <tr><td>001283</td><td>137</td><td>96</td><td>75</td><td>75</td></tr>
+    <tr><td>001284</td><td>137</td><td>96</td><td>75</td><td>75</td></tr>
+    <tr><td>001285</td><td>137</td><td>96</td><td>75</td><td>75</td></tr>
+    <tr><td>001286</td><td>137</td><td>96</td><td>75</td><td>75</td></tr>
+    <tr><td>001287</td><td>137</td><td>96</td><td>75</td><td>75</td></tr>
+    <tr><td>001288</td><td>137</td><td>96</td><td>75</td><td>75</td></tr>
+    <tr><td>001289</td><td>137</td><td>96</td><td>75</td><td>75</td></tr>
+    <tr><td>001290</td><td>137</td><td>96</td><td>75</td><td>75</td></tr>
+    <tr><td>001291</td><td>137</td><td>96</td><td>75</td><td>75</td></tr>
+    <tr><td>001292</td><td>137</td><td>96</td><td>75</td><td>75</td></tr>
+    <tr><td>001293</td><td>137</td><td>96</td><td>75</td><td>75</td></tr>
+    </tbody>
+</table>
+
+<h2>encoder_preprocess.py</h2>
+
+<p><strong>Bu Python kodu</strong> səsli verilənləri (datasetləri) təlim üçün əvvəlcədən emal edir və onları <strong>mel-spektrogram</strong> formasında saxlayır. Bu, səslə tanınma (voice recognition) və ya səs klonlama (voice cloning) modellərinin, xüsusilə də <strong>SV2TTS (Speaker Verification to Text-To-Speech)</strong> kimi layihələrin encoder hissəsini təlim etdirmək üçün çox vacibdir.</p>
+
+<h3>1. Datasetləri təyin edir:</h3>
+<p>Kod <strong>LibriSpeech</strong>, <strong>VoxCeleb1</strong>, <strong>VoxCeleb2</strong> kimi məşhur səs datasetlərini emal etməyi dəstəkləyir.</p>
+
+<h3>2. Parametrləri oxuyur:</h3>
+<p>Komanda sətrindən (command-line) aşağıdakı parametrləri qəbul edir:</p>
+<ul>
+    <li><code>datasets_root</code> – Datasetlərin yerləşdiyi əsas qovluğun yolu.</li>
+    <li><code>--out_dir</code> – Emal nəticələrinin yazılacağı qovluq (mel-spektrogramlar).</li>
+    <li><code>--datasets</code> – Hansı datasetlərin emal ediləcəyini təyin edir.</li>
+    <li><code>--skip_existing</code> – Əgər fayl artıq mövcuddursa, onu təkrar emal etmə.</li>
+    <li><code>--no_trim</code> – Səssiz hissələri kəsmə.</li>
+</ul>
+
+<h3>3. Səssiz hissələri kəsmə üçün <code>webrtcvad</code> kitabxanasını yoxlayır:</h3>
+<p>Bu paket yoxdursa, xəbərdarlıq verir və istifadəçiyə seçim təklif edir.</p>
+
+<h3>4. Datasetləri emal edir:</h3>
+<p>Aşağıdakı datasetləri mel-spektrogramlara çevirərək diskə yazır:</p>
+<ul>
+    <li><code>LibriSpeech/train-other-500</code></li>
+    <li><code>VoxCeleb1/wav</code></li>
+    <li><code>VoxCeleb2/dev</code></li>
+</ul>
+<p>Bu spektrogramlar neyron şəbəkənin təlimi üçün daha uyğun formatda olur.</p>
+
+<h3>5. Nəticələri çıxış qovluğuna yazır:</h3>
+<p>Əgər <code>--out_dir</code> göstərilməyibsə, nəticələri <code>datasets_root/SV2TTS/encoder/</code> qovluğuna yazır.</p>
+
+<h3>Praktikdə bu nə deməkdir?</h3>
+<p>Bu kod:</p>
+<ul>
+    <li>Səs fayllarını oxuyur</li>
+    <li>Onları təmizləyir (səssiz hissələri kəsir)</li>
+    <li><strong>Mel-spektrogram</strong>a çevirir (səsin görsəl təmsilidir)</li>
+    <li>Fayl kimi saxlayır</li>
+</ul>
+
+<p><strong>Bu mərhələ bitdikdən sonra artıq encoder modelini təlimə başlatmaq mümkündür.</strong></p>
+<h1>Python Preprocess Skripti</h1>
+<pre><code># Lazım olan kitabxanaları əlavə edirik
+import argparse
+from pathlib import Path
+
+# Audio fayllarını əvvəlcədən emal etmək üçün funksiyalar
+from encoder.audio import preprocess_wav
+from encoder.preprocess import preprocess_librispeech, preprocess_voxceleb1, preprocess_voxceleb2
+from utils.argutils import print_args
+
+# Əsas icra olunan hissə
+if __name__ == "__main__":
+    class MyFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter):
+        pass
+
+    parser = argparse.ArgumentParser(
+        description="Datasets fayllarındakı səs fayllarını əvvəlcədən emal edir...",
+        formatter_class=MyFormatter,
+    )
+
+    parser.add_argument("datasets_root", type=Path, help="LibriSpeech/TTS və VoxCeleb datasetlərinin yolu.")
+    parser.add_argument("-o", "--out_dir", type=Path, default=argparse.SUPPRESS,
+                        help="Mel spektrogramların saxlanılacağı çıxış qovluğu.")
+    parser.add_argument("-d", "--datasets", type=str, default="librispeech_other,voxceleb1,voxceleb2",
+                        help="Emal ediləcək datasetlərin adları.")
+    parser.add_argument("-s", "--skip_existing", action="store_true", help="Əgər fayl varsa, ötüb keç.")
+    parser.add_argument("--no_trim", action="store_true", help="Səsi səssiz hissələri kəsmədən emal et.")
+
+    args = parser.parse_args()
+
+    if not args.no_trim:
+        try:
+            import webrtcvad
+        except:
+            raise ModuleNotFoundError("‘webrtcvad’ paketi yoxdur. Zəhmət olmasa onu quraşdırın.")
+
+    del args.no_trim
+    args.datasets = args.datasets.split(",")
+
+    if not hasattr(args, "out_dir"):
+        args.out_dir = args.datasets_root.joinpath("SV2TTS", "encoder")
+
+    assert args.datasets_root.exists()
+    args.out_dir.mkdir(exist_ok=True, parents=True)
+
+    print_args(args, parser)
+
+    preprocess_func = {
+        "librispeech_other": preprocess_librispeech,
+        "voxceleb1": preprocess_voxceleb1,
+        "voxceleb2": preprocess_voxceleb2,
+    }
+
+    args = vars(args)
+
+    for dataset in args.pop("datasets"):
+        print(f"{dataset} emal olunur...")
+        preprocess_func[dataset](**args)
+    </code></pre>
+<h1>1. audio.py:</h1>
+<li><strong>Bu Kod:</strong></li>
+<ul>
+    <li># Bu kod bir səs faylını oxuyur, lazım gələrsə keyfiyyətini düzəldir, səssiz hissələri kəsir</li>
+    <li># və modelə input verə biləcəyimiz bir mel-spektrogram çıxarır.</li>
+    <li># Yəni səsdən ➔ gözəl təmiz bir numerik təsvir (mel spectrogram) hazırlayırıq.</li>
+</ul>
+
+<pre><code>
+# Lazımi kitabxanaların importu
+from pathlib import Path
+from typing import Union
+from warnings import warn
+
+import numpy as np
+import librosa
+import struct
+
+from numba.core.types import Optional  # (Burda biraz düzəliş lazımdır, amma işləyir.)
+from scipy.ndimage import binary_dilation
+
+# Parametrlərimizi layihədən çəkirik
+from encoder.params_data import vad_moving_average_width, vad_max_silence_length, sampling_rate, \
+    audio_norm_target_dBFS, mel_window_length, mel_window_step, mel_n_channels, vad_window_length
+
+# Səssizlik aşkarlanması üçün kitabxananı yoxlayırıq
+try:
+    import webrtcvad
+except:
+    warn("Unable to import 'webrtcvad'. This package enables noise removal and is recommended.")
+    webrtcvad = None
+
+# Audio üçün int16 maksimum dəyər
+int16_max = (2 ** 15) - 1
+
+def preprocess_wav(fpath_or_wav: Union[str, Path, np.ndarray],
+                   source_sr: Optional[int] = None,
+                   normalize: Optional[bool] = True,
+                   trim_silence: Optional[bool] = True,):
+    """
+    Audio faylını oxuyur, lazımsa resample edir, normalizasiya edir və səssizlikləri kəsir.
+    """
+    if isinstance(fpath_or_wav, str) or isinstance(fpath_or_wav, Path):
+        wav, source_sr = librosa.load(str(fpath_or_wav), sr=None)
+    else:
+        wav = fpath_or_wav
+
+    if source_sr is not None and source_sr != sampling_rate:
+        wav = librosa.resample(wav, source_sr, sampling_rate)
+
+    if normalize:
+        wav = normalize_volume(wav, audio_norm_target_dBFS, increase_only=True)
+
+    if webrtcvad and trim_silence:
+        wav = trim_long_silences(wav)
+
+    return wav
+
+def wav_to_mel_spectrogram(wav):
+    """
+    Wav audio-nu mel-spektrograma çevirir.
+    """
+    frames = librosa.feature.melspectrogram(
+        wav,
+        sampling_rate,
+        n_fft=int(sampling_rate * mel_window_length / 1000),
+        hop_length=int(sampling_rate * mel_window_step / 1000),
+        n_mels=mel_n_channels
+    )
+    return frames.astype(np.float32).T
+
+def trim_long_silences(wav):
+    """
+    Uzun səssizlikləri tapır və kəsir.
+    """
+    samples_per_window = (vad_window_length * sampling_rate) // 1000
+    wav = wav[:len(wav) - (len(wav) % samples_per_window)]
+    pcm_wave = struct.pack("%dh" % len(wav), *(np.round(wav * int16_max)).astype(np.int16))
+
+    voice_flags = []
+    vad = webrtcvad.Vad(mode=3)
+    for window_start in range(0, len(wav), samples_per_window):
+        window_end = window_start + samples_per_window
+        voice_flags.append(vad.is_speech(pcm_wave[window_start * 2:window_end * 2],
+                                         sample_rate=sampling_rate))
+
+    voice_flags = np.array(voice_flags)
+
+    def moving_average(array, width):
+        array_padded = np.concatenate((np.zeros((width - 1) // 2), array, np.zeros(width // 2)))
+        ret = np.cumsum(array_padded, dtype=float)
+        ret[width:] = ret[width:] - ret[:-width]
+        return ret[width - 1:] / width
+
+    audio_mask = moving_average(voice_flags, vad_moving_average_width)
+    audio_mask = np.round(audio_mask).astype(np.bool_)
+    audio_mask = binary_dilation(audio_mask, np.ones(vad_max_silence_length + 1))
+    audio_mask = np.repeat(audio_mask, samples_per_window)
+
+    return wav[audio_mask == True]
+
+def normalize_volume(wav, target_dBFS, increase_only=False, decrease_only=False):
+    """
+    Wav səs səviyyəsini target_dBFS-ə uyğunlaşdırır.
+    """
+    if increase_only and decrease_only:
+        raise ValueError("Both increase_only and decrease_only are set.")
+
+    dBFS_change = target_dBFS - 10 * np.log10(np.mean(wav ** 2))
+
+    if (dBFS_change < 0 and increase_only) or (dBFS_change > 0 and decrease_only):
+        return wav
+
+    return wav * (10 ** (dBFS_change / 20))
+</code></pre>
+<h1>2.config.py / datasets.py</h1>
+
+<ul>
+    <li>Bu kodu birbaşa datasets.py faylına yaza bilərsən.</li>
+    <li>Sonra digər fayllarda from datasets import librispeech_datasets kimi import edib istifadə edə bilərsən.</li>
+</ul>
+
+<pre><code># Dataset-lərin tam siyahısı
+
+librispeech_datasets = {
+    "train": {
+        "clean": ["LibriSpeech/train-clean-100", "LibriSpeech/train-clean-360"],
+        "other": ["LibriSpeech/train-other-500"]
+    },
+    "test": {
+        "clean": ["LibriSpeech/test-clean"],
+        "other": ["LibriSpeech/test-other"]
+    },
+    "dev": {
+        "clean": ["LibriSpeech/dev-clean"],
+        "other": ["LibriSpeech/dev-other"]
+    },
+}
+
+libritts_datasets = {
+    "train": {
+        "clean": ["LibriTTS/train-clean-100", "LibriTTS/train-clean-360"],
+        "other": ["LibriTTS/train-other-500"]
+    },
+    "test": {
+        "clean": ["LibriTTS/test-clean"],
+        "other": ["LibriTTS/test-other"]
+    },
+    "dev": {
+        "clean": ["LibriTTS/dev-clean"],
+        "other": ["LibriTTS/dev-other"]
+    },
+}
+
+voxceleb_datasets = {
+    "voxceleb1": {
+        "train": ["VoxCeleb1/wav"],
+        "test": ["VoxCeleb1/test_wav"]
+    },
+    "voxceleb2": {
+        "train": ["VoxCeleb2/dev/aac"],
+        "test": ["VoxCeleb2/test_wav"]
+    }
+}
+
+other_datasets = [
+    "LJSpeech-1.1",
+    "VCTK-Corpus/wav48",
+]
+
+anglophone_nationalites = ["az", "tr", "uk", "usa"]
+
+# İstəsən belə yazıb test edə bilərsən:
+if __name__ == "__main__":
+    print("LibriSpeech datasets:", librispeech_datasets)
+    print("LibriTTS datasets:", libritts_datasets)
+    print("VoxCeleb datasets:", voxceleb_datasets)
+    print("Other datasets:", other_datasets)
+    print("Anglophone nationalities:", anglophone_nationalites)
+</code></pre>
+
+<h1>Səs Faylından Embedding Çıxarılması</h1>
+<p>Bu skript bir səs faylını (wav faylı və ya səs dalğası) alır, onu mel-spektrograma çevirir, və sonra embedding (rəqəm vektoru) çıxarır. Bu embedding aşağıdakı məqsədlər üçün istifadə olunur:</p>
+<ul>
+    <li>Səsi təmsil etmək üçün</li>
+    <li>İnsanı tanımaq üçün</li>
+    <li>İki səsin bir-birinə bənzəyib-bənzəmədiyini yoxlamaq üçün</li>
+</ul>
+
+<h2>Encoder Modulunun İmportu</h2>
+<pre><code>
+from functools import partial
+from pathlib import Path
+from matplotlib import cm
+import numpy as np
+import torch
+from librosa.util import frame
+from mpmath import fraction
+from sympy.physics.vector import partial_velocity
+from typing_extensions import overload
+
+from encoder import audio
+    </code></pre>
+
+<h2>Modeli Yükləmə Funksiyası</h2>
+<pre><code>
+# Global dəyişənlər: Model və cihaz (cuda/cpu)
+_model = None
+_device = None
+
+def load_model(weights_fpath: Path, device=None):
+    """
+    Modeli çəkir və RAM-a yükləyir.
+    """
+    global _model, _device
+    if device is None:
+        _device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    elif isinstance(device, str):
+        _device = torch.device(device)
+
+    # Speaker Encoder modelini yaradırıq
+    _model = SpeakerEncoder(_device, torch.device("dpu"))
+
+    # Modelin checkpoint-lərini yükləyirik
+    checkpoint = torch.load(weights_fpath, _device)
+    _model.load_state_dict(checkpoint["model_state"])
+    _model.eval()
+    print(f"Loaded encoder \"{weights_fpath.name}\" trained to step {checkpoint['step']}")
+    </code></pre>
+
+<h2>Funksiyalar və Onların İstifadəsi</h2>
+<table class="function-table">
+    <thead>
+    <tr>
+        <th>Funksiya adı</th>
+        <th>İşi</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>load_model()</td>
+        <td>Modeli yükləyir.</td>
+    </tr>
+    <tr>
+        <td>is_loaded()</td>
+        <td>Model yüklənibmi deyir.</td>
+    </tr>
+    <tr>
+        <td>embed_frames_batch()</td>
+        <td>Frames (spektral) verib embedding çıxardır.</td>
+    </tr>
+    <tr>
+        <td>compute_partial_slices()</td>
+        <td>Uzun səsi hissələrə bölür.</td>
+    </tr>
+    <tr>
+        <td>embed_utterance()</td>
+        <td>Bir wav fayldan embedding çıxardır.</td>
+    </tr>
+    <tr>
+        <td>embed_speaker()</td>
+        <td>(Hələ yazılmayıb) Bir neçə səsdən danışan embedding-i çıxaracaq.</td>
+    </tr>
+    <tr>
+        <td>plot_embedding_as_heatmap()</td>
+        <td>Embedding-ləri vizual (rəng xəritəsi) kimi göstərir.</td>
+    </tr>
+    </tbody>
+</table>
+
+<h1>4. SpeakerEncoder Model</h1>
+
+<p>
+    Bu model, danışan tanıma və ya identifikasiyası üçün LSTM və digər şəbəkə elementlərindən istifadə edir. Kodda həmçinin similarity matrix (oxşarlıq matrisi) və itki funksiyası (loss function) daxil edilib.
+</p>
+
+<h2>SpeakerEncoder Modelinin Kodu:</h2>
+<pre>
+        <code>
+import torch
+from torch import nn
+from torch.nn.utils import clip_grad_norm_
+from sklearn.metrics import roc_curve
+from scipy.interpolate import interp1d
+from scipy.optimize import brentq
+import numpy as np
+
+# Bu dəyişənlərin kodda haradasa təyin edildiyini qəbul edirik
+mel_n_channels = 80  # Mel spektral kanallar
+model_hidden_size = 512  # LSTM üçün gizli ölçü
+model_num_layers = 3  # LSTM qatlarının sayı
+model_embedding_size = 256  # Çıxış yerləşdirmə ölçüsü
+
+
+class SpeakerEncoder(nn.Module):
+    def __init__(self, device, loss_device):
+        super(SpeakerEncoder, self).__init__()
+        self.loss_device = loss_device
+
+        # Xüsusiyyətlərin çıxarılması üçün LSTM qatları
+        self.lstm = nn.LSTM(input_size=mel_n_channels,
+                            hidden_size=model_hidden_size,
+                            num_layers=model_num_layers,
+                            batch_first=True).to(device)
+
+        # Yerləşdirmə (embedding) yaratmaq üçün tam bağlı qat
+        self.linear = nn.Linear(in_features=model_hidden_size,
+                                out_features=model_embedding_size).to(device)
+
+        # Aktivasiya funksiyası
+        self.relu = nn.ReLU().to(device)
+
+        # Oxşarlıq hesablaması üçün parametrlər
+        self.similarity_weight = nn.Parameter(torch.tensor([10.0])).to(device)
+        self.similarity_bias = nn.Parameter(torch.tensor([-5.0])).to(loss_device)
+
+        # İtki funksiyası
+        self.loss_fn = nn.CrossEntropyLoss().to(loss_device)
+
+    def do_gradient_ops(self):
+        # Oxşarlıq çəki və önyargı üçün gradient əməliyyatları
+        self.similarity_weight.grad *= 0.01
+        self.similarity_bias.grad *= 0.01
+
+        # Gradientləri klipləmə (exploding gradient problemlərinin qarşısını almaq üçün)
+        clip_grad_norm_(self.parameters(), 3, norm_type=2)
+
+    def forward(self, utterances, hidden_init=None):
+        # LSTM-dən keçid
+        out, (hidden, cell) = self.lstm(utterances, hidden_init)
+
+        # Lineer dönüşüm və ReLU aktivasiya tətbiq edilir
+        embeds_raw = self.relu(self.linear(hidden[-1]))
+
+        # Yerləşdirmələri (embeddings) normalizasiya edirik
+        embeds = embeds_raw / (torch.norm(embeds_raw, dim=1, keepdim=True) + 1e-5)
+
+        return embeds
+
+    def similarity_matrix(self, embeds):
+        # Batch ölçüsü və hər danışan üçün səsli nümunələrin sayı
+        speakers_per_batch, utterances_per_speaker = embeds.shape[:2]
+
+        # Daxil olan və xaric edilən nümunələr üçün centroidlər (orta vektorlar) hesablanır
+        centroids_incl = torch.mean(embeds, dim=1, keepdim=True)
+        centroids_incl = centroids_incl.clone() / (torch.norm(centroids_incl, dim=2, keepdim=True) + 1e-5)
+
+        centroids_excl = (torch.sum(embeds, dim=1, keepdim=True) - embeds)
+        centroids_excl /= (utterances_per_speaker - 1)
+        centroids_excl = centroids_excl.clone() / (torch.norm(centroids_excl, dim=2, keepdim=True) + 1e-5)
+
+        # Oxşarlıq matrisini yaratmaq
+        sim_matrix = torch.zeros(speakers_per_batch, utterances_per_speaker,
+                                 speakers_per_batch).to(self.loss_device)
+
+        # Öz-özünə oxşarlığı qarşılamaq üçün maska matrisini yaradın
+        mask_matrix = 1 - np.eye(speakers_per_batch, dtype=np.int)
+        for j in range(speakers_per_batch):
+            mask = np.where(mask_matrix[j])[0]
+            sim_matrix[mask, :, j] = (embeds[mask] * centroids_incl[j]).sum(dim=2)
+            sim_matrix[j, :, j] = (embeds[j] * centroids_excl[j]).sum(dim=1)
+
+        # Oxşarlıq çəki və önyargısı tətbiq olunur
+        sim_matrix = sim_matrix * self.similarity_weight + self.similarity_bias
+        return sim_matrix
+
+    def loss(self, embeds):
+        # Batch ölçüsü və danışan başına səsli nümunə sayı
+        speakers_per_batch, utterances_per_speaker = embeds.shape[:2]
+
+        # Oxşarlıq matrisini hesablayırıq
+        sim_matrix = self.similarity_matrix(embeds)
+        sim_matrix = sim_matrix.reshape(speakers_per_batch, utterances_per_speaker, speakers_per_batch)
+
+        # Çapraz entropiya itkisi üçün ground truth etiketləri
+        ground_truth = np.repeat(np.arange(speakers_per_batch), utterances_per_speaker)
+        target = torch.from_numpy(ground_truth).long().to(self.loss_device).to(self.loss_device)
+
+        # Çapraz entropiya itkisini hesablayırıq
+        loss = self.loss_fn(sim_matrix, target)
+
+        # Bərabər Səhv Nisbətini (Equal Error Rate, EER) hesablamaq
+        with torch.no_grad():
+            inv_argmax = lambda i: np.eye(1, speakers_per_batch, i, dtype=np.int)[0]
+            labels = np.array([inv_argmax(i) for i in ground_truth])
+            preds = sim_matrix.detach().cpu().numpy()
+
+            fpr, tpr, thresholds = roc_curve(labels.flatten(), preds.flatten())
+            eer = brentq(lambda x: 1. - x - interp1d(fpr, tpr)(x), 0., 1.)
+
+        return loss, eer
+        </code>
+    </pre>
+
+<h2>Əsas Dəyişikliklər və İzahlar:</h2>
+<ul>
+    <li><strong>forward metodu:</strong> Modelin çıxışı olan yerləşdirmələr (embeddings) normalizasiya edilir ki, bu da oxşarlıq müqayisələrini yaxşılaşdırır.</li>
+    <li><strong>Oxşarlıq Matrisi:</strong> similarity_matrix metodu, daxil olan və xaric edilən danışan nümunələri əsas alaraq oxşarlıq matrisi hesablayır. Bu, danışanların bir-birilə oxşarlığını ölçmək üçün istifadə olunur.</li>
+    <li><strong>İtki Funksiyası:</strong> loss metodu, həmçinin Bərabər Səhv Nisbəti (EER) hesablayır ki, bu da danışan tanıma sistemləri üçün bir performans ölçüsüdür.</li>
+    <li><strong>Gradient Klipləmə:</strong> do_gradient_ops metodu, gradientlərin böyük olmasının qarşısını almaq üçün onları klipləyir (Exploding Gradient problemi).</li>
+    <li><strong>Cihaz İdarəsi:</strong> Model, iki cihaz qəbul edir: device əsas hesablama üçün, loss_device isə itkini hesablamaq üçün (bu cihazlar fərqli ola bilər, məsələn, CPU və GPU).</li>
+</ul>
+
+<h2>5. Params_data.py</h2>
+<p>Bu kod hissəsi bir səs işləmə layihəsinin ayar parametrləridir — yəni:</p>
+<ul>
+    <li>Səsi necə oxumaq, necə çevirmək (mel filterbank etmək),</li>
+    <li>Səssiz hissələri necə aşkarlamaq (Voice Activation Detection - VAD),</li>
+    <li>Səsi necə normallaşdırmaq (dBFS səviyyəsini tənzimləmək),</li>
+    <li>Neçə çərçivə (frame) istifadə olunacaq,</li>
+</ul>
+<p>Bunları dəqiqləşdirmək üçün yazılıb. Bu kodun əsas məqsədi: audio siqnallarını neyron şəbəkə üçün hazırlamaq.</p>
+
+<pre>
+# Mel Filtirleme
+mel_window_length = 25  # Hər mel-spektroqram hissəsinin uzunluğu (25 ms).
+mel_window_step = 10    #  İki ardıcıl pəncərə arasındakı sürüşmə (stride), 10 ms.
+mel_n_channels = 40    #  Mel-spektrogramın neçə kanal (frequency band)
+# olacağını təyin edir (40 kanal).
+
+# Audio
+sampling_rate = 16000    #Səslərin neçə Hz ilə
+# oxunacağını göstərir (16 kHz tipik bir dəyərdir).
+partials_n_frames = 160     # 1600 ms  Məşq zamanı, 1.6 saniyəlik
+# (160 çərçivə) hissələr istifadə olunacaq.
+inference_n_frames = 80  # 800 ms Test zamanı, 0.8 saniyəlik
+# (80 çərçivə) hissələr istifadə olunacaq.
+
+# Voice Activation Detection (VAD)
+
+vad_window_length = 30  # In milliseconds Səsi yoxlamaq üçün
+# 30 millisanilik pəncərələr istifadə edilir.
+vad_moving_average_width = 8  #  Səssizlik aşkarlananda nəticələri
+# yumşaltmaq üçün 8 pəncərə orta hesablanır.
+vad_max_silence_length = 6   # Səssizliyin maksimum
+# uzunluğu 6 pəncərədir (səssizlik çox uzunsa, bölmək lazımdır).
+
+# Audio volume normalization
+audio_norm_target_dBFS = -30 # Audio fayllar -30 dBFS səviyyəsinə gətirilir.
+#Çünki model sabit bir səs səviyyəsi gözləyir (çox yüksək
+# və ya çox aşağı olarsa performans düşə bilər).
+</pre>
+
+<h2>6. params_model.py</h2>
+<p>Bir səs tanıma və ya səsdən şəxsiyyət müəyyən etmə (Speaker Verification / Speaker Embedding) layihəsinin parametrlərini (yəni sazlamalarını) müəyyən edir.</p>
+
+<pre>
+# ======================
+# Model parameters
+# ======================
+model_hidden_size = 256    # Gizli qatların ölçüsü
+model_embedding_size = 256 # İstənilən çıxış embedding ölçüsü
+model_num_layers = 3       # Şəbəkədəki qatların (layers) sayı
+
+# ======================
+# Training parameters
+# ======================
+learning_rate_init = 1e-4        # İlkin öyrənmə sürəti (learning rate)
+speakers_per_batch = 64          # Hər batch-dəki danışanların sayı
+utterances_per_speaker = 10      # Hər danışan üçün cümlə (utterance) sayı
+</pre>
+
+<h1>7. preprocess.py</h1>
+
+<p>
+    Bu kod böyük audio datasetləri (LibriSpeech, VoxCeleb1, VoxCeleb2):
+</p>
+<ul>
+    <li>Oxuyur,</li>
+    <li>Faylları təmizləyir və mel-spectrograma çevirir,</li>
+    <li>.npy faylı kimi saxlayır,</li>
+    <li>Hər bir addımı log faylında qeyd edir,</li>
+    <li>Paralel işləmə ilə sürətlənir (4 nüvə istifadə edir).</li>
+</ul>
+
+<p><strong>Əsas Kitabxanalar:</strong></p>
+<pre>
+        pip install tqdm
+    </pre>
+
+<p><strong>Kodun Başlanğıcı:</strong></p>
+<pre>
+        from datetime import datetime
+        from functools import partial
+        from importlib.metadata import metadata
+        from multiprocessing import Pool
+        from pathlib import Path
+        from tqdm import tqdm
+        from encoder import audio
+        from turtledemo.penrose import start
+        from encoder import params_data
+        import numpy as np
+        from joblib.testing import param
+        from torch.fx.experimental.unification.multipledispatch.dispatcher import source
+        from encoder.config import librispeech_datasets, anglophone_nationalites
+        from encoder.params_data import partials_n_frames, sampling_rate
+    </pre>
+
+<p><strong>DatasetLog sinifi:</strong></p>
+<p>
+    DatasetLog sinifi dataset yaradanda log (gündəlik yazısı) yazır:
+</p>
+<ul>
+    <li><strong>text_file</strong>: log faylını açır, hər addımı ora yazır.</li>
+    <li><strong>sample_data</strong>: toplanan statistik məlumatları saxlayır.</li>
+</ul>
+
+<p><strong>Əsas metodlar:</strong></p>
+<ul>
+    <li><strong>_log_params()</strong>: istifadə olunan parametrləri fayla yazır.</li>
+    <li><strong>write_line(line)</strong>: fayla sətir əlavə edir.</li>
+    <li><strong>add_sample(kwargs)</strong>: statistik məlumat (məsələn audio uzunluğu) toplayır.</li>
+    <li><strong>finalize()</strong>: statistik məlumatları fayla yazır və faylı bağlayır.</li>
+</ul>
+
+<p><strong>İstifadə olunan funksiyalar:</strong></p>
+<pre>
+        def _init_preprocess_dataset(dataset_name, datasets_root, out_dir) -> (Path, DatasetLog):
+            dataset_root = datasets_root.joinpath(dataset_name)
+            if not dataset_root.exists():
+                print("Couldn't find %s, skipping this dataset." % dataset_root)
+                return None, None
+            return dataset_root, DatasetLog(out_dir, dataset_name)
+
+        def _preprocess_speaker(speaker_dir: Path, datasets_root: Path, out_dir: Path, skip_existing: bool):
+            speaker_name = "_".join(speaker_dir.relative_to(datasets_root).parts)
+            speaker_out_dir = out_dir.joinpath(speaker_name)
+            speaker_out_dir.mkdir(exist_ok=True)
+            sources_fpath = speaker_out_dir.joinpath("_sources.txt")
+            if sources_fpath.exists():
+                try:
+                    with sources_fpath.open("r") as sources_file:
+                        existing_fnames = {line.split(",")[0] for line in sources_file}
+                except:
+                    existing_fnames = {}
+            else:
+                existing_fnames = {}
+            sources_file = sources_fpath.open("a" if skip_existing else "w")
+            audio_durs = []
+            for extension in _AUDIO_EXTENSIONS:
+                for in_fpath in speaker_dir.glob("**/*.%s" % extension):
+                    out_fname = "_".join(in_fpath.relative_to(speaker_dir).parts)
+                    out_fname = out_fname.replace(".%s" % extension, ".npy")
+                    if skip_existing and out_fname in existing_fnames:
+                        continue
+                    wav = audio.preprocess_wav(in_fpath)
+                    if len(wav) == 0:
+                        continue
+                    frames = audio.wav_to_mel_spectrogram(wav)
+                    if len(frames) < partials_n_frames:
+                        continue
+                    out_fpath = speaker_out_dir.joinpath(out_fname)
+                    np.save(out_fpath, frames)
+                    sources_file.write("%s,%s\n" % (out_fname, in_fpath))
+                    audio_durs.append(len(wav) / sampling_rate)
+            sources_file.close()
+            return audio_durs
+    </pre>
+
+<p><strong>Datasetləri necə işləyirik:</strong></p>
+<pre>
+        def preprocess_librispeech(datasets_root: Path, out_dir: Path, skip_existing=False):
+            for dataset_name in librispeech_datasets["train"]["other"]:
+                dataset_root, logger = _init_preprocess_dataset(dataset_name, datasets_root, out_dir)
+                if not dataset_root:
+                    return
+                speaker_dirs = list(dataset_root.glob("*"))
+                _preprocess_speaker_dirs(speaker_dirs, dataset_name, datasets_root, out_dir, skip_existing, logger)
+
+        def preprocess_voxceleb1(datasets_root: Path, out_dir: Path, skip_existing=False):
+            dataset_name = "VoxCeleb1"
+            dataset_root, logger = _init_preprocess_dataset(dataset_name, datasets_root, out_dir)
+            if not datasets_root:
+                return
+            with datasets_root.joinpath("vox1_meta.csv").open("r") as metafile:
+                metadata = [line.split("\t") for line in metafile][1:]
+                nationalities = {line[0]: line[3] for line in metadata}
+                keep_speaker_ids = [speaker_id for speaker_id, nationaliy in nationalities.items() if
+                                    nationaliy.lower() in anglophone_nationalites]
+                print("VoxCeleb1: using samples from %d (presumed anglophone) speakers out of %d." %
+                      (len(keep_speaker_ids), len(nationalities)))
+                speaker_dirs = dataset_root.joinpath("wav").glob("*")
+                speaker_dirs = [speaker_dir for speaker_dir in speaker_dirs if
+                                speaker_dir.name in keep_speaker_ids]
+                print("VoxCeleb1: found %d anglophone speakers on the disk, %d missing (this is normal)." %
+                      (len(speaker_dirs), len(keep_speaker_ids) - len(speaker_dirs)))
+                _preprocess_speaker_dirs(speaker_dirs, dataset_name, datasets_root, out_dir, skip_existing, logger)
+    </pre>
+
+<h1>8-Train Model</h1>
+<p>
+    Bu nümunə, səs tanıma (speaker verification) üçün bir modelin PyTorch ilə necə öyrədildiyini göstərir və təmizlənmiş səs məlumatları əsasında modelin necə tren edildiyini izah edir.
+</p>
+<pre>
+        <code>
+from pathlib import Path                         # Fayl yolları ilə işləmək üçün
+import torch                                     # PyTorch kitabxanası - maşın öyrənmə üçün
+from torch.utils.data import DataLoader          # Dataset yükləyicisi
+
+# Model, parametrlər, dataset, vizualizasiya və s. layihənin modullarından gətirilir
+from encoder.model import SpeakerEncoder         # Səsləri tanımaq üçün model
+from encoder.params_model import speakers_per_batch, utterances_per_speaker, learning_rate_init
+from encoder.visualizations import Visualizations # Vizualizasiya üçün modul
+from encoder.data_objects.speaker_verification_dataset import SpeakerVerificationDataset  # Dataset sinfi
+from encoder.data_objects.speaker_verification_data_loader import SpeakerVerificationDataLoader # DataLoader
+from encoder.profiler import Profiler            # Profil izləyici – performans ölçmək üçün
+
+# CUDA cihazında sinxronizasiya üçün funksiya
+def sync(device: torch.device):
+    if device.type == "cuda":
+        torch.cuda.synchronize(device)
+
+# Əsas təlim funksiyası
+def train(run_id: str,                        # Təlimin adını müəyyən edir
+          clean_data_root: Path,              # Təmiz səs məlumatlarının yerləşdiyi qovluq
+          models_dir: Path,                   # Modellərin saxlandığı qovluq
+          umap_every: int,                    # Hər neçə addımdan bir UMAP vizualizasiya edilsin
+          save_every: int,                    # Hər neçə addımdan bir model yadda saxlanılsın
+          backup_every: int,                  # Hər neçə addımdan bir backup alınsın
+          vis_every: int,                     # Vizualizasiya üçün interval
+          force_restart: bool,                # Əvvəlki modeli yükləmədən sıfırdan başlasın?
+          visdom_server: str,                 # Visdom server ünvanı
+          no_visdom: bool):                   # Vizualizasiya aktiv olsun ya yox
+
+    # Dataset yaradılır
+    dataset = SpeakerVerificationDataset(clean_data_root)
+
+    # DataLoader yaradılır (batch-lər şəklində məlumatı verir)
+    loader = SpeakerVerificationDataLoader(dataset,
+                                           speakers_per_batch,
+                                           utterances_per_speaker,
+                                           num_workers=4)
+
+    # Cihaz müəyyən edilir – CUDA varsa GPU, yoxdursa CPU
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    loss_device = torch.device("cpu")  # Loss CPU-da hesablanacaq
+
+    # Model yaradılır
+    model = SpeakerEncoder(device, loss_device)
+
+    # Adam optimizer ilə öyrədiləcək
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate_init)
+
+    init_step = 1  # Təlimin başlanğıc addımı
+
+    # Modelin saxlanılacağı qovluq yaradılır
+    model_dir = models_dir / run_id
+    model_dir.mkdir(exist_ok=True, parents=True)
+
+    # Modelin saxlandığı faylın yolu
+    state_fpath = model_dir / "encoder.pt"
+
+    # Əgər əvvəlki model varsa və force_restart FALSE-dursa, onu yüklə
+    if not force_restart and state_fpath.exists():
+        print(f"Found existing model \"{run_id}\", loading it and resuming training.")
+        checkpoint = torch.load(state_fpath)
+        init_step = checkpoint["step"]
+        model.load_state_dict(checkpoint["model_state"])
+        optimizer.load_state_dict(checkpoint["optimizer_state"])
+        optimizer.param_groups[0]["lr"] = learning_rate_init
+    else:
+        print(f"Starting training for \"{run_id}\" from scratch.")
+
+    model.train()  # Model tren rejiminə keçir
+
+    # Vizualizasiya obyektini yarat
+    vis = Visualizations(run_id, vis_every, server=visdom_server, disabled=no_visdom)
+    vis.log_dataset(dataset)        # Dataset barədə məlumatları log et
+    vis.log_params()                # Parametrləri log et
+    device_name = str(torch.cuda.get_device_name(0) if torch.cuda.is_available() else "cpu")
+    vis.log_implementation({"Device": device_name})  # Hansı cihazda çalışırsa onu göstər
+
+    # Profil izləmə aktivləşdirilir
+    profiler = Profiler(summarize_every=10, disabled=False)
+
+    # Təlim dövrü başlayır
+    for step, speaker_batch in enumerate(loader, init_step):
+        profiler.tick("Blocking, waiting for batch (threaded)")
+
+        # Batch məlumat GPU/CPU-ya ötürülür
+        inputs = torch.from_numpy(speaker_batch.data).to(device)
+        sync(device)
+        profiler.tick("Data to device")
+
+        # Modelə giriş verilir və nəticə alınır
+        embeds = model(inputs)
+        sync(device)
+        profiler.tick("Forward pass")
+
+        # İstifadəçilərə görə embedding-lər 3D formada düzülür
+        embeds_loss = embeds.view((speakers_per_batch, utterances_per_speaker, -1)).to(loss_device)
+
+        # Zərər (loss) və EER (Equal Error Rate) hesablanır
+        loss, eer = model.loss(embeds_loss)
+        sync(loss_device)
+        profiler.tick("Loss")
+
+        # Geri yayılma (backpropagation)
+        model.zero_grad()
+        loss.backward()
+        profiler.tick("Backward pass")
+
+        model.do_gradient_ops()  # Gradient normallaşdırılması və s.
+        optimizer.step()         # Parametrlər yenilənir
+        profiler.tick("Parameter update")
+
+        # Vizualizasiya məlumatı yenilənir
+        vis.update(loss.item(), eer, step)
+
+        # UMAP ilə 2D vizual proyeksiya yaradılır
+        if umap_every != 0 and step % umap_every == 0:
+            print(f"Drawing and saving projections (step {step})")
+            projection_fpath = model_dir / f"umap_{step:06d}.png"
+            embeds = embeds.detach().cpu().numpy()
+            vis.draw_projections(embeds, utterances_per_speaker, step, projection_fpath)
+            vis.save()
+
+        # Model fayla yazılır
+        if save_every != 0 and step % save_every == 0:
+            print(f"Saving the model (step {step})")
+            torch.save({
+                "step": step + 1,
+                "model_state": model.state_dict(),
+                "optimizer_state": optimizer.state_dict(),
+            }, state_fpath)
+
+        # Backup faylı yaradılır
+        if backup_every != 0 and step % backup_every == 0:
+            print(f"Making a backup (step {step})")
+            backup_fpath = model_dir / f"encoder_{step:06d}.bak"
+            torch.save({
+                "step": step + 1,
+                "model_state": model.state_dict(),
+                "optimizer_state": optimizer.state_dict(),
+            }, backup_fpath)
+
+        # Profil izləyici əlavə fəaliyyətləri qeyd edir
+        profiler.tick("Extras (visualizations, saving)")
+        </code>
+    </pre>
+
+<h2>Gərəkli Fayllar və Modullar</h2>
+<p>
+    Bu kodun işləməsi üçün aşağıdakı modullar/fayllar lazımdır:
+</p>
+<ul>
+    <li>encoder/model.py → SpeakerEncoder sinifi</li>
+    <li>encoder/params_model.py → speakers_per_batch, utterances_per_speaker, learning_rate_init</li>
+    <li>encoder/visualizations.py → Visualizations sinifi</li>
+    <li>encoder/data_objects/... → Dataset və DataLoader sinifləri</li>
+    <li>encoder/profiler.py → Profiler sinifi</li>
+</ul>
+
+<h1>Visualizations.py - Python Kodu</h1>
+<pre><code>
+from sys import implementation  # Python interpreter haqqında məlumat üçün (məs. CPython)
+import numpy as np  # Sayısal hesablama üçün kitabxana
+import matplotlib.pyplot as plt  # Qrafik çəkmək üçün kitabxana
+import umap  # Yüksək ölçülü datanı 2D proyeksiyaya salmaq üçün
+import visdom  # Vizualizasiya üçün server
+from datetime import datetime  # Tarix/saat üçün
+import time  # Vaxt ölçmək üçün
+from multiprocessing.connection import Connection  # Paralel işləmə əlaqəsi (bu kodda istifadə olunmayıb)
+from numba.cuda.simulator.reduction import reduce  # CUDA üçün reduce funksiyası (bu kodda istifadə olunmayıb)
+from encoder import params_data  # Layihədəki data parametrləri
+from encoder import params_model  # Layihədəki model parametrləri
+
+# 13 fərqli RGB rəngi təyin edir və 255-ə bölərək 0-1 aralığında normallaşdırır
+colormap = np.array([
+    [255, 0, 0], [0, 255, 0], [0, 0, 255],
+    [255, 255, 0], [255, 0, 255], [0, 255, 255],
+    [128, 0, 0], [0, 128, 0], [0, 0, 128],
+    [128, 128, 0], [128, 0, 128], [0, 128, 128],
+    [128, 128, 128]
+], dtype=np.float) / 255
+
+class Visualizations:
+    def __init__(self, env_name=None, update_every=10, server="http://localhost", disabled=False):
+        self.disabled = disabled  # Vizualizasiya deaktiv edilsin ya yox
+        if disabled:
+            return
+        self.vis = visdom.Visdom(server=server, env=env_name)  # Visdom obyektini yaradıb serverə qoşulur
+        self.update_every = update_every  # Neçə addımdan bir yenilənəcək
+        self.loss_data = []  # Loss dəyərləri burada yığılır
+        self.eer_data = []  # EER dəyərləri burada yığılır
+        self.time_data = []  # Vaxt dəyərləri burada yığılır
+
+    def log_params(self):
+        if self.disabled:
+            return
+        text = "<br>".join([
+            "<b>Model parameters:</b>"
+        ] + [f"{key} = {value}" for key, value in params_model.__dict__.items() if not key.startswith("__")])
+        self.vis.text(text)  # Model parametrlərini visdom-a yazır
+        text = "<br>".join([
+            "<b>Data parameters:</b>"
+        ] + [f"{key} = {value}" for key, value in params_data.__dict__.items() if not key.startswith("__")])
+        self.vis.text(text)  # Data parametrlərini visdom-a yazır
+
+    def log_dataset(self, dataset: SpeakerVerificationDataset):
+        if self.disabled:
+            return
+        text = f"<b>Dataset</b><br>{str(dataset)}"
+        self.vis.text(text)  # Dataset haqqında məlumatı visdom-a yazır
+
+    def log_implementation(self, params):
+        if self.disabled:
+            return
+        text = "<b>Running on:</b><br>" + "<br>".join([
+            f"Python implementation: {implementation.name}",
+            f"CUDA available: {params.device != 'cpu'}",
+            f"NumPy version: {np.__version__}",
+        ])
+        self.vis.text(text)  # İcra olunan mühit haqqında məlumat verir
+
+    def update(self, loss, eer, step):
+        if self.disabled:
+            return
+        self.loss_data.append(loss)  # Yeni loss əlavə olunur
+        self.eer_data.append(eer)  # Yeni EER əlavə olunur
+        self.time_data.append(time.time())  # Vaxt qeyd olunur
+
+        if step % self.update_every == 0:  # Hər update_every addımda bir
+            elapsed = self.time_data[-1] - self.time_data[-self.update_every]  # Bu aralıqdakı zaman
+            avg_loss = np.mean(self.loss_data[-self.update_every:])  # Orta loss
+            avg_eer = np.mean(self.eer_data[-self.update_every:])  # Orta EER
+            steps_per_sec = self.update_every / elapsed  # Saniyəyə düşən addım sayı
+
+            # Vizualizasiya üçün loss və EER qrafiki
+            self.vis.line(
+                Y=np.column_stack((self.loss_data, self.eer_data)),
+                X=np.arange(1, len(self.loss_data) + 1),
+                win="loss_and_eer",
+                opts={
+                    "title": "Loss and EER",
+                    "legend": ["Loss", "EER"],
+                    "xlabel": "Step",
+                    "ylabel": "Value"
+                }
+            )
+
+            # Addım sürəti və orta loss-u mətn olaraq göstərir
+            self.vis.text(f"Step: {step}<br>Avg loss: {avg_loss:.4f}<br>Avg EER: {avg_eer:.4f}<br>Steps/sec: {steps_per_sec:.2f}",
+                          win="progress")
+
+    def draw_projections(self, embeds, utterances_per_speaker, step, out_fpath=None, max_speakers=10):
+        if self.disabled:
+            return
+        projection = umap.UMAP().fit_transform(embeds)  # Embedding-ləri UMAP ilə 2D-yə salır
+        num_speakers = len(embeds) // utterances_per_speaker  # Danışan sayı
+        plt.figure(figsize=(8, 8))  # Şəkil ölçüsü
+        for speaker_idx in range(min(num_speakers, max_speakers)):  # Maksimum 10 danışan göstər
+            start_idx = speaker_idx * utterances_per_speaker
+            end_idx = (speaker_idx + 1) * utterances_per_speaker
+            plt.scatter(
+                projection[start_idx:end_idx, 0],
+                projection[start_idx:end_idx, 1],
+                c=[colormap[speaker_idx % len(colormap)]],
+                label=f"Speaker {speaker_idx + 1}"
+            )
+        plt.legend()  # Əfsanəni göstər
+        if out_fpath:
+            plt.savefig(out_fpath)  # Əgər yol göstərilibsə, şəkli fayla yaz
+        self.vis.image(  # Vizual olaraq şəkli göstər
+            np.transpose(plt.imread(out_fpath if out_fpath else "projection.png"), (2, 0, 1)),
+            win="embeds",
+            opts={"title": f"Embeddings projection (step {step})"}
+        )
+        plt.close()  # Matplotlib obyektini bağla
+
+    def save(self):
+        if self.disabled:
+            return
+        self.vis.save([self.vis.env])  # Visdom ətraf mühitini yadda saxla
+    </code></pre>
+
+<h1>10-Data Objects: paket və icerisindeki scriptler</h1>
+
+<h2>random_cycler.py: RandomCycler</h2>
+<p>RandomCycler verilmiş elementləri təsadüfi şəkildə, qarışıq-qarışıq, amma hər birini istifadə edərək təkrar-təkrar qaytarmaq üçündür. Bu sinif təkrarsız təsadüfi dövr edir və hamısını istifadə etdikdən sonra yenidən qarışdırıb başlayır.</p>
+<pre>
+        <code>
+import random  # Təsadüfi seçimlər etmək üçün
+
+class RandomCycler:
+    def __init__(self, source):
+        if len(source) == 0:
+            raise Exception("Can't create RandomCycler from an empty collection")  # Əgər boş siyahı verilsə, xəta verir
+        self.all_items = list(source)  # Verilən siyahını yadda saxlayır
+        self.next_items = []  # Növbəti seçiləcək itemləri saxlayacaq
+
+    def sample(self, count: int):  # İstifadəçidən neçə dənə element istənildiyini alır
+        shuffled = lambda l: random.sample(l, len(l))  # Verilən siyahının qarışdırılmış versiyasını qaytarır
+
+        out = []  # Cavab siyahısı
+        while count > 0:  # Hələ alınmalı elementlər varsa
+            if count >= len(self.all_items):  # Əgər istənilən say, bütün elementlərin sayından çoxdursa
+                out.extend(shuffled(list(self.all_items)))  # Bütün elementləri qarışdırıb əlavə et
+                count -= len(self.all_items)  # Sayı azald
+                continue  # Dövrə davam et
+            n = min(count, len(self.next_items))  # Növbəti neçə element götürülə bilər
+            out.extend(self.next_items[:n])  # O qədərini əlavə et
+            count -= n  # Sayı azald
+            self.next_items = self.next_items[n:]  # Əlavə olunanları siyahıdan çıxart
+            if len(self.next_items) == 0:  # Əgər növbəti elementlər qalmayıbsa
+                self.next_items = shuffled(list(self.all_items))  # Bütün itemləri yenidən qarışdır
+            return out  # Nəticəni qaytar
+
+    def __next__(self):  # Python iterator interfeysi üçün
+        return self.sample(1)[0]  # Hər dəfə bir element qaytarır
+        </code>
+    </pre>
+
+<h2>speaker.py: Speaker Sinfi</h2>
+<p>Utterance sinfi bu kodda istifadə olunur, amma onun özü burada yoxdur. Bu sinif frame fayllarını və audio fayllarını birləşdirir və müəyyən sayda kəsik (partial) qaytarır.</p>
+<pre>
+        <code>
+from pathlib import Path  # Fayl yolları ilə işləmək üçün
+from encoder.data_objects.random_cycler import RandomCycler  # Özümüz yazdığımız RandomCycler sinfini daxil edirik
+
+class Speaker:
+    def __init__(self, root: Path):  # Speaker sinfinin yaradılması
+        self.root = root  # Spikerin qovluq yolu
+        self.name = root.name  # Spikerin adı, qovluğun adı kimi götürülür
+        self.utterances = None  # Spikerə aid cümlələr siyahısı (Utterance obyektləri)
+        self.utterances_cycler = None  # Cümlələri təsadüfi dövr etmək üçün RandomCycler obyekti
+
+    def _load_utterances(self):  # Cümlələri fayldan oxumaq üçün daxili metod
+        with self.root.joinpath("_sources.txt").open("r") as sources_file:  # _sources.txt faylını açırıq
+            sources = [l.split(",") for l in sources_file]  # Hər sətri vergüllə ayırırıq
+
+        sources = {frames_fname: wave_fpath for frames_fname, wave_fpath in
+                   sources}  # Siyahını sözlük formatına salırıq
+        self.utterances = [Utterance(self.root.joinpath(f), w) for f, w in
+                           sources.items()]  # Hər bir sətri Utterance obyektinə çeviririk
+        self.utterances_cycler = RandomCycler(
+            self.utterances)  # Bu Utterance-ləri təsadüfi dövr etmək üçün RandomCycler obyektinə veririk
+
+    def random_partial(self, count, n_frames):  # Təsadüfi hissələr əldə etmək üçün metod
+        if self.utterances is None:  # Əgər hələ cümlələr yüklənməyibsə
+            self._load_utterances()  # Onları fayldan yüklə
+
+        utterances = self.utterances_cycler.sample(count)  # RandomCycler vasitəsilə count sayda cümlə götür
+
+        a = [(u,) + u.random_patial(n_frames) for u in
+             utterances]  # Hər bir cümlədən n_frames ölçüsündə hissə götür və tuple şəklində saxla
+
+        return a  # Alınan nəticəni qaytar
+        </code>
+    </pre>
+
+<h1>10-Data Objects: Paket və icerisindeki scriptler</h1>
+
+<h2>random_cycler.py: RandomCycler</h2>
+<p>Verilmiş elementləri təsadüfi şəkildə, qarışıq-qarışıq, amma hər birini istifadə edərək təkrar-təkrar qaytarmaq üçündür.</p>
+<p>Yəni <code>random.choice()</code> kimi təsadüfi təkrar ola bilər — amma bu sinif təkrarsız təsadüfi dövr edir və hamısını istifadə etdikdən sonra yenidən qarışdırıb başlayır.</p>
+
+<pre>
+        <code>
+import random  # Təsadüfi seçimlər etmək üçün
+
+class RandomCycler:
+    def __init__(self, source):
+        if len(source) == 0:
+            raise Exception("Can't create RandomCycler from an empty collection")  # Əgər boş siyahı verilsə, xəta verir
+        self.all_items = list(source)  # Verilən siyahını yadda saxlayır
+        self.next_items = []  # Növbəti seçiləcək itemləri saxlayacaq
+
+    def sample(self, count: int):  # İstifadəçidən neçə dənə element istənildiyini alır
+        shuffled = lambda l: random.sample(l, len(l))  # Verilən siyahının qarışdırılmış versiyasını qaytarır
+
+        out = []  # Cavab siyahısı
+        while count > 0:  # Hələ alınmalı elementlər varsa
+            if count >= len(self.all_items):  # Əgər istənilən say, bütün elementlərin sayından çoxdursa
+                out.extend(shuffled(list(self.all_items)))  # Bütün elementləri qarışdırıb əlavə et
+                count -= len(self.all_items)  # Sayı azald
+                continue  # Dövrə davam et
+            n = min(count, len(self.next_items))  # Növbəti neçə element götürülə bilər
+            out.extend(self.next_items[:n])  # O qədərini əlavə et
+            count -= n  # Sayı azald
+            self.next_items = self.next_items[n:]  # Əlavə olunanları siyahıdan çıxart
+            if len(self.next_items) == 0:  # Əgər növbəti elementlər qalmayıbsa
+                self.next_items = shuffled(list(self.all_items))  # Bütün itemləri yenidən qarışdır
+            return out  # Nəticəni qaytar
+
+    def __next__(self):  # Python iterator interfeysi üçün
+        return self.sample(1)[0]  # Hər dəfə bir element qaytarır
+        </code>
+    </pre>
+
+<h2>speaker.py: Speaker sinfi</h2>
+<p>Utterance sinfi bu kodda istifadə olunur, amma onun özü burada yoxdur. Orada <code>Utterance(self.root.joinpath(f), w)</code> və <code>u.random_patial(n_frames)</code> çağırışları var — yəni bu sinif frame fayllarını və audio fayllarını birləşdirir və müəyyən sayda kəsik (partial) qaytarır.</p>
+
+<pre>
+        <code>
+from pathlib import Path  # Fayl yolları ilə işləmək üçün
+
+from encoder.data_objects.random_cycler import RandomCycler  # Özümüz yazdığımız RandomCycler sinfini daxil edirik
+
+
+class Speaker:
+    def __init__(self, root: Path):  # Speaker sinfinin yaradılması
+        self.root = root  # Spikerin qovluq yolu
+        self.name = root.name  # Spikerin adı, qovluğun adı kimi götürülür
+        self.utterances = None  # Spikerə aid cümlələr siyahısı (Utterance obyektləri)
+        self.utterances_cycler = None  # Cümlələri təsadüfi dövr etmək üçün RandomCycler obyekti
+
+    def _load_utterances(self):  # Cümlələri fayldan oxumaq üçün daxili metod
+        with self.root.joinpath("_sources.txt").open("r") as sources_file:  # _sources.txt faylını açırıq
+            sources = [l.split(",") for l in sources_file]  # Hər sətri vergüllə ayırırıq
+
+        sources = {frames_fname: wave_fpath for frames_fname, wave_fpath in
+                   sources}  # Siyahını sözlük formatına salırıq
+        self.utterances = [Utterance(self.root.joinpath(f), w) for f, w in
+                           sources.items()]  # Hər bir sətri Utterance obyektinə çeviririk
+        self.utterances_cycler = RandomCycler(
+            self.utterances)  # Bu Utterance-ləri təsadüfi dövr etmək üçün RandomCycler obyektinə veririk
+
+    def random_partial(self, count, n_frames):  # Təsadüfi hissələr əldə etmək üçün metod
+
+        if self.utterances is None:  # Əgər hələ cümlələr yüklənməyibsə
+            self._load_utterances()  # Onları fayldan yüklə
+
+        utterances = self.utterances_cycler.sample(count)  # RandomCycler vasitəsilə count sayda cümlə götür
+
+        a = [(u,) + u.random_patial(n_frames) for u in
+             utterances]  # Hər bir cümlədən n_frames ölçüsündə hissə götür və tuple şəklində saxla
+
+        return a  # Alınan nəticəni qaytar
+        </code>
+    </pre>
+
+<h2>speaker_batch.py: SpeakerBatch</h2>
+<p>SpeakerBatch sinfi, bir batch-lik spikerlər və onların səs parçası məlumatlarını idarə etmək üçün istifadə olunur. Bu sinif, çoxlu sayda spikerin səs məlumatlarını PyTorch modelinə ötürülə bilən formatda təşkil edir.</p>
+
+<pre>
+        <code>
+import numpy as np  # Numpy kitabxanası, massivlər və matrislərlə işləmək üçün
+from librosa.util import frame  # Librosa kitabxanasından frame funksiyası, səsin çərçivələnməsi üçün
+from encoder.data_objects.speaker import Speaker  # Speaker sinfi, səs parçalarını idarə etmək üçün
+
+class SpeakerBatch:
+    def __init__(self, speakers: List[Speaker], utterances_per_speaker: int, n_frames: int):
+        # Parametrlər:
+        # speakers: Speaker obyektlərindən ibarət siyahı (hər biri spikerin səs məlumatlarını saxlayır)
+        # utterances_per_speaker: Hər spikerin neçə səs parçası (utterance) götürəcəyini göstərir
+        # n_frames: Hər bir utterance üçün neçə frame (kadr) götürüləcəyini göstərir
+
+        # Hər bir spiker üçün random_partial çağıraraq, səs parçalarını alırıq
+        self.speakers = speakers
+        self.partials = {s: s.random_partial(utterances_per_speaker, n_frames) for s in speakers}
+
+        # Numpy massivinə çevrilir - burada hər spikerin frame-ləri toplanır
+        self.data = np.array([frames for s in speakers for _, frames, _ in self.partials[s]])
+
+    # (Əgər ehtiyac varsa, daha çox funksionallıq əlavə edilə bilər)
+        </code>
+    </pre>
+
+<h1>speaker_verification_dataset.py</h1>
+<p>Bu kod PyTorch ilə işləyən səslə şəxs identifikasiyası modelinə təlim (training) üçün lazım olan məlumatları yükləmək, idarə etmək və batch-lərə bölmək məqsədilə yazılıb.</p>
+
+<pre><code>
+from pathlib import Path  # Fayl yolları ilə işləmək üçün
+
+from sklearn.utils import shuffle  # Məlumatları qarışdırmaq üçün (istifadə olunmayıb burada amma daxil edilib)
+from torch.utils.data import Dataset  # PyTorch-un Dataset bazası ilə işləmək üçün
+
+from encoder.data_objects.random_cycler import RandomCycler  # RandomCycler sinfi, təsadüfi dövr üçün
+from encoder.data_objects.speaker import Speaker  # Speaker sinfi
+from encoder.data_objects.speaker_batch import SpeakerBatch  # SpeakerBatch sinfi
+from encoder.params_data import partials_n_frames  # Hər bir utterance üçün frame sayı parametri
+
+
+class SpeakerVerificationDataset(Dataset):  # PyTorch-un Dataset sinifindən miras alan class
+    def __init__(self,datasets_root: Path):  # Dataset-in başlanğıcı
+        self.root = datasets_root  # Dataset-in kök qovluğu
+        speaker_dirs = [f for  f in self.root.glob("*") if f.is_dir()]  # Bütün alt qovluqları (spiker qovluqları) tapırıq
+        if len(speaker_dirs) == 0:  # Əgər heç bir qovluq yoxdursa, xəta atırıq
+            raise Exception("No speakers found. Make sure you are pointing to the directory "
+                            "containing all preprocessed speaker directories.")
+        self.speakers = [Speaker(speaker_dir) for  speaker_dir in speaker_dirs]  # Hər qovluq üçün Speaker obyekti yaradılır
+        self.speaker_cycler = RandomCycler(self.speakers)  # Bütün speaker-ləri RandomCycler vasitəsilə qarışdırıb dövr etmək üçün
+
+    def __len__(self):  # Dataset-in uzunluğu (süni olaraq çox böyük qoyulub ki, limitsiz kimi görünsün)
+        return int(1e10)
+
+    def get_logs(self):  # Dataset qovluğunda olan bütün `.txt` faylları birləşdirərək log verir
+        log_string = ""
+        for log_fpath in self.root.glob("*.txt"):  # Bütün .txt fayllar üzərində gedirik
+            with log_fpath.open("r") as log_file:  # Hər bir faylı oxuyuruq
+                log_string += "".join(log_file.readlines())  # Oxunan sətrləri log_string-ə əlavə edirik
+        return log_string  # Toplanmış log qaytarılır
+
+
+class SpeakerVerificationDatasetLoader(DataLoader):  # PyTorch-un DataLoader sinfindən miras alan custom loader
+    def __init__(self, dataset, speakers_per_batch, utterances_per_speaker, sampler=None,
+                 batch_sampler=None, num_workers=0, pin_memory=False, timeout=0,
+                 worker_init_fn=None):
+        self.utterances_per_speaker = utterances_per_speaker  # Hər bir speaker üçün neçə cümlə (utterance) yüklənəcək
+
+        super().__init__(  # DataLoader-in öz parametrli super konstrukturu
+            dataset=dataset,
+            batch_size = speakers_per_batch,  # Hər batch-də neçə speaker olmalıdır
+            shuffle = False,  # Shuffle burada istifadə olunmur (çünki RandomCycler istifadə olunur)
+            sampler=sampler,  # İstəyə uyğun sampler
+            batch_sampler = batch_sampler,
+            num_workers = num_workers,  # Paralel işçi sayı
+            collate_fn = self.collate,  # Batch birləşdirmə funksiyası özümüzünküdür
+            pin_memory = pin_memory,  # GPU sürəti üçün yaddaş sabitləmə
+            drop_last = False,  # Batch yarımçıq qalarsa belə istifadə olunur
+            timeout = timeout,  # İşçi yükləmə vaxtı
+            worker_init_fn = worker_init_fn  # İşçi başladıqda çağırılan funksiya
+        )
+
+    def collate(self, speakers):  # Batch birləşdirmə metodu
+        return SpeakerBatch(speakers,self.utterances_per_speaker, partials_n_frames)  # SpeakerBatch obyektinə speaker-ləri və parametr-ləri veririk
+    </code></pre>
+
+<h2>utterance.py</h2>
+
+<p>
+    Bu kod parçası, səs məlumatlarını idarə etmək üçün yazılmışdır və səsin müəyyən bir hissəsini təsadüfi seçmək üçün istifadə olunur. Hər <strong>Utterance</strong> obyektindəki <code>random_partial</code> metodu, modelin treninqində və ya səs analizi tətbiqlərində istifadə edilə biləcək təsadüfi frame seqmentləri əldə etməyə imkan verir.
+</p>
+
+<pre><code>import numpy as np  # Numpy kitabxanası, massivlər və matrislərlə işləmək üçün
+
+
+class Utterance:
+    def __init__(self, frames_fpath, wave_fpath):
+        # frames_fpath: Frame məlumatlarını saxlayan faylın yolu
+        # wave_fpath: Səs dalğası məlumatlarını saxlayan faylın yolu
+        self.frames_fpath = frames_fpath
+        self.wave_fpath = wave_fpath
+
+    def get_frames(self):
+        # Frame məlumatlarını yükleyirik
+        # Numpy istifadə edərək frames faylını oxuyuruq
+        return np.load(self.frames_fpath)
+
+    def random_partial(self, n_frames):
+        # `get_frames()` metodu ilə frame məlumatlarını alırıq
+        frames = self.get_frames()
+
+        # Əgər frame sayı `n_frames`-ə bərabərdirsə, başlama nöqtəsini 0 olaraq təyin edirik
+        if frames.shape[0] == n_frames:
+            start = 0
+        else:
+            # Əks halda, `n_frames` sayda frame əldə etmək üçün təsadüfi başlanğıc nöqtəsi seçirik
+            start = np.random.randint(0, frames.shape[0] - n_frames)
+
+        # Bitmə nöqtəsini təyin edirik
+        end = start + n_frames
+
+        # Seçilmiş hissəni qaytarırıq: `frames[start:end]` -> seçilən kadrlar
+        # `(start, end)` -> başlanğıc və bitmə nöqtələri
+        return frames[start:end], (start, end)
+</code></pre>
+
+<h2>Metodların izahı</h2>
+
+<p><strong>__init__ metodu:</strong> <br>
+    <code>frames_fpath</code>: Frame məlumatlarını saxlayan faylın yoludur. Bu faylda, səs məlumatının müxtəlif kadrları (frames) mövcuddur. <br>
+    <code>wave_fpath</code>: Səs dalğası məlumatlarını saxlayan faylın yoludur (bu kodda istifadə olunmayıb).</p>
+
+<p><strong>get_frames metodu:</strong><br>
+    Bu metod <code>frames_fpath</code> yolundakı fayldan məlumatları oxuyur və <code>np.load()</code> vasitəsilə numpy massivinə çevirir.</p>
+
+<p><strong>random_partial metodu:</strong><br>
+    Bu metod <code>n_frames</code> sayda təsadüfi kadr seçərək geri qaytarır. Əgər frame-lərin sayı kifayət qədərdirsə, başlanğıc nöqtə təsadüfi seçilir, əks halda 0-dan başlanır. Nəticə kimi həm frame massivinin bir hissəsi, həm də onun başlanğıc və bitmə indeksləri qaytarılır.</p>
+
+<div class="section">
+    <h2>utterance.py</h2>
+    <p>Bu kod parçası, səs məlumatlarını idarə etmək üçün yazılmışdır və səsin müəyyən bir hissəsini təsadüfi seçmək üçün istifadə olunur.</p>
+    <p><strong>random_partial</strong> metodu, modelin treninqində və ya səs analizi tətbiqlərində istifadə edilə biləcək təsadüfi frame seqmentləri əldə etməyə imkan verir.</p>
+    <pre><code>import numpy as np  # Numpy kitabxanası, massivlər və matrislərlə işləmək üçün
+
+class Utterance:
+    def __init__(self, frames_fpath, wave_fpath):
+        self.frames_fpath = frames_fpath
+        self.wave_fpath = wave_fpath
+
+    def get_frames(self):
+        return np.load(self.frames_fpath)
+
+    def random_partial(self, n_frames):
+        frames = self.get_frames()
+        if frames.shape[0] == n_frames:
+            start = 0
+        else:
+            start = np.random.randint(0, frames.shape[0] - n_frames)
+        end = start + n_frames
+        return frames[start:end], (start, end)
+</code></pre>
+</div>
+
+<div class="section">
+    <h2>2. samples</h2>
+    <p>Bu qovluq, nümunə audio fayllarını ehtiva edir. Təlim və test mərhələlərində istifadə olunan real səs nümunələridir.</p>
+    <p>Audio faylları bu qovluğa yığılmalı və encoder və synthesizer tərəfindən istifadə olunmalıdır.</p>
+</div>
+
+<div class="section">
+    <h2>3. saved_models</h2>
+    <p>Bu qovluq, təlim edilmiş model fayllarını saxlayır. Əldə edilən model və çəkilən ağırlıqlar burada saxlanılır.</p>
+</div>
+
+<div class="section">
+    <h2>4. synthesizer</h2>
+    <p>Bu qovluq, səs sintezini idarə edən komponentləri ehtiva edir. Text-to-speech (TTS) modeli vasitəsilə mətn səsə çevrilir.</p>
+    <p><code>synthesizer_train.py</code> və <code>synthesizer_preprocess_audio.py</code> bu komponentlə əlaqəlidir.</p>
+</div>
+
+<div class="section">
+    <h2>5. toolbox</h2>
+    <p>Faydalı alətlər və müxtəlif funksiyaları ehtiva edən qovluqdur. <code>demo_toolbox.py</code> kimi fayllar səsin işlənməsini həyata keçirir.</p>
+</div>
+
+<div class="section">
+    <h2>6. utils</h2>
+    <p>Layihədə istifadə olunan yardımçı funksiyaları ehtiva edir. Məlumat emalı, fayl yükləmə və digər texniki əməliyyatlar burada yer alır.</p>
+</div>
+
+<div class="section">
+    <h3>1-argutils</h3>
+    <p><code>print_args.py</code> skripti konfiqurasiya edilmiş <code>argparse.Namespace</code> obyektindəki arqumentləri aydın şəkildə çap etmək üçündür.</p>
+    <pre><code>from pathlib import Path
+import numpy as np
+import argparse
+
+_type_priorities = [Path, str, int, float, bool]
+
+def _priority(o):
+    p = next((i for i, t in enumerate(_type_priorities) if type(o) is t), None)
+    if p is not None:
+        return p
+    p = next((i for i, t in enumerate(_type_priorities) if isinstance(o, t)), None)
+    if p is not None:
+        return p
+    return len(_type_priorities)
+
+def print_args(args: argparse.Namespace, parser=None):
+    args = vars(args)
+    if parser is None:
+        priorities = list(map(_priority, args.values()))
+    else:
+        all_params = [a.dest for g in parser._action_groups for a in g._group_actions]
+        priority = lambda p: all_params.index(p) if p in all_params else len(all_params)
+        priorities = list(map(priority, args.keys()))
+
+    pad = max(map(len, args.keys())) + 3
+    indices = np.lexsort((list(args.keys()), priorities))
+    items = list(args.items())
+
+    print("Argument:")
+    for i in indices:
+        param, value = items[i]
+        print("    {0}:{1}{2}".format(param, ' ' * (pad - len(param)), value))
+    print("")
+</code></pre>
+</div>
+
+<h2>2-default_models:</h2>
+<p>
+    Bu skript sənin layihəndəki encoder, synthesizer və vocoder modellərini avtomatik olaraq yükləmək üçündür.
+    Əgər bu modellər düzgün ölçüdə deyilsə və ya yoxdursa, onları Google Drive üzərindən endirir.
+</p>
+
+<pre><code>import urllib.request
+from pathlib import Path
+from threading import Thread
+from urllib.error import HTTPError
+
+from tqdm import tqdm
+
+# Model fayllarının URL-ləri və onların gözlənilən ölçüləri (byte cinsində)
+default_models = {
+    "encoder": ("https://drive.google.com/uc?export=download&id=1q8mEGwCkFy23KZsinbuvdKAQLqNKbYf1", 17090379),
+    "synthesizer": ("https://drive.google.com/u/0/uc?id=1EqFMIbvxffxtjiVrtykroF6_mUh-5Z3s&amp;export=download&amp;confirm=t", 370554559),
+    "vocoder": ("https://drive.google.com/uc?export=download&id=1cf2NO6FtI0jDuy8AV3Xgn6leO6dHjIgu", 53845290),
+}
+
+
+# Tqdm-ə əsaslanan fayl yükləmə prosesində irəliləyişi göstərən xüsusi sinif
+class DownloadprogressBar(tqdm):
+    def update_to(self, b=1, bsize=1, tsize=None):
+        if tsize is not None:
+            self.total = tsize  # Faylın ümumi ölçüsünü təyin et
+        self.update(b * bsize - self.n)  # Hazırda yüklənmiş baytları yenilə
+
+
+# Verilmiş URL-dən faylı təyin olunmuş yerə yükləyən funksiya
+def download(url: str, target: Path, bar_pos=0):
+    target.parent.mkdir(exist_ok=True, parents=True)  # Fayl üçün lazımi qovluğu yaradır (əgər yoxdursa)
+
+    desc = f"Downloading {target.name}"  # Yükləmə prosesində görünəcək ad
+    with DownloadprogressBar(unit="B", unit_scale=True, miniters=1, desc=desc, position=bar_pos, leave=False) as t:
+        try:
+            urllib.request.urlretrieve(url, filename=target, reporthook=t.update_to)  # Faylı yüklə
+        except HTTPError:
+            return  # HTTP səhvi olsa, heç nə etmə
+
+
+# Default model fayllarının qovluqda olub-olmadığını yoxlayır, yoxdursa yükləyir
+def ensure_default_models(models_dir: Path):
+    jobs = []
+    for model_name, (url, size) in default_models.items():
+        target_path = models_dir / "default" / f"{model_name}.pt"  # Model üçün hədəf yol
+
+        # Əgər fayl gözlənilən ölçüdə deyilsə, yüklə
+        if target_path.stat().st_size != size:
+            print(f"File {target_path} is not of expected size, redownloading...")
+        else:
+            continue  # Əgər ölçü düzgündürsə, keç növbətiyə
+
+        # Yükləmə prosesini ayrı thread-də işə salır
+        thread = Thread(target=download, args=(url, target_path, len(jobs)))
+        thread.start()
+        jobs.append((thread, target_path, size))  # Thread-ləri izləmək üçün siyahıya əlavə et
+
+    # Bütün yükləmələrin bitməsini gözləyir
+    for thread, target_path, size in jobs:
+        thread.join()
+
+        # Faylın düzgün yükləndiyini yoxla
+        assert target_path.stat().st_size == size, \
+            f"Download for {target_path.name} failed. You may download models manually instead.\n" \
+            f"https://drive.google.com/drive/folders/1fU6umc5uQAVR2udZdHX-lDgXYzTyqG_j"
+</code></pre>
+
+<h2>3 - logmmse:</h2>
+<p>
+    Bu Python kodu səs siqnallarını təmizləmək (denoising) üçündür, yəni bir audio fayldakı fon səsini (məsələn, mikrofon "hışıltısı", ortam səs-küyü və s.) çıxartmaq və ya azaltmaq məqsədilə yazılıb.
+</p>
+<pre><code>from collections import namedtuple
+import numpy as np
+import math
+from mpmath.libmp import to_float  # mp modulundan float-a çevirmək üçün
+from scipy.special import expn  # Eksponensial integral funksiyası
+
+# NoiseProfile strukturu
+NoiseProfile = namedtuple("NoiseProfile", "sampling_rate window_size len1 len2 win n_fft noise_mu2")
+
+def profile_noise(noise, sampling_rate, window_size=0):
+    noise, dtype = to_float(noise)
+    noise += np.finfo(np.float64).eps
+
+    if window_size == 0:
+        window_size = int(math.floor(0.02 * sampling_rate))  # düzəliş edildi
+
+    if window_size % 2 == 1:
+        window_size += 1
+
+    perc = 50
+    len1 = int(math.floor(window_size * perc / 100))
+    len2 = int(window_size - len1)
+
+    win = np.hanning(window_size)
+    win = win * len2 / np.sum(win)
+    n_fft = 2 * window_size
+
+    noise_mean = np.zeros(n_fft)
+    n_frames = len(noise) // window_size
+    for j in range(0, window_size * n_frames, window_size):
+        noise_mean += np.abs(np.fft.fft(win * noise[j:j + window_size], n_fft , axis=0))
+    noise_mu2 = (noise_mean / n_frames) ** 2
+
+    return NoiseProfile(sampling_rate, window_size, len1, len2, win, n_fft, noise_mu2)
+
+def denoise(wav, noise_profile: NoiseProfile, eta=0.15):
+    wav, dtype = to_float(wav)
+    wav += np.finfo(np.float64).eps
+    p = noise_profile
+
+    nframes = int(math.floor(len(wav) / p.len2) - math.floor(p.window_size / p.len2))
+    x_final = np.zeros(nframes * p.len2)
+
+    aa = 0.98
+    mu = 0.98
+    ksi_min = 10 ** (-25 / 10)
+
+    x_old = np.zeros(p.len1)
+    xk_prev = np.zeros(p.len2)
+    noise_mu2 = p.noise_mu2
+
+    for k in range(0, nframes * p.len2, p.len2):
+        insign = p.win * wav[k:k + p.window_size]
+        spec = np.fft.fft(insign, p.n_fft, axis=0)
+        sig = np.abs(spec)
+        sig2 = sig ** 2
+
+        gammak = np.minimum(sig2 / noise_mu2, 40)
+
+        if xk_prev.all() == 0:
+            ksi = aa + (1 - aa) * np.maximum(gammak - 1, 0)
+        else:
+            ksi = aa * xk_prev / noise_mu2 + (1 - aa) * np.maximum(gammak - 1, 0)
+            ksi = np.maximum(ksi_min, ksi)
+
+        log_sigma_k = gammak * ksi / (1 + ksi) - np.log(1 + ksi)
+        vad_decision = np.sum(log_sigma_k) / p.window_size
+        if vad_decision &lt; eta:
+            noise_mu2 = mu * noise_mu2 + (1 - mu) * sig2
+
+        a = ksi / (1 + ksi)
+        vk = a * gammak
+        ei_vk = 0.5 * expn(1, np.maximum(vk, 1e-8))
+        hw = a * np.exp(ei_vk)
+
+        sig = sig * hw
+        xk_prev = sig ** 2
+
+        xi_w = np.fft.ifft(hw * spec, p.n_fft, axis=0)
+        xi_w = np.real(xi_w)
+
+        # Burada istəsəniz `x_final`-ə əlavə edə bilərsiniz
+
+# Diqqət: `math.foolr` səhvdir, `math.floor` olmalıdır
+# `from numpy.conftest import dtype` artıqdır və silinməlidir
+</code></pre>
+
+<h2>4-profiler.py</h2>
+
+<p><strong>Təyinat:</strong> Bu <code>Profiler</code> sinfi, Python proqramında müəyyən kod hissələrinin neçə millisekund işlədiyini ölçmək və orta icra müddətini hesablamaq üçün istifadə olunur.</p>
+
+<pre><code>from collections import OrderedDict
+import numpy as np
+from torch.utils.benchmark import timer  # Zaman ölçmək üçün istifadə olunur
+
+class Profiler:
+    def __init__(self, summarize_every=5, disabled=False):
+        self.last_tick = timer()
+        self.logs = OrderedDict()
+        self.summarize_every = summarize_every
+        self.disabled = disabled
+
+    def tick(self, name):
+        if self.disabled:
+            return
+
+        if not name in self.logs:
+            self.logs[name] = []
+
+        if len(self.logs[name]) >= self.summarize_every:
+            self.summarize()
+            self.purge_logs()
+
+        self.logs[name].append(timer() - self.last_tick)
+        self.reset_timer()
+
+    def purge_logs(self):
+        for name in self.logs:
+            self.logs[name].clear()
+
+    def reset_timer(self):
+        self.last_tick = timer()
+
+    def summarize(self):
+        n = max(map(len, self.logs.values()))
+        assert n == self.summarize_every
+
+        print("\nAverage execution time over %d steps:" % n)
+
+        name_msg = ["%s (%d/%d):" % (name, len(deltas), n) for name, deltas in self.logs.items()]
+        pad = max(map(len, name_msg))
+
+        for name_msg, deltas in zip(name_msg, self.logs.values()):
+            print("  %s  mean: %4.0fms   std: %4.0fms" %
+                  (name_msg.ljust(pad), np.mean(deltas) * 1000, np.std(deltas) * 1000))
+
+        print("", flush=True)
+</code></pre>
+
+<h2>İstifadə Məqsədi:</h2>
+<ul>
+    <li><strong>profiler.tick("yükleme")</strong> kimi çağırıldıqda həmin kod blokunun icra müddətini ölçür.</li>
+    <li><strong>summarize_every=5</strong> olduqda hər 5 ölçmədən bir orta və standart sapma dəyərləri çap olunur.</li>
+</ul>
+
+<h2>Nəyə Lazımdır?</h2>
+<p>Bu tip profilinq alətləri performans təhlili üçün vacibdir — xüsusilə də süni intellekt (AI), audio emalı və real-time proseslərdə.</p>
+
+<h2>7. Vocoder Qovluğu</h2>
+<p><strong>Vocoder:</strong> Bu qovluq səsin sintezini və analizini həyata keçirir. Bu texnika ilə daha təmiz və keyfiyyətli audio yaratmaq mümkündür. Fayllar: <code>vocoder_train.py</code> və <code>vocoder_preprocess.py</code>.</p>
+
+
+</body>
+</html>

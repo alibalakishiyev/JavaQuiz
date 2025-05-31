@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dərs: Şəkil Tensor-u və CNN-lər</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        pre {
+            background-color: #333; /* Kod üçün tünd fon */
+            color: #fff; /* Ağ rəngli mətn */
+            padding: 10px; /* Kod üçün iç margin */
+            border-radius: 5px; /* Yuvarlaq künclər */
+            font-family: Consolas, monaco, monospace; /* Kod şrifti */
+            font-size: 16px; /* Şrift ölçüsü */
+            overflow: auto; /* Uzun kod üçün skroll */
+            white-space: pre-wrap; /* Uzun kod xəttində sarmak */
+        }
+        p {
+            line-height: 1.6;
+        }
+        strong {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Şəkil Tensor-u və CNN-lər</h1>
+    <div class="section">
+        <p>🎨 <strong>Şəkil Tensor-u nədir?</strong></p>
+        <p>Şəkil, çoxölçülü ədədlərdən ibarət bir matrisi təmsil edir. Bu ədədlər adətən 0 ilə 1 arasında olur və şəkilin müxtəlif xüsusiyyətlərini (məsələn, rəng intensivliyini) göstərir.</p>
+    </div>
+
+    <div class="section">
+        <h2>🎨 RGB Şəkil üçün:</h2>
+        <ul>
+            <li>R (Red)</li>
+            <li>G (Green)</li>
+            <li>B (Blue)</li>
+        </ul>
+        <p>Bu üç əsas rəng kanalı ilə işləyirik.</p>
+        <p>Məsələn, tensor ölçüsü <code>torch.Size([3, 64, 64])</code> göstərir:</p>
+        <ul>
+            <li>3 kanal (RGB)</li>
+            <li>64x64 ölçülü şəkil</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>🧠 3. CNN (Convolutional Neural Network) nədir?</h2>
+        <p>CNN-lər şəkillərlə işləmək üçün ən güclü neyron şəbəkələrdəndir.</p>
+        <p><strong>CNN necə işləyir?</strong></p>
+        <ul>
+            <li><strong>Convolution Layer:</strong> Şəkilin üzərindən kiçik filtrlər keçir, xüsusiyyətləri çıxarır (kənarlar, rəng dəyişiklikləri və s.).</li>
+            <li><strong>Activation Layer (ReLU):</strong> Aktivlik funksiyasıdır, şəbəkəyə qeyri-xətti xüsusiyyət verir.</li>
+            <li><strong>Pooling Layer:</strong> Şəkili daha kiçik ölçüyə salır, əsas məlumatı saxlayır.</li>
+            <li><strong>Fully Connected Layer (FC):</strong> Bütün çıxışları yığıb nəticə verir (məsələn: bu şəkil "pişikdir").</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>✅ 4. CNN Kod nümunəsi (MNIST şəkil datası ilə)</h2>
+        <p>İndi CNN kodunu yazıram — hər sətrini də izah edəcəm:</p>
+        <pre>
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torchvision
+import torchvision.transforms as transforms
+
+transform = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize((0.5,), (0.5,))
+])
+
+trainset = torchvision.datasets.MNIST(root='./data', train=True, download=True, transform=transform)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=32, shuffle=True)
+
+class MyCNN(nn.Module):
+    def __init__(self):
+        super(MyCNN, self).__init__()
+        self.conv1 = nn.Conv2d(in_channels=1, out_channels=8, kernel_size=3)
+        self.pool = nn.MaxPool2d(2, 2)
+        self.conv2 = nn.Conv2d(8, 16, 3)
+        self.fc1 = nn.Linear(16 * 5 * 5, 64)
+        self.fc2 = nn.Linear(64, 10)
+
+    def forward(self, x):
+        x = self.pool(F.relu(self.conv1(x)))
+        x = self.pool(F.relu(self.conv2(x)))
+        x = x.view(-1, 16 * 5 * 5)
+        x = F.relu(self.fc1(x))
+        x = self.fc2(x)
+        return x
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model = MyCNN().to(device)
+
+criterion = nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+
+for epoch in range(2):
+    running_loss = 0.0
+    for inputs, labels in trainloader:
+        inputs, labels = inputs.to(device), labels.to(device)
+
+        optimizer.zero_grad()
+        outputs = model(inputs)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()
+
+        running_loss += loss.item()
+    print(f"Epoch {epoch + 1}, Loss: {running_loss:.3f}")
+        </pre>
+    </div>
+
+    <div class="task">
+        <p>✅ Bu kod nə edir?</p>
+        <ul>
+            <li>MNIST-dən 28x28 şəkilləri Tensor formatında alır.</li>
+            <li>CNN tətbiq edir (2 convolution qatlı).</li>
+            <li>GPU varsa istifadə edir.</li>
+            <li>2 epoch sadə öyrənmə aparır və itki dəyərini (loss) çap edir.</li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

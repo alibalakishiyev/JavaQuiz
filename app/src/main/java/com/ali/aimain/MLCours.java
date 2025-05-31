@@ -1,24 +1,30 @@
 package com.ali.aimain;
 
-import static com.ali.quizutility.AboutActivity.MyPREFERENCES;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
-import android.widget.EditText;
+import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.Spinner;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ali.MainActivity;
+import com.ali.pymain.PythonConsole;
+import com.ali.quizutility.AboutActivity;
 import com.ali.systemIn.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -29,85 +35,153 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MLCours extends AppCompatActivity {
 
     MaterialButton home;
-    ImageButton editorFile;
-    private AdView mAdView4;
-    EditText editText;
+    private AdView mAdView5;
+    private WebView courseWebView;
+    Spinner courseSpinner;
+    private ImageButton pyConsole;
 
+    List<String> fileList = new ArrayList<>();
+    List<String> displayList = new ArrayList<>();
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_derslik);
+        setContentView(R.layout.activity_ai_cours);
 
-
-
-        SharedPreferences sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(AboutActivity.MyPREFERENCES, Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        home = findViewById(R.id.homeBack);
+        courseSpinner = findViewById(R.id.courseSpinner);
+        pyConsole = findViewById(R.id.btnPyConsole);
 
-        TextView textView = findViewById(R.id.myTextView); // TextView-i tapın
-        String text = loadTextFromAssets(this, "dataAi/MLCoursList.txt"); // Faylın məzmununu yükləyin
-        textView.setText(text);
+        courseWebView = findViewById(R.id.courseWebView);
+        courseWebView.getSettings().setJavaScriptEnabled(true); // lazım olarsa
+        courseWebView.setBackgroundColor(Color.TRANSPARENT);
 
-        editor.putString("key", text);
-        editor.apply();
+        courseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    courseWebView.loadDataWithBaseURL(null, "", "text/html", "UTF-8", null);
+                    return;
+                }
 
+                String selectedFile = fileList.get(position - 1); // "lesson1.html", "lesson2.html" və s.
+                String filePath = "file:///android_asset/dataAi/CoursList/" + selectedFile;
+                courseWebView.loadUrl(filePath);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+
+
+        // Reklam
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
-
             }
         });
 
-        home = findViewById(R.id.returnHome);
-        editorFile = findViewById(R.id.editorFile);
-        editText = findViewById(R.id.myEditText);
+        // Home düyməsi
+        home.setOnClickListener(v -> {
+            startActivity(new Intent(MLCours.this, AiMain.class));
+            finish();
+        });
 
-        home.setOnClickListener(new View.OnClickListener() {
+        try {
+            // Fayl siyahısını assets/dataAi/ içindən al
+            String[] files = getAssets().list("dataAi/CoursList");
+            if (files != null) {
+                fileList = Arrays.asList(files);
+                displayList.add("Kurs seçin..."); // ilk boş seçim
+                displayList.addAll(fileList);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Adapter yaradılır
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, displayList) {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MLCours.this, MainActivity.class));
-                finish();
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView textView = (TextView) view;
+                textView.setTextColor(Color.WHITE); // Spinner-in seçilmiş mətni
+                return view;
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView textView = (TextView) view;
+                textView.setTextColor(Color.BLACK); // Dropdown menyudakı mətnlər
+                return view;
+            }
+        };
+
+        pyConsole.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MLCours.this, PythonConsole.class);
+                startActivity(intent);
             }
         });
 
-        editorFile.setOnClickListener(new View.OnClickListener() {
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        courseSpinner.setAdapter(adapter);
+
+        courseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                // Əgər TextView görünürsə
-                if (textView.getVisibility() == View.VISIBLE) {
-                    // TextView-ni gizlədin və EditText-i göstərin
-                    textView.setVisibility(View.GONE);
-                    editText.setVisibility(View.VISIBLE);
-                    editText.setText(textView.getText());  // TextView-in mətnini EditText-ə qoyun
-                } else {
-                    // EditText-dən dəyişiklikləri alıb, TextView-ə yazın
-                    textView.setText(editText.getText());
-                    saveTextToFile(editText.getText().toString(), "dataJava/SualVeCavablar.txt");
-                    Toast.makeText(MLCours.this, "Dəyişikliklər uğurla yadda saxlanıldı!", Toast.LENGTH_SHORT).show();
-                    // EditText-i gizlədin və TextView-i yenidən göstərin
-                    textView.setVisibility(View.VISIBLE);
-                    editText.setVisibility(View.GONE);
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    courseWebView.loadDataWithBaseURL(null, "", "text/html", "UTF-8", null);
+                    return;
                 }
+
+                String filename = "dataAi/CoursList/" + fileList.get(position - 1);
+                String content = loadTextFromAssets(MLCours.this, filename);
+
+                // HTML-ə uyğun vurğulama
+                String htmlContent = highlightKeywordInHtml(content, "Python"); // əgər istəsən birdən çox keyword də edə bilərik
+
+                courseWebView.loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
 
-        mAdView4 = findViewById(R.id.adView4);
+        // AdMob Banner
+        mAdView5 = findViewById(R.id.adView5);
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView4.loadAd(adRequest);
+        mAdView5.loadAd(adRequest);
 
-
+        // Geri düyməsi
         getOnBackPressedDispatcher().addCallback(this, callback);
+    }
 
+    private String highlightKeywordInHtml(String content, String keyword) {
+        // Açar sözü qırmızı rənglə dəyiş
+        return "<html><body style='color:white; background-color:transparent;'>" +
+                content.replace(keyword, "<span style='color:red;'>" + keyword + "</span>") +
+                "</body></html>";
     }
 
 
@@ -117,31 +191,23 @@ public class MLCours extends AppCompatActivity {
             MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(MLCours.this);
             materialAlertDialogBuilder.setTitle(R.string.app_name);
             materialAlertDialogBuilder.setMessage("Are you sure want to exit the app?");
-            materialAlertDialogBuilder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int i) {
-                    dialog.dismiss();
-                }
-            });
-            materialAlertDialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int i) {
-                    startActivity(new Intent(MLCours.this, MainActivity.class));
-                    finish();
-                }
+            materialAlertDialogBuilder.setNegativeButton(android.R.string.no, (dialog, i) -> dialog.dismiss());
+            materialAlertDialogBuilder.setPositiveButton(android.R.string.yes, (dialog, i) -> {
+                startActivity(new Intent(MLCours.this, MainActivity.class));
+                finish();
             });
             materialAlertDialogBuilder.show();
         }
     };
 
+    // Fayldan mətn oxuma funksiyası
     String loadTextFromAssets(Context context, String filename) {
         StringBuilder text = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(context.getAssets().open(filename)))) {
+        try (InputStream is = context.getAssets().open(filename);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                text.append(line);
-                text.append('\n');
+                text.append(line).append('\n');
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -149,15 +215,19 @@ public class MLCours extends AppCompatActivity {
         return text.toString();
     }
 
-    private void saveTextToFile(String text, String filename) {
-        try (FileOutputStream fos = openFileOutput(filename, Context.MODE_PRIVATE)) {
-            fos.write(text.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
+    // Mətnin müəyyən hissəsini qırmızıya rəngləmək üçün metod
+    private String colorSpecificText(String content) {
+        SpannableString spannableString = new SpannableString(content);
+
+        // Məsələn, "Python" sözünü qırmızıya rəngləyək
+        String keyword = "Python";
+        int start = content.indexOf(keyword);
+        int end = start + keyword.length();
+
+        if (start >= 0) {
+            spannableString.setSpan(new ForegroundColorSpan(Color.RED), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
+
+        return spannableString.toString();
     }
-
-
-
-
 }

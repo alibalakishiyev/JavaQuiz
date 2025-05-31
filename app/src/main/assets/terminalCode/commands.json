@@ -1,0 +1,259 @@
+{
+  "questions": [
+    {
+      "question": "Boş bir (mytext) fayli yaratmaq üçün hansı əmr istifadə olunur?",
+      "answer": "touch mytext.txt",
+      "description": "Creates a new empty file. Example: touch file.txt"
+    },
+    {
+      "question": "(mytext.txt) Faylı redaktə etmək üçün istifadə olunan əmr?",
+      "answer": "nano mytext.txt",
+      "description": "Opens file for editing using nano."
+    },
+    {
+      "question": "Cari qovluqdakı fayl və qovluqları siyahıya almaq üçün hansı əmrdən istifadə olunur?",
+      "answer": "ls",
+      "description": "Lists files and directories in the current directory."
+    },
+    {
+      "question": "Hazırda olduğun qovluğun tam yolunu göstərən əmr hansıdır?",
+      "answer": "pwd",
+      "description": "Prints the current working directory."
+    },
+    {
+      "question": "Yeni (test) qovluq yaratmaq üçün hansı əmrdən istifadə olunur?",
+      "answer": "mkdir test",
+      "description": "Creates a new directory. Example: mkdir test"
+    },
+    {
+      "question": "Boş olan (test) qovluğu silmək üçün istifadə olunan əmr nədir?",
+      "answer": "rmdir test",
+      "description": "Removes an empty directory. Example: rmdir test"
+    },
+    {
+      "question": "(file.txt) Faylı silmək üçün hansı əmr istifadə olunur?",
+      "answer": "rm file.txt",
+      "description": "Deletes a file. Example: rm file.txt"
+    },
+    {
+      "question": "(file.txt) Faylın məzmununu ekrana göstərmək üçün istifadə olunan əmr hansıdır?",
+      "answer": "cat file.txt",
+      "description": "Displays the content of a file. Example: cat file.txt"
+    },
+    {
+      "question": "Cari istifadəçinin adını görmək üçün hansı əmr istifadə olunur?",
+      "answer": "whoami",
+      "description": "Prints the current username."
+    },
+    {
+      "question": "Sistem haqqında məlumat almaq üçün hansı əmrdən istifadə olunur?",
+      "answer": "uname -a",
+      "description": "Shows system information. Example: uname -a"
+    },
+    {
+      "question": "(myfolder) Fayl və ya qovluğun ölçüsünü göstərən əmr hansıdır?",
+      "answer": "du -sh myfolder",
+      "description": "Shows file/folder size usage. Example: du -sh myfolder"
+    },
+    {
+      "question": "Diskdəki boş yer və istifadə olunmuş sahəni göstərən əmr nədir?",
+      "answer": "df -h",
+      "description": "Shows disk space usage. Example: df -h"
+    },
+    {
+      "question": "İşləyən proseslərin siyahısını almaq üçün hansı əmr istifadə olunur?",
+      "answer": "ps",
+      "description": "Displays running processes. Example: ps aux"
+    },
+    {
+      "question": "Sistemdə real vaxtda işləyən prosesləri göstərən əmr hansıdır?",
+      "answer": "top",
+      "description": "Shows real-time system processes and resource usage."
+    },
+    {
+      "question": "Bu (1234)  prosesi PID ilə dayandırmaq üçün hansı əmrdən istifadə olunur?",
+      "answer": "kill 1234",
+      "description": "Terminates a process by PID. Example: kill 1234"
+    },
+    {
+      "question": "(old.txt) Faylı və ya qovluğu başqa yerə köçürmək və ya adını (new.txt) dəyişmək üçün istifadə olunan əmr hansıdır?",
+      "answer": "mv old.txt new.txt",
+      "description": "Moves or renames files or directories. Example: mv old.txt new.txt"
+    },
+    {
+      "question": "Bu (file.txt) faylı başqa yerə kopyalamaq üçün ve adini (backup) hansı əmrdən istifadə olunur?",
+      "answer": "cp file.txt backup.txt",
+      "description": "Copies files or directories. Example: cp file.txt backup.txt"
+    },
+    {
+      "question": "Terminal ekranını təmizləmək üçün hansı əmr istifadə olunur?",
+      "answer": "clear",
+      "description": "Clears the terminal screen."
+    },
+    {
+      "question": "Terminalda ekrana (Hello World) mesaj yazdırmaq üçün hansı əmrdən istifadə olunur?",
+      "answer": "echo Hello World",
+      "description": "Displays a message or writes to a file. Example: echo Hello"
+    },
+    {
+      "question": "(/home/user/login) qovluğunu (/home/user) dəyişmək üçün hansı əmr istifadə olunur?",
+      "answer": "cd /home/user",
+      "description": "Changes the current directory. Example: cd /home/user"
+    },
+    {
+      "question": "Yeni (example.txt) boş fayl yaratmaq üçün hansı əmrdən istifadə olunur?",
+      "answer": "touch example.txt",
+      "description": "Creates a new empty file. Example: touch example.txt"
+    },
+    {
+      "question": "(example.txt) Faylı redaktə etmək üçün hansı proqramı və əmri istifadə edirsən?",
+      "answer": "nano example.txt",
+      "description": "Opens file for editing using nano editor."
+    },
+    {
+      "question": "Cari qovluqdakı faylları və qovluqları necə görmək olar?",
+      "answer": "ls",
+      "description": "Lists files and directories in the current directory."
+    },
+    {
+      "question": "Hazırda olduğun qovluğun tam yolunu göstərən əmrin adı nədir?",
+      "answer": "pwd",
+      "description": "Prints the current working directory."
+    },
+    {
+      "question": "Yeni (newfolder) qovluq yaratmaq üçün hansı əmrdən istifadə olunur?",
+      "answer": "mkdir newfolder",
+      "description": "Creates a new directory. Example: mkdir newfolder"
+    },
+    {
+      "question": "Boş (oldfolder) qovluğu silmək üçün hansı əmri yazmalısan?",
+      "answer": "rmdir oldfolder",
+      "description": "Removes an empty directory. Example: rmdir oldfolder"
+    },
+    {
+      "question": "(oldfile.txt) Faylı necə silmək olar?",
+      "answer": "rm oldfile.txt",
+      "description": "Deletes a file. Example: rm oldfile.txt"
+    },
+    {
+      "question": "(file.txt) Faylın içindəkiləri terminalda necə oxumaq olar?",
+      "answer": "cat file.txt",
+      "description": "Displays the content of a file. Example: cat file.txt"
+    },
+    {
+      "question": "Cari istifadəçi adını görmək üçün hansı əmrdən istifadə olunur?",
+      "answer": "whoami",
+      "description": "Prints the current username."
+    },
+    {
+      "question": "Sistem haqqında ümumi məlumat almaq üçün hansı əmri işlədərsən?",
+      "answer": "uname -a",
+      "description": "Shows system information. Example: uname -a"
+    },
+    {
+      "question": "Diskdə boş və istifadə olunan sahəni göstərən əmrin adı nədir?",
+      "answer": "df -h",
+      "description": "Shows disk space usage. Example: df -h"
+    },
+    {
+      "question": "Fayl və ya (foldername) qovluğun ölçüsünü göstərmək üçün hansı əmr işlədilir?",
+      "answer": "du -sh foldername",
+      "description": "Shows file/folder size usage. Example: du -sh foldername"
+    },
+    {
+      "question": "Sistemdə real vaxtda işləyən prosesləri göstərən hansı əmr var?",
+      "answer": "top",
+      "description": "Shows real-time system processes and resource usage."
+    },
+    {
+      "question": "(script.sh) faylını icra edilə bilən hala gətirmək üçün hansı əmrdən istifadə olunur?",
+      "answer": "chmod +x script.sh",
+      "description": "Gives execute permission to the file. Example: chmod +x file.sh"
+    },
+    {
+      "question": "Faylın sahibi və qrupu dəyişmək üçün hansı əmr istifadə olunur? (file.txt faylını user1 və group1-ə vermək üçün)",
+      "answer": "chown user1:group1 file.txt",
+      "description": "Changes owner and group of a file. Example: chown user:group file"
+    },
+    {
+      "question": "Super istifadəçi (root) səlahiyyətləri ilə əmri yerinə yetirmək üçün hansı söz əmrin əvvəlində yazılır?",
+      "answer": "sudo",
+      "description": "Executes a command with superuser privileges. Example: sudo apt update"
+    },
+    {
+      "question": "Bir faylda 'error' sözünü tapmaq üçün hansı əmr istifadə olunur?",
+      "answer": "grep 'error' filename.txt",
+      "description": "Searches for a pattern in a file. Example: grep 'text' file"
+    },
+    {
+      "question": "Cari qovluqdan başlayaraq bütün alt qovluqlarda 'notes.txt' faylını axtarmaq üçün hansı əmr istifadə olunur?",
+      "answer": "find . -name notes.txt",
+      "description": "Finds files by name recursively. Example: find . -name file.txt"
+    },
+    {
+      "question": "/etc qovluğundakı bütün faylların içində 'root' sözünü axtarmaq üçün uyğun əmri yaz:",
+      "answer": "grep -r 'root' /etc",
+      "description": "Recursively searches for a pattern in a directory. Example: grep -r 'text' /path"
+    },
+    {
+      "question": "Fayla yalnız sahibi üçün oxuma icazəsi vermək üçün hansı chmod komandasını işlədərsən?",
+      "answer": "chmod 400 file.txt",
+      "description": "Sets read-only permission for owner. Example: chmod 400 file.txt"
+    },
+    {
+      "question": "Hər kəsə (file.txt) fayl üzərində oxuma, yazma və icra icazəsi vermək üçün hansı əmrdən istifadə olunur ve reqemler yazilir?",
+      "answer": "chmod 777 file.txt",
+      "description": "Gives full permissions to everyone. Example: chmod 777 file.txt"
+    },
+    {
+      "question": "`--rw-r--r--` icazəsinə hansi reqemle malik olan fayl (file.txt) üçün `chmod` əmrini yaz:",
+      "answer": "chmod 644 file.txt",
+      "description": "Sets permissions: owner read/write, group read, others read."
+    },
+    {
+      "question": "Bir istifadəçiyə `sudo` icazəsi vermək üçün hansı fayl redaktə olunur?",
+      "answer": "visudo",
+      "description": "Safely edits the sudoers file to grant sudo privileges."
+    },
+    {
+      "question": "Təkcə (file.sh) fayl  sahibi üçün oxuma və icra (r-x), qrup və digərləri üçün heç bir icazə olmayan vəziyyəti yaratmaq üçün `chmod` komandasını reqemle yaz:",
+      "answer": "chmod 500 file.sh",
+      "description": "Owner can read/execute, others have no permissions."
+    },
+    {
+      "question": "Sistemdə bir istifadəçinin (username) daxil olduğu qrupları göstərən əmr hansıdır?",
+      "answer": "groups username",
+      "description": "Shows the groups a user belongs to."
+    },
+    {
+      "question": "`sudo` istifadə edərək `apt` paket menecerində sistem yeniləməsini necə edərsən?",
+      "answer": "sudo apt update && sudo apt upgrade",
+      "description": "Updates package list and upgrades installed packages."
+    },
+    {
+      "question": "Fayl yaradarkən avtomatik təyin olunan icazələri müəyyən edən dəyər hansı əmr ilə dəyişdirilə bilər?",
+      "answer": "umask",
+      "description": "Defines default permission mask for new files."
+    },
+    {
+      "question": "`file.txt` faylını həm sahibliyini, həm də qrupu birdən dəyişmək üçün `sudo` ilə istifadə olunan əmr hansıdır?",
+      "answer": "sudo chown newuser:newgroup file.txt",
+      "description": "Changes both owner and group of a file using sudo."
+    },
+    {
+      "question": "`sudo` əmri ilə istifadə edilən əmrin bütün uğurlu və uğursuz qeydlərini görmək üçün hansı faylı yoxlamaq lazımdır?",
+      "answer": "/var/log/auth.log",
+      "description": "Authentication and sudo usage logs are stored here (Debian/Ubuntu)."
+    },
+    {
+      "question": "Bir komanda yalnız `sudo` səlahiyyəti ilə işləyirsə, amma parol daxil etmədən `sudo` işlətmək istəyirsənsə, hansı konfiqurasiya faylına dəyişiklik etməlisən?",
+      "answer": "/etc/sudoers",
+      "description": "Edit with visudo to allow NOPASSWD sudo for specific user."
+    },
+    {
+      "question": "`chmod` istifadə edərək (file.txt) faylı aşağıdakı icazə ilə qur: `-rwxr-x--x`",
+      "answer": "chmod 751 file.txt",
+      "description": "Owner full, group read/execute, others execute."
+    }
+  ]
+}

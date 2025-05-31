@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <application
         android:allowBackup="true"
@@ -17,10 +18,16 @@
         android:label="System in"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.JavaQuiz"
+        android:theme="@style/Theme.SystemIn"
         tools:targetApi="31">
         <activity
-            android:name="com.ali.chatBot.ChatBotActivity"
+            android:name="com.ali.kali.console.Terminal"
+            android:exported="false" />
+        <activity
+            android:name="com.ali.aimain.Mathematics"
+            android:exported="false" />
+        <activity
+            android:name="com.ali.pymain.PythonConsole"
             android:exported="false" />
         <activity
             android:name="com.ali.kali.LinuxMain"
@@ -102,11 +109,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- Add tools:replace to resolve merge conflict between resources -->
-        <property
-            android:name="android.adservices.AD_SERVICES_CONFIG"
-            android:resource="@xml/gma_ad_services_config"
-            tools:replace="android:resource" />
-
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-5367924704859976~2951656530" />

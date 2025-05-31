@@ -57,9 +57,9 @@ public class Register extends AppCompatActivity {
         mEmail = findViewById(R.id.email);
         mPassword = findViewById(R.id.password); // password EditText-in id-si
         mPhone = findViewById(R.id.phone);
-        mRegisterBtn = findViewById(R.id.register);
+        mRegisterBtn = findViewById(R.id.signUpBtn);
         mLoginBtn = findViewById(R.id.createText);
-        progressBar = findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.mProgressBar2);
 
         // Firebase Auth instance
         fAuth = FirebaseAuth.getInstance();
@@ -96,7 +96,7 @@ public class Register extends AppCompatActivity {
                     return;
                 }
 
-                if (phone.length() > 14 || phone.length() < 13){
+                if (phone.length() > 13 || phone.length() < 13){
                     mPhone.setError("Phone number must be at least 13 digits long");
                     return;
                 }

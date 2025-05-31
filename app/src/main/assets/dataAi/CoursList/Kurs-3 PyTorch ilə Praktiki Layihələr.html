@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 3-cü Dərs: PyTorch ilə Praktiki Layihələr</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        pre {
+            background-color: #333; /* Kod üçün tünd fon */
+            color: #fff; /* Ağ rəngli mətn */
+            padding: 10px; /* Kod üçün iç margin */
+            border-radius: 5px; /* Yuvarlaq künclər */
+            font-family: Consolas, monaco, monospace; /* Kod şrifti */
+            font-size: 16px; /* Şrift ölçüsü */
+            overflow: auto; /* Uzun kod üçün skroll */
+            white-space: pre-wrap; /* Uzun kod xəttində sarmak */
+        }
+        p {
+            line-height: 1.6;
+        }
+        strong {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+<h1>🚀 3-cü Dərs: PyTorch ilə Praktiki Layihələr</h1>
+<div class="content">
+    <p>Bu dərsdə PyTorch qurulumu, əsas funksiyalar və ilk modelimizi necə yarada biləcəyimizi öyrənəcəyik.</p>
+
+    <div class="section">
+        <h2>1️⃣ PyTorch-u quraşdır (Əgər qurulmayıbsa)</h2>
+        <p>Linux və ya Windows istifadə edirsənsə, terminalda yaz:</p>
+        <pre>
+pip install torch torchvision torchaudio
+            </pre>
+        <p>CUDA ilə GPU istifadə etmək istəyirsənsə:</p>
+        <pre>
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+            </pre>
+    </div>
+
+    <div class="section">
+        <h2>2️⃣ İlk PyTorch Tenzorunu Yarat</h2>
+        <p>PyTorch istifadə edərək bir tensor yaradaq:</p>
+        <pre>
+import torch
+
+# 2x3 ölçülü təsadüfi tensor yarat
+tensor = torch.rand(2, 3)
+print(tensor)
+            </pre>
+    </div>
+
+    <div class="section">
+        <h2>3️⃣ Sadə Neyron Şəbəkəsi Qurmaq</h2>
+        <p>Sadə neyron şəbəkəsi modeli qurmaq üçün PyTorch-dan necə istifadə edə bilərik?</p>
+        <pre>
+import torch.nn as nn
+import torch.optim as optim
+
+# Sadə neyron şəbəkə modeli
+class NeuralNet(nn.Module):
+    def __init__(self):
+        super(NeuralNet, self).__init__()
+        self.layer1 = nn.Linear(2, 3)  # Giriş: 2, Çıxış: 3
+        self.layer2 = nn.Linear(3, 1)  # Giriş: 3, Çıxış: 1
+
+    def forward(self, x):
+        x = torch.relu(self.layer1(x))
+        x = self.layer2(x)
+        return x
+
+model = NeuralNet()
+print(model)
+            </pre>
+    </div>
+
+    <div class="task">
+        <p>📌 Sənə tapşırıq:</p>
+        <ul>
+            <li>1️⃣ PyTorch-u quraşdır və yoxla. Əgər problem çıxarsa, mənə xəbər et.</li>
+            <li>2️⃣ İlk tensor və model kodlarını işə sal və nəticəni gör.</li>
+        </ul>
+        <p>Cavabını yaz, sonra 4-cü dərsə keçək: "Model Təlimi və İstifadəsi" 🚀</p>
+    </div>
+</div>
+</body>
+</html>
