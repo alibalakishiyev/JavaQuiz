@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8" />
+    <title>TrainingArguments Parametrlərinin İzahı</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          padding: 30px;
+          background-color: #f7f9fc;
+          color: #2c3e50;
+          line-height: 1.7;
+        }
+        h1, h2 {
+          color: #2c3e50;
+        }
+        .code {
+          background: #eef;
+          padding: 8px 12px;
+          border-left: 4px solid #3498db;
+          font-family: Consolas, monospace;
+          margin: 10px 0;
+
+        }
+        .note {
+          background: #e8f5e9;
+          border-left: 6px solid #4caf50;
+          padding: 10px;
+          margin: 20px 0;
+        }
+        .warn {
+          background: #fff3cd;
+          border-left: 6px solid #ffc107;
+          padding: 10px;
+          margin: 20px 0;
+        }
+        .formula {
+            background: #e3f2fd;
+            border-left: 6px solid #2196f3;
+            padding: 10px;
+            margin: 15px 0;
+            font-family: monospace;
+            color: black;
+        }
+        ul {
+          margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🤖 <code>TrainingArguments</code> Parametrlərinin Tam İzahı</h1>
+
+<section>
+    <h2><code>output_dir</code></h2>
+    <p><strong>Təsvir:</strong> Təlimdən sonra model və yoxlama fayllarının saxlanacağı qovluq.</p>
+    <p><strong>Misal:</strong> <code>"models/azeri_gpt2_gpu"</code></p>
+</section>
+
+<section>
+    <h2><code>num_train_epochs</code></h2>
+    <p><strong>Təsvir:</strong> Modelin tam məlumat dəsti üzərində neçə dəfə təkrar təlim ediləcəyi (epoch sayı).</p>
+    <p><strong>Misal:</strong> 5 epoch məlumatı 5 dəfə tam işləyir.</p>
+</section>
+
+<section>
+    <h2><code>per_device_train_batch_size</code></h2>
+    <p><strong>Təsvir:</strong> Hər bir cihaz (GPU/CPU) üçün mini-batch ölçüsü.</p>
+    <p><strong>Əhəmiyyəti:</strong> Batch ölçüsü təlim performansını və yaddaş istifadəsini birbaşa təsir edir.</p>
+    <p><strong>Misal:</strong> 16 nümunə bir batch-da emal olunur.</p>
+</section>
+
+<section>
+    <h2><code>per_device_eval_batch_size</code></h2>
+    <p><strong>Təsvir:</strong> Qiymətləndirmə zamanı hər cihazda istifadə olunan batch ölçüsü.</p>
+    <p><strong>Misal:</strong> Təlimdəki batch ölçüsü ilə eyni 16.</p>
+</section>
+
+<section>
+    <h2><code>learning_rate</code></h2>
+    <p><strong>Təsvir:</strong> Modelin çəkilərini yeniləmə sürəti (öyrənmə sürəti).</p>
+    <p><strong>Əhəmiyyəti:</strong> Kiçik dəyərlər modelin daha sabit və yavaş öyrənməsini təmin edir; böyük dəyərlər isə sürətli amma qeyri-sabit öyrənmə yarada bilər.</p>
+    <p><strong>Misal:</strong> 3e-5 (0.00003)</p>
+</section>
+
+<section>
+    <h2><code>weight_decay</code></h2>
+    <p><strong>Təsvir:</strong> Overfitting-in qarşısını almaq üçün çəkilərə tətbiq olunan azalmanın dərəcəsi (regularization).</p>
+    <p><strong>Misal:</strong> 0.01 - kiçik, amma faydalı bir azalma.</p>
+</section>
+
+<section>
+    <h2><code>warmup_steps</code></h2>
+    <p><strong>Təsvir:</strong> Təlimin əvvəlində öyrənmə sürətinin tədricən artacağı addımların sayı.</p>
+    <p><strong>Əhəmiyyəti:</strong> Modelin təlimə daha stabil başlamasını təmin edir.</p>
+    <p><strong>Misal:</strong> 500 addım</p>
+</section>
+
+<section>
+    <h2><code>save_steps</code></h2>
+    <p><strong>Təsvir:</strong> Hər neçə addımdan sonra modelin checkpoint (ehtiyat surəti) saxlanacaq.</p>
+    <p><strong>Misal:</strong> Hər 1000 addımda model yaddaşa yazılır.</p>
+</section>
+
+<section>
+    <h2><code>logging_steps</code></h2>
+    <p><strong>Təsvir:</strong> Təlim zamanı statistikanın (loss, learning rate və s.) neçə addımdan bir konsola yazılacağı.</p>
+    <p><strong>Misal:</strong> Hər 100 addımda.</p>
+</section>
+
+<section>
+    <h2><code>eval_strategy</code></h2>
+    <p><strong>Təsvir:</strong> Qiymətləndirmə (evaluation) strategiyası.</p>
+    <p><strong>Seçimlər:</strong> <code>"no"</code> (qiymətləndirmə yoxdur), <code>"steps"</code> (müəyyən addımlardan sonra qiymətləndirmə), <code>"epoch"</code> (hər epoch sonunda).</p>
+    <p><strong>Misal:</strong> <code>"steps"</code> - hər müəyyən addımda test set ilə yoxlama.</p>
+</section>
+
+<section>
+    <h2><code>eval_steps</code></h2>
+    <p><strong>Təsvir:</strong> Qiymətləndirmənin neçə addımdan bir aparılacağı.</p>
+    <p><strong>Misal:</strong> Hər 500 addımda qiymətləndirmə edilir.</p>
+</section>
+
+<section>
+    <h2><code>fp16</code></h2>
+    <p><strong>Təsvir:</strong> Yarım dəqiqlikli 16-bit float təlimin aktivləşdirilməsi (mixed precision training).</p>
+    <p><strong>Faydası:</strong> GPU yaddaşına qənaət və sürət artımı.</p>
+    <p><strong>Qeyd:</strong> Yalnız uyğun GPU-larda işləyir.</p>
+</section>
+
+<section>
+    <h2><code>gradient_accumulation_steps</code></h2>
+    <p><strong>Təsvir:</strong> Gradientlərin neçə addımda yığılıb yenilənəcəyini göstərir.</p>
+    <p><strong>Əhəmiyyəti:</strong> Effektiv batch ölçüsünü artırmaq üçün istifadə olunur.</p>
+    <p><strong>Misal:</strong> Batch=16, accumulation=4 isə effektiv batch = 64 olur.</p>
+</section>
+
+<section>
+    <h2><code>report_to</code></h2>
+    <p><strong>Təsvir:</strong> Təlim prosesinin hansı platformaya hesabat verəcəyini göstərir.</p>
+    <p><strong>Misal:</strong> <code>"none"</code> - heç bir hesabat platforması, <code>"tensorboard"</code> və ya <code>"wandb"</code> ola bilər.</p>
+</section>
+
+<section>
+    <h2><code>save_total_limit</code></h2>
+    <p><strong>Təsvir:</strong> Saxlanacaq maksimum checkpoint sayı.</p>
+    <p><strong>Qeyd:</strong> Köhnə fayllar avtomatik silinir.</p>
+    <p><strong>Misal:</strong> 2</p>
+</section>
+
+<section>
+    <h2><code>load_best_model_at_end</code></h2>
+    <p><strong>Təsvir:</strong> Təlim sonunda ən yaxşı qiymətləndirmə nəticəsi verən model yüklənəcək.</p>
+</section>
+
+<section>
+    <h2><code>metric_for_best_model</code></h2>
+    <p><strong>Təsvir:</strong> Ən yaxşı modelin seçilməsində istifadə olunan qiymətləndirmə metriqası.</p>
+    <p><strong>Misal:</strong> <code>"eval_loss"</code></p>
+</section>
+
+<section>
+    <h2><code>greater_is_better</code></h2>
+    <p><strong>Təsvir:</strong> Metric-in yüksək olması model üçün yaxşıdır, yoxsa aşağı?</p>
+    <p><strong>Misal:</strong> Loss üçün <code>False</code> (az olması yaxşıdır).</p>
+</section>
+
+<section>
+    <h2><code>optim</code></h2>
+    <p><strong>Təsvir:</strong> İstifadə olunan optimizatorun növü.</p>
+    <p><strong>Misal:</strong> <code>"adamw_torch_fused"</code> - GPU üçün sürətli AdamW optimizatoru.</p>
+</section>
+
+<section>
+    <h2><code>dataloader_pin_memory</code></h2>
+    <p><strong>Təsvir:</strong> DataLoader-da pin_memory seçimini aktiv edir.</p>
+    <p><strong>Faydası:</strong> GPU-ya data ötürülməsini sürətləndirir.</p>
+</section>
+
+<section>
+    <h2><code>dataloader_num_workers</code></h2>
+    <p><strong>Təsvir:</strong> DataLoader üçün paralel işləyən işçi (worker) sayı.</p>
+    <p><strong>Faydası:</strong> Data yüklənmə sürətini artırır.</p>
+    <p><strong>Misal:</strong> 4 işçi</p>
+</section>
+
+<section>
+    <h2><code>seed</code></h2>
+    <p><strong>Təsvir:</strong> Təsadüfi ədədlərin başlanğıc toxumu, nəticələrin təkrar olunması üçün vacibdir.</p>
+    <p><strong>Misal:</strong> 42</p>
+</section>
+
+<h2>📌Tam Kod</h2>
+
+<pre><code>
+    from transformers import TrainingArguments
+
+training_args = TrainingArguments(
+    output_dir=self.output_dir,                # ✅ Model və log fayllarının saxlanacağı qovluq
+    num_train_epochs=self.epochs,              # ✅ Təlimin neçə tam dövr (epoch) aparılacağı
+    per_device_train_batch_size=self.batch_size,     # ✅ Hər GPU/CPU üçün təlim zamanı batch ölçüsü
+    per_device_eval_batch_size=self.batch_size,      # ✅ Qiymətləndirmə zamanı batch ölçüsü
+
+    learning_rate=self.learning_rate,          # ✅ Model çəkilərini yeniləmək üçün öyrənmə sürəti
+    weight_decay=0.01,                         # ✅ Overfitting-in qarşısını almaq üçün çəkilərə tətbiq olunan decay
+
+    warmup_steps=500,                          # ✅ Təlimin əvvəlində öyrənmə sürətinin yavaş-yavaş artırıldığı addım sayı
+
+    save_steps=1000,                           # ✅ Hər 1000 addımdan bir model checkpoint olaraq yadda saxlanacaq
+    logging_steps=100,                         # ✅ Hər 100 addımdan bir təlim statistikası (loss və s.) çıxacaq
+
+    eval_strategy="steps",                     # ✅ Qiymətləndirmə strategiyası: müəyyən addımlardan bir yoxlama
+    eval_steps=500,                            # ✅ Hər 500 addımda test set ilə qiymətləndirmə aparılır
+
+    fp16=True,                                 # ✅ Mixed precision təlim (GPU-da 16-bit float ilə sürətli və az yaddaşlı)
+    gradient_accumulation_steps=GRADIENT_ACCUMULATION_STEPS,  # ✅ Gradientlər neçə addımda bir yığılıb optimallaşdırılacaq
+
+    report_to="none",                          # ✅ Təlim prosesi heç bir izləmə sisteminə göndərilmir (məs. TensorBoard, WandB)
+
+    save_total_limit=2,                        # ✅ Yalnız son 2 model checkpoint saxlanacaq, qalanlar silinəcək
+
+    load_best_model_at_end=True,              # ✅ Təlim bitdikdən sonra ən aşağı eval loss olan model yüklənəcək
+    metric_for_best_model="eval_loss",        # ✅ Ən yaxşı modeli seçmək üçün istifadə edilən metrik: test loss
+    greater_is_better=False,                  # ✅ Aşağı eval_loss daha yaxşı sayılır
+
+    optim="adamw_torch_fused",                # ✅ GPU üçün optimallaşdırılmış AdamW optimizatoru (fused versiyası)
+    dataloader_pin_memory=True,               # ✅ Dataloader RAM-dan GPU-ya data ötürməni sürətləndirir
+    dataloader_num_workers=4,                 # ✅ Dataloader üçün paralel işləyən işçi sayı (data yükləmə sürətini artırır)
+
+    seed=SEED                                 # ✅ Nəticələrin reproduksiyası üçün random toxum (random_state)
+)
+
+</code></pre>
+
+</body>
+</html>
