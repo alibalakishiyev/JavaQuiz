@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8" />
+    <title>Activation Function (Aktivasiya Funksiyası) - Riyazi İzah</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 30px; background-color: #fafafa; color: #222; }
+        h1, h2 { color: #2c3e50; }
+        code { background: #eee; padding: 3px 6px; border-radius: 4px; }
+        .formula { background: #fff; border-left: 5px solid #2980b9; padding: 15px; margin: 15px 0; font-size: 18px; }
+    </style>
+</head>
+<body>
+
+<h1>🔆 Aktivasiya Funksiyası (Activation Function) və Riyazi İzahı</h1>
+
+<h2>1. Aktivasiya funksiyası nədir?</h2>
+<p>
+    Aktivasiya funksiyası neyron şəbəkəsinin daxilində qeyri-xətti transformasiya yaradır. Bu, modelin mürəkkəb nümunələri öyrənməsinə imkan verir.
+</p>
+
+<h2>2. Transformer modellərində əsas aktivasiya funksiyaları</h2>
+<ul>
+    <li><strong>ReLU</strong>: <code>f(x) = max(0, x)</code></li>
+    <li><strong>GELU</strong> (Gaussian Error Linear Unit): <code>f(x) = x * P(X ≤ x)</code>, burada <code>P</code> normal paylanmanın paylanma funksiyasıdır.</li>
+</ul>
+
+<h2>3. GELU funksiyasının riyazi ifadəsi</h2>
+<p>
+    GELU, daxil olan <code>x</code> dəyərinin standart normal paylanmada mənfi və ya müsbət olma ehtimalını əsas alır:
+</p>
+
+<div class="formula">
+    <code>
+        \displaystyle
+        \mathrm{GELU}(x) = x \cdot \Phi(x) = x \cdot \frac{1}{2} \left[ 1 + \operatorname{erf} \left( \frac{x}{\sqrt{2}} \right) \right]
+    </code>
+</div>
+
+<p>Burada:</p>
+<ul>
+    <li><code>\Phi(x)</code> — standart normal paylanmanın kümülatif paylanma funksiyası (CDF)</li>
+    <li><code>\operatorname{erf}(z)</code> — səhv funksiyası (error function)</li>
+</ul>
+
+<h2>4. Yaxınlaşdırma formulu</h2>
+<p>Hesablama səmərəliliyi üçün GELU aşağıdakı yaxınlaşma ilə istifadə edilir:</p>
+
+<div class="formula">
+    <code>
+        \displaystyle
+        \mathrm{GELU}(x) \approx 0.5 \cdot x \left( 1 + \tanh \left[ \sqrt{\frac{2}{\pi}} \left( x + 0.044715 \cdot x^3 \right) \right] \right)
+    </code>
+</div>
+
+<h2>5. ReLU ilə müqayisə</h2>
+<ul>
+    <li>ReLU sadədir və <code>f(x) = \max(0, x)</code></li>
+    <li>GELU isə daha hamar və statistika əsaslı qeyri-xətti funksiya olaraq təklif edilir</li>
+    <li>GELU aşağıdakı xassələrə malikdir:
+        <ul>
+            <li>Kiçik mənfi dəyərləri sıfıra çevirmir, yavaşca sıfıra yaxınlaşdırır</li>
+            <li>ReLU-dan daha hamar tərcümə yaratmaqla, optimallaşdırmanı və ümumi performansı artırır</li>
+        </ul>
+    </li>
+</ul>
+
+<h2>6. Riyazi nümunə</h2>
+<p>Məsələn, <code>x = 1.0</code> üçün GELU:</p>
+
+<div class="formula">
+    <code>
+        \Phi(1.0) = \frac{1}{2} \left[ 1 + \operatorname{erf} \left( \frac{1.0}{\sqrt{2}} \right) \right] \approx 0.8413
+    </code>
+</div>
+<p>Beləliklə,</p>
+<div class="formula">
+    <code>
+        \mathrm{GELU}(1.0) = 1.0 \times 0.8413 = 0.8413
+    </code>
+</div>
+
+<h2>7. Niyə Transformer-də GELU istifadə olunur?</h2>
+<ul>
+    <li>Modelin daha hamar və stabilləşmiş öyrənməsini təmin edir</li>
+    <li>Dərin neyron şəbəkələrdə ReLU ilə müqayisədə daha yaxşı ümumiləşdirmə qabiliyyəti verir</li>
+</ul>
+
+<h2>8. Yekun</h2>
+<p>
+    Aktivasiya funksiyası Transformer modellərində daxil olan x-ləri qeyri-xətti şəkildə dəyişdirərək modelin mürəkkəb nümunələri öyrənməsini təmin edir.
+    GELU, ReLU-nun daha inkişaf etmiş formasıdır və modern Transformer modellərində standartdır.
+</p>
+
+</body>
+</html>

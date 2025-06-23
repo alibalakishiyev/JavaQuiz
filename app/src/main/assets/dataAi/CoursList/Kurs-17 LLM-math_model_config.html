@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>GPT-2 Parametrlərinin Riyazi Təhlili</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            padding: 30px;
+            color: #333;
+        }
+        h1, h2 {
+            color: #2e3b55;
+        }
+        code {
+            background-color: #eef;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .math {
+            background-color: #fffde7;
+            padding: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #fbc02d;
+            font-family: Consolas, monospace;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #aaa;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        .note {
+            background: #e3f2fd;
+            padding: 10px;
+            border-left: 4px solid #2196f3;
+        }
+    </style>
+</head>
+<body>
+
+<h1>GPT2Config Parametrlərinin Riyazi Təhlili</h1>
+
+<pre><code>
+config = GPT2Config(
+    vocab_size=len(self.tokenizer),  # 🔠 Lüğət ölçüsü
+    n_positions=512,                 # 📏 Maksimum ardıcıllıq uzunluğu
+    n_embd=768,                      # 🔢 Vektor ölçüsü
+    n_layer=10,                      # 🧱 Transformer blokları
+    n_head=12                        # 🧠 Attention başlıqları
+)
+</code></pre>
+
+<h2>1️⃣ <code>vocab_size</code> – Token Lüğət Ölçüsü</h2>
+<div class="note">
+    Tokenizer-dəki unikal söz/token sayını göstərir. Hər bir token üçün 768-lik vektor saxlanır.
+</div>
+<div class="math">
+    Embedding layer: vocab_size × n_embd = 94,000 × 768 = 72,192,000 parametr
+</div>
+
+<h2>2️⃣ <code>n_positions</code> – Maksimum Ardıcıllıq Uzunluğu</h2>
+<div class="note">
+    Model bir anda neçə tokenə baxa bilər. Hər bir mövqeyə ayrıca vektor təyin olunur.
+</div>
+<div class="math">
+    Position embeddings: 512 × 768 = 393,216 parametr
+</div>
+
+<h2>3️⃣ <code>n_embd</code> – Embedding Vektorunun Ölçüsü</h2>
+<div class="note">
+    Bütün qatlarda (attention və feedforward) daxil/çıxış vektorunun ölçüsüdür.
+</div>
+<div class="math">
+    Attention: 3 × (768 × 768) = 1,769,472 <br>
+    Out proj.: 768 × 768 = 589,824 <br>
+    MLP 1-ci qat: 768 × 3072 = 2,359,296 <br>
+    MLP 2-ci qat: 3072 × 768 = 2,359,296 <br>
+    Cəmi (təqribi): ~ 7 milyon parametr / blok
+</div>
+
+<h2>4️⃣ <code>n_layer</code> – Transformer Bloklarının Sayı</h2>
+<div class="note">
+    Hər blokda bir attention və bir MLP var. Dərinlik artırıldıqca model daha güclü olur.
+</div>
+<div class="math">
+    10 blok × 6 milyon = 60 milyon parametr
+</div>
+
+<h2>5️⃣ <code>n_head</code> – Multi-Head Attention Başlıqları</h2>
+<div class="note">
+    Attention mexanizminin neçə başlıqla işlədiyini göstərir. Hər biri fərqli hissəyə fokuslanır.
+</div>
+<div class="math">
+    head_dim = n_embd / n_head = 768 / 12 = 64 ölçülü vektor
+</div>
+
+<h2>📊 Parametr Statistikası (təxmini)</h2>
+<table>
+    <tr>
+        <th>Komponent</th>
+        <th>Parametr Sayı</th>
+    </tr>
+    <tr>
+        <td>Token Embeddings</td>
+        <td>~72 milyon</td>
+    </tr>
+    <tr>
+        <td>Position Embeddings</td>
+        <td>~0.39 milyon</td>
+    </tr>
+    <tr>
+        <td>Transformer blokları (10)</td>
+        <td>~60 milyon</td>
+    </tr>
+    <tr>
+        <td>Linear çıxış layeri</td>
+        <td>~0.6 milyon</td>
+    </tr>
+    <tr>
+        <th>CƏMİ</th>
+        <th>~133 milyon</th>
+    </tr>
+</table>
+
+<h2>📌 Nəticə</h2>
+<div class="note">
+    <ul>
+        <li><strong>n_embd</strong>: Daha böyük vektorlar → daha güclü ifadə qabiliyyəti, amma daha çox yaddaş</li>
+        <li><strong>n_layer</strong>: Dərinlik artır → kontekst daha yaxşı tutulur</li>
+        <li><strong>n_head</strong>: Paralel attention başlıqları → müxtəlif mənbədən informasiya</li>
+    </ul>
+</div>
+
+</body>
+</html>

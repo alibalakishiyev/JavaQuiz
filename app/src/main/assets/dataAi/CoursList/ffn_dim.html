@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>ffn_dim (n_inner) – Feed Forward Layer İzahedici</title>
+    <style>
+        body { font-family: Arial; padding: 30px; background-color: #fdfdfd; color: #333; line-height: 1.6; }
+        h1, h2 { color: #2c3e50; }
+        code { background: #eee; padding: 2px 6px; border-radius: 4px; }
+        .formula { background: #fff; padding: 10px; border-left: 4px solid #2980b9; margin: 15px 0; }
+        ul { margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<h1>🔢 <code>ffn_dim</code> (və ya <code>n_inner</code>) nədir?</h1>
+
+<p>
+    Transformer modelində <b>hər Transformer blokunun daxilində</b> bir <strong>Feed Forward Network (FFN)</strong>
+    hissəsi var. <code>ffn_dim</code> bu FFN hissəsinin daxili qatının ölçüsünü müəyyən edir.
+</p>
+
+<h2>📐 Strukturu necədir?</h2>
+<p>FFN iki tam bağlı qatdan ibarətdir:</p>
+<div class="formula">
+    <code>FFN(x) = max(0, xW₁ + b₁)W₂ + b₂</code>
+</div>
+
+<ul>
+    <li><code>W₁</code> ölçüsü: <code>[d_model, ffn_dim]</code></li>
+    <li><code>W₂</code> ölçüsü: <code>[ffn_dim, d_model]</code></li>
+    <li><code>d_model</code> — əsas embedding ölçüsü (məsələn: 768)</li>
+    <li><code>ffn_dim</code> — gizli qatın ölçüsü (məsələn: 3072)</li>
+</ul>
+
+<h2>🧮 Riyazi Hesablama:</h2>
+<p>Tutaq ki:</p>
+<ul>
+    <li><code>d_model = 768</code></li>
+    <li><code>ffn_dim = 3072</code></li>
+</ul>
+
+<p>Əməliyyat ardıcıllığı:</p>
+<ol>
+    <li><code>x</code> ölçülü vektor (1 × 768)</li>
+    <li><code>x @ W₁ → 1 × 3072</code></li>
+    <li><code>ReLU → max(0, ·)</code></li>
+    <li><code>@ W₂ → 1 × 768</code> (yenidən orijinal ölçüyə düşür)</li>
+</ol>
+
+<div class="formula">
+    Hesablanacaq ağırlıqların sayı:<br>
+    <strong>
+        768 × 3072 + 3072 (bias) + 3072 × 768 + 768 (bias) = <br>
+        ≈ 4.7 milyon parametr təkcə FFN üçün.
+    </strong>
+</div>
+
+<h2>🎯 Niyə bu qədər böyük?</h2>
+<ul>
+    <li><strong>Transformerdə əsas "hesablama gücü" FFN qatlarındadır</strong></li>
+    <li>Bu qatlarda məlumat qeyri-xətti şəkildə "transformasiya" olunur</li>
+    <li>Tipik olaraq <code>ffn_dim = 4 × d_model</code></li>
+    <li>GPT-2 üçün: <code>d_model = 768</code> → <code>ffn_dim = 3072</code></li>
+</ul>
+
+<h2>🧠 Dropout və Aktivasiya</h2>
+<ul>
+    <li>İki fully-connected qat arasında <code>ReLU</code> və ya <code>GELU</code> aktivasiya funksiyası olur</li>
+    <li>Bəzən dropout da tətbiq edilir (resid_pdrop kimi)</li>
+</ul>
+
+<h2>📌 ffn_dim necə seçilməlidir?</h2>
+<ul>
+    <li>Əgər <code>d_model = 1024</code> → <code>ffn_dim ≈ 4096</code></li>
+    <li>Əgər çox kiçik seçilsə → Modelin gücü azalır</li>
+    <li>Çox böyük seçilsə → Parametr sayı və GPU istifadəsi artır</li>
+</ul>
+
+<h2>📈 Nəticə:</h2>
+<p>
+    <code>ffn_dim</code> modeli daha güclü və qeyri-xətti çevirməyə imkan verir.
+    Lakin çox böyük seçimlər yaddaş və vaxt baxımından baha başa gələ bilər.
+    Optimal dəyər adətən <code>ffn_dim = 4 × d_model</code> olaraq qəbul edilir.
+</p>
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8" />
+    <title>initializer_range - Riyazi İzah</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 30px; background-color: #f9f9f9; color: #222; }
+        h1, h2 { color: #2c3e50; }
+        code { background: #eee; padding: 3px 6px; border-radius: 4px; font-family: monospace; }
+        .formula { background: #fff; border-left: 5px solid #2980b9; padding: 15px; margin: 15px 0; font-size: 18px; }
+        ul { margin-top: 0; }
+    </style>
+</head>
+<body>
+
+<h1>initializer_range - Riyazi və Praktiki İzahı</h1>
+
+<h2>1. Nədir <code>initializer_range</code>?</h2>
+<p>
+    <code>initializer_range</code> — Transformer modelinin ağırlıqlarını ilkin olaraq (initialization) yaratmaq üçün istifadə olunan paylanmanın standart sapmasıdır.
+    Bu, modelin başlanğıc çəki dəyərlərinin yayılmasını təyin edir.
+</p>
+
+<h2>2. Niyə ilkinləşdirmə önəmlidir?</h2>
+<ul>
+    <li>Model təlimə başladıqda ağırlıqlar çox böyük və ya çox kiçik olmamalıdır — bu, təlimin stabilliyini təmin edir.</li>
+    <li>İlkin ağırlıqların düzgün seçilməsi qradientlərin yox olmasının və ya partlamasının qarşısını alır.</li>
+    <li>Transformer kimi dərin şəbəkələrdə, optimal <code>initializer_range</code> təlimin uğurlu və sürətli olmasını təmin edir.</li>
+</ul>
+
+<h2>3. Riyazi təməl</h2>
+<p>
+    Modelin ağırlıqları çox vaxt normal paylanmadan (Gaussian distribution) <code>\mathcal{N}(0, \sigma^2)</code> seçilir, burada:
+</p>
+
+<div class="formula">
+    <code>
+        \displaystyle
+        W \sim \mathcal{N}(0, \sigma^2)
+    </code>
+</div>
+
+<p>
+    Burada <code>\sigma</code> - <code>initializer_range</code> ilə təyin olunan standart sapmadır.
+</p>
+
+<h2>4. Standart sapmanın seçilməsi</h2>
+<p>
+    Çox vaxt GPT-2 və Transformer modellərində istifadə olunan <code>initializer_range</code> dəyəri <code>0.02</code> kimi kiçikdir. Bu, ağırlıqların çox böyük olmamasını təmin edir.
+</p>
+
+<h2>5. İlə bağlı riyazi təsirlər</h2>
+<ul>
+    <li>
+        <strong>Çəki paylanması:</strong> İlk ağırlıqlar bu şəkildə paylanır:
+        <div class="formula">
+            <code>W_{ij} \sim \mathcal{N}(0, (initializer\_range)^2)</code>
+        </div>
+    </li>
+    <li>
+        <strong>İrəliləyən siqnalın yayılması:</strong> Bu standart sapma giriş və çıxışların yayılmasını balanslayır, yəni çox böyük və ya kiçik dəyərlərin qarşısını alır.
+    </li>
+    <li>
+        <strong>Qradientlərə təsiri:</strong> Kiçik <code>initializer_range</code> qradientlərin yox olmasına, çox böyük isə partlamasına səbəb ola bilər.
+    </li>
+</ul>
+
+<h2>6. Məsələn, <code>initializer_range = 0.02</code> olduqda</h2>
+<p>
+    Ağırlıqlar belə paylanır:
+</p>
+<div class="formula">
+    <code>
+        W \sim \mathcal{N}(0, 0.02^2) = \mathcal{N}(0, 0.0004)
+    </code>
+</div>
+<p>
+    Yəni, 95% ehtimalla ağırlıqlar təxminən <code>±0.04</code> intervalında yerləşir (çünki normal paylanmada 95% ehtimal <code>±2σ</code> intervalındadır).
+</p>
+
+<h2>7. Nəticə və tövsiyə</h2>
+<ul>
+    <li>Çox kiçik <code>initializer_range</code> (məsələn, <code>0.001</code>) — ağırlıqlar çox kiçik, öyrənmə yavaş ola bilər.</li>
+    <li>Çox böyük <code>initializer_range</code> (məsələn, <code>0.1</code>) — ağırlıqlar böyük ola bilər, təlim zamanı qradient partlaması baş verə bilər.</li>
+    <li>GPT-2 üçün 0.02 balanslı və standart dəyər olaraq təyin edilmişdir.</li>
+</ul>
+
+<h2>8. Nəticə olaraq...</h2>
+<p>
+    <strong><code>initializer_range</code></strong> Transformer modelinin təlimə başlamazdan əvvəl çəkilərin paylanmasının standart sapmasını təyin edən riyazi parametredir. Optimal dəyər təlimin stabil və sürətli olmasını təmin edir.
+</p>
+
+</body>
+</html>

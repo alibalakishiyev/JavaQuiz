@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>Special Tokens İzahedici</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          background-color: #f9f9f9;
+          color: #333;
+          margin: 20px;
+        }
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          background-color: #fff;
+          margin-top: 20px;
+        }
+        th, td {
+          padding: 10px;
+          border: 1px solid #ddd;
+          text-align: left;
+          vertical-align: top;
+        }
+        th {
+          background-color: #f0f0f0;
+        }
+        code {
+          padding: 3px 5px;
+          border-radius: 4px;
+          font-family: Consolas, monospace;
+        }
+
+        pre {
+            background-color: #2d2d2d;  /* Qaranlıq fon */
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        pre code {
+            color: #00ffb7;  /* Kod yazısı — parlaq yaşıl/mavi */
+            font-family: Consolas, Monaco, monospace;
+            font-size: 15px;
+            display: block;
+        }
+        p {
+            line-height: 1.6;
+        }
+        strong {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+
+<h2>🧩 <code>special_tokens_map.json</code> Açıqlaması</h2>
+
+<table>
+    <tr>
+        <th>Token</th>
+        <th>İçərik (<code>content</code>)</th>
+        <th>İzah</th>
+    </tr>
+
+    <tr>
+        <td><code>bos_token</code></td>
+        <td><code>&lt;s&gt;</code></td>
+        <td>
+            "Begin of sentence" – cümlənin və ya ardıcıllığın başlanğıcını göstərir.
+            <br>Tokenizer onu hər girişin əvvəlinə əlavə edə bilər.
+        </td>
+    </tr>
+
+    <tr>
+        <td><code>eos_token</code></td>
+        <td><code>&lt;/s&gt;</code></td>
+        <td>
+            "End of sentence" – cümlənin sonunu bildirir.
+            <br>Model cavabın nə vaxt bitəcəyini bu tokenlə anlayır.
+        </td>
+    </tr>
+
+    <tr>
+        <td><code>mask_token</code></td>
+        <td><code>&lt;mask&gt;</code></td>
+        <td>
+            Maskalama tokeni – xüsusilə maskalı dil modellərində (BERT kimi) istifadə olunur.
+            <br>GPT modellərində test və təlim zamanı məhdud şəkildə tətbiq olunur.
+        </td>
+    </tr>
+
+    <tr>
+        <td><code>pad_token</code></td>
+        <td><code>&lt;pad&gt;</code></td>
+        <td>
+            "Padding" üçün istifadə olunur. Qısa cümlələri uzun cümlələrlə eyni ölçüdə etmək üçün əlavə olunur.
+            <br>Batch treninqdə faydalıdır.
+        </td>
+    </tr>
+
+    <tr>
+        <td><code>unk_token</code></td>
+        <td><code>&lt;|endoftext|&gt;</code></td>
+        <td>
+            "Unknown token" – tokenizer tərəfindən tanınmayan simvollar və ya sözlər üçün istifadə olunur.
+            <br>Burada GPT-2 stilində <code>&lt;|endoftext|&gt;</code> kimi təyin olunub.
+        </td>
+    </tr>
+
+</table>
+
+<h2>📌Tam Kod</h2>
+
+<pre><code>
+    {
+  "bos_token": {                             // Cümlənin başlanğıc tokeni (Begin Of Sentence)
+    "content": "&lt;s&gt;",                        // Tokenin simvolik görünüşü
+    "lstrip": false,                         // Soldakı boşluqları silmir
+    "normalized": true,                      // Token normalizasiya olunacaq
+    "rstrip": false,                         // Sağdakı boşluqları silmir
+    "single_word": false                     // Tək söz kimi məcburi təyin edilmir
+  },
+  "eos_token": {                             // Cümlənin sonu tokeni (End Of Sentence)
+    "content": "&lt;/s&gt;,                       // Tokenin simvolik görünüşü
+    "lstrip": false,                         // Soldakı boşluqları saxlayır
+    "normalized": true,                      // Normalizasiya olunacaq
+    "rstrip": false,                         // Sağdakı boşluqları saxlayır
+    "single_word": false                     // Bu token sadəcə bir sözlə məhdud deyil
+  },
+  "mask_token": "&lt;mask&gt;,                    // Maskalama üçün istifadə edilən token (əsasən BERT üçün uyğundur)
+  "pad_token": {                             // Cümlələri eyni uzunluğa gətirmək üçün əlavə olunan token (padding)
+    "content": "&lt;pad&gt;",                      // Tokenin özü
+    "lstrip": false,                         // Soldakı boşluqlar saxlanılır
+    "normalized": true,                      // Normalizasiya aktivdir
+    "rstrip": false,                         // Sağdakı boşluqlar saxlanılır
+    "single_word": false                     // Bu token tək söz kimi qəbul edilmir
+  },
+  "unk_token": {                             // Tanınmayan tokenlər üçün istifadə olunan (unknown token)
+    "content": "<|endoftext|>",              // Burada GPT-2-də endoftext tokeni olaraq istifadə edilib
+    "lstrip": false,                         // Boşluqları saxlayır
+    "normalized": true,                      // Normalizasiya olunur
+    "rstrip": false,                         // Boşluqları saxlayır
+    "single_word": false                     // Sadəcə tək sözə tətbiq edilmir
+  }
+}
+</code></pre>
+
+</body>
+</html>

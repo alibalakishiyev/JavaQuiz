@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azerbaycan Tokenizer Modeli - İzah</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1,h2,h3,h4,h5 {
+            color: #e74c3c;
+        }
+        pre {
+            background-color: #2d2d2d;  /* Qaranlıq fon */
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        pre code {
+            color: #00ffb7;  /* Kod yazısı — parlaq yaşıl/mavi */
+            font-family: Consolas, Monaco, monospace;
+            font-size: 15px;
+            display: block;
+        }
+        p {
+            line-height: 1.6;
+        }
+        strong {
+            color: #e74c3c;
+        }
+    </style>
+
+
+</head>
+<body>
+
+<h1>🧠 Azərbaycan Tokenizer Qurulması və Təhlili</h1>
+
+<h2>1️⃣ Məqsəd</h2>
+<p>Bu layihədə xüsusi Azərbaycan dilinə uyğunlaşdırılmış tokenizer yaradılır. Məqsəd, <strong>BPE modelindən</strong> istifadə etməklə GPT-2 ilə uyğun tokenizer hazırlamaqdır.</p>
+
+<h2>2️⃣ İstifadə olunan Kitabxanalar</h2>
+<pre><code>from tokenizers import Tokenizer, models, trainers, normalizers, pre_tokenizers
+from tokenizers.normalizers import NFD, Sequence, Replace
+from tokenizers.pre_tokenizers import Split, WhitespaceSplit
+from tokenizers import Regex</code></pre>
+
+<h2>3️⃣ Əsas Konfiqurasiya</h2>
+<ul>
+    <li><strong>Vocab Size:</strong> 130000</li>
+    <li><strong>Xüsusi Tokenlər:</strong> &lt;s&gt;, &lt;/s&gt;, &lt;pad&gt;, &lt;unk&gt;, &lt;mask&gt;, və s.</li>
+    <li><strong>Daxil edilən fayllar:</strong> Qanun, texnologiya, təhsil, təmizlənmiş lüğət və s. sahələri əhatə edir.</li>
+</ul>
+
+<h2>4️⃣ Normalizasiya Prosesi</h2>
+<p>Aşağıdakı hissə mətni təmizləmək və xüsusi hərfləri qorumaq üçündür:</p>
+<pre><code>tokenizer.normalizer = Sequence([
+    Replace(Regex(fr'[^-￿\s{AZ_LOWER}{AZ_UPPER}{re.escape(PUNCTUATION)}]'), ' '),
+    NFD()
+])</code></pre>
+
+<h2>5️⃣ Pre-tokenizer Strukturlaşdırması</h2>
+<pre><code>tokenizer.pre_tokenizer = pre_tokenizers.Sequence([
+    Split(pattern=Regex(fr'([^{AZ_LOWER}{AZ_UPPER}\w\s])'), behavior='isolated'),
+    WhitespaceSplit()
+])</code></pre>
+<p>Bu, yazıdakı <strong>durğu işarələrini</strong> ayırmaq və sözləri düzgün seqmentləşdirmək üçündür.</p>
+
+<h2>6️⃣ Tokenizer Təlim Prosesi</h2>
+<pre><code>trainer = trainers.BpeTrainer(
+    vocab_size=130000,
+    special_tokens=list(SPECIAL_TOKENS.keys()),
+    initial_alphabet=list(AZ_LOWER + AZ_UPPER + PUNCTUATION),
+    min_frequency=1
+)</code></pre>
+<p>Bu trainer ilə fayllar üzərində təlim keçirilir və model <code>merges.txt</code> və <code>vocab.json</code> fayllarını çıxarır.</p>
+
+<h2>7️⃣ Tokenizer Testi</h2>
+<p>Aşağıdakı kod blokunda test edilən cümlədə Azərbaycan dilinin özünəməxsus hərfləri sınaqdan keçirilir:</p>
+<pre><code>test_text = "Azərbaycan dilində test: ə, ü, ö, ı, ğ, ş, ç"
+encoding = tokenizer.encode(test_text)
+print(encoding.tokens)
+print(tokenizer.decode(encoding.ids))</code></pre>
+
+<h2>8️⃣ Yadda Saxlama (GPT-2 Üçün)</h2>
+<pre><code>tokenizer.save("tokenizer_temp.json")
+# vocab.json və merges.txt fayllarını çıxarma prosesi burada icra olunur</code></pre>
+<p>Bunlar GPT-2 modelinin istifadə edə biləcəyi formata çevrilir.</p>
+
+<h2>📌 Nəticə</h2>
+<p>Bu tokenizer Azərbaycan dilinə uyğunlaşdırılmış və təmizlənmiş mətnlərlə öyrədilmişdir. Xüsusi simvolların dəstəklənməsi və düzgün seqmentasiya təmin olunub. Hazır <code>vocab.json</code> və <code>merges.txt</code> faylları ilə istənilən GPT-2 modeli üzərində istifadə edilə bilər.</p>
+
+<h2>📌Tam Kod</h2>
+<pre><code>
+    import os
+    import json
+    import re
+    from tokenizers import Tokenizer, models, trainers, normalizers, pre_tokenizers
+    from tokenizers.normalizers import NFD, StripAccents, Sequence, Replace
+    from tokenizers import Regex
+    from tokenizers.pre_tokenizers import Split, WhitespaceSplit
+
+
+    class AzerbaijaniTokenizer:
+        def __init__(self):
+            self.VOCAB_SIZE = 130000  # Tokenizer üçün maksimum sözlük ölçüsü
+            self.SPECIAL_TOKENS = {  # Xüsusi tokenlər və onların ID-ləri
+               "&lt;s&gt;": 0,
+            "&lt;pad&gt;": 1,
+            "&lt;/s&gt;": 2,
+            "&lt;unk&gt;": 3,
+            "&lt;mask&gt;": 4,
+            "&lt;|endoftext|&gt;": 5,
+            "&lt;case&gt;": 6
+        }
+            self.AZ_LOWER = "abcçdeəfgğhxıijkqlmnoöprsştuüvyz"  # Kiçik hərflər
+            self.AZ_UPPER = "ABCÇDEƏFGĞHXIİJKQLMNOÖPRSŞTUÜVYZ"  # Böyük hərflər
+            self.PUNCTUATION = ".,;:!?\"'()[]{}<>@#$%^&*+-/=|\\~`"  # Nöqtə-vergül və s.
+            self.TEXT_DIR = r"C:\Users\Mafia\PycharmProjects\DataCleaner\textler"  # Mətnlərin yerləşdiyi qovluq
+
+        def get_training_files(self):
+            files = [  # İstifadə olunacaq təlim faylları
+                "asan_xidmet_tarixi.txt",
+                "azerbaijani_bank_text.txt",
+
+            ]
+            return [f for f in [os.path.join(self.TEXT_DIR, file) for file in files] if os.path.exists(f)]  # Mövcud faylları götür
+
+        def create_base_vocab(self):
+            vocab = self.SPECIAL_TOKENS.copy()  # Xüsusi tokenlərdən başla
+
+            for i in range(33, 127):  # ASCII simvolları əlavə et
+                char = chr(i)
+                if char not in vocab:
+                    vocab[char] = len(vocab)
+
+            for char in self.AZ_LOWER + self.AZ_UPPER:  # Azərbaycan hərflərini əlavə et
+                if char not in vocab:
+                    vocab[char] = len(vocab)
+
+            return vocab  # Əsas sözlüyü qaytar
+
+        def train_tokenizer(self):
+            tokenizer = Tokenizer(models.BPE(unk_token="&lt;unk&gt;"))  # BPE modeli ilə tokenizer yarat
+
+            # Normalizator: xüsusi simvolları boşluqla əvəzlə, aksentləri saxla
+            tokenizer.normalizer = normalizers.Sequence([
+                Replace(Regex(fr'[^\w\s{self.AZ_LOWER}{self.AZ_UPPER}{re.escape(self.PUNCTUATION)}]'), ' '),
+                NFD()
+            ])
+
+            # Pre-tokenizer: durğu işarələrini ayır və boşluqlarla böl
+            tokenizer.pre_tokenizer = pre_tokenizers.Sequence([
+                pre_tokenizers.Split(
+                    pattern=Regex(fr'([^{self.AZ_LOWER}{self.AZ_UPPER}\w\s])'),
+                    behavior='isolated'
+                ),
+                pre_tokenizers.WhitespaceSplit()
+            ])
+
+            # BPE trainer konfiqurasiyası
+            trainer = trainers.BpeTrainer(
+                vocab_size=self.VOCAB_SIZE,  # Maksimum sözlük ölçüsü
+                special_tokens=list(self.SPECIAL_TOKENS.keys()),  # Xüsusi tokenlər
+                initial_alphabet=list(self.AZ_LOWER + self.AZ_UPPER + self.PUNCTUATION),  # Başlanğıc əlifba
+                min_frequency=1,  # Tokenin daxil olması üçün minimal tezlik
+                show_progress=True  # Proqres göstəricisi aktiv olsun
+            )
+
+            files = self.get_training_files()  # Təlim fayllarını götür
+            if not files:
+                raise ValueError("No training files found!")  # Heç bir fayl tapılmasa xəta at
+
+            tokenizer.train(files, trainer)  # Tokenizer-i öyrət
+            return tokenizer  # Hazır tokenizer-i qaytar
+
+        def save_for_gpt2(self, tokenizer, output_dir):
+            os.makedirs(output_dir, exist_ok=True)  # Qovluq mövcud deyilsə, yarat
+
+            learned_vocab = tokenizer.get_vocab()  # Öyrənilmiş sözlük
+            base_vocab = self.create_base_vocab()  # Əsas (əlavə) sözlük
+            merged_vocab = {**base_vocab, **learned_vocab}  # İkisini birləşdir
+
+            with open(os.path.join(output_dir, "vocab.json"), "w", encoding="utf-8") as f:
+                json.dump(merged_vocab, f, ensure_ascii=False, indent=2)  # Vocab JSON kimi saxla
+
+            tokenizer.save(os.path.join(output_dir, "tokenizer_temp.json"))  # Tokenizer-in JSON versiyası
+
+            with open(os.path.join(output_dir, "tokenizer_temp.json"), "r", encoding="utf-8") as f:
+                tokenizer_data = json.load(f)  # JSON faylını oxu
+
+            with open(os.path.join(output_dir, "merges.txt"), "w", encoding="utf-8") as f:
+                f.write("#version: 1.0 - Azerbaijani BPE merges\n")  # Başlıq yaz
+                merges = tokenizer_data["model"]["merges"]  # Merge qaydalarını çıxar
+                f.write("\n".join(" ".join(pair) for pair in merges))  # Fayla yaz
+
+            os.remove(os.path.join(output_dir, "tokenizer_temp.json"))  # Müvəqqəti faylı sil
+
+            print(f"\n✅ Successfully created GPT-2 compatible files in {output_dir}")  # Uğurlu mesaj
+
+        def test_tokenizer(self, tokenizer):
+            test_text = "Azərbaycan dilində test: ə, ü, ö, ı, ğ, ş, ç"  # Test mətni
+            encoding = tokenizer.encode(test_text)  # Tokenləşdir
+
+            print("\nTest Results:")
+            print(f"Original: {test_text}")  # Əsl mətn
+            print(f"Tokens: {encoding.tokens}")  # Tokenlər
+            print(f"IDs: {encoding.ids}")  # Token ID-ləri
+            print(f"Decoded: {tokenizer.decode(encoding.ids)}")  # Dekod edilmiş mətn
+            print(f"Roundtrip: {tokenizer.decode(encoding.ids) == test_text}")  # Orijinala uyğunluq
+
+            # Əlifbadakı xüsusi hərflərin token kimi tanınıb-tanınmadığını yoxla
+            special_chars = {'ə', 'ü', 'ö', 'ı', 'ğ', 'ş', 'ç'}
+            for char in special_chars:
+                char_id = tokenizer.token_to_id(char)
+                print(f"{char}: {'✓' if char_id is not None else '✗'} (ID: {char_id})")
+
+
+    if __name__ == "__main__":
+        az_tokenizer = AzerbaijaniTokenizer()  # Tokenizer sinfini yarat
+        tokenizer = az_tokenizer.train_tokenizer()  # Tokenizer-i öyrət
+        az_tokenizer.test_tokenizer(tokenizer)  # Tokenizer-i test et
+        output_dir = "azeri_gpt2_tokenizer"  # Çıxış qovluğu
+        az_tokenizer.save_for_gpt2(tokenizer, output_dir)  # GPT-2 uyğun faylları saxla
+</code></pre>
+
+</body>
+</html>

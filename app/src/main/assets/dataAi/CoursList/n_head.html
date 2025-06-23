@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>n_head Açıqlaması - Multi-Head Attention</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          padding: 30px;
+          background-color: #f7f9fc;
+          color: #2c3e50;
+          line-height: 1.7;
+        }
+        h1, h2 {
+          color: #2c3e50;
+        }
+        .code {
+          background: #eef;
+          padding: 8px 12px;
+          border-left: 4px solid #3498db;
+          font-family: Consolas, monospace;
+          margin: 10px 0;
+        }
+        .note {
+          background: #e8f5e9;
+          border-left: 6px solid #4caf50;
+          padding: 10px;
+          margin: 20px 0;
+        }
+        .warn {
+          background: #fff3cd;
+          border-left: 6px solid #ffc107;
+          padding: 10px;
+          margin: 20px 0;
+        }
+        .formula {
+          background: #e3f2fd;
+          border-left: 6px solid #2196f3;
+          padding: 10px;
+          margin: 15px 0;
+          font-family: monospace;
+        }
+        ul {
+          margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🔀 <code>n_head = 12</code> — Multi-Head Attention (Çox Başlıqlı Diqqət)</h1>
+
+<div class="code">
+    config = GPT2Config(<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;n_head = 12,<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;n_embd = 768,<br>
+    ...)
+</div>
+
+<h2>📌 Nədir <code>n_head</code>?</h2>
+<div class="note">
+    <strong>n_head</strong> — Transformer blokundakı diqqət (attention) mexanizminin neçə başlıqdan ibarət olduğunu göstərir.
+    <br><br>
+    Hər başlıq fərqli bir alt-məkanda (subspace) diqqət (self-attention) tətbiq edir və nəticədə müxtəlif semantik kontekstləri tuta bilir.
+</div>
+
+<h2>🧠 Multi-Head Attention Prinsipi</h2>
+<ul>
+    <li>Model məlumatı paralel şəkildə <strong>n_head</strong> sayda parçalayır.</li>
+    <li>Hər parça (başlıq) öz <code>Q (query), K (key), V (value)</code> matrisləri ilə işləyir.</li>
+    <li>Əldə olunan diqqət nəticələri birləşdirilir və yenidən xətti transformasiyadan keçirilir.</li>
+</ul>
+
+<h2>💡 Riyazi Struktur</h2>
+<div class="formula">
+    Head Dimensiyası = n_embd / n_head = 768 / 12 = 64<br><br>
+    Hər başlığın ölçüsü: 64<br>
+    Toplam paralel başlıq: 12
+</div>
+
+<h2>📊 Parametr Hesablaması</h2>
+<div class="formula">
+    Q, K, V üçün hər biri:<br>
+    → (n_embd × head_dim) × n_head = (768 × 64) × 3 = 147,456<br><br>
+    Birləşdirmə üçün xətti qat (W<sub>O</sub>):<br>
+    → 768 × 768 = 589,824<br><br>
+    Toplam Parametr: 147,456 + 589,824 = <strong>737,280</strong> parametr yalnız Attention üçün
+</div>
+
+<h2>📌 Nə üçün çox başlıq?</h2>
+<div class="note">
+    <ul>
+        <li>➕ Hər başlıq fərqli semantikaya diqqət edir (məs: qrammatika, məsafə, əlaqələr)</li>
+        <li>➕ Daha paralel və sürətli öyrənmə</li>
+        <li>➕ Dərin əlaqələri görmək imkanı</li>
+        <li>➖ Yüksək hesablama yükü</li>
+    </ul>
+</div>
+
+<h2>📉 Yükləmə və Performans</h2>
+<div class="warn">
+    Nə qədər çox <code>n_head</code> olsa, GPU yaddaş yükü və parametr sayı da artır.
+    <br>
+    Amma az başlıq modelin zəif kontekstdə uğursuzluğuna səbəb ola bilər.
+</div>
+
+<h2>📐 Təcrübədə Nə Seçilməlidir?</h2>
+<ul>
+    <li><strong>n_embd = 768</strong> üçün tipik <strong>n_head = 12</strong> olur</li>
+    <li>Başlıq ölçüsü <strong>n_embd / n_head</strong> tam bölünməlidir</li>
+    <li>n_head çox böyük olarsa: parametr sayı və yük eksponent şəkildə artır</li>
+</ul>
+
+<h2>✅ Yekun</h2>
+<div class="note">
+    <strong>n_head = 12</strong> — 768 vektoru 12 parçaya bölüb hər birini fərqli semantik kontekstdə diqqətlə incələyir.<br>
+    Bu, dil modellərinin kontekstdə ardıcıllıq qurmasını və uzunmüddətli əlaqələri tutmasını təmin edir.
+</div>
+
+</body>
+</html>

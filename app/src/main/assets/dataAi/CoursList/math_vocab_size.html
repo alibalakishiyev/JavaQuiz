@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>vocab_size Açıqlaması</title>
+    <style>
+        body {
+          font-family: "Segoe UI", sans-serif;
+          padding: 30px;
+          background-color: #f8f9fa;
+          color: #333;
+        }
+        h1, h2 {
+          color: #2c3e50;
+        }
+        .code-block {
+          background-color: #eef;
+          padding: 10px;
+          border-radius: 6px;
+          font-family: Consolas, monospace;
+          margin: 10px 0;
+        }
+        .highlight {
+          background-color: #fff3cd;
+          border-left: 6px solid #ffc107;
+          padding: 10px;
+          margin: 20px 0;
+        }
+        .formula {
+          background: #e1f5fe;
+          border-left: 6px solid #29b6f6;
+          padding: 10px;
+          margin: 10px 0;
+          font-family: monospace;
+        }
+        .note {
+          background-color: #e8f5e9;
+          padding: 10px;
+          border-left: 6px solid #66bb6a;
+          margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🔠 <code>vocab_size = len(self.tokenizer)</code> Açıqlaması</h1>
+
+<div class="code-block">
+    config = GPT2Config(<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;vocab_size = len(self.tokenizer),<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;...<br>
+    )
+</div>
+
+<h2>📌 Nə deməkdir?</h2>
+<div class="highlight">
+    <strong><code>vocab_size</code></strong> — modelin qəbul etdiyi bütün unikal tokenlərin (alt söz, söz, simvol və s.) sayını göstərir.
+    Bu, tokenizer-in <code>.vocab</code> və ya <code>.get_vocab()</code> nəticəsində alınan lüğətin uzunluğudur.
+</div>
+
+<h2>💡 Riyazi məna</h2>
+<div class="formula">
+    vocab_size = Tokenizer-dəki bütün unikal tokenlərin sayı
+</div>
+
+<h3>Məsələn:</h3>
+<div class="formula">
+    Əgər tokenizer-də 94,196 token varsa → <code>vocab_size = 94196</code>
+</div>
+
+<h2>🔢 Modeldə necə istifadə olunur?</h2>
+<div class="note">
+    <ul>
+        <li>Hər token üçün <code>n_embd</code> ölçülü vektor saxlanılır (embedding layer).</li>
+        <li>Embedding qatının ölçüsü belə hesablanır:</li>
+    </ul>
+</div>
+
+<div class="formula">
+    <strong>Embedding matrix ölçüsü:</strong> vocab_size × n_embd <br>
+    Məsələn: 94,196 × 768 = 72,307,328 parametr
+</div>
+
+<h2>❗ Niyə vacibdir?</h2>
+<div class="note">
+    <ul>
+        <li>Əgər vocab_size düzgün göstərilməzsə, model ya <u>tokeni tanımayacaq</u>, ya da <u>çəkiləri yanlış matrisa ölçüsündə saxlayacaq</u>.</li>
+        <li>Buna görə <strong>Tokenizer və Model</strong> eyni <code>vocab_size</code> üzərində qurulmalıdır.</li>
+    </ul>
+</div>
+
+<h2>✅ Nəticə</h2>
+<div class="highlight">
+    <strong><code>vocab_size = len(self.tokenizer)</code></strong> dedikdə məqsəd:
+    <br><br>
+    Tokenizer-də neçə unikal token varsa, onu model konfiqurasiyasında istifadə etməkdir ki, girişlər doğru kodlaşdırılsın və model düzgün işləsin.
+</div>
+
+</body>
+</html>

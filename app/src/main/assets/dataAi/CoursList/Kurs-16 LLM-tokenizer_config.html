@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>Tokenizer Konfiqurasiya İzahedici</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 20px;
+          background: #f4f4f4;
+        }
+        h2 {
+          color: #2c3e50;
+        }
+        table {
+          border-collapse: collapse;
+          width: 100%;
+          background: white;
+        }
+        th, td {
+          padding: 10px;
+          border: 1px solid #ddd;
+          text-align: left;
+          vertical-align: top;
+        }
+        th {
+          background: #eee;
+        }
+        code {
+          padding: 2px 4px;
+          font-family: Consolas, monospace;
+          border-radius: 3px;
+        }
+        pre {
+            background-color: #2d2d2d;  /* Qaranlıq fon */
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        pre code {
+            color: #00ffb7;  /* Kod yazısı — parlaq yaşıl/mavi */
+            font-family: Consolas, Monaco, monospace;
+            font-size: 15px;
+            display: block;
+        }
+        p {
+            line-height: 1.6;
+        }
+        strong {
+            color: #e74c3c;
+        }
+
+    </style>
+</head>
+<body>
+
+<h2>🔠 Tokenizer Konfiqurasiya Parametrləri</h2>
+
+<table>
+    <tr><th>Açar</th><th>İzah</th></tr>
+    <tr><td><code>add_bos_token</code></td><td>Girişin əvvəlində <code>&lt;s&gt;</code> tokeni avtomatik əlavə olunacaqmı? (false = əlavə olunmur)</td></tr>
+    <tr><td><code>add_prefix_space</code></td><td>Tokenizasiya zamanı sözlərin əvvəlinə boşluq əlavə edilir (GPT-2 üçün bəzən lazımdır).</td></tr>
+
+    <tr><td><code>bos_token</code></td><td>Cümlənin başlanğıc tokenidir, məzmunu <code>&lt;s&gt;</code>, əlavə boşluqlar saxlanılır.</td></tr>
+    <tr><td><code>eos_token</code></td><td>Cümlənin sonu üçün istifadə olunur. Token <code>&lt;/s&gt;</code> şəklindədir.</td></tr>
+    <tr><td><code>unk_token</code></td><td>Tanınmayan sözlər üçün istifadə olunan token. Burada <code>&lt;|endoftext|&gt;</code>.</td></tr>
+    <tr><td><code>mask_token</code></td><td>Maskalama üçün istifadə olunur (BERT kimi modellərdə faydalıdır): <code>&lt;mask&gt;</code></td></tr>
+    <tr><td><code>pad_token</code></td><td>Cümlələri eyni uzunluğa çatdırmaq üçün əlavə olunan token: <code>&lt;pad&gt;</code></td></tr>
+
+    <tr><td><code>clean_up_tokenization_spaces</code></td><td>Tokenizasiya sonrası artıq boşluqları təmizləyir.</td></tr>
+    <tr><td><code>errors</code></td><td>Xətalı simvollar necə əvəzlənsin. <code>replace</code> – əvəz et.</td></tr>
+    <tr><td><code>model_max_length</code></td><td>Modelin maksimum giriş uzunluğu – burada çox böyük qoyulub, faktiki limit yoxdur.</td></tr>
+    <tr><td><code>tokenizer_class</code></td><td>İstifadə olunan tokenizer sinfi: <code>GPT2Tokenizer</code>.</td></tr>
+</table>
+
+<h2>📌Tam Kod</h2>
+
+<pre><code>
+    {
+      "add_bos_token": false,                // Girişdə başlanğıc tokeni (&lt;s&gt;) avtomatik əlavə edilmir
+      "add_prefix_space": false,             // Tokenizasiya zamanı sözlərin əvvəlində boşluq əlavə edilmir
+      "bos_token": {                        // Başlanğıc tokenin parametrləri
+        "__type": "AddedToken",             // Token növü: əlavə olunmuş xüsusi token
+        "content": "&lt;s&gt;",                   // Tokenin özü: &lt;s&gt; (start of sentence)
+        "lstrip": false,                    // Sol tərəfdə boşluq silinmir
+        "normalized": true,                 // Token normalizasiya olunur
+        "rstrip": false,                    // Sağ tərəfdə boşluq silinmir
+        "single_word": false                // Tək söz məhdudiyyəti yoxdur
+      },
+      "clean_up_tokenization_spaces": true, // Tokenizasiya sonrası artıq boşluqlar təmizlənir
+      "eos_token": {                       // Son tokenin parametrləri (end of sentence)
+        "__type": "AddedToken",
+        "content": "&lt;/s&gt;",                 // Tokenin özü: &lt;/s&gt;
+        "lstrip": false,
+        "normalized": true,
+        "rstrip": false,
+        "single_word": false
+      },
+      "errors": "replace",                 // Kodlama xətası olduqda səhv simvollar əvəz olunur
+      "mask_token": "&lt;mask&gt;",              // Maskalama üçün xüsusi token
+      "model_max_length": 1000000000000000019884624838656,  // Modelin maksimum token giriş uzunluğu (çox böyük, praktiki limit kimi)
+      "pad_token": {                      // Doldurma (padding) tokeni parametrləri
+        "__type": "AddedToken",
+        "content": "&lt;pad&gt;",               // Tokenin özü: &lt;pad&gt;
+        "lstrip": false,
+        "normalized": true,
+        "rstrip": false,
+        "single_word": false
+      },
+      "tokenizer_class": "GPT2Tokenizer",  // İstifadə olunan tokenizer sinfi (GPT2 üçün)
+      "unk_token": {                      // Naməlum token parametrləri (unknown token)
+        "__type": "AddedToken",
+        "content": "<|endoftext|>",      // Tokenin özü: <|endoftext|>
+        "lstrip": false,
+        "normalized": true,
+        "rstrip": false,
+        "single_word": false
+      }
+    }
+
+</code></pre>
+
+</body>
+</html>

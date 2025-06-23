@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>GPT-2 Konfiqurasiya İzahedici</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #222;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        h2 {
+            color: #e74c3c;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+        }
+        th {
+            background-color: #f2f2f2;
+            color: #444;
+            text-align: left;
+        }
+        code {
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+        }
+        pre {
+            background-color: #2d2d2d;  /* Qaranlıq fon */
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        pre code {
+            color: #00ffb7;  /* Kod yazısı — parlaq yaşıl/mavi */
+            font-family: Consolas, Monaco, monospace;
+            font-size: 15px;
+            display: block;
+        }
+        p {
+            line-height: 1.6;
+        }
+        strong {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+
+<h2>📄 GPT-2 <code>config.json</code> İzahedici</h2>
+
+<table>
+    <tr>
+        <th>Açar</th>
+        <th>Məna və İstifadəsi</th>
+    </tr>
+    <tr>
+        <td><code>model_type</code></td>
+        <td>Modelin tipi – burada <strong>GPT-2</strong> göstərilir.</td>
+    </tr>
+    <tr>
+        <td><code>architectures</code></td>
+        <td>İstifadə edilən model arxitekturası: <code>GPT2LMHeadModel</code>.</td>
+    </tr>
+    <tr>
+        <td><code>vocab_size</code></td>
+        <td>Tokenizer-dəki tokenlərin ümumi sayı. Bu sənəddə 100000-dir.</td>
+    </tr>
+    <tr>
+        <td><code>n_ctx</code> və <code>n_positions</code></td>
+        <td>Bir dəfəlik girişdə maksimum token sayı. Burada hər ikisi 2048-dir.</td>
+    </tr>
+    <tr>
+        <td><code>n_embd</code></td>
+        <td>Embedding ölçüsü. Hər token üçün vektorun uzunluğu: 2048.</td>
+    </tr>
+    <tr>
+        <td><code>n_head</code></td>
+        <td>Attention mexanizminin "baş" sayı: 16.</td>
+    </tr>
+    <tr>
+        <td><code>n_layer</code></td>
+        <td>Transformer qatlarının sayı. Burada 24 qatlı dərin modeldir.</td>
+    </tr>
+    <tr>
+        <td><code>activation_function</code></td>
+        <td>Aktivasiya funksiyası: <code>gelu_new</code>. Transformer qatlarında istifadə olunur.</td>
+    </tr>
+    <tr>
+        <td><code>attn_pdrop</code>, <code>embd_pdrop</code>, <code>resid_pdrop</code></td>
+        <td>Dropout dəyərləri – overfitting-i azaltmaq üçün qatlarda tətbiq olunur (0.1 dəyəri).</td>
+    </tr>
+    <tr>
+        <td><code>layer_norm_epsilon</code></td>
+        <td>Layer Normalization üçün çox kiçik sabit (1e-5).</td>
+    </tr>
+    <tr>
+        <td><code>initializer_range</code></td>
+        <td>Çəki matrislərinin ilkin təsadüfi aralığı.</td>
+    </tr>
+    <tr>
+        <td><code>bos_token_id</code> / <code>eos_token_id</code></td>
+        <td>Başlanğıc və sonlandırıcı tokenlərin ID-ləri. Default GPT-2-də 50256 olur, amma sənin vocab.json-a görə dəyişə bilər!</td>
+    </tr>
+    <tr>
+        <td><code>unk_token</code>, <code>pad_token</code>, <code>mask_token</code></td>
+        <td>Bilinməyən, doldurucu və maska tokenləri – xüsusi tokenlərdir.</td>
+    </tr>
+    <tr>
+        <td><code>use_cache</code></td>
+        <td>Model çıxışları üçün cache istifadəsini aktivləşdirir. Inference zamanı sürəti artırır.</td>
+    </tr>
+    <tr>
+        <td><code>gradient_checkpointing</code></td>
+        <td>Əgər <code>true</code> olsa, daha az RAM istifadə edir, lakin treninq yavaşdır.</td>
+    </tr>
+    <tr>
+        <td><code>torch_dtype</code></td>
+        <td>Torch tensorlarının tipi. Burada <code>float32</code>, amma <code>float16</code> da ola bilər (GPU optimizasiyası üçün).</td>
+    </tr>
+    <tr>
+        <td><code>summary_*</code> sahələri</td>
+        <td>Bəzi downstream tapşırıqlarda (məs: classification) modelin çıxışını necə xülasə edəcəyini təyin edir.</td>
+    </tr>
+</table>
+
+<p><strong>Qeyd:</strong> Əgər sənin <code>vocab.json</code> faylında <code>&lt;s&gt;</code>, <code>&lt;pad&gt;</code> və s. tokenlər başqa ID ilə göstərilibsə, <strong>bos_token_id</strong> və <strong>eos_token_id</strong> kimi sahələri uyğun şəkildə düzəltmək vacibdir.</p>
+
+<h2>📌Tam Kod</h2>
+
+
+<pre><code>
+    {
+    "activation_function": "gelu_new",  // Aktivasiya funksiyası olaraq GELU-nun yeni versiyası istifadə olunur.
+    "architectures": [
+    "GPT2LMHeadModel"                 // Model tipi: Dil modelləşdirmə başlığı olan GPT-2 (language modeling head).
+    ],
+    "attn_pdrop": 0.1,                  // Attention qatında dropout ehtimalı. Overfitting-i azaltmaq üçün.
+    "bos_token_id": 50256,             // Başlanğıc token ID-si. Model sorğunu buradan başlayır oxumağa.
+    "embd_pdrop": 0.1,                 // Embedding qatında tətbiq edilən dropout nisbəti.
+    "eos_token_id": 50256,             // Sonlandırıcı token ID-si. Model cavabı buradan sonlandırır.
+    "gradient_checkpointing": false,   // RAM yaddaşına qənaət üçün qatların aralıq nəticələri saxlanılır. False = deaktivdir.
+    "initializer_range": 0.02,         // Modelin çəkilərinin ilkin random aralığı.
+    "layer_norm_epsilon": 1e-05,       // Layer normalization üçün epsilon dəyəri (kiçik sabit).
+    "model_type": "gpt2",              // Modelin tipi (Transformers kitabxanası üçün əhəmiyyətlidir).
+    "n_ctx": 2048,                     // Kontekstdə baxıla biləcək maksimum token sayı.
+    "n_embd": 2048,                    // Hər bir token üçün embedding ölçüsü (dərinlik).
+    "n_head": 16,                      // Multi-head attention-da baş sayı. Paralel diqqət qatları.
+    "n_inner": null,                   // Feed-forward qatının daxili ölçüsü (null = avtomatik hesablanır).
+    "n_layer": 24,                     // Transformer qatlarının sayı. Bu model 24 qatlıdır.
+    "n_positions": 2048,               // Maksimum mövqe kodlaması (positional encoding).
+    "resid_pdrop": 0.1,                // Rezedual bağlantılarda (skip connections) dropout ehtimalı.
+    "scale_attn_weights": true,        // Attention çəki dəyərləri ölçüləndiriləcəkmi?
+    "summary_activation": null,        // Model çıxış xülasəsi üçün aktivasiya funksiyası (null = istifadə olunmur).
+    "summary_first_dropout": 0.1,      // Xülasə çıxışında ilk dropout nisbəti.
+    "summary_proj_to_labels": true,    // Xülasə çıxışı etiketlərə proyeksiya ediləcəkmi? (classification üçün)
+    "summary_type": "cls_index",       // Hansı üsulla çıxış xülasələşdiriləcək: burda CLS token indeksi ilə.
+    "summary_use_proj": true,          // Proyeksiya qatından istifadə ediləcəkmi?
+    "torch_dtype": "float32",          // Modelin istifadə etdiyi məlumat tipi (Tensor data type).
+    "transformers_version": "4.10.3",  // Transformers kitabxanasının versiyası.
+    "use_cache": true,                 // Inference zamanı cache istifadəsi aktivdir (sürət üçün).
+    "vocab_size": 100000               // Tokenizer sözlük ölçüsü – modelin tanıdığı ümumi token sayı.
+    }
+
+</code></pre>
+
+</body>
+</html>

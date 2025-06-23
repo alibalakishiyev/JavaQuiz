@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>n_layer Açıqlaması</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          padding: 30px;
+          background-color: #f9f9f9;
+          color: #333;
+        }
+        h1, h2 {
+          color: #2c3e50;
+        }
+        .code-block {
+          background-color: #eef;
+          padding: 10px;
+          border-radius: 6px;
+          font-family: Consolas, monospace;
+          margin: 10px 0;
+        }
+        .highlight {
+          background-color: #fff3cd;
+          border-left: 6px solid #ffc107;
+          padding: 10px;
+          margin: 20px 0;
+        }
+        .formula {
+          background: #e3f2fd;
+          border-left: 6px solid #42a5f5;
+          padding: 10px;
+          margin: 10px 0;
+          font-family: monospace;
+        }
+        .note {
+          background-color: #e8f5e9;
+          padding: 10px;
+          border-left: 6px solid #66bb6a;
+          margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🔁 <code>n_layer = 10</code> — Transformer Bloklarının Sayı</h1>
+
+<div class="code-block">
+    config = GPT2Config(<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;n_layer = 10,<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;...<br>
+    )
+</div>
+
+<h2>📌 Nə deməkdir?</h2>
+<div class="highlight">
+    <strong>n_layer</strong> — modeldə neçə ədəd Transformer bloku (katı) olduğunu göstərir.
+    <br>
+    Hər blok özündə self-attention + feed-forward (MLP) qatlarını birləşdirir.
+</div>
+
+<h2>🔬 Bir Transformer Bloku nə edir?</h2>
+<div class="note">
+    Hər blokda bu əməliyyatlar var:
+    <ul>
+        <li>➤ LayerNorm</li>
+        <li>➤ Multi-Head Self-Attention (MHA)</li>
+        <li>➤ Residual Connection</li>
+        <li>➤ Feedforward Neural Network (FFN)</li>
+    </ul>
+</div>
+
+<h2>💡 Riyazi Hesablamalar</h2>
+<div class="formula">
+    Total Parametr = <strong>n_layer × (MHA + FFN)</strong><br><br>
+    Harada:<br>
+    - MHA = Multi-head attention parametrləri<br>
+    - FFN = Fully connected layer parametrləri
+</div>
+
+<h3>Məsələn (n_embd = 768, n_head = 12):</h3>
+<div class="formula">
+    ➤ MHA təxmini: 4 × (768 × 768) = 2,359,296 parametr<br>
+    ➤ FFN (2 qatlı): 768×3072 + 3072×768 = 4,718,592 + 2,359,296 = 7,077,888<br><br>
+    ➤ Bir blokda toplam ≈ 9.4 milyon parametr
+</div>
+
+<h2>🔢 Toplam Model Parametrləri</h2>
+<div class="formula">
+    n_layer = 10<br>
+    ≈ 10 × 9.4M = <strong>94 milyon</strong> parametr (yalnız transformer blokları üçün)
+</div>
+
+<h2>📈 Dərinlik nə verir?</h2>
+<div class="note">
+    <ul>
+        <li>📊 Dərinlik → model daha çox kontekst və kompleks nümunələri öyrənə bilir.</li>
+        <li>🚀 Daha çox qat = daha yüksək öyrənmə gücü</li>
+        <li>⚠️ Amma həmçinin daha çox <strong>RAM</strong>, <strong>hesablama vaxtı</strong> və <strong>riskli overfitting</strong></li>
+    </ul>
+</div>
+
+<h2>🧠 Dərin Model və Səthi Model fərqi</h2>
+<div class="highlight">
+    <strong>Səthi model:</strong> 2-4 qatlı (n_layer=2~4) — Sadə tapşırıqlar üçün<br>
+    <strong>Dərin model:</strong> 10+ qatlı (n_layer=10~48) — Qrammatika, kontekst və kreativlik üçün
+</div>
+
+<h2>✅ Nəticə</h2>
+<div class="note">
+    <ul>
+        <li><code>n_layer</code> modelin intellektual dərinliyini və öyrənmə gücünü müəyyən edir.</li>
+        <li>Sənin 10 qatlı modelin orta səviyyəli gücə malikdir.</li>
+        <li>Daha böyük datalarda və uzun təlimlərdə daha yüksək qat sayı daha yaxşı nəticə verir.</li>
+    </ul>
+</div>
+
+</body>
+</html>

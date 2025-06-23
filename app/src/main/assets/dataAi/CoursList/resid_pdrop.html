@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>resid_pdrop – GPT-2 Dropout İzahedici</title>
+    <style>
+        body { font-family: Arial; background: #f9f9f9; padding: 30px; line-height: 1.6; }
+        h1 { color: #2c3e50; }
+        h2 { color: #34495e; }
+        code { background: #eee; padding: 2px 6px; border-radius: 4px; }
+        .formula { background: #fff; padding: 10px; border-left: 4px solid #3498db; margin: 15px 0; }
+    </style>
+</head>
+<body>
+
+<h1>🔁 <code>resid_pdrop</code> nədir?</h1>
+
+<p>
+    <strong><code>resid_pdrop</code></strong>, GPT-2 modelində <b>residual connections</b> üzərində tətbiq olunan
+    <b>dropout ehtimalıdır</b>. Yəni, hər bir qatın çıxışı əvvəlki qatın çıxışı ilə toplanmazdan <u>əvvəl və ya sonra</u>,
+    bəzi neuronlar təsadüfi olaraq <code>0</code>-lanır.
+</p>
+
+<h2>✍️ Riyazi ifadə:</h2>
+<div class="formula">
+    Residual çıxış: <br>
+    <code>Output = LayerNorm(x + Dropout(SubLayer(x)))</code>
+</div>
+
+<p>Burada:</p>
+<ul>
+    <li><code>x</code> – qatın daxil olan girişi</li>
+    <li><code>SubLayer(x)</code> – attention və ya feedforward qatının çıxışı</li>
+    <li><code>Dropout(p)</code> – <b>p ehtimalla</b> bəzi vahidlərin sıfırlanması</li>
+    <li><code>p = resid_pdrop</code></li>
+</ul>
+
+<h2>💡 Nümunə hesablaması:</h2>
+<p>Tutaq ki, <code>resid_pdrop = 0.1</code> və SubLayer çıxışı aşağıdakı kimidir:</p>
+
+<pre>
+SubLayer(x) = [0.5, 1.2, -0.3, 2.0]
+Dropout tətbiqi ilə nəticə (10% ehtimalla sıfırlanacaq):
+→ Mümkün nəticə: [0.5, 1.2, 0.0, 2.0]
+  </pre>
+
+<h2>🎯 Məqsəd nədir?</h2>
+<ul>
+    <li><b>Overfitting-in qarşısını almaq</b></li>
+    <li>Modelin <b>ümumiləşdirmə qabiliyyətini artırmaq</b></li>
+    <li>Residual yollar üzərində <b>təkrar məlumatın yayılmasının qarşısını almaq</b></li>
+</ul>
+
+<h2>🔬 Texniki qeydlər:</h2>
+<ul>
+    <li><code>resid_pdrop</code> adətən <code>0.1</code> seçilir (OpenAI GPT-2 default)</li>
+    <li>Təlim zamanı aktivdir, <b>test zamanı isə deaktiv olur</b></li>
+    <li>Qatların daha dərin olduğu modellərdə əhəmiyyəti artır</li>
+</ul>
+
+</body>
+</html>

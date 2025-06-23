@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>attn_pdrop – Attention Dropout İzahedici</title>
+    <style>
+        body { font-family: Arial; background: #fefefe; padding: 30px; line-height: 1.6; }
+        h1, h2 { color: #2c3e50; }
+        code { background: #eee; padding: 2px 6px; border-radius: 4px; }
+        .formula { background: #fff; padding: 10px; border-left: 4px solid #27ae60; margin: 15px 0; }
+        ul { margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<h1>🎯 <code>attn_pdrop</code> nədir?</h1>
+
+<p>
+    <strong><code>attn_pdrop</code></strong> — Transformer modelində <b>self-attention mexanizmi</b> üzərində
+    tətbiq olunan <b>dropout ehtimalıdır</b>. Bu, <code>softmax</code> nəticəsində əldə olunan attention skorlarının
+    bəzilərini təsadüfi şəkildə <b>0</b>-lamaqla modelin overfitting etməsinin qarşısını alır.
+</p>
+
+<h2>🔬 İstifadə edildiyi yer:</h2>
+<p>
+    Bu dropout <b>attention weights</b> yəni:
+    <code>Softmax(QKᵀ / √d_k)</code> nəticəsinə tətbiq olunur.
+</p>
+
+<div class="formula">
+    Attention çıxışı: <br>
+    <code>Attention(Q, K, V) = Dropout(Softmax(QKᵀ / √dₖ)) · V</code>
+</div>
+
+<h2>✍️ Riyazi izah:</h2>
+<p>
+    Tutaq ki:
+<ul>
+    <li><code>attn_pdrop = 0.1</code> → Yəni 10% attention skorları sıfırlanacaq</li>
+    <li><code>QKᵀ / √d_k = [0.2, 0.7, 1.5, -0.2]</code></li>
+</ul>
+<p>Softmax nəticəsi: <code>[0.1, 0.3, 0.5, 0.1]</code></p>
+<p>Dropout sonrası (10% ehtimalla): <code>[0.1, 0.0, 0.5, 0.1]</code> (məsələn, ikinci sətir sıfırlandı)</p>
+</p>
+
+<h2>🧠 Məqsəd nədir?</h2>
+<ul>
+    <li>Attention mexanizminin bəzi hissələrinin öyrənməsini <b>təsadüfiləşdirmək</b></li>
+    <li><b>Overfitting riskini azaltmaq</b></li>
+    <li><b>Modelin ümumiləşmə qabiliyyətini artırmaq</b></li>
+</ul>
+
+<h2>⚙️ Texniki qeydlər:</h2>
+<ul>
+    <li>Adətən <code>attn_pdrop = 0.1</code> olur (GPT-2-də default)</li>
+    <li>Yalnız təlim zamanı aktivdir</li>
+    <li>Transformer bloklarının <code>MultiHeadAttention</code> hissəsində tətbiq olunur</li>
+</ul>
+
+<h2>📌 Dəyər seçimi necə təsir edir?</h2>
+<ul>
+    <li><b>Çox yüksək olarsa</b> (məs. 0.5) → model öyrənə bilmir</li>
+    <li><b>Çox aşağı olarsa</b> (məs. 0.0) → overfitting riski artır</li>
+    <li><code>0.1</code> — balanslı seçim</li>
+</ul>
+
+<h2>📈 Nəticə:</h2>
+<p>
+    <b><code>attn_pdrop</code></b> modelin diqqət bölgüsünü daha sabit və ümumiləşdirici etmək üçün əhəmiyyətlidir.
+    Riyazi olaraq dropout ehtimalı <code>p</code> ilə hər bir attention skoruna <code>Bernoulli(p)</code> testi tətbiq olunur.
+</p>
+
+</body>
+</html>

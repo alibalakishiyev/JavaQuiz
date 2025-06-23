@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>n_positions Açıqlaması</title>
+    <style>
+        body {
+          font-family: "Segoe UI", sans-serif;
+          padding: 30px;
+          background-color: #f9f9f9;
+          color: #333;
+        }
+        h1, h2 {
+          color: #2c3e50;
+        }
+        .code-block {
+          background-color: #eef;
+          padding: 10px;
+          border-radius: 6px;
+          font-family: Consolas, monospace;
+          margin: 10px 0;
+        }
+        .highlight {
+          background-color: #fff3cd;
+          border-left: 6px solid #ffc107;
+          padding: 10px;
+          margin: 20px 0;
+        }
+        .formula {
+          background: #e3f2fd;
+          border-left: 6px solid #42a5f5;
+          padding: 10px;
+          margin: 10px 0;
+          font-family: monospace;
+        }
+        .note {
+          background-color: #e8f5e9;
+          padding: 10px;
+          border-left: 6px solid #66bb6a;
+          margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🧭 <code>n_positions = 512</code> Açıqlaması</h1>
+
+<div class="code-block">
+    config = GPT2Config(<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;n_positions = 512,<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;...<br>
+    )
+</div>
+
+<h2>📌 Nə deməkdir?</h2>
+<div class="highlight">
+    <strong><code>n_positions</code></strong> — Transformer modelinin girişindəki maksimum ardıcıllıq (sequence) uzunluğudur.
+    <br><br>
+    Yəni model bir dəfəlik girişdə **ən çox neçə token** emal edə biləcəyini göstərir.
+</div>
+
+<h2>💡 Riyazi məna</h2>
+<div class="formula">
+    Maksimum ardıcıllıq uzunluğu = <strong>n_positions</strong> = 512
+</div>
+
+<h3>Məsələn:</h3>
+<div class="formula">
+    Giriş: "Azərbaycan Respublikasının Dövlət Vergi Xidməti..."<br>
+    Token sayısı: 97 → OK ✅<br>
+    Token sayısı: 600 → Truncation olacaq ❌
+</div>
+
+<h2>📊 Mövqeli embeddinglər necə işləyir?</h2>
+<div class="note">
+    Transformerlər təbii olaraq sıranı anlamır (seqential bias yoxdur). Ona görə də:
+    <br><br>
+    <strong>Position Embedding</strong> əlavə olunur ki, model 1-ci, 2-ci, 3-cü token fərqini öyrənsin.
+</div>
+
+<h2>📐 Hesablama: Position Embedding Matrisi</h2>
+<div class="formula">
+    Mövqe matrisi ölçüsü = n_positions × n_embd
+</div>
+
+<h3>Əgər:</h3>
+<div class="formula">
+    n_positions = 512<br>
+    n_embd = 768<br><br>
+    ➤ Position embedding matrisi = 512 × 768 = <strong>393,216</strong> parametr
+</div>
+
+<h2>⚠️ Diqqət!</h2>
+<div class="highlight">
+    Əgər modelin girişindəki token sayı <strong>n_positions</strong>-dan böyük olarsa,<br>
+    o zaman əlavə tokenlər <strong>kəsiləcək (truncation)</strong> və model onları görməyəcək.
+</div>
+
+<h2>🧠 Nəticə</h2>
+<div class="note">
+    <ul>
+        <li><strong><code>n_positions</code></strong> modelin görmə sahəsini müəyyən edir.</li>
+        <li>Daha böyük dəyərlər → daha uzun kontekst, lakin daha çox yaddaş və hesablama xərci.</li>
+        <li>Daha kiçik dəyərlər → sürət və qənaət, lakin məhdud kontekst.</li>
+    </ul>
+</div>
+
+</body>
+</html>

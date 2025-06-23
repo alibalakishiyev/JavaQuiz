@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azerbaycan Tokenizer Modeli - İzah</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1,h2,h3,h4,h5 {
+            color: #e74c3c;
+        }
+        pre {
+            background-color: #2d2d2d;  /* Qaranlıq fon */
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        pre code {
+            color: #00ffb7;  /* Kod yazısı — parlaq yaşıl/mavi */
+            font-family: Consolas, Monaco, monospace;
+            font-size: 15px;
+            display: block;
+        }
+        p {
+            line-height: 1.6;
+        }
+        strong {
+            color: #e74c3c;
+        }
+    </style>
+
+
+</head>
+<body>
+
+<h2>📌<code>__init__()</code> Metodu – Açıqlama</h2>
+
+<pre><code class="language-python">def __init__(self):
+    self.VOCAB_SIZE = 130000  # Tokenizer üçün maksimum sözlük ölçüsü
+    self.SPECIAL_TOKENS = {  # Xüsusi tokenlər və onların ID-ləri
+        "&lt;s&gt;": 0,
+        "&lt;pad&gt;": 1,
+        "&lt;/s&gt;": 2,
+        "&lt;unk&gt;": 3,
+        "&lt;mask&gt;": 4,
+        "&lt;|endoftext|&gt;": 5,
+        "&lt;case&gt;": 6
+    }
+</code></pre>
+
+<h3>🔍 <code>__init__</code> nədir?</h3>
+<p><code>__init__()</code> — Python-da bir sinfin içində avtomatik işləyən konstruktordur. Obyekt yaradılarkən bu metod çağırılır və başlanğıc dəyərlər verilir.</p>
+
+<h3>⚙️ <code>self.VOCAB_SIZE = 130000</code></h3>
+<p>Bu dəyişən, tokenizer-in maksimum <strong>sözlük ölçüsünü</strong> təyin edir. Məsələn: Tokenizer 130,000-dən artıq token saxlamayacaq.</p>
+
+<h3>🧩 <code>self.SPECIAL_TOKENS = {...}</code></h3>
+<p>Bu hissə, tokenizer üçün xüsusi məna daşıyan tokenləri və onların ID-lərini saxlayır. Məsələn:</p>
+
+<table border="1" cellpadding="6" style="border-collapse: collapse;">
+    <thead>
+    <tr style="background-color:#f2f2f2;">
+        <th>Token</th>
+        <th>ID</th>
+        <th>İzah</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><code>&lt;s&gt;</code></td>
+        <td>0</td>
+        <td>Başlanğıc tokeni</td>
+    </tr>
+    <tr>
+        <td><code>&lt;pad&gt;</code></td>
+        <td>1</td>
+        <td>Pad/boşluq doldurucu token</td>
+    </tr>
+    <tr>
+        <td><code>&lt;/s&gt;</code></td>
+        <td>2</td>
+        <td>Son tokeni</td>
+    </tr>
+    <tr>
+        <td><code>&lt;unk&gt;</code></td>
+        <td>3</td>
+        <td>Naməlum token</td>
+    </tr>
+    <tr>
+        <td><code>&lt;mask&gt;</code></td>
+        <td>4</td>
+        <td>Maskalanmış token (məs. BERT üçün)</td>
+    </tr>
+    <tr>
+        <td><code>&lt;|endoftext|&gt;</code></td>
+        <td>5</td>
+        <td>Mətnin sonu tokeni</td>
+    </tr>
+    <tr>
+        <td><code>&lt;case&gt;</code></td>
+        <td>6</td>
+        <td>Böyük/kiçik hərf təyini üçün istifadə oluna bilər</td>
+    </tr>
+    </tbody>
+</table>
+
+<p>Bu xüsusi tokenlər modelin <strong>başlanğıc və son nöqtələrini tanıması</strong>, <strong>naməlum sözlərlə necə davranması</strong> və <strong>seqmentləri ayırması</strong> üçün vacibdir.</p>
+
+
+<h2>📌Tam Kod</h2>
+<pre><code>
+    from transformers import GPT2TokenizerFast
+import os
+import json
+import unicodedata
+
+def create_azerbaijani_tokenizer(vocab_path, merges_path, output_dir):
+    """Azərbaycanca xüsusi simvolları qoruyaraq tokenizer yaradan funksiya"""
+    try:
+        # vocab.json faylını yüklə
+        with open(vocab_path, 'r', encoding='utf-8') as f:
+            vocab = json.load(f)
+
+        # Azərbaycana xas simvollar siyahısı (split edilməməsi ücün)
+        az_special_chars = ["ə", "ü", "ö", "ı", "ğ", "ş", "ç",
+                            "Ə", "Ü", "Ö", "İ", "Ğ", "Ş", "Ç"]
+
+        # Həmin simvolların ID-lərini al
+        char_to_id = {char: vocab[char] for char in az_special_chars if char in vocab}
+
+        # GPT2 tokenizer-i yüklə (hazır fayllarla)
+        tokenizer = GPT2TokenizerFast(
+            vocab_file=vocab_path,
+            merges_file=merges_path,
+            bos_token="&lt;s&gt;",
+            eos_token="&lt;/s&gt;,
+            unk_token="&lt;unk&gt;",
+            pad_token="&lt;pad&gt;",
+            mask_token="&lt;mask&gt;",
+        )
+
+        # Xüsusi simvolları "additional_special_tokens" kimi əlavə et ki, split olunmasın
+        tokenizer.add_special_tokens({
+            "additional_special_tokens": az_special_chars
+        })
+
+        # Orijinal decoder-i saxla
+        original_decode = tokenizer.decode
+
+        # Xüsusi decoder funksiyası - simvolları düzgün decode etsin
+        def fixed_decode(token_ids, skip_special_tokens=False, **kwargs):
+            text = original_decode(token_ids, skip_special_tokens=skip_special_tokens, **kwargs)
+
+            # ID-dən simvola map
+            id_to_char = {v: k for k, v in char_to_id.items()}
+
+            # Token ID-lərini simvollara çevir
+            decoded_chars = []
+            for token_id in token_ids:
+                if token_id in id_to_char:
+                    decoded_chars.append(id_to_char[token_id])
+                else:
+                    decoded_chars.append(original_decode([token_id]))
+
+            # Mətn kimi birləşdir
+            text = ''.join(decoded_chars)
+            text = unicodedata.normalize('NFC', text)
+
+            # Encoding artefaktlarını düzəlt
+            replacements = {
+                "ü": "ü",
+                "ö": "ö",
+                "ġ": "ğ",
+                "ş": "ş",
+                "ç": "ç",
+                "i̇": "i",
+                "İ": "İ",
+                "Ġ": " ",
+                "▁": " ",
+                "  ": " "
+            }
+
+            for wrong, correct in replacements.items():
+                text = text.replace(wrong, correct)
+
+            return text.strip()
+
+        # Yeni decode metodunu tokenizer-ə ver
+        tokenizer.decode = fixed_decode
+
+        # Tokenizer-i saxla
+        tokenizer.save_pretrained(output_dir)
+        print(f"✅ Successfully created fixed tokenizer in {output_dir}")
+        return tokenizer
+
+    except Exception as e:
+        print(f"❌ Error creating tokenizer: {str(e)}")
+        return None
+
+def test_tokenizer(tokenizer):
+    """Tokenizer-i test et - əlavə simvolları yoxla"""
+    test_cases = [
+        "Azərbaycan dilində test: ə, ü, ö, ı, ğ, ş, ç",
+        "Bakı şəhəri gözəldir",
+        "Üzüm, ördək, ıspanak, ərik",
+        "Çox şirin qəlyanaltı",
+        "Ədəbiyyat və incəsənət",
+        "Göyçayda üzüm festivalları",
+        "Şəki xalça muzeyi",
+        "Qəribə ünsiət ölçüsü",
+        "İstanbulda ğəzəlin şəkilləri",
+        "Özəl işlər ücün çox gözəl"
+    ]
+
+    for text in test_cases:
+        print(f"\n{'='*50}\nTesting: {text}")
+
+        # Tokenləşdir
+        tokens = tokenizer.tokenize(text)
+        print("\nTokens:")
+        print(tokens)
+
+        # Encode
+        ids = tokenizer.encode(text, add_special_tokens=False)
+        print("\nIDs:")
+        print(ids)
+
+        # Decode
+        decoded = tokenizer.decode(ids)
+        print("\nDecoded:")
+        print(decoded)
+        print("\nMatch:", decoded == text)
+
+        # Xüsusi simvolları yoxla
+        az_chars = ["ə", "ü", "ö", "ı", "ğ", "ş", "ç", "Ə", "Ü", "Ö", "İ", "Ğ", "Ş", "Ç"]
+        present_chars = [char for char in az_chars if char in text]
+
+        if present_chars:
+            print("\nCharacter Verification:")
+            for char in present_chars:
+                char_id = tokenizer.encode(char, add_special_tokens=False)
+                decoded_char = tokenizer.decode(char_id)
+                status = "✓" if decoded_char == char else "✗"
+                print(f"{char}: {status} (ID: {char_id[0] if char_id else 'N/A'})")
+                if status == "✗":
+                    print(f"  Encoding problem: '{char}' → {char_id} → '{decoded_char}'")
+
+if __name__ == "__main__":
+    # Fayl yolları
+    vocab_path = "azeri_gpt2_tokenizer/vocab.json"
+    merges_path = "azeri_gpt2_tokenizer/merges.txt"
+    output_dir = "azeri_fixed_tokenizer_final"
+
+    # Tokenizer-i yarat
+    tokenizer = create_azerbaijani_tokenizer(vocab_path, merges_path, output_dir)
+
+    # Tokenizer hazırdırsa test et
+    if tokenizer:
+        test_tokenizer(tokenizer)
+    else:
+        print("Tokenizator yaradıla bilmədi. Xəta baş verdi.")
+
+</code></pre>
+
+</body>
+</html>
