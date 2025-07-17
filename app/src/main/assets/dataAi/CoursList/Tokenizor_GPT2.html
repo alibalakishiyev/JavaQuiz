@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azerbaijani Tokenizer Izahi</title>
+    <style>
+        body {
+            font-family: Consolas, monospace;
+            background-color: #f0f0f0;
+            padding: 20px;
+            color: #222;
+        }
+
+        .formula {
+            background: #e3f2fd;
+            border-left: 6px solid #2196f3;
+            padding: 10px;
+            margin: 15px 0;
+            font-family: monospace;
+            color: black;
+        }
+        pre {
+            background-color: #fff;
+            border-left: 5px solid #007acc;
+            padding: 15px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        h2 {
+            color: #007acc;
+        }
+
+        h1{
+          color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+
+<h1>
+
+    GPT2Config sinfi modelin əsas arxitektura parametrlərini saxlayır.
+    Buraya qat sayı, baş sayı, embedding ölçüsü və s. daxildir.
+
+</h1>
+
+<pre><code class=formula">
+class GPT2Config:
+    def __init__(self, n_layer=12, n_head=12, n_embd=768, block_size=1024, vocab_size=50257):
+        self.n_layer = n_layer         # Transformer qatlarının sayı
+        self.n_head = n_head           # Multi-head attention başlarının sayı
+        self.n_embd = n_embd           # Hər token üçün embedding ölçüsü
+        self.block_size = block_size   # Maksimum kontekst uzunluğu (seq_len)
+        self.vocab_size = vocab_size   # Tokenizer-in vokabulyar ölçüsü
+</code></pre>
+
+<h1>
+
+    LayerNorm sinfi giriş tensörünü standartlaşdırır.
+    Bu modelin öyrənməsini stabilləşdirir və konvergensiyanı sürətləndirir.
+
+</h1>
+
+<pre><code class=formula">
+class LayerNorm(nn.Module):
+    def __init__(self, ndim, eps=1e-5):
+        super().__init__()
+        self.weight = nn.Parameter(torch.ones(ndim))  # Normalizasiya sonrası miqyas faktorları
+        self.bias = nn.Parameter(torch.zeros(ndim))   # Normalizasiya sonrası bias
+        self.eps = eps                                # Kiçik dəyər – sıfıra bölmənin qarşısını alır
+
+    def forward(self, x):
+        mean = x.mean(-1, keepdim=True)               # Son ölçü üzrə orta dəyəri hesabla
+        var = x.var(-1, keepdim=True, unbiased=False) # Dispersiyanı hesabla
+        x_norm = (x - mean) / torch.sqrt(var + self.eps)  # Z-score normalizasiya
+        return self.weight * x_norm + self.bias       # Miqyasla və bias əlavə et
+</code></pre>
+
+<h1>
+
+    Bu blok GPT-2-nin əsas komponenti olan "causal self-attention" hissəsidir.
+    Diqqət yalnız keçmiş tokenlərə baxa bilir (gələcəyə yox) – bu, auto-regressive təbiəti təmin
+    edir.
+
+</h1>
+
+<pre><code class=formula">
+class CausalSelfAttention(nn.Module):
+    def __init__(self, config):
+        super().__init__()
+        assert config.n_embd % config.n_head == 0
+        self.key = nn.Linear(config.n_embd, config.n_embd)
+        self.query = nn.Linear(config.n_embd, config.n_embd)
+        self.value = nn.Linear(config.n_embd, config.n_embd)
+        self.attn_drop = nn.Dropout(0.1)
+        self.resid_drop = nn.Dropout(0.1)
+        self.proj = nn.Linear(config.n_embd, config.n_embd)
+        self.register_buffer("mask", torch.tril(torch.ones(config.block_size, config.block_size))
+                                      .view(1, 1, config.block_size, config.block_size))
+
+    def forward(self, x):
+        B, T, C = x.size()
+        k = self.key(x).view(B, T, config.n_head, C // config.n_head).transpose(1, 2)
+        q = self.query(x).view(B, T, config.n_head, C // config.n_head).transpose(1, 2)
+        v = self.value(x).view(B, T, config.n_head, C // config.n_head).transpose(1, 2)
+
+        att = (q @ k.transpose(-2, -1)) / (C // config.n_head)**0.5
+        att = att.masked_fill(self.mask[:, :, :T, :T] == 0, float('-inf'))  # Gələcək tokenlərə baxma
+        att = F.softmax(att, dim=-1)
+        att = self.attn_drop(att)
+        y = att @ v
+        y = y.transpose(1, 2).contiguous().view(B, T, C)
+        return self.resid_drop(self.proj(y))
+</code></pre>
+
+<h1>
+
+    MLP bloku hər Transformer qatının içində yerləşir.
+    O, attention-dan sonra məlumatı daha yüksək ölçülü fəzalarda işləyir.
+
+</h1>
+
+<pre><code class=formula">
+class MLP(nn.Module):
+    def __init__(self, config):
+        super().__init__()
+        self.fc1 = nn.Linear(config.n_embd, 4 * config.n_embd)
+        self.act = nn.GELU()
+        self.fc2 = nn.Linear(4 * config.n_embd, config.n_embd)
+        self.dropout = nn.Dropout(0.1)
+
+    def forward(self, x):
+        x = self.fc1(x)
+        x = self.act(x)
+        x = self.fc2(x)
+        return self.dropout(x)
+</code></pre>
+
+<h1>
+
+    Bu blokda LayerNorm + Attention + MLP ardıcıllığı var.
+    GPT-nin hər qatında bu struktur eynidir.
+
+</h1>
+
+<pre><code class=formula">
+class TransformerBlock(nn.Module):
+    def __init__(self, config):
+        super().__init__()
+        self.ln1 = LayerNorm(config.n_embd)
+        self.attn = CausalSelfAttention(config)
+        self.ln2 = LayerNorm(config.n_embd)
+        self.mlp = MLP(config)
+
+    def forward(self, x):
+        x = x + self.attn(self.ln1(x))  # Residual bağlantı ilə attention
+        x = x + self.mlp(self.ln2(x))   # Residual bağlantı ilə MLP
+        return x
+</code></pre>
+
+<h1>
+
+    Burada embedding-lər, çoxlu Transformer blokları və çıxış linear qat var.
+    GPT-2 burada tam şəkildə yığılır.
+
+</h1>
+
+<pre><code class=formula">
+class GPT2(nn.Module):
+    def __init__(self, config):
+        super().__init__()
+        self.token_emb = nn.Embedding(config.vocab_size, config.n_embd)
+        self.pos_emb = nn.Parameter(torch.zeros(1, config.block_size, config.n_embd))
+        self.drop = nn.Dropout(0.1)
+        self.blocks = nn.Sequential(*[TransformerBlock(config) for _ in range(config.n_layer)])
+        self.ln_f = LayerNorm(config.n_embd)
+        self.head = nn.Linear(config.n_embd, config.vocab_size, bias=False)
+
+    def forward(self, idx):
+        B, T = idx.size()
+        tok_emb = self.token_emb(idx)        # Token embedding
+        pos_emb = self.pos_emb[:, :T, :]     # Mövqe embedding
+        x = self.drop(tok_emb + pos_emb)     # Toplam embedding və dropout
+        x = self.blocks(x)                   # N qat Transformer bloku
+        x = self.ln_f(x)                     # Final LayerNorm
+        logits = self.head(x)                # Vokabulyara logit çıxışı
+        return logits
+</code></pre>
+
+
+<h1>Azerbaijani Tokenizer Python Kodu - Ətraflı İzah</h1>
+<pre class=formula">
+<b># 1. Kitabxanaları import edirik</b>
+import os, re
+from tokenizers import models, trainers, pre_tokenizers, processors, normalizers, Regex, Tokenizer
+from tokenizers.models import BPE
+from tokenizers.decoders import ByteLevel
+from transformers import GPT2TokenizerFast
+from collections import defaultdict
+from tqdm import tqdm
+
+<b># 2. Azərbaycan dili üçün xüsusi tokenizer sinifi yaradılır</b>
+class AzerbaijaniTokenizer:
+    def __init__(self, data_dir="../data/training_data/large_data"):
+        self.data_dir = data_dir
+        self.protected_patterns = self._load_protected_patterns()
+        self.az_chars = "abcçdeəfgğhxıijkqlmnoöprsştuüvyzABCÇDEƏFGĞHXIİJKQLMNOÖPRSŞTUÜVYZ"
+        self.min_word_freq = 5
+        self.vocab_size = 40000
+
+<b>    # Qorunan tokenlər siyahısı (parcalanmamalıdır)</b>
+    def _load_protected_patterns(self):
+        return {"Azərbaycan", "Bakı", "Qarabağ", "Şuşa", "Xankəndi", "Təbriz",
+                "İran", "Türkiyə", "Rusiya", "NATO", "Cəmil", "İbrahim", "Ağayev",
+                "şəhərində", "mühacirətinin", "gedəcəyik", "Dövlət", "Pedaqoji",
+                "İnstitutunun", "gəlir", "illərdə", "müəllim", "qələmini", "bədii",
+                "publisistik", "yaradıcılıq", "sahəsində", "sınamağa", "başlayır",
+                "lərinə", "ləri", "dakı", "dəki", "dan", "dən", "lıq", "lik",
+                "luq", "lük", "çı", "çi", "çu", "çü"}
+
+<b>    # Korpus faylında qorunan sözləri xüsusi markerlərlə əvəz et</b>
+    def _preprocess_corpus(self):
+        input_path = os.path.join(self.data_dir, "large_az_data.txt")
+        output_path = os.path.join(self.data_dir, "protected_az_data.txt")
+        if os.path.exists(output_path): return output_path
+
+        print("🔧 Qorunan sözlər əlavə olunur...")
+        protection_regex = re.compile(r'\b(' + '|'.join(re.escape(w) for w in self.protected_patterns) + r')\b')
+
+        with open(input_path, 'r', encoding='utf-8') as fin, open(output_path, 'w', encoding='utf-8') as fout:
+            for line in tqdm(fin, desc="Processing"):
+                protected = protection_regex.sub(lambda m: f"▁{m.group(0)}▁", line.strip())
+                fout.write(protected + "\n")
+
+        return output_path
+
+<b>    # Tokenizer-i yaradıb təlim etdir</b>
+    def create_tokenizer(self, output_dir="azeri_tokenizer"):
+        try:
+            tokenizer = Tokenizer(models.BPE(unk_token="[UNK]", fuse_unk=True, dropout=0.1))
+
+            tokenizer.normalizer = normalizers.Sequence([
+                normalizers.NFC(),
+                normalizers.Replace(Regex(r"[ʼ´‘’`"]), "'"),
+                normalizers.Replace(Regex(r"▁"), ""),
+                normalizers.StripAccents()
+            ])
+
+            tokenizer.pre_tokenizer = pre_tokenizers.Sequence([
+                pre_tokenizers.Split(Regex(r"https?://\S+|www\.\S+"), "isolated"),
+                pre_tokenizers.Split(Regex(r"\b\d+[\.,]?\d*\b"), "isolated"),
+                pre_tokenizers.WhitespaceSplit(),
+                pre_tokenizers.Punctuation(),
+                pre_tokenizers.Split(Regex(r"[^\wəğüşıöçƏĞÜŞİÖÇ]"), "isolated")
+            ])
+
+            trainer = trainers.BpeTrainer(
+                vocab_size=self.vocab_size,
+                special_tokens=["[UNK]", "[PAD]", "<|endoftext|>", "[CLS]", "[SEP]", "[MASK]", "[USER]",
+                               "[ASSISTANT]", "[prompt]", "[response]", "prompt", "response", "USER", "ASSİSTANT",
+                               "[SYSTEM]", "[BOT]", "[HUMAN]", "[MODERATOR]",
+                               "[TITLE]", "[SECTION]", "[DATE]", "[TIME]", "[LOCATION]", "[SUMMARY]",
+                               "[ENTITY]", "[QUESTION]", "[ANSWER]", "[KEYWORD]", "[TOPIC]",
+                               "<|bos|>", "<|eos|>", "<|sep|>", "<|user|>", "<|assistant|>", "<|system|>",
+                               "[YES]", "[NO]", "[MAYBE]", "[UNKNOWN]", "[EXAMPLE]", "[INSTRUCTION]"],
+                min_frequency=self.min_word_freq,
+                initial_alphabet=list(self.az_chars),
+                continuing_subword_prefix="",
+                show_progress=True,
+                limit_alphabet=1000
+            )
+
+            processed_file = self._preprocess_corpus()
+            print("\n🔄 Təlim başlayır...")
+            tokenizer.train([processed_file], trainer)
+
+            tokenizer.post_processor = processors.TemplateProcessing(
+                single="<|endoftext|> $A <|endoftext|>",
+                pair="<|endoftext|> $A $B <|endoftext|>",
+                special_tokens=[("<|endoftext|>", tokenizer.token_to_id("<|endoftext|>"))]
+            )
+            tokenizer.decoder = ByteLevel(add_prefix_space=True)
+
+            az_tokenizer = GPT2TokenizerFast(
+                tokenizer_object=tokenizer,
+                bos_token="<|endoftext|>",
+                eos_token="<|endoftext|>",
+                unk_token="[UNK]",
+                pad_token="[PAD]",
+                additional_special_tokens=list(self.protected_patterns),
+                model_max_length=4096
+            )
+
+            os.makedirs(output_dir, exist_ok=True)
+            az_tokenizer.save_pretrained(output_dir)
+            test_tokenizer = GPT2TokenizerFast.from_pretrained(output_dir)
+            print("\n✅ Tokenizer yaradıldı və testdən keçdi!")
+            return test_tokenizer
+
+        except Exception as e:
+            print(f"❌ Səhv baş verdi: {str(e)}")
+            raise
+
+<b># Main hissə: Tokenizer yaradılır və test edilir</b>
+if __name__ == "__main__":
+    try:
+        print("🚀 Tokenizer yaradılır...")
+        tokenizer = AzerbaijaniTokenizer()
+        trained_tokenizer = tokenizer.create_tokenizer()
+
+        test_phrases = [
+            "Bakı şəhərində 2023-cü ildə Qarabağa gedəcəyik",
+            "Azərbaycan Dövlət Pedaqoji İnstitutunun",
+            "Bu illərdə gənc müəllim qələmini bədii publisistik yaradıcılıq sahəsində sınamağa başlayır",
+            "Cəmil İbrahim oğlu Ağayev"
+        ]
+
+        print("\n🔍 Tokenləşdirilmə nəticələri:")
+        for phrase in test_phrases:
+            tokens = trained_tokenizer.tokenize(phrase)
+            print(f"\nPhrase: {phrase}")
+            print(f"Tokens: {tokens}")
+            print(f"Token IDs: {trained_tokenizer.encode(phrase)}")
+
+    except Exception as e:
+        print(f"❌ Kritik xəta: {str(e)}")
+</pre>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>PyTorch Dataset və DataLoader</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; background: #f9f9f9; }
+        h1, h2, h3 { color: #333366; }
+        pre { background: #eee; padding: 10px; border-left: 4px solid #333366; overflow-x: auto; }
+        code { background: #f0f0f0; padding: 2px 5px; }
+        ul { margin-left: 20px; }
+        .section { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+
+        .formula {
+            background: #e3f2fd;
+            border-left: 6px solid #2196f3;
+            padding: 10px;
+            margin: 15px 0;
+            font-family: monospace;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Dataset və DataLoader</h1>
+
+<div class="formula">
+    <p><strong>Dataset və DataLoader</strong>: PyTorch-un əsas komponentlərindən biridir və modelin təlimə hazırlandığı <em>data pipeline</em>-in əsas hissəsidir.</p>
+
+    <h2>1. Dataset — Məlumatları təqdim edən sinif</h2>
+    <ul>
+        <li>Raw fayllar: <code>.txt</code>, <code>.json</code>, <code>.csv</code>, <code>.npy</code>, şəkillər və s.</li>
+        <li><code>__len__()</code> və <code>__getitem__()</code> metodlarını ehtiva edir.</li>
+        <li>Hazır və ya custom siniflər: <code>torchvision.datasets.MNIST</code>, <code>torchtext.datasets</code>, və s.</li>
+    </ul>
+
+    <h2>2. DataLoader</h2>
+    <ul>
+        <li>Dataset-i batch-lərə bölür, shuffle edir, paralel oxuyur.</li>
+        <li><code>batch_size</code> ilə data oxuyur.</li>
+        <li><code>num_workers</code> ilə paralel emal aparır.</li>
+        <li>Modelə rahat ötürmək üçün istifadə olunur.</li>
+    </ul>
+</div>
+
+<div class="formula">
+    <h2>Şəkil və maskalı struktur</h2>
+    <pre>
+dataset/
+├── images/
+│   ├── img1.jpg
+│   ├── img2.jpg
+│   └── ...
+├── masks/
+│   ├── img1_mask.png
+│   ├── img2_mask.png
+│   └── ...
+        </pre>
+    <ul>
+        <li><strong>images/</strong>: əsas şəkillər</li>
+        <li><strong>masks/</strong>: hər şəkilə uyğun maskalar</li>
+        <li><code>image → [3, H, W]</code> (RGB)</li>
+        <li><code>mask → [1, H, W]</code> (grayscale və ya indexed)</li>
+    </ul>
+</div>
+
+<div class="formula">
+    <h2>MNIST haqqında</h2>
+    <ul>
+        <li>Əl ilə yazılmış 0-9 rəqəmləri</li>
+        <li>28x28 grayscale şəkillər</li>
+        <li>10 sinif</li>
+        <li>70,000 şəkil (60k train + 10k test)</li>
+        <li>CNN, Autoencoder, GAN, RNN və s. modellərdə istifadə olunur</li>
+    </ul>
+    <pre>
++----+----+----+----+
+|  5 |  0 |  4 |  1 |
+|  9 |  2 |  1 |  3 |
++----+----+----+----+
+        </pre>
+</div>
+
+<div class="formula">
+    <h2>coords.json nümunəsi</h2>
+    <pre>{
+  "image_001.png": {
+    "bbox": [x1, y1, x2, y2],
+    "label": "5"
+  },
+  "image_002.png": {
+    "bbox": [34, 12, 78, 56],
+    "label": "7"
+  }
+}</pre>
+</div>
+
+<div class="formula">
+    <h2>MNISTDataset class (sade)</h2>
+    <pre><code>class MNISTDataset(Dataset):
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def __getitem__(self, index):
+        pass
+
+    def __len__(self):
+        pass</code></pre>
+    <ul>
+        <li><code>__init__()</code>: Dataset sinifini qurur</li>
+        <li><code>__getitem__()</code>: verilmiş index üçün şəkil və label verir</li>
+        <li><code>__len__()</code>: datasetin ölçüsünü verir</li>
+    </ul>
+</div>
+
+<div class="formula">
+    <h2>Əlavə Kitabxanalar və Funksiyaları</h2>
+    <ul>
+        <li><code>import torch</code>: əsas PyTorch kitabxanası</li>
+        <li><code>import torchvision</code>: vizual data üçün</li>
+        <li><code>from torchvision.datasets import ImageFolder</code>: şəkil qovluqlarından data oxumaq üçün</li>
+        <li><code>from torch.utils.data import Dataset, DataLoader, random_split</code></li>
+        <li><code>import os</code>: fayl/qovluq əməliyyatları</li>
+        <li><code>import json</code>: JSON faylları üçün</li>
+        <li><code>import numpy as np</code>: massivlər və hesablama üçün</li>
+        <li><code>import matplotlib.pyplot as plt</code>: vizualizasiya</li>
+        <li><code>from PIL import Image</code>: şəkil oxuma və emal</li>
+    </ul>
+</div>
+
+</body>
+</html>

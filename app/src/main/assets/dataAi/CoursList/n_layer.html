@@ -46,7 +46,7 @@
 
 <h1>🔁 <code>n_layer = 10</code> — Transformer Bloklarının Sayı</h1>
 
-<div class="code-block">
+<div class="formula">
     config = GPT2Config(<br>
     &nbsp;&nbsp;&nbsp;&nbsp;n_layer = 10,<br>
     &nbsp;&nbsp;&nbsp;&nbsp;...<br>
@@ -54,14 +54,14 @@
 </div>
 
 <h2>📌 Nə deməkdir?</h2>
-<div class="highlight">
+<div class="formula">
     <strong>n_layer</strong> — modeldə neçə ədəd Transformer bloku (katı) olduğunu göstərir.
     <br>
     Hər blok özündə self-attention + feed-forward (MLP) qatlarını birləşdirir.
 </div>
 
 <h2>🔬 Bir Transformer Bloku nə edir?</h2>
-<div class="note">
+<div class="formula">
     Hər blokda bu əməliyyatlar var:
     <ul>
         <li>➤ LayerNorm</li>
@@ -93,7 +93,7 @@
 </div>
 
 <h2>📈 Dərinlik nə verir?</h2>
-<div class="note">
+<div class="formula">
     <ul>
         <li>📊 Dərinlik → model daha çox kontekst və kompleks nümunələri öyrənə bilir.</li>
         <li>🚀 Daha çox qat = daha yüksək öyrənmə gücü</li>
@@ -102,13 +102,13 @@
 </div>
 
 <h2>🧠 Dərin Model və Səthi Model fərqi</h2>
-<div class="highlight">
+<div class="formula">
     <strong>Səthi model:</strong> 2-4 qatlı (n_layer=2~4) — Sadə tapşırıqlar üçün<br>
     <strong>Dərin model:</strong> 10+ qatlı (n_layer=10~48) — Qrammatika, kontekst və kreativlik üçün
 </div>
 
 <h2>✅ Nəticə</h2>
-<div class="note">
+<div class="formula">
     <ul>
         <li><code>n_layer</code> modelin intellektual dərinliyini və öyrənmə gücünü müəyyən edir.</li>
         <li>Sənin 10 qatlı modelin orta səviyyəli gücə malikdir.</li>

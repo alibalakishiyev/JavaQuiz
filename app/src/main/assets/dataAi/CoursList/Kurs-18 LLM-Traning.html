@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AzGPT Təlim Skripti - Metodların İzahı</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            background: #f9f9f9;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #004d99;
+        }
+        pre {
+            background: #eee;
+            border-left: 5px solid #004d99;
+            padding: 10px;
+            overflow-x: auto;
+        }
+        .method {
+            background: #fff;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+        }
+        .code {
+            font-family: Consolas, monospace;
+            background: #272822;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .note {
+            font-style: italic;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+<h1>AzGPT - Azərbaycan Dili üçün GPU Optimize Edilmiş GPT-2 Təlim Skripti</h1>
+<p><strong>Məqsəd:</strong> Azərbaycan dilində GPT-2 modeli yaratmaq üçün GPU istifadə edərək təlim prosesi. Təlim gedişatını vizual olaraq izləmək üçün əlavə funksionallıq var.</p>
+
+<h2>Ümumi Skript Strukturunun İcmalı</h2>
+<p>Skript aşağıdakı hissələrdən ibarətdir:</p>
+<ul>
+    <li>Konfiqurasiya və parametrlər (qovluq yolları, təlim parametrləri, GPU istifadəsi)</li>
+    <li>Vizualizasiya və təlim prosesinin izlənməsi üçün xüsusi siniflər</li>
+    <li>Modelin və tokenizer-in yüklənməsi və hazırlanması</li>
+    <li>Məlumatların yüklənməsi və tokenləşdirilməsi</li>
+    <li>Modelin təlimi üçün Trainer sinifindən irsi götürülmüş xüsusi sinif</li>
+    <li>Əsas funksiya və proqramın işə salınması</li>
+</ul>
+
+<hr/>
+
+<div class="method">
+    <h3>1. <code>TrainingVisualizer</code> sinfi</h3>
+    <p><strong>Vəzifə:</strong> Təlim zamanı itki (loss), qiymətləndirmə (eval) itkisi və GPU yaddaş istifadəsini toplamaq və 100 addımda bir statistikaları çap etmək.</p>
+    <pre class="code">
+class TrainingVisualizer:
+    def __init__(self):
+        self.train_losses = []
+        self.eval_losses = []
+        self.gpu_memory = []
+
+    def update(self, logs, gpu_stats):
+        if 'loss' in logs:
+            self.train_losses.append(logs['loss'])
+        if 'eval_loss' in logs:
+            self.eval_losses.append(logs['eval_loss'])
+        if gpu_stats:
+            self.gpu_memory.append(gpu_stats['used'])
+
+        if len(self.train_losses) % 100 == 0:
+            print(f"\n📊 Proqress: Step {len(self.train_losses)}")
+            print(f"📉 Train Loss: {self.train_losses[-1]:.4f}")
+            if self.eval_losses:
+                print(f"📈 Eval Loss: {self.eval_losses[-1]:.4f}")
+            if self.gpu_memory:
+                print(f"💾 GPU Memory: {self.gpu_memory[-1]:.2f} GB")
+        </pre>
+    <p class="note">Qeyd: Bu sinif hazırda təlimdə istifadə olunmur, amma statistikaların yığılması və çapı üçün nəzərdə tutulub.</p>
+</div>
+
+<div class="method">
+    <h3>2. <code>GPUTrainer</code> sinfi (Trainer-dən irsi götürülmüş)</h3>
+    <p><strong>Vəzifə:</strong> Hugging Face Trainer sinifindən irs alaraq təlim gedişatını real-time vizuallaşdırma, addım, itki, learning rate, GPU yaddaşı və epox məlumatlarını toplamaq və qrafik şəklində saxlamaq.</p>
+
+    <ul>
+        <li><code>__init__</code>: Statistikaları saxlamaq üçün dəyişənləri yaradır, progress bar üçün dəyişənlər təyin edir.</li>
+        <li><code>log</code>: Hər log mesaj gəldikdə statistikaları toplayır, progress bar-ı yeniləyir, hər 50 addımda statistikaları diskə yazır və qrafiki yeniləyir.</li>
+        <li><code>_update_progress_bar</code>: Progress bar-da itki, validation loss, learning rate, GPU yaddaş və epoch məlumatlarını göstərir.</li>
+        <li><code>_save_stats</code>: Statistikaları JSON fayla yazır.</li>
+        <li><code>_plot_progress</code>: Təlim prosesinin itki, learning rate və GPU yaddaşının qrafiklərini yaradır və fayla yazır.</li>
+    </ul>
+
+    <pre class="code">
+class GPUTrainer(Trainer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.progress_bar = None
+        self.stats = {...}
+        self.current_epoch = 0
+        self.last_log_time = time.time()
+
+    def log(self, logs, start_time=None):
+        super().log(logs)
+        # statistikalar toplanır, progress bar yenilənir, fayllar saxlanır və qrafik çəkilir
+
+    def _update_progress_bar(self, logs, gpu_mem):
+        # progress bar məlumatlarını yeniləyir
+
+    def _save_stats(self):
+        # statistikaları JSON-a yazır
+
+    def _plot_progress(self):
+        # itki, learning rate, GPU yaddaşı qrafiklərini çəkir və yadda saxlayır
+        </pre>
+</div>
+
+<div class="method">
+    <h3>3. <code>AzerbaijaniGPT2Trainer</code> sinfi</h3>
+    <p><strong>Vəzifə:</strong> GPT-2 modelinin Azərbaycan dilinə uyğun təlimini idarə etmək üçün əsas sinifdir. Tokenizer və modelin yaradılması, məlumatların hazırlanması, təlim prosesi və nəticələrin saxlanması burada idarə olunur.</p>
+
+    <h4>Əsas metodlar:</h4>
+    <ul>
+        <li><code>__init__</code>: Parametrləri saxlayır (data qovluğu, tokenizer qovluğu, çıxış qovluğu, epoch sayı, batch ölçüsü, öyrənmə sürəti və s.).</li>
+        <li><code>_print_configuration</code>: Təlim parametrləri və GPU haqqında məlumatları ekrana çap edir.</li>
+        <li><code>initialize_tokenizer</code>: Tokenizer-i diskdən yükləyir, pad token təyin edir və tokenizer ölçüsünü çap edir.</li>
+        <li><code>initialize_model</code>: GPT-2 modelini konfiqurasiya edir və GPU/CPU üzərinə yükləyir.</li>
+        <li><code>prepare_data</code>: Mətn fayllarını oxuyur, cümlələrə bölür, təmizləyir, Hugging Face Dataset formatına çevirir, tokenləşdirir və təlim/validasiya bölməsi yaradır.</li>
+        <li><code>train</code>: Təlim parametrlərini təyin edir, GPUTrainer-i yaradaraq təlim prosesini işə salır, xətalarla işləyir, model və tokenizer-i yadda saxlayır.</li>
+    </ul>
+
+    <pre class="code">
+class AzerbaijaniGPT2Trainer:
+    def __init__(self, data_dir, tokenizer_dir, output_dir, epochs, batch_size, learning_rate):
+        # parametrləri yadda saxlayır
+
+    def _print_configuration(self):
+        # təlim və GPU konfiqurasiyasını çap edir
+
+    def initialize_tokenizer(self):
+        # tokenizer-i yükləyir, pad token yoxdursa təyin edir, sözlük ölçüsünü çap edir
+
+    def initialize_model(self):
+        # GPT2Config yaradılır, model konfiqurasiya olunur və cihazda (GPU/CPU) yaradılır
+
+    def prepare_data(self):
+        # Mətn faylları oxunur, təmizlənir, dataset yaradılır, tokenləşdirilir, train/test bölünür
+
+    def train(self):
+        # Təlim arqumentləri qurulur, Trainer yaradılır, təlimə start verilir, nəticələr saxlanılır
+        </pre>
+</div>
+
+<div class="method">
+    <h3>4. <code>main()</code> funksiyası</h3>
+    <p><strong>Vəzifə:</strong> Proqramın əsas giriş nöqtəsidir. Qovluqların mövcudluğunu yoxlayır, GPU-nun olub-olmamasını yoxlayır, Azərbaycan GPT-2 təlimçisini yaradır və təlim prosesini işə salır.</p>
+
+    <pre class="code">
+def main():
+    print("=" * 50)
+    print("AZGPT - Azərbaycan Dili üçün GPT-2 Təlim Proqramı")
+    print(f"Başlama vaxtı: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print("=" * 50)
+
+    # Qovluqların yoxlanması
+    if not os.path.exists(DATA_DIR):
+        raise ValueError(f"❌ Məlumat qovluğu tapılmadı: {DATA_DIR}")
+    if not os.path.exists(TOKENIZER_DIR):
+        raise ValueError(f"❌ Tokenizer qovluğu tapılmadı: {TOKENIZER_DIR}")
+
+    # GPU yoxlanışı
+    if not torch.cuda.is_available():
+        raise RuntimeError("❌ GPU aşkarlanmadı! ...")
+
+    trainer = AzerbaijaniGPT2Trainer(
+        data_dir=DATA_DIR,
+        tokenizer_dir=TOKENIZER_DIR,
+        output_dir=OUTPUT_DIR,
+        epochs=EPOCHS,
+        batch_size=BATCH_SIZE,
+        learning_rate=LEARNING_RATE
+    )
+
+    try:
+        trainer.train()
+    except Exception as e:
+        print(f"\n❌ Xəta baş verdi: {str(e)}")
+        raise
+    finally:
+        print("\n" + "=" * 50)
+        print(f"Təlim tamamlandı: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print("=" * 50)
+        </pre>
+</div>
+
+<div class="method">
+    <h3>5. Skriptin işə düşməsi</h3>
+    <p><strong>Vəzifə:</strong> Python skriptinin əsas modulu kimi işlədildiyi halda GPU yaddaşını təmizləyir və <code>main()</code> funksiyasını çağırır.</p>
+    <pre class="code">
+if __name__ == "__main__":
+    torch.cuda.empty_cache()
+    main()
+        </pre>
+</div>
+
+<hr/>
+
+<h2>Qısa xülasə</h2>
+<ul>
+    <li><strong>TrainingVisualizer:</strong> Təlim statistikasını toplayıb çap edir (hazırda aktiv deyil).</li>
+    <li><strong>GPUTrainer:</strong> Hugging Face Trainer sinifini genişləndirərək təlimin monitorinqini artırır və vizual statistikaları yaradır.</li>
+    <li><strong>AzerbaijaniGPT2Trainer:</strong> Modelin, tokenizer-in və məlumatların hazırlanmasını və təlim prosesini idarə edir.</li>
+    <li><strong>main:</strong> Bütün prosesi işə salan əsas funksiyadır.</li>
+</ul>
+
+<p>İstəsən bu skriptin hər hansı hissəsi barədə əlavə izah və ya nümunə istəyərsən.</p>
+
+<h2>📌Tam Kod</h2>
+
+<pre><code>
+
+        """
+        AzGPT - Azərbaycan Dili üçün GPU Optimize Edilmiş GPT-2 Təlim Skripti
+        İnkişaf etdirilmiş versiya: Təlimin gedişatını real-time vizuallaşdırmaqla
+        """
+        import json
+        import os
+        import re
+        import time
+        import torch
+        import numpy as np
+        from tqdm import tqdm
+        import matplotlib.pyplot as plt
+        from glob import glob
+        from datetime import datetime
+        from datasets import Dataset
+        from transformers import (
+            GPT2LMHeadModel,
+            GPT2Config,
+            AutoTokenizer,
+            TrainingArguments,
+            DataCollatorForLanguageModeling,
+            Trainer,
+            set_seed
+        )
+
+        # ==================== QOVLUQ YOLLARI ====================
+        BASE_DIR = r"C:\Users\Mafia\PycharmProjects\MyLLMProject"
+        DATA_DIR = os.path.join(BASE_DIR, "telim_ucun")
+        TOKENIZER_DIR = os.path.join(BASE_DIR, "azeri_tokenizer")
+        OUTPUT_DIR = os.path.join(BASE_DIR, "models", f"azeri_gpt2_{datetime.now().strftime('%Y%m%d_%H%M')}")
+
+        # ==================== TƏLİM PARAMETRLƏRİ ====================
+        EPOCHS = 15
+        BATCH_SIZE = 32
+        LEARNING_RATE = 5e-5
+        GRADIENT_ACCUMULATION_STEPS = 2
+        MAX_SEQ_LENGTH = 256
+        SEED = 42
+
+        # GPU konfiqurasiyası
+        set_seed(SEED)
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        torch.backends.cuda.matmul.allow_tf32 = True
+
+
+        class TrainingVisualizer:
+            """
+            Təlim zamanı itkiləri (loss) və GPU yaddaş istifadəsini real-time
+            qeyd edib, müəyyən intervallarda konsola statistikalar çap edir.
+            """
+
+            def __init__(self):
+                """
+                Loss və GPU yaddaşını saxlamaq üçün siyahılar yaradılır.
+                """
+                self.train_losses = []
+                self.eval_losses = []
+                self.gpu_memory = []
+
+            def update(self, logs, gpu_stats):
+                """
+                Hər yeni log gələndə loss və GPU yaddaşını yeniləyir.
+                Hər 100 addımda cari vəziyyəti konsola çap edir.
+
+                Parametrlər:
+                    logs (dict): Təlim və validasiya itkilərini ehtiva edən sözlük.
+                    gpu_stats (dict): GPU yaddaş statistikası.
+                """
+                if 'loss' in logs:
+                    self.train_losses.append(logs['loss'])
+                if 'eval_loss' in logs:
+                    self.eval_losses.append(logs['eval_loss'])
+                if gpu_stats:
+                    self.gpu_memory.append(gpu_stats['used'])
+
+                # Hər 100 addımda bir statistikaları çap et
+                if len(self.train_losses) % 100 == 0:
+                    print(f"\n📊 Proqress: Step {len(self.train_losses)}")
+                    print(f"📉 Train Loss: {self.train_losses[-1]:.4f}")
+                    if self.eval_losses:
+                        print(f"📈 Eval Loss: {self.eval_losses[-1]:.4f}")
+                    if self.gpu_memory:
+                        print(f"💾 GPU Memory: {self.gpu_memory[-1]:.2f} GB")
+
+
+        class GPUTrainer(Trainer):
+            """
+            Transformers kitabxanasının Trainer sinifindən törədilib.
+            Təlim zamanı real-time məlumatları toplayır, proqress bar göstərir,
+            GPU yaddaş istifadəni izləyir, statistikaları fayla yazır və qrafik yaradır.
+            """
+
+            def __init__(self, *args, **kwargs):
+                """
+                Valideyn Trainer sinifinin __init__ metodunu çağırır,
+                əlavə statistikaları və progress bar üçün dəyişənləri yaradır.
+                """
+                super().__init__(*args, **kwargs)
+                self.progress_bar = None
+                self.stats = {
+                    'steps': [],
+                    'train_loss': [],
+                    'val_loss': [],
+                    'learning_rate': [],
+                    'gpu_memory': [],
+                    'epochs': []
+                }
+                self.current_epoch = 0
+                self.last_log_time = time.time()
+
+            def log(self, logs, start_time=None):
+                """
+                Hər təlim addımında çağırılır, logs daxilində olan məlumatları
+                toplayır və statistikaları yeniləyir.
+                Progress bar və qrafik yeniləmələrini idarə edir.
+
+                Parametrlər:
+                    logs (dict): Təlim və validasiya nəticələrini ehtiva edir.
+                    start_time (float, opsional): Təlim addımının başlanğıc vaxtı.
+                """
+                super().log(logs)
+
+                # Addım sayını hesablamaq və siyahıya əlavə etmək
+                step = len(self.stats['steps']) + 1
+                self.stats['steps'].append(step)
+
+                # Loss dəyərlərini siyahılara əlavə et
+                if 'loss' in logs:
+                    self.stats['train_loss'].append(float(logs['loss']))
+                if 'eval_loss' in logs:
+                    self.stats['val_loss'].append(float(logs['eval_loss']))
+
+                # Öyrənmə sürətini əlavə et
+                if 'learning_rate' in logs:
+                    self.stats['learning_rate'].append(float(logs['learning_rate']))
+
+                # GPU yaddaş istifadəni ölç və əlavə et
+                gpu_mem = torch.cuda.memory_allocated() / 1024 ** 3 if torch.cuda.is_available() else 0
+                self.stats['gpu_memory'].append(gpu_mem)
+
+                # Hal-hazırkı epoch-u yenilə
+                if 'epoch' in logs:
+                    self.current_epoch = float(logs['epoch'])
+                self.stats['epochs'].append(self.current_epoch)
+
+                # Progress bar yaradılması
+                if self.progress_bar is None:
+                    total_steps = self.args.num_train_epochs * len(self.train_dataset) // self.args.per_device_train_batch_size
+                    self.progress_bar = tqdm(total=total_steps, desc="🚀 Təlim", dynamic_ncols=True)
+
+                # Progress bar yenilə
+                self._update_progress_bar(logs, gpu_mem)
+
+                # Hər 50 addımda statistikaları yadda saxla və qrafik çək
+                if step % 50 == 0:
+                    self._save_stats()
+                    self._plot_progress()
+
+            def _update_progress_bar(self, logs, gpu_mem):
+                """
+                Progress bar üzərində cari itki, validasiya itkisi, lr, gpu və epoch
+                məlumatlarını göstərir.
+
+                Parametrlər:
+                    logs (dict): Cari təlim addımı nəticələri.
+                    gpu_mem (float): Cari GPU yaddaş istifadə (GB).
+                """
+                postfix = {}
+
+                # Loss dəyərləri
+                train_loss = logs.get('loss')
+                val_loss = logs.get('eval_loss')
+
+                postfix['loss'] = f"{float(train_loss):.4f}" if train_loss is not None else 'N/A'
+                postfix['val_loss'] = f"{float(val_loss):.4f}" if val_loss is not None else 'N/A'
+
+                # Learning rate
+                lr = logs.get('learning_rate')
+                postfix['lr'] = f"{float(lr):.1e}" if lr is not None else 'N/A'
+
+                # GPU və epoch
+                postfix['gpu'] = f"{gpu_mem:.1f}GB"
+                postfix['epoch'] = f"{self.current_epoch:.1f}"
+
+                self.progress_bar.set_postfix(postfix)
+                self.progress_bar.update(1)
+
+            def _save_stats(self):
+                """
+                Yığılan statistikaları JSON formatında çıxış qovluğunda saxlayır.
+                """
+                os.makedirs(self.args.output_dir, exist_ok=True)
+                stats_file = os.path.join(self.args.output_dir, "training_stats.json")
+
+                with open(stats_file, 'w', encoding='utf-8') as f:
+                    json.dump(self.stats, f, indent=2)
+
+            def _plot_progress(self):
+                """
+                Təlim itkiləri, öyrənmə sürəti və GPU yaddaş istifadəsini qrafikə
+                çəkir və şəkil faylı kimi yadda saxlayır.
+                """
+                if len(self.stats['steps']) < 2:
+                    return
+
+                plt.figure(figsize=(15, 5))
+
+                # Train və validation loss qrafiki
+                plt.subplot(1, 3, 1)
+                plt.plot(self.stats['steps'], self.stats['train_loss'], label='Train Loss')
+                if self.stats['val_loss']:
+                    val_steps = np.linspace(0, max(self.stats['steps']), len(self.stats['val_loss']))
+                    plt.plot(val_steps, self.stats['val_loss'], label='Validation Loss')
+                plt.xlabel('Steps')
+                plt.ylabel('Loss')
+                plt.title('Training Progress')
+                plt.legend()
+                plt.grid(True)
+
+                # Öyrənmə sürəti qrafiki
+                plt.subplot(1, 3, 2)
+                plt.plot(self.stats['steps'], self.stats['learning_rate'])
+                plt.xlabel('Steps')
+                plt.ylabel('Learning Rate')
+                plt.title('Learning Rate Schedule')
+                plt.grid(True)
+
+                # GPU yaddaş istifadəsi qrafiki
+                plt.subplot(1, 3, 3)
+                plt.plot(self.stats['steps'], self.stats['gpu_memory'])
+                plt.xlabel('Steps')
+                plt.ylabel('GPU Memory (GB)')
+                plt.title('GPU Memory Usage')
+                plt.grid(True)
+
+                plt.tight_layout()
+                plot_path = os.path.join(self.args.output_dir, "training_progress.png")
+                plt.savefig(plot_path)
+                plt.close()
+
+
+        class AzerbaijaniGPT2Trainer:
+            """
+            AzGPT layihəsinin əsas təlim sinifi.
+            Tokenizer yüklənməsi, model konfiqurasiyası, verilənlərin hazırlanması,
+            təlimin idarə olunması və nəticələrin saxlanması bu sinifdə idarə olunur.
+            """
+
+            def __init__(self, data_dir, tokenizer_dir, output_dir, epochs, batch_size, learning_rate):
+                """
+                Təlim üçün əsas parametrlər burada yadda saxlanılır.
+
+                Parametrlər:
+                    data_dir (str): Təlim üçün mətn fayllarının olduğu qovluq.
+                    tokenizer_dir (str): Tokenizer-in saxlandığı qovluq.
+                    output_dir (str): Təlim nəticələrinin saxlanacağı qovluq.
+                    epochs (int): Təlim dövrlərinin sayı.
+                    batch_size (int): Bir batch-də nümunələrin sayı.
+                    learning_rate (float): Öyrənmə sürəti.
+                """
+                self.data_dir = data_dir
+                self.tokenizer_dir = tokenizer_dir
+                self.output_dir = output_dir
+                self.epochs = epochs
+                self.batch_size = batch_size
+                self.learning_rate = learning_rate
+                self.device = device
+                self.tokenizer = None
+                self.model = None
+                self.trainer = None
+
+            def _print_configuration(self):
+                """
+                Cari təlim parametrlərini və GPU konfiqurasiyasını konsola çap edir.
+                """
+                print("\n=== TƏLİM KONFİQURASİYASI ===")
+                print(f"🔵 Model: GPT-2 (Azerbaijani)")
+                print(f"🔵 Təlim dövrləri: {self.epochs}")
+                print(f"🔵 Batch ölçüsü: {self.batch_size}")
+                print(f"🔵 Effektiv batch: {self.batch_size * GRADIENT_ACCUMULATION_STEPS}")
+                print(f"🔵 Öyrənmə sürəti: {self.learning_rate}")
+                print(f"🔵 Maksimum ardıcıllıq uzunluğu: {MAX_SEQ_LENGTH}")
+                print(f"🔵 Çıxış qovluğu: {self.output_dir}")
+
+                if torch.cuda.is_available():
+                    print("\n=== GPU KONFİQURASİYASI ===")
+                    print(f"🔵 GPU: {torch.cuda.get_device_name(0)}")
+                    print(f"🔵 CUDA versiyası: {torch.version.cuda}")
+                    print(f"🔵 Ümumi yaddaş: {torch.cuda.get_device_properties(0).total_memory / 1024 ** 3:.2f} GB")
+                    print(f"🔵 PyTorch versiyası: {torch.__version__}")
+
+                print("\n🚀 Təlim konfiqurasiyası hazırdır...\n")
+
+            def initialize_tokenizer(self):
+                """
+                Tokenizer-in diskdən yüklənməsi və lazım olduqda pad_token-un təyin olunması.
+                """
+                print("🔠 Tokenizer yüklənir...")
+                self.tokenizer = AutoTokenizer.from_pretrained(self.tokenizer_dir)
+
+                # Əgər pad token yoxdursa, eos_token-u pad token kimi təyin et
+                if self.tokenizer.pad_token is None:
+                    self.tokenizer.pad_token = self.tokenizer.eos_token
+
+                print(f"✅ Tokenizer uğurla yükləndi (Real sözlük ölçüsü: {len(self.tokenizer)})")
+
+            def initialize_model(self):
+                """
+                GPT-2 modelinin konfiqurasiyasını təyin edir və model nümunəsini yaradır.
+                Model sonra device-a (GPU/CPU) ötürülür.
+                """
+                print("\n🧠 Model konfiqurasiyası hazırlanır...")
+                config = GPT2Config(
+                    vocab_size=len(self.tokenizer),  # Tokenizer-in sözlük ölçüsünə uyğun olmalıdır
+                    n_positions=MAX_SEQ_LENGTH,
+                    n_embd=768,
+                    n_layer=8,
+                    n_head=8,
+                    pad_token_id=self.tokenizer.pad_token_id,
+                    bos_token_id=self.tokenizer.bos_token_id,
+                    eos_token_id=self.tokenizer.eos_token_id,
+                    resid_pdrop=0.1,
+                    embd_pdrop=0.1,
+                    attn_pdrop=0.1,
+                    gradient_checkpointing=True  # Yaddaşı qənaət etmək üçün
+                )
+                self.model = GPT2LMHeadModel(config).to(self.device)
+                print(f"✅ Model yaradıldı (Vocab size: {config.vocab_size})")
+
+            def prepare_data(self):
+                """
+                Mətn fayllarını oxuyur, təmizləyir, cümlələrə bölür və
+                Dataset formatına çevirir. Sonra tokenləşdirir və təlim-test
+                bölməsini yaradır.
+
+                Geri dönən dəyər:
+                    split_dataset (DatasetDict): Təlim və test datasını saxlayan obyekt.
+                """
+                print("\n📊 Məlumatlar hazırlanır...")
+                txt_files = glob(os.path.join(self.data_dir, "*.txt"))
+                print(f"📂 {len(txt_files)} fayl aşkar edildi")
+
+                texts = []
+                for file_path in tqdm(txt_files, desc="Fayllar oxunur"):
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        content = f.read()
+                        # Cümlələrə böl, artıq boşluqları azaldır və 10-dan uzun olanları saxla
+                        sentences = [re.sub(r'\s+', ' ', s).strip() for s in content.split('.') if len(s) > 10]
+                        # Cümlə uzunluğu 20 ilə 500 arası olanları saxla
+                        texts.extend([{"text": s} for s in sentences if 20 < len(s) < 500])
+
+                dataset = Dataset.from_list(texts)
+                print(f"📊 Ümumi {len(dataset)} nümunə hazırlandı")
+
+                def tokenize_function(examples):
+                    """
+                    Dataset.map funksiyası üçün tokenize funksiyası.
+                    """
+                    return self.tokenizer(
+                        examples["text"],
+                        truncation=True,
+                        max_length=MAX_SEQ_LENGTH,
+                        padding="max_length",
+                        add_special_tokens=True
+                    )
+
+                print("🔢 Məlumatlar tokenləşdirilir...")
+                tokenized_dataset = dataset.map(tokenize_function, batched=True,
+                                                remove_columns=["text"],
+                                                desc="Tokenləşdirilir")
+
+                split_dataset = tokenized_dataset.train_test_split(test_size=0.1)
+                print(
+                    f"✂️ Məlumatlar bölündü: Təlim - {len(split_dataset['train'])}, Validasiya - {len(split_dataset['test'])}")
+                return split_dataset
+
+            def train(self):
+                """
+                Təlim prosesini idarə edir:
+                - Çıxış qovluğunu yaradır,
+                - Konfiqurasiyanı çap edir,
+                - Tokenizer və modeli yükləyir,
+                - Dataseti hazırlayır,
+                - TrainingArguments və DataCollator yaradır,
+                - GPUTrainer sinifindən təlim obyektini yaradır,
+                - Təlimi başlayır və yadda saxlayır.
+                """
+                os.makedirs(self.output_dir, exist_ok=True)
+                self._print_configuration()
+
+                self.initialize_tokenizer()
+                self.initialize_model()
+                split_dataset = self.prepare_data()
+
+                training_args = TrainingArguments(
+                    output_dir=self.output_dir,
+                    num_train_epochs=self.epochs,
+                    per_device_train_batch_size=self.batch_size,
+                    per_device_eval_batch_size=self.batch_size,
+                    learning_rate=self.learning_rate,
+                    weight_decay=0.01,
+                    warmup_steps=1000,
+                    save_steps=1000,
+                    logging_steps=100,
+                    eval_strategy="steps",
+                    eval_steps=500,
+                    fp16=True,
+                    gradient_accumulation_steps=GRADIENT_ACCUMULATION_STEPS,
+                    report_to="none",
+                    save_total_limit=2,
+                    load_best_model_at_end=True,
+                    metric_for_best_model="eval_loss",
+                    greater_is_better=False,
+                    optim="adamw_torch_fused",
+                    dataloader_pin_memory=True,
+                    dataloader_num_workers=4,
+                    seed=SEED
+                )
+
+                data_collator = DataCollatorForLanguageModeling(
+                    tokenizer=self.tokenizer,
+                    mlm=False  # GPT-2 üçün MLM istifadə edilmir
+                )
+
+                self.trainer = GPUTrainer(
+                    model=self.model,
+                    args=training_args,
+                    train_dataset=split_dataset["train"],
+                    eval_dataset=split_dataset["test"],
+                    data_collator=data_collator,
+                )
+
+                print("\n🚀 Təlim başlayır...")
+                try:
+                    self.trainer.train()
+                except RuntimeError as e:
+                    # CUDA yaddaş problemi yaranarsa xəbər ver və batch ölçüsünü azaltmağı təklif et
+                    if "CUDA out of memory" in str(e):
+                        print("\n❌ GPU yaddaşı çoxdur! Batch ölçüsünü azaldın.")
+                        print(f"   Təvsiyə: batch_size={max(1, self.batch_size // 2)}")
+                    raise
+
+                # Model və tokenizer-i yadda saxla
+                self.trainer.save_model(self.output_dir)
+                self.tokenizer.save_pretrained(self.output_dir)
+
+                print(f"\n✅ Model qeyd edildi: {self.output_dir}")
+
+                # Əgər visualizer varsa, son qrafiki yadda saxla
+                if hasattr(self.trainer, 'visualizer') and self.trainer.visualizer.train_losses:
+                    final_plot_path = os.path.join(self.output_dir, "final_training_progress.png")
+                    self.trainer.visualizer.fig.savefig(final_plot_path)
+                    print(f"📊 Təlim qrafiki yadda saxlanıldı: {final_plot_path}")
+
+
+        def main():
+            """
+            Proqramın giriş nöqtəsi.
+            Məlumat qovluqlarının mövcudluğunu yoxlayır,
+            GPU mövcudluğunu yoxlayır,
+            Təlim sinifini işə salır və nəticəni çap edir.
+            """
+            print("=" * 50)
+            print("AZGPT - Azərbaycan Dili üçün GPT-2 Təlim Proqramı")
+            print(f"Başlama vaxtı: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+            print("=" * 50)
+
+            if not os.path.exists(DATA_DIR):
+                raise ValueError(f"❌ Məlumat qovluğu tapılmadı: {DATA_DIR}")
+            if not os.path.exists(TOKENIZER_DIR):
+                raise ValueError(f"❌ Tokenizer qovluğu tapılmadı: {TOKENIZER_DIR}")
+
+            if not torch.cuda.is_available():
+                raise RuntimeError("""
+                ❌ GPU aşkarlanmadı!
+
+                Zəhmət olmasa:
+                1. NVIDIA GPU-nuz olduğuna əmin olun
+                2. CUDA drayverlərini quraşdırın
+                3. PyTorch GPU versiyasını quraşdırın:
+                   `pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118`
+                """)
+
+            trainer = AzerbaijaniGPT2Trainer(
+                data_dir=DATA_DIR,
+                tokenizer_dir=TOKENIZER_DIR,
+                output_dir=OUTPUT_DIR,
+                epochs=EPOCHS,
+                batch_size=BATCH_SIZE,
+                learning_rate=LEARNING_RATE
+            )
+
+            try:
+                trainer.train()
+            except Exception as e:
+                print(f"\n❌ Xəta baş verdi: {str(e)}")
+                raise
+            finally:
+                print("\n" + "=" * 50)
+                print(f"Təlim tamamlandı: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+                print("=" * 50)
+
+
+        if __name__ == "__main__":
+            torch.cuda.empty_cache()
+            main()
+
+
+</code></pre>
+
+</body>
+</html>

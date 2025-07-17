@@ -36,6 +36,8 @@ public class AiMain extends AppCompatActivity implements AlgoListener {
         ArrayList<Algo> arrayList = new ArrayList<>();
         arrayList.add(new Algo(R.drawable.junior64, "Machine  Learning Cours", MLCours.class));
         arrayList.add(new Algo(R.drawable.math, "Mathematic", Mathematics.class));
+        arrayList.add(new Algo(R.drawable.mathquiz64, "Ai Calculate", AICalculate.class));
+        arrayList.add(new Algo(R.drawable.aiquiz64, "Ai Quiz", AIMathQuiz.class));
 
 
 

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>LargeScaleAzerbaijaniProcessor Açıqlaması</title>
+    <style>
+        body { font-family: Consolas, monospace; background: #f4f4f4; color: #222; padding: 20px; }
+        pre { background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 0 5px #ccc; overflow-x: auto; }
+        h2 { color: #004a99; }
+
+        .formula {
+            background: #e3f2fd;
+            border-left: 6px solid #2196f3;
+            padding: 10px;
+            margin: 15px 0;
+            font-family: monospace;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+<h2>1. Sinif təyin edilir</h2>
+<pre><code class="formula">
+class LargeScaleAzerbaijaniProcessor:
+</code></pre>
+
+<h2>2. __init__ - İlkin quraşdırma</h2>
+<pre><code class="language-python">
+def __init__(self, tokenizer_path, file_paths, block_size=1024):
+    self.tokenizer = GPT2TokenizerFast.from_pretrained(tokenizer_path)  # Tokenizer yüklənir
+    self.block_size = block_size
+    self.file_paths = [fp for fp in file_paths if os.path.exists(fp)]  # Mövcud fayllar filtr olunur
+
+    self.num_workers = min(4, mp.cpu_count() - 1)  # Paralel emal üçün işçi sayı
+    self.chunk_size = 8 * 1024 * 1024  # Hər chunk 8MB
+    self.max_lines_per_chunk = 5000  # 5000 sətrə qədər
+
+    logging.basicConfig(...)  # Log faylı yaradılır
+    self.total_blocks = 0
+    self.total_tokens = 0
+    self.failed_chunks = 0
+</code></pre>
+<!-- Tokenizer yüklənər, fayl yolları yoxlanılır, logging təyin edilər, konfiqurasiya edilir -->
+
+<h2>3. process_files - Faylları oxuyub bloklara bölür</h2>
+<pre><code class="language-python">
+def process_files(self):
+    ...
+</code></pre>
+<!-- Bu metod bütün faylları oxuyur, bloklara bölür, shuffle edir və train/val faylları şəklində saxlayır -->
+
+<h2>4. _process_large_file - Çox böyük faylları hissələrə ayırır</h2>
+<pre><code class="language-python">
+def _process_large_file(self, file_path):
+    ...
+</code></pre>
+<!-- 2GB-dan böyük fayllar 1GB-lıq hissələrə ayrılır və tək-tək emal edilir -->
+
+<h2>5. _process_file - Faylı xətt-xətt oxuyur</h2>
+<pre><code class="language-python">
+def _process_file(self, file_path):
+    ...
+</code></pre>
+<!-- Fayl hissə-hissə oxunur (chunk şəklində), hər chunk tokenizasiya olunub bloklara bölünür -->
+
+<h2>6. _process_chunk - Bir chunk ə mətn üzərində təmizləmə, cümlələrə bölmə və tokenizasiyanı icra edir</h2>
+<pre><code class="language-python">
+def _process_chunk(self, chunk):
+    chunk = re.sub(r'[^…]', ' ', chunk)  # Simvolları təmizlə
+    sentences = re.split(...)  # Cümlələrə böl
+    tokens = ...
+    blocks = ...  # 1024-lük token blokları yarad
+    return blocks
+</code></pre>
+
+<h2>7. _save_blocks - Token bloklarını fayla yadda saxlayır</h2>
+<pre><code class="language-python">
+def _save_blocks(self, blocks, path):
+    temp_arrays = []
+    for i in range(0, len(blocks), batch_size):
+        temp_arrays.append(np.array(batch, dtype=np.uint32))
+    np.save(path, final_array)
+</code></pre>
+<!-- Blokları batch-batch numpy massivləri kimi .npy faylına yazır -->
+
+<h2>8. prepare_large_dataset - Prosesi başladan funksiya</h2>
+<pre><code class="language-python">
+def prepare_large_dataset():
+    mp.set_start_method('spawn', force=True)
+    processor = LargeScaleAzerbaijaniProcessor(...)
+    processor.process_files()
+</code></pre>
+<!-- Bu funksiya proqramı başlayanda çağrılır və hər şeyi icra edir -->
+
+<h2>9. if __name__ == "__main__"</h2>
+<pre><code class="language-python">
+if __name__ == "__main__":
+    prepare_large_dataset()
+</code></pre>
+<!-- Python faylı birbaşa işlədilərkən bu hissə çağrılır -->
+
+</body>
+</html>

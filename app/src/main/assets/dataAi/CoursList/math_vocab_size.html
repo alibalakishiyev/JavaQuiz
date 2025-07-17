@@ -46,7 +46,7 @@
 
 <h1>🔠 <code>vocab_size = len(self.tokenizer)</code> Açıqlaması</h1>
 
-<div class="code-block">
+<div class="formula">
     config = GPT2Config(<br>
     &nbsp;&nbsp;&nbsp;&nbsp;vocab_size = len(self.tokenizer),<br>
     &nbsp;&nbsp;&nbsp;&nbsp;...<br>
@@ -54,7 +54,7 @@
 </div>
 
 <h2>📌 Nə deməkdir?</h2>
-<div class="highlight">
+<div class="formula">
     <strong><code>vocab_size</code></strong> — modelin qəbul etdiyi bütün unikal tokenlərin (alt söz, söz, simvol və s.) sayını göstərir.
     Bu, tokenizer-in <code>.vocab</code> və ya <code>.get_vocab()</code> nəticəsində alınan lüğətin uzunluğudur.
 </div>
@@ -70,7 +70,7 @@
 </div>
 
 <h2>🔢 Modeldə necə istifadə olunur?</h2>
-<div class="note">
+<div class="formula">
     <ul>
         <li>Hər token üçün <code>n_embd</code> ölçülü vektor saxlanılır (embedding layer).</li>
         <li>Embedding qatının ölçüsü belə hesablanır:</li>
@@ -83,7 +83,7 @@
 </div>
 
 <h2>❗ Niyə vacibdir?</h2>
-<div class="note">
+<div class="formula">
     <ul>
         <li>Əgər vocab_size düzgün göstərilməzsə, model ya <u>tokeni tanımayacaq</u>, ya da <u>çəkiləri yanlış matrisa ölçüsündə saxlayacaq</u>.</li>
         <li>Buna görə <strong>Tokenizer və Model</strong> eyni <code>vocab_size</code> üzərində qurulmalıdır.</li>
@@ -91,7 +91,7 @@
 </div>
 
 <h2>✅ Nəticə</h2>
-<div class="highlight">
+<div class="formula">
     <strong><code>vocab_size = len(self.tokenizer)</code></strong> dedikdə məqsəd:
     <br><br>
     Tokenizer-də neçə unikal token varsa, onu model konfiqurasiyasında istifadə etməkdir ki, girişlər doğru kodlaşdırılsın və model düzgün işləsin.

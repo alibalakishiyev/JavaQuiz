@@ -46,7 +46,7 @@
 
 <h1>🧭 <code>n_positions = 512</code> Açıqlaması</h1>
 
-<div class="code-block">
+<div class="formula">
     config = GPT2Config(<br>
     &nbsp;&nbsp;&nbsp;&nbsp;n_positions = 512,<br>
     &nbsp;&nbsp;&nbsp;&nbsp;...<br>
@@ -54,7 +54,7 @@
 </div>
 
 <h2>📌 Nə deməkdir?</h2>
-<div class="highlight">
+<div class="formula">
     <strong><code>n_positions</code></strong> — Transformer modelinin girişindəki maksimum ardıcıllıq (sequence) uzunluğudur.
     <br><br>
     Yəni model bir dəfəlik girişdə **ən çox neçə token** emal edə biləcəyini göstərir.
@@ -73,7 +73,7 @@
 </div>
 
 <h2>📊 Mövqeli embeddinglər necə işləyir?</h2>
-<div class="note">
+<div class="formula">
     Transformerlər təbii olaraq sıranı anlamır (seqential bias yoxdur). Ona görə də:
     <br><br>
     <strong>Position Embedding</strong> əlavə olunur ki, model 1-ci, 2-ci, 3-cü token fərqini öyrənsin.
@@ -92,13 +92,13 @@
 </div>
 
 <h2>⚠️ Diqqət!</h2>
-<div class="highlight">
+<div class="formula">
     Əgər modelin girişindəki token sayı <strong>n_positions</strong>-dan böyük olarsa,<br>
     o zaman əlavə tokenlər <strong>kəsiləcək (truncation)</strong> və model onları görməyəcək.
 </div>
 
 <h2>🧠 Nəticə</h2>
-<div class="note">
+<div class="formula">
     <ul>
         <li><strong><code>n_positions</code></strong> modelin görmə sahəsini müəyyən edir.</li>
         <li>Daha böyük dəyərlər → daha uzun kontekst, lakin daha çox yaddaş və hesablama xərci.</li>

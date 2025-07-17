@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PyTorch Tensorlər və Gradientlər haqqında</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          line-height: 1.6;
+          margin: 20px;
+          background-color: #f9f9f9;
+          color: #333;
+        }
+        h1, h2, h3 {
+          color: #0055a5;
+        }
+        pre {
+          background-color: #272822;
+          color: #f8f8f2;
+          padding: 10px;
+          overflow-x: auto;
+          border-radius: 5px;
+        }
+        code {
+          font-family: Consolas, monospace;
+        }
+        table {
+          border-collapse: collapse;
+          margin: 15px 0;
+          width: 100%;
+        }
+        th, td {
+          border: 1px solid #ddd;
+          padding: 8px;
+        }
+        th {
+          background-color: #0055a5;
+          color: white;
+        }
+        .important {
+          color: #d6336c;
+          font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h1>PyTorch Tensorlər və Gradientlər haqqında</h1>
+
+<h2>1. PyTorch Qurulumu</h2>
+<p><strong>Google Colab:</strong></p>
+<pre><code>!pip install torch</code></pre>
+
+<p><strong>Windows üçün CUDA 11.8 dəstəkləyən versiya:</strong></p>
+<pre><code>pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118</code></pre>
+
+<hr>
+
+<h2>2. Tensor Nədir?</h2>
+<p>Tensor — sadəcə rəqəmlərlə dolu çoxölçülü qutudur. Tensor Excel cədvəli kimidir, ancaq 3, 5 və daha çox ölçülü ola bilər.<br>
+    GPT modellərində tensorlar sözlərin/tokenlərin riyazi təqdimatıdır.</p>
+
+<h3>Tensor Tipləri və Nümunələri</h3>
+<table>
+    <thead>
+    <tr><th>Tensor Tipi</th><th>Nədir</th><th>Nümunə</th></tr>
+    </thead>
+    <tbody>
+    <tr><td>0D (skalar)</td><td>Tək ədəd</td><td>7</td></tr>
+    <tr><td>1D (vektor)</td><td>Rəqəm sırası</td><td>[4, 9, 2]</td></tr>
+    <tr><td>2D (matris)</td><td>Cədvəl</td><td>[[1, 2], [3, 4]]</td></tr>
+    <tr><td>3D</td><td>Matris yığını</td><td>[[[...]], [[...]]]</td></tr>
+    <tr><td>nD</td><td>Daha kompleks formalar</td><td>N-lik qatlı</td></tr>
+    </tbody>
+</table>
+
+<h3>NLP-də Tensorlardan İstifadə Nümunələri</h3>
+<table>
+    <thead>
+    <tr><th>Harada?</th><th>Tensor Nümunəsi</th></tr>
+    </thead>
+    <tbody>
+    <tr><td>Tokenized data</td><td>[245, 12, 13, 56, 1024] → 1D tensor</td></tr>
+    <tr><td>Batch data</td><td>[[245, 12, 13], [10, 9, 4]] → 2D tensor (batch_size x seq_len)</td></tr>
+    <tr><td>Word embeddings</td><td>torch.Size([batch, seq_len, hidden_size])</td></tr>
+    <tr><td>Modelin çəkiləri</td><td>torch.Size([n_layer, n_head, d_model]) kimi böyük tensorlar</td></tr>
+    </tbody>
+</table>
+
+<hr>
+
+<h2>3. Tensor Yaratma Nümunələri</h2>
+<pre><code># torch.tensor([2, 3])
+# torch.tensor([2, 3], [4, 5])
+# torch.tensor([[2, 3], [4, 5]], dtype=torch.int32)
+# torch.tensor([[2, 3], [4, 5]], dtype=torch.float32)
+# torch.tensor([[2, 3], [4, 5]], dtype=torch.float32, requires_grad=True)
+# torch.tensor([[2, 3], [4, 5]], requires_grad=True)
+# torch.tensor([[2, 3], [4, 5]], device='cuda:0')
+</code></pre>
+
+<h3>İzahlar:</h3>
+<ul>
+    <li><code>tensor([2, 3])</code> — 1D tensor, default tip <code>torch.int64</code> (tam ədəd)</li>
+    <li><code>tensor([[2, 3], [4, 5]], dtype=torch.int32)</code> — 2D tensor, 32-bit tam ədəd</li>
+    <li><code>tensor([[2., 3.], [4., 5.]], dtype=torch.float32)</code> — float tipli ədədlər</li>
+    <li><code>requires_grad=True</code> — gradient hesablanacaq, yəni öyrənilən parametrdir</li>
+    <li><code>device='cuda:0'</code> — tensor GPU-da yaradılır</li>
+</ul>
+
+<hr>
+
+<h2>4. Gradient və <code>requires_grad=True</code></h2>
+<p><strong>Gradient</strong> — funksiyanın dəyişmə sürətini və istiqamətini göstərən törəmə vektoru kimi qəbul edilə bilər.</p>
+<p>Məsələn, funksiya <code>f(x) = x²</code> üçün törəmə <code>f'(x) = 2x</code> olur. <code>x=3</code> üçün <code>f'(3) = 6</code> deməkdir ki, funksiya bu nöqtədə sürətlə 6 vahid dəyişir.</p>
+
+<p><code>requires_grad=True</code> parametri tensorun üzərində gradientlərin hesablanacağını bildirir. Bu, modelin öyrənilməsi üçün istifadə olunan parametr tensorları üçündür.</p>
+
+<hr>
+
+<h2>5. Model Parametrlərinin Yenilənməsi Düsturu</h2>
+<p>Model parametri <code>w</code> üçün loss funksiyası <code>L(w)</code> və onun gradienti <code>∇L(w)</code> var. Parametr <code>w</code> aşağıdakı kimi yenilənir:</p>
+<pre><code>w := w - η ⋅ ∇L(w)
+</code></pre>
+<ul>
+    <li><code>η</code> — öyrənmə sürəti (learning rate), addım ölçüsü</li>
+    <li>Gradient <code>∇L(w)</code> — loss funksiyasının <code>w</code>-yə görə törəməsi</li>
+    <li>Bu düsturla loss minimuma doğru azalır</li>
+</ul>
+
+<hr>
+
+<h2>6. Tensorların Forma və Ölçüləri</h2>
+<pre><code>tensor = torch.tensor([[[2, 3], [4, 5]], [[6, 7], [8, 9]]], dtype=torch.float32, requires_grad=True)
+
+tensor.shape  # Ölçü, məsələn (2, 2, 2)
+tensor.size() # Eyni, forma
+tensor.ndim    # Ölçü sayı (dimensionality)
+tensor[0, 0, 0] # Elementə tensor kimi giriş
+type(tensor[0, 0, 0]) # torch.Tensor
+tensor[0, 0, 0].item() # Python float dəyəri
+type(tensor[0, 0, 0].item()) # float
+</code></pre>
+
+<hr>
+
+<h2>7. Tensorların Fərqli Yaradılma Nümunələri</h2>
+<pre><code>tensor = torch.zeros([2, 3, 2])          # 0-larla dolu tensor
+tensor = torch.ones([2, 3, 2])           # 1-lərlə dolu tensor
+tensor = torch.zeros_like(tensor)        # Başqa tensorun ölçüsündə 0-lar
+tensor = torch.full_like(tensor, 7)      # Başqa tensor ölçüsündə 7-lərlə dolu
+print(tensor)
+print(tensor.dtype)
+</code></pre>
+
+<hr>
+
+<h2>8. İstifadəli Funksiyalar</h2>
+<pre><code>torch.arange(2, 10, 0.5)
+# 2-dən 10-a qədər 0.5 addımla ardıcıl ədədlərdən ibarət 1D tensor yaradır
+
+torch.diag(torch.tensor([5, 4]))
+# Diagonal elementi 5 və 4 olan kvadrat matris yaradır
+# Nümunə: tensor([[5, 0],
+#                 [0, 4]])
+
+torch.eye(5)
+# 5x5 vahid matris (identity matrix)
+
+torch.tril(torch.tensor([[1,2,3],[2,3,4],[3,4,5]]))
+# Matrisin aşağı üçbucağını saxlayır
+# Nümunə:
+# tensor([[1, 0, 0],
+#         [2, 3, 0],
+#         [3, 4, 5]])
+</code></pre>
+
+<hr>
+
+<h2>9. Tensorun Forma Dəyişməsi</h2>
+<pre><code>tensor = torch.tensor([1, 2, 3, 4])
+tensor_1 = tensor.reshape([2, 2])
+tensor_1
+</code></pre>
+<p>1D tensor (4 element) 2 satır, 2 sütunlu 2D tensora çevrilir.</p>
+<p><code>view()</code> funksiyası daha sərtdir (yalnız ardıcıl yaddaşda işləyir), <code>reshape()</code> isə daha çevikdir (lazım olsa surət çıxarır).</p>
+
+<hr>
+
+<h2>10. Tensor Ölçüsünə Yeni Dimension Əlavə Etmək</h2>
+<pre><code>tensor = torch.unsqueeze(tensor, 0)
+tensor.shape
+</code></pre>
+<p>Bu, tensorun başına yeni ölçü (dim=0) əlavə edir, məsələn 1 satırlı 2D tensor yaradır.</p>
+
+<hr>
+
+<h2>11. Tensor Üzərində Statistik Funksiyalar</h2>
+<pre><code>tensor = torch.tensor([1, 2, 3, 4, 5, 6], dtype=torch.float32)
+tensor.mean()      # Bütün elementlərin ortalaması (3.5)
+
+tensor = tensor.view([2, 3])
+tensor_mean = tensor.mean(dim=1, keepdim=True)
+# dim=1 → sətir üzrə ortalama, keepdim=True → ölçünü saxla (nəticə (2,1) olacaq)
+</code></pre>
+
+<hr>
+
+<h2>12. Cihaz Seçimi və Tensorların CPU/GPU-ya Keçirilməsi</h2>
+<pre><code>print(torch.cpu.is_available())
+print(torch.cuda.is_available())
+
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+tensor = tensor.to(device)
+</code></pre>
+
+<p>Tensor avtomatik olaraq mövcud cihazda (GPU varsa CUDA, yoxdursa CPU) yerləşdirilir.</p>
+
+<hr>
+
+<h2>13. Tensorları CPU-ya Çəkmək və Hesablama Qrafından Ayırmaq</h2>
+<pre><code># new_tensor = new_tensor.cpu()
+new_tensor = new_tensor.cpu().detach()
+new_tensor
+</code></pre>
+
+<p><code>.cpu()</code> tensoru GPU-dan CPU-ya keçirir, <code>.detach()</code> isə hesablamalar qrafından ayırır (gradient hesablama izləməsini dayandırır).</p>
+
+</body>
+</html>

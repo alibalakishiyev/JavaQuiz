@@ -1,0 +1,459 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "category": "Aktivasiya funksiyaları",
+      "question": "Sigmoid funksiyasının düsturu hansıdır?",
+      "options": [
+        "1 / (1 + e^(-x))",
+        "e^(-x^2)",
+        "x^2",
+        "sin(x)"
+      ],
+      "answer": 0,
+      "explanation": "Sigmoid funksiyası 1 / (1 + e^(-x)) şəklində təyin olunur və aktivasiya funksiyası kimi istifadə olunur."
+    },
+    {
+      "id": 2,
+      "category": "Vektorlar",
+      "question": "İki vektorun skalyar hasilini necə hesablayarıq?",
+      "options": [
+        "Vektorların uyğun komponentlərini vurub toplamaqla",
+        "Yalnız x komponentlərini vurmaqla",
+        "Vektor uzunluqlarını toplamaqla",
+        "Vektorlar arasındakı bucağı hesablamaqla"
+      ],
+      "answer": 0,
+      "explanation": "Skalyar hasil: Σ(v1_i * v2_i) bütün komponentlər üzrə"
+    },
+    {
+      "id": 3,
+      "category": "Ehtimal nəzəriyyəsi",
+      "question": "Softmax funksiyası nə üçün istifadə olunur?",
+      "options": [
+        "Ehtimalları normallaşdırmaq üçün",
+        "Vektorları normallaşdırmaq üçün",
+        "Tənlikləri sadələşdirmək üçün",
+        "Funksiyaları diferensiallamaq üçün"
+      ],
+      "answer": 0,
+      "explanation": "Softmax çıxış ehtimallarını [0,1] aralığına çəkir və cəmni 1 edir"
+    },
+    {
+      "id": 4,
+      "category": "Çoxölçülü fəza",
+      "question": "5 ölçülü fəzada iki nöqtə arasındakı Evklid məsafəsini hansı düstur hesablayar?",
+      "options": [
+        "√(Σ(x_i - y_i)^2)",
+        "Σ|x_i - y_i|",
+        "max|x_i - y_i|",
+        "(Σ(x_i - y_i))^2"
+      ],
+      "answer": 0,
+      "explanation": "Evklid məsafəsi: √(Σ(x_i - y_i)^2)"
+    },
+    {
+      "id": 5,
+      "category": "Aktivasiya funksiyaları",
+      "question": "ReLU funksiyası necə təyin olunur?",
+      "options": [
+        "max(0, x)",
+        "1 / (1 + e^(-x))",
+        "x^2",
+        "sin(x)"
+      ],
+      "answer": 0,
+      "explanation": "ReLU(x) = max(0, x)"
+    },
+    {
+      "id": 6,
+      "category": "Optimizasiya",
+      "question": "Qradient enmə metodunda learning rate nə üçün istifadə olunur?",
+      "options": [
+        "Addım ölçüsünü təyin etmək üçün",
+        "Qradiyenti normallaşdırmaq üçün",
+        "Funksiyanı tərsinə çevirmək üçün",
+        "Yerli minimumdan qaçmaq üçün"
+      ],
+      "answer": 0,
+      "explanation": "Learning rate hər iterasiyada nə qədər addım atılacağını təyin edir"
+    },
+    {
+      "id": 7,
+      "category": "Matrislər",
+      "question": "Matrisin transponesi necə alınır?",
+      "options": [
+        "Sətirləri sütunlarla əvəz etməklə",
+        "Əsas diaqonala görə simmetriya etməklə",
+        "Bütün elementləri -1-ə vurmaqla",
+        "Tərs matrisi hesablamaqla"
+      ],
+      "answer": 0,
+      "explanation": "Transpon matris sətirləri sütun, sütunları sətir edərək alınır"
+    },
+    {
+      "id": 8,
+      "category": "Ehtimal nəzəriyyəsi",
+      "question": "Bayes teoremi hansı düsturla ifadə olunur?",
+      "options": [
+        "P(A|B) = P(B|A)*P(A)/P(B)",
+        "P(A∪B) = P(A) + P(B) - P(A∩B)",
+        "P(A∩B) = P(A)*P(B)",
+        "P(A') = 1 - P(A)"
+      ],
+      "answer": 0,
+      "explanation": "Bayes teoremi şərti ehtimalı hesablamaq üçün istifadə olunur"
+    },
+    {
+      "id": 9,
+      "category": "Qradientlər",
+      "question": "Backpropagation zamanı chain rule nə üçün tətbiq olunur?",
+      "options": [
+        "Qradiyentləri geriyə yaymaq üçün",
+        "Xətaları hesablamaq üçün",
+        "Ağırlıqları normallaşdırmaq üçün",
+        "Funksiyanı optimallaşdırmaq üçün"
+      ],
+      "answer": 0,
+      "explanation": "Chain rule kompleks funksiyaların törəmələrini hesablamaq üçün istifadə olunur"
+    },
+    {
+      "id": 10,
+      "category": "Statistika",
+      "question": "Standart sapma necə hesablanır?",
+      "options": [
+        "Varyansın kvadrat kökü kimi",
+        "Orta qiymətin kvadratı kimi",
+        "Medianın kvadrat kökü kimi",
+        "Maksimum dəyər çıx minimum dəyər kimi"
+      ],
+      "answer": 0,
+      "explanation": "Standart sapma σ = √(Σ(x_i - μ)^2/n)"
+    },
+    {
+      "id": 11,
+      "category": "Optimizasiya",
+      "question": "Adam optimizerində momentum nə üçün istifadə olunur?",
+      "options": [
+        "Keçmiş qradiyentləri nəzərə almaq üçün",
+        "Learning rate-i avtomatik tənzimləmək üçün",
+        "Yerli minimumdan qaçmaq üçün",
+        "Bütün bunlar"
+      ],
+      "answer": 3,
+      "explanation": "Adam həm momentum, həm də adaptive learning rate istifadə edir"
+    },
+    {
+      "id": 12,
+      "category": "Konvolusiya",
+      "question": "Konvolusiya əməliyyatında padding nə üçün istifadə olunur?",
+      "options": [
+        "Çıxış ölçüsünü qorumaq üçün",
+        "Filter ölçüsünü azaltmaq üçün",
+        "Hesablama sürətini artırmaq üçün",
+        "Xətaları azaltmaq üçün"
+      ],
+      "answer": 0,
+      "explanation": "Padding giriş və çıxış ölçülərinin eyni qalması üçün əlavə edilir"
+    },
+    {
+      "id": 13,
+      "category": "Normalizasiya",
+      "question": "Batch normalization nə üçün tətbiq olunur?",
+      "options": [
+        "Aktivasiyaları stabilləşdirmək üçün",
+        "Ağırlıqları normallaşdırmaq üçün",
+        "Learning rate-i artırmaq üçün",
+        "Xətaları azaltmaq üçün"
+      ],
+      "answer": 0,
+      "explanation": "Batch norm hər layerdə aktivasiyaların paylanmasını stabilləşdirir"
+    },
+    {
+      "id": 14,
+      "category": "Funksiyalar",
+      "question": "Loss funksiyası ilə metriklər arasındakı fərq nədir?",
+      "options": [
+        "Loss training üçün, metrik performansı qiymətləndirmək üçün",
+        "Heç bir fərq yoxdur",
+        "Loss daha dəqiqdir",
+        "Metriklər yalnız test zamanı istifadə olunur"
+      ],
+      "answer": 0,
+      "explanation": "Loss modeli öyrətmək üçün, metrik isə performansı qiymətləndirmək üçündür"
+    },
+    {
+      "id": 15,
+      "category": "Ağlar",
+      "question": "CNN-də pooling layerləri nə üçün istifadə olunur?",
+      "options": [
+        "Ölçünü azaltmaq və pozision dözümlülük əldə etmək üçün",
+        "Xüsusiyyətləri artırmaq üçün",
+        "Ağırlıqları normallaşdırmaq üçün",
+        "Funksiyanı diferensiallamaq üçün"
+      ],
+      "answer": 0,
+      "explanation": "Pooling ölçünü azaldır və bəzi dəyişikliklərə qarşı dözümlülük yaradır"
+    },
+    {
+      "id": 16,
+      "category": "Ehtimal nəzəriyyəsi",
+      "question": "Cross-entropy loss nə üçün istifadə olunur?",
+      "options": [
+        "Ehtimal paylanmaları arasındakı fərqi ölçmək üçün",
+        "Vektorlar arasındakı məsafəni hesablamaq üçün",
+        "Qradiyentləri normallaşdırmaq üçün",
+        "Optimizasiya prosesini sürətləndirmək üçün"
+      ],
+      "answer": 0,
+      "explanation": "Cross-entropy iki ehtimal paylanması arasındakı fərqi ölçür"
+    },
+    {
+      "id": 17,
+      "category": "Tənliklər",
+      "question": "Softplus funksiyası necə təyin olunur?",
+      "options": [
+        "log(1 + e^x)",
+        "max(0, x)",
+        "1 / (1 + e^(-x))",
+        "x^2"
+      ],
+      "answer": 0,
+      "explanation": "Softplus(x) = log(1 + e^x), ReLU-nun hamar versiyasıdır"
+    },
+    {
+      "id": 18,
+      "category": "Matrislər",
+      "question": "Matrisin determinantı nəyi ölçür?",
+      "options": [
+        "Xətti çevrilmənin miqyaslama faktorunu",
+        "Matrisin izini",
+        "Matrisin normunu",
+        "Matrisin tərsini"
+      ],
+      "answer": 0,
+      "explanation": "Determinant xətti çevrilmənin həcm dəyişməsini göstərir"
+    },
+    {
+      "id": 19,
+      "category": "Optimizasiya",
+      "question": "Learning rate schedule nə üçün istifadə olunur?",
+      "options": [
+        "Training zamanı learning rate-i dəyişmək üçün",
+        "Qradiyentləri normallaşdırmaq üçün",
+        "Loss funksiyasını optimallaşdırmaq üçün",
+        "Model parametrlərini artırmaq üçün"
+      ],
+      "answer": 0,
+      "explanation": "LR schedule training irəlilədikcə learning rate-i tənzimləyir"
+    },
+    {
+      "id": 20,
+      "category": "Ağlar",
+      "question": "RNN-lərdə vanishing gradient problemi nəyə səbəb olur?",
+      "options": [
+        "Uzaq əlaqələrin öyrənilməsinin çətinləşməsinə",
+        "Qradiyentlərin çox böyüməsinə",
+        "Ağırlıqların sıfıra yaxınlaşmasına",
+        "Xətalarin artmasına"
+      ],
+      "answer": 0,
+      "explanation": "Vanishing gradient uzaq kontekstdən asılılıqların öyrənilməsini çətinləşdirir"
+    },
+    {
+      "id": 21,
+      "category": "Funksiyalar",
+      "question": "Tanh aktivasiya funksiyasının diapazonu nədir?",
+      "options": [
+        "[-1, 1]",
+        "[0, 1]",
+        "[0, ∞)",
+        "(-∞, ∞)"
+      ],
+      "answer": 0,
+      "explanation": "Tanh funksiyası çıxışları -1 ilə 1 arasında normallaşdırır"
+    },
+    {
+      "id": 22,
+      "category": "Statistika",
+      "question": "Kovariasiya matrisi nəyi ölçür?",
+      "options": [
+        "Dəyişənlər arasındakı xətti əlaqəni",
+        "Dəyişənlərin orta qiymətini",
+        "Dəyişənlərin medianını",
+        "Dəyişənlərin dispersiyasını"
+      ],
+      "answer": 0,
+      "explanation": "Kovariasiya matrisi dəyişənlər arasındakı xətti əlaqəni göstərir"
+    },
+    {
+      "id": 23,
+      "category": "Optimizasiya",
+      "question": "L2 regularizasiyası nə üçün istifadə olunur?",
+      "options": [
+        "Overfittingi azaltmaq üçün",
+        "Modelin düzgünlüyünü artırmaq üçün",
+        "Training sürətini artırmaq üçün",
+        "Xətalari azaltmaq üçün"
+      ],
+      "answer": 0,
+      "explanation": "L2 reg ağırlıqların böyüməsinə cəza verərək overfittingi azaldır"
+    },
+    {
+      "id": 24,
+      "category": "Ağlar",
+      "question": "Transformer modelində self-attention nə üçün istifadə olunur?",
+      "options": [
+        "Tokenlar arasındakı əlaqələri öyrənmək üçün",
+        "Model dərinliyini artırmaq üçün",
+        "Qradiyentləri hesablamaq üçün",
+        "Optimizasiya etmək üçün"
+      ],
+      "answer": 0,
+      "explanation": "Self-attention tokenlar arasındakı kontekstuəl əlaqələri modelləşdirir"
+    },
+    {
+      "id": 25,
+      "category": "Ehtimal nəzəriyyəsi",
+      "question": "KL divergence nəyi ölçür?",
+      "options": [
+        "İki ehtimal paylanması arasındakı fərqi",
+        "Bir paylanmanın dispersiyasını",
+        "Paylanmaların orta qiymətini",
+        "Paylanmaların kovariasiyasını"
+      ],
+      "answer": 0,
+      "explanation": "KL divergence iki paylanma arasındakı informasiya itkisini ölçür"
+    },
+    {
+      "id": 26,
+      "category": "Matrislər",
+      "question": "Xüsusi vektor nədir?",
+      "options": [
+        "Matrislə vurulduqda istiqamətini qoruyan vektor",
+        "Matrisin tərsinin vektoru",
+        "Matrisin determinantını verən vektor",
+        "Matrisin normallaşdırılmış forması"
+      ],
+      "answer": 0,
+      "explanation": "Xüsusi vektor Ax = λx şərtini ödəyir"
+    },
+    {
+      "id": 27,
+      "category": "Funksiyalar",
+      "question": "Leaky ReLU funksiyası necə təyin olunur?",
+      "options": [
+        "max(0.01x, x)",
+        "max(0, x)",
+        "1 / (1 + e^(-x))",
+        "log(1 + e^x)"
+      ],
+      "answer": 0,
+      "explanation": "Leaky ReLU mənfi qiymətlər üçün kiçik meyl (0.01) saxlayır"
+    },
+    {
+      "id": 28,
+      "category": "Optimizasiya",
+      "question": "Learning rate warmup nə üçün istifadə olunur?",
+      "options": [
+        "Stabil training üçün əvvəlcə kiçik LR istifadə etmək",
+        "Model ölçüsünü artırmaq üçün",
+        "Xətalari azaltmaq üçün",
+        "Qradiyentləri normallaşdırmaq üçün"
+      ],
+      "answer": 0,
+      "explanation": "Warmup trainingin sabit başlaması üçün LR-i tədricən artırır"
+    },
+    {
+      "id": 29,
+      "category": "Ağlar",
+      "question": "Dropout nə üçün istifadə olunur?",
+      "options": [
+        "Overfittingi azaltmaq üçün",
+        "Model dərinliyini artırmaq üçün",
+        "Training sürətini artırmaq üçün",
+        "Xüsusiyyətləri seçmək üçün"
+      ],
+      "answer": 0,
+      "explanation": "Dropout təsadüfi neyronları söndürərək overfittingi azaldır"
+    },
+    {
+      "id": 30,
+      "category": "Statistika",
+      "question": "Markov zənciri nədir?",
+      "options": [
+        "Gələcəyin yalnız cari vəziyyətdən asılı olduğu stoxastik proses",
+        "Təsadüfi dəyişənlər kolleksiyası",
+        "Ehtimal paylanması",
+        "Statistik model"
+      ],
+      "answer": 0,
+      "explanation": "Markov zənciri keçmişdən asılı olmayaraq yalnız cari vəziyyətdən asılılıq göstərir"
+    },
+    {
+      "id": 31,
+      "category": "Funksiyalar",
+      "question": "Swish aktivasiya funksiyası necə təyin olunur?",
+      "options": [
+        "x * sigmoid(x)",
+        "max(0, x)",
+        "1 / (1 + e^(-x))",
+        "log(1 + e^x)"
+      ],
+      "answer": 0,
+      "explanation": "Swish(x) = x * σ(x), Google tərəfindən təklif edilmişdir"
+    },
+    {
+      "id": 32,
+      "category": "Optimizasiya",
+      "question": "Gradient clipping nə üçün istifadə olunur?",
+      "options": [
+        "Böyük qradiyentləri kəsmək üçün",
+        "Kiçik qradiyentləri böyütmək üçün",
+        "Qradiyentləri normallaşdırmaq üçün",
+        "Learning rate-i tənzimləmək üçün"
+      ],
+      "answer": 0,
+      "explanation": "Gradient clipping exploding gradients problemini həll etmək üçündür"
+    },
+    {
+      "id": 33,
+      "category": "Ağlar",
+      "question": "Batch normalization zamanı hangi statistikalardan istifadə olunur?",
+      "options": [
+        "Orta qiymət və standart sapma",
+        "Median və interkvartil aralıq",
+        "Minimum və maksimum dəyərlər",
+        "Mod və dispersiya"
+      ],
+      "answer": 0,
+      "explanation": "Batch norm hər batch üçün orta və standart sapma hesablayır"
+    },
+    {
+      "id": 34,
+      "category": "Ehtimal nəzəriyyəsi",
+      "question": "Naive Bayes klassifikatoru nə üçün 'naive' adlanır?",
+      "options": [
+        "Xüsusiyyətlərin şərti müstəqilliyi fərziyyəsi səbəbiylə",
+        "Sadə olması səbəbiylə",
+        "Təcrübəsiz olması səbəbiylə",
+        "Təsadüfi seçim etməsi səbəbiylə"
+      ],
+      "answer": 0,
+      "explanation": "Naive Bayes xüsusiyyətlərin bir-birindən müstəqil olduğunu fərz edir"
+    },
+    {
+      "id": 35,
+      "category": "Matrislər",
+      "question": "Singulyar ayrışma (SVD) nədir?",
+      "options": [
+        "Matrisi UΣV^T şəklində ayrışdırmaq",
+        "Matrisin determinantını hesablamaq",
+        "Matrisin xüsusi qiymətlərini tapmaq",
+        "Matrisi üçbucaqlı formaya gətirmək"
+      ],
+      "answer": 0,
+      "explanation": "SVD hər hansı matrisi UΣV^T şəklində ayrışdırmaq üçün istifadə olunur"
+    }
+  ]
+}

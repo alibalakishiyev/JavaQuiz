@@ -149,4 +149,39 @@
     <string name="donate_preference_title">Donate</string>
 
 
+    <!-- Titles and Headers -->
+    <string name="app_title">AI Model Parametr Hesablamaları</string>
+    <string name="advanced_settings">Advanced Settings</string>
+    <string name="results">Results</string>
+
+    <!-- Input Labels -->
+    <string name="data_count">Data sayı:</string>
+    <string name="correct_answers">Düzgün cavablar:</string>
+    <string name="total_questions">Ümumi sual sayı:</string>
+    <string name="gpu_memory">GPU Memory:</string>
+    <string name="current_loss">Current Loss:</string>
+    <string name="validation_loss">Validation Loss:</string>
+
+    <!-- Input Hints -->
+    <string name="data_count_hint">Məsələn: 1000</string>
+    <string name="correct_answers_hint">Məsələn: 850</string>
+    <string name="total_questions_hint">Məsələn: 1000</string>
+    <string name="gpu_memory_hint">GB cinsindən, məs: 16</string>
+    <string name="current_loss_hint">Məsələn: 0.4</string>
+    <string name="validation_loss_hint">Məsələn: 0.45</string>
+
+    <!-- Button Texts -->
+    <string name="calculate">Hesabla</string>
+    <string name="verify">Yoxla</string>
+
+    <!-- Default Result Values -->
+    <string name="batch_size_default">Batch Size: -</string>
+    <string name="loss_default">Loss: -</string>
+    <string name="n_head_default">N Head: -</string>
+    <string name="n_layer_default">N Layer: -</string>
+    <string name="gpu_util_default">GPU Utilization: -</string>
+    <string name="loss_analysis_default">Loss Analysis: -</string>
+    <string name="initial_result_text">Nəticə burada görünəcək</string>
+
+
 </resources>

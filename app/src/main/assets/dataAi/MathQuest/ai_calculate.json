@@ -1,0 +1,111 @@
+{
+  "available_types": ["NLP", "TTS", "SST", "ASR", "Vision"],
+  "default_type": "NLP",
+  "type_specific_rules": {
+    "NLP": {
+      "model_architecture": {
+        "n_head": {
+          "base_formula": "round(log(data_size) * 1.5)",
+          "minimum": 4,
+          "maximum": 32
+        },
+        "n_layer": {
+          "base_formula": "round(sqrt(data_size) / 1000)",
+          "minimum": 6,
+          "maximum": 24
+        },
+        "use_rotary": true,
+        "bias": false
+      },
+      "training_parameters": {
+        "batch_size": {
+          "base_formula": "8 * log(data_size + 1)",
+          "minimum": 4,
+          "maximum": 64
+        },
+        "block_size": 1024
+      }
+    },
+    "TTS": {
+      "model_architecture": {
+        "n_head": {
+          "base_formula": "round(log(data_size) * 1.2)",
+          "minimum": 2,
+          "maximum": 16
+        },
+        "n_layer": {
+          "base_formula": "round(sqrt(data_size) / 1500)",
+          "minimum": 4,
+          "maximum": 16
+        },
+        "use_rotary": false,
+        "bias": true
+      },
+      "training_parameters": {
+        "batch_size": {
+          "base_formula": "4 * log(data_size + 1)",
+          "minimum": 2,
+          "maximum": 32
+        },
+        "block_size": 512
+      }
+    },
+    "Vision": {
+      "model_architecture": {
+        "n_head": {
+          "base_formula": "round(log(data_size) * 0.8)",
+          "minimum": 2,
+          "maximum": 12
+        },
+        "n_layer": {
+          "base_formula": "round(sqrt(data_size) / 2000)",
+          "minimum": 4,
+          "maximum": 12
+        },
+        "use_rotary": false,
+        "bias": true
+      },
+      "training_parameters": {
+        "batch_size": {
+          "base_formula": "16 * log(data_size + 1)",
+          "minimum": 8,
+          "maximum": 128
+        },
+        "block_size": 256
+      }
+    }
+  },
+  "common_parameters": {
+    "n_embd": {
+      "base_formula": "round(data_size / 10000) * 64",
+      "minimum": 128,
+      "maximum": 4096,
+      "divisible_by": "n_head"
+    },
+    "learning_rate": {
+      "base_formula": "6e-5 * (1 - log(data_size + 1) / 20)",
+      "minimum": 1e-6,
+      "maximum": 1e-3
+    },
+    "dropout": {
+      "base_formula": "max(0.1, min(0.3, 0.2 - (data_size / 100000000)))"
+    }
+  },
+  "presets": {
+    "NLP": {
+      "small": {"n_layer": 6, "n_head": 4, "n_embd": 256},
+      "medium": {"n_layer": 12, "n_head": 8, "n_embd": 512},
+      "large": {"n_layer": 24, "n_head": 16, "n_embd": 1024}
+    },
+    "TTS": {
+      "small": {"n_layer": 4, "n_head": 2, "n_embd": 192},
+      "medium": {"n_layer": 8, "n_head": 4, "n_embd": 384},
+      "large": {"n_layer": 16, "n_head": 8, "n_embd": 768}
+    },
+    "Vision": {
+      "small": {"n_layer": 4, "n_head": 2, "n_embd": 128},
+      "medium": {"n_layer": 6, "n_head": 4, "n_embd": 256},
+      "large": {"n_layer": 8, "n_head": 6, "n_embd": 512}
+    }
+  }
+}

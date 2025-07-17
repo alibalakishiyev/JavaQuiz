@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Model Type Selection -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="8dp"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    style="@style/SectionHeader"
+                    android:text="Model Configuration"/>
+
+                <TextView
+                    style="@style/InputLabel"
+                    android:text="Model Type"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/InputFieldLayout"
+                    android:hint="Select model type"
+                    app:endIconMode="dropdown_menu">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/spinner_model_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:completionThreshold="1"
+                        android:dropDownHeight="wrap_content"
+                        android:dropDownWidth="match_parent"
+                        android:tooltipText="Select the type of model you want to configure"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    style="@style/InputLabel"
+                    android:text="Preset Configuration"
+                    android:layout_marginTop="8dp"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/InputFieldLayout"
+                    android:hint="Select preset (optional)"
+                    app:endIconMode="dropdown_menu">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/spinner_preset"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:completionThreshold="1"
+                        android:dropDownHeight="wrap_content"
+                        android:dropDownWidth="match_parent"
+                        android:tooltipText="Select a preset configuration to apply"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Calculation Section -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/calculation_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="8dp"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Data Input Fields -->
+                <TextView
+                    style="@style/InputLabel"
+                    android:text="Data size"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/InputFieldLayout"
+                    android:hint="Enter data size"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_error"
+                    app:endIconContentDescription="Məlumat ölçüsü üçün izah"
+                    app:endIconTint="@color/red">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_data_size"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:tooltipText="Buraya modelin işləyəcəyi məlumatların ümumi ölçüsünü daxil edin (MB və ya GB ilə)"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    style="@style/InputLabel"
+                    android:text="Correct answers"
+                    android:layout_marginTop="8dp"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/InputFieldLayout"
+                    android:hint="Enter correct answers"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_error"
+                    app:endIconContentDescription="Düzgün cavablar üçün izah"
+                    app:endIconTint="@color/red">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_correct_answers"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:tooltipText="Modelin düzgün cavab verdiyi sualların sayını daxil edin"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    style="@style/InputLabel"
+                    android:text="Total questions"
+                    android:layout_marginTop="8dp"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/InputFieldLayout"
+                    android:hint="Enter total questions"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_error"
+                    app:endIconContentDescription="Ümumi suallar üçün izah"
+                    app:endIconTint="@color/red">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_total_questions"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:tooltipText="Modelin test edildiyi ümumi sualların sayını daxil edin"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Advanced Inputs -->
+                <TextView
+                    style="@style/SectionHeader"
+                    android:text="Advanced Settings"
+                    android:layout_marginTop="16dp"/>
+
+                <TextView
+                    style="@style/InputLabel"
+                    android:text="GPU Memory (GB)"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/InputFieldLayout"
+                    android:hint="Enter GPU memory"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_error"
+                    app:endIconContentDescription="GPU yaddaşı üçün izah"
+                    app:endIconTint="@color/red">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_gpu_memory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:tooltipText="İstifadə etdiyiniz GPU-nun yaddaş həcmini GB ilə daxil edin (məsələn: 8, 16)"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    style="@style/InputLabel"
+                    android:text="Current Loss"
+                    android:layout_marginTop="8dp"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/InputFieldLayout"
+                    android:hint="Enter current loss"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_error"
+                    app:endIconContentDescription="Cari loss üçün izah"
+                    app:endIconTint="@color/red">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_current_loss"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:tooltipText="Modelin hazırkı loss dəyərini daxil edin (məsələn: 0.45)"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    style="@style/InputLabel"
+                    android:text="Validation Loss"
+                    android:layout_marginTop="8dp"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/InputFieldLayout"
+                    android:hint="Enter validation loss"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_error"
+                    app:endIconContentDescription="Validasiya loss üçün izah"
+                    app:endIconTint="@color/red">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_val_loss"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:tooltipText="Modelin validasiya loss dəyərini daxil edin"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    style="@style/InputLabel"
+                    android:text="PyTorch Method"
+                    android:layout_marginTop="8dp"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/InputFieldLayout"
+                    android:hint="Enter method name"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_error"
+                    app:endIconContentDescription="Metod adı üçün izah"
+                    app:endIconTint="@color/red">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_method_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:tooltipText="İstifadə etdiyiniz PyTorch metodunun adını daxil edin (məsələn: Adam, SGD)"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Results Section -->
+                <TextView
+                    style="@style/SectionHeader"
+                    android:text="Results"
+                    android:layout_marginTop="16dp"/>
+
+                <TextView
+                    android:id="@+id/tv_batch_size"
+                    style="@style/ResultText"
+                    android:text="Batch Size: -"/>
+
+                <TextView
+                    android:id="@+id/tv_loss"
+                    style="@style/ResultText"
+                    android:text="Loss: -"/>
+
+                <TextView
+                    android:id="@+id/tv_n_head"
+                    style="@style/ResultText"
+                    android:text="N Head: -"/>
+
+                <TextView
+                    android:id="@+id/tv_n_layer"
+                    style="@style/ResultText"
+                    android:text="N Layer: -"/>
+
+                <TextView
+                    android:id="@+id/tv_gpu_util"
+                    style="@style/ResultText"
+                    android:text="GPU Utilization: -"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tv_loss_analysis"
+                    style="@style/ResultText"
+                    android:text="Loss Analysis: -"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tv_gradient_status"
+                    style="@style/ResultText"
+                    android:text="Gradient Status: -"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tv_method_info"
+                    style="@style/ResultText"
+                    android:text="Method Info: -"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tv_n_emb"
+                    style="@style/ResultText"
+                    android:text="Embedding Dim: -"/>
+                <TextView
+                    android:id="@+id/tv_learning_rate"
+                    style="@style/ResultText"
+                    android:text="Learning Rate: -"/>
+                <TextView
+                    android:id="@+id/tv_dropout"
+                    style="@style/ResultText"
+                    android:text="Dropout: -"/>
+                <TextView
+                    android:id="@+id/tv_block_size"
+                    style="@style/ResultText"
+                    android:text="Block Size: -"/>
+                <TextView
+                    android:id="@+id/tv_grad_accum"
+                    style="@style/ResultText"
+                    android:text="Grad Accum Steps: -"/>
+                <TextView
+                    android:id="@+id/tv_max_iters"
+                    style="@style/ResultText"
+                    android:text="Max Iters: -"/>
+
+                <TextView
+                    android:id="@+id/tv_result"
+                    style="@style/ResultText.Verification"
+                    android:text="Results will appear here"
+                    android:layout_marginTop="8dp"/>
+
+                <!-- Calculation Buttons -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="16dp"
+                    android:weightSum="2">
+
+                    <Button
+                        android:id="@+id/btn_calculate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Calculate"
+                        android:layout_marginEnd="8dp"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+                    <Button
+                        android:id="@+id/btn_validate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Validate"
+                        style="@style/Widget.MaterialComponents.Button"/>
+                </LinearLayout>
+
+                <!-- Advanced Buttons -->
+                <Button
+                    android:id="@+id/btn_advanced_calc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Advanced Calculation"
+                    android:layout_marginTop="8dp"
+                    style="@style/Widget.MaterialComponents.Button"/>
+
+                <Button
+                    android:id="@+id/btn_method_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Get Method Info"
+                    android:layout_marginTop="8dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</ScrollView>

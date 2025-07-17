@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT-2 Modelinin Ətraflı və Dinamik İzahı</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            background-color: #fdfdfd;
+            color: #1a1a1a;
+            padding: 40px;
+            max-width: 960px;
+            margin: auto;
+        }
+
+        .formula {
+            background: #e3f2fd;
+            border-left: 6px solid #2196f3;
+            padding: 10px;
+            margin: 15px 0;
+            font-family: monospace;
+            color: black;
+        }
+        h1, h2, h3 {
+            color: #003366;
+        }
+        code {
+            background-color: #eef;
+            padding: 3px 6px;
+            border-radius: 4px;
+        }
+        .code {
+            font-family: Consolas, monospace;
+            background: #272822;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre {
+            background: #eee;
+            border-left: 5px solid #004d99;
+            padding: 10px;
+            overflow-x: auto;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        .section {
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+<h1>GPT-2 Modeli - Ətraflı və Dinamik İzah</h1>
+
+<div class="formula">
+    <h2>1. Ümumi Baxış</h2>
+    <p>
+        GPT-2 (Generative Pretrained Transformer 2) böyük miqyaslı bir dil modelidir və ardıcıl olaraq insan kimi mətn yarada bilir. Transformer arxitekturası əsasında qurulmuş bu model çoxsaylı dil və kontekst tapşırıqlarını yerinə yetirmək üçün öyrədilmişdir.
+    </p>
+</div>
+
+<div class="formula">
+    <h2>2. Tokenizasiya (BPE)</h2>
+    <p>
+        Model mətnləri birbaşa işləyə bilmir, ona görə də əvvəlcə bu mətn "tokenlərə" parçalanır. GPT-2 Byte Pair Encoding (BPE) metodundan istifadə edir:
+    </p>
+    <pre><code>Mətn: "Salam dünya"
+Tokenlər: ['Sala', 'm', ' ', 'dü', 'nya']</code></pre>
+    <p>
+        Daha sonra bu tokenlər token ID-lərinə çevrilir:
+    </p>
+    <pre><code>Token IDs: [356, 210, 32, 6701, 3982]</code></pre>
+</div>
+
+<div class="formula">
+    <h2>3. Embedding və Pozisional Məlumat</h2>
+    <p>
+        Token ID-lər vektorlara (embeddinglərə) çevrilir. Bu vektorlara ardıcıllığı qorumaq üçün pozisional embedding əlavə olunur:
+    </p>
+    <pre><code>input_embedding + position_embedding → final_input</code></pre>
+</div>
+
+<div class="formula">
+    <h2>4. Transformer Blokları</h2>
+    <p>GPT-2 bir neçə eyni strukturlu transformer blokundan ibarətdir. Hər blok aşağıdakı hissələrdən ibarətdir:</p>
+    <ul>
+        <li><strong>Masked Self-Attention:</strong> Model yalnız əvvəlki tokenlərə baxaraq növbəti sözü proqnozlaşdırır.</li>
+        <li><strong>Layer Normalization:</strong> Hər qatın çıxışını stabilləşdirir.</li>
+        <li><strong>Feedforward Şəbəkə:</strong> Hər mövqedəki vektoru daha kompleks formada emal edir.</li>
+        <li><strong>Residual Connection:</strong> Giriş və çıxış arasında əlaqəni qoruyur.</li>
+    </ul>
+    <p>Bu proses qatlar boyu təkrarlanır:</p>
+    <pre><code>input → [Multi-head attention → Add & Norm → Feedforward → Add & Norm] × n_layers</code></pre>
+</div>
+
+<div class="formula">
+    <h2>5. Linear və Softmax Qatları</h2>
+    <p>
+        Sonuncu transformer blokundan çıxan nəticə <code>Linear</code> qatına verilir və nəticədə <code>Softmax</code> ilə ehtimal paylanması alınır:
+    </p>
+    <pre><code>Linear → Softmax → Ehtimallar → Ən yüksək ehtimallı token</code></pre>
+    <p>
+        Məsələn:
+    </p>
+    <pre><code>Giriş: "Salam, necəsən?"
+Çıxış: "Salam, necəsən? Mən yaxşıyam, sən?"</code></pre>
+</div>
+
+<div class="formula">
+    <h2>6. Arxitektur Parametrləri</h2>
+    <ul>
+        <li><code>n_embd:</code> Embedding ölçüsü. (məsələn: 768)</li>
+        <li><code>n_layer:</code> Transformer qatlarının sayı (məs: 12)</li>
+        <li><code>n_head:</code> Attention başlarının sayı (məs: 12)</li>
+        <li><code>block_size:</code> Maksimum kontekst uzunluğu (məs: 1024 token)</li>
+    </ul>
+</div>
+
+<div class="formula">
+    <h2>7. Təlim və İstifadə</h2>
+    <p>
+        Model əvvəlcədən böyük korpus üzərində təlim görür (pretraining). Daha sonra spesifik tapşırıqlara uyğunlaşdırıla bilər (fine-tuning).
+    </p>
+    <ul>
+        <li>Çoxdilli təlim (Azərbaycan dili də daxil olmaqla)</li>
+        <li>Domain-spesifik məlumatlarla fine-tune</li>
+        <li>Chatbotlar, tərcümə, kod generasiya və s.</li>
+    </ul>
+</div>
+
+<div class="formula">
+    <h2>8. Nəticə</h2>
+    <p>
+        GPT-2 modeli dilin statistik strukturlarını öyrənərək, mətn yaratma və tamamlamada yüksək performans göstərir. Öz tokenizeriniz və təmizlənmiş Azərbaycan dilində verilmiş məlumatlarla bu modelin öz versiyanızı öyrədə bilərsiniz.
+    </p>
+</div>
+
+<h2>📌Tam Kod</h2>
+
+<pre class="formula"><code class="formula">
+
+        import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import math
+
+# GPT-2 modelində rotary positional embedding istifadə etmək üçün yardımçı funksiya
+def apply_rotary_pos_emb(q, k, sin, cos):
+    # Rotary əməliyyatı: sin və cos vektorları ilə dot məhsulunun təhrif olunması
+    q_embed = (q * cos) + (rotate_half(q) * sin)
+    k_embed = (k * cos) + (rotate_half(k) * sin)
+    return q_embed, k_embed
+
+# Vektorun yarısını döndərmək üçün yardımçı funksiya
+def rotate_half(x):
+    x1, x2 = x.chunk(2, dim=-1)
+    return torch.cat([-x2, x1], dim=-1)
+
+# Rotary sinus və kosinus vektorlarını hesablamaq üçün
+def get_rotary_embedding(seq_len, dim, device):
+    # Burada logaritmik şəkildə artan tezliklər yaradılır
+    theta = 10000 ** (-torch.arange(0, dim, 2, dtype=torch.float32) / dim)
+    position = torch.arange(seq_len, dtype=torch.float32).unsqueeze(1)
+    freqs = position * theta.unsqueeze(0)
+    sin, cos = torch.sin(freqs), torch.cos(freqs)
+    return sin.to(device), cos.to(device)
+
+# Causal (masked) self-attention bloku
+class CausalSelfAttention(nn.Module):
+    def __init__(self, config):
+        super().__init__()
+        assert config.n_embd % config.n_head == 0
+        self.n_head = config.n_head
+        self.head_dim = config.n_embd // config.n_head
+
+        # QKV (Query, Key, Value) üçün vahid Linear qat
+        self.qkv_proj = nn.Linear(config.n_embd, 3 * config.n_embd)
+        self.out_proj = nn.Linear(config.n_embd, config.n_embd)
+
+        # FlashAttention varsa, onu istifadə et
+        self.use_flash = hasattr(torch.nn.functional, 'scaled_dot_product_attention')
+        self.attn_dropout = nn.Dropout(config.attn_dropout)
+        self.resid_dropout = nn.Dropout(config.resid_dropout)
+
+        # Causal mask (yəni gələcək tokenlərə baxmamaq)
+        self.register_buffer("mask", torch.tril(torch.ones(config.block_size, config.block_size))
+                                        .view(1, 1, config.block_size, config.block_size))
+
+    def forward(self, x, sin, cos):
+        B, T, C = x.size()
+
+        # Q, K, V tensorlarını ayır
+        qkv = self.qkv_proj(x)  # [B, T, 3 * C]
+        qkv = qkv.view(B, T, self.n_head, 3 * self.head_dim).transpose(1, 2)
+        q, k, v = qkv.chunk(3, dim=-1)  # Hər biri [B, n_head, T, head_dim]
+
+        # Rotary positional embedding tətbiqi
+        q, k = apply_rotary_pos_emb(q, k, sin[:, :T, :], cos[:, :T, :])
+
+        if self.use_flash:
+            # FlashAttention (native PyTorch sürətli versiyası)
+            y = F.scaled_dot_product_attention(q, k, v, is_causal=True)
+        else:
+            # Klassik scaled dot-product attention
+            att = (q @ k.transpose(-2, -1)) / math.sqrt(self.head_dim)
+            att = att.masked_fill(self.mask[:, :, :T, :T] == 0, float('-inf'))
+            att = F.softmax(att, dim=-1)
+            att = self.attn_dropout(att)
+            y = att @ v
+
+        # Nəticəni yenidən birləşdir və çıxışa yönləndir
+        y = y.transpose(1, 2).contiguous().view(B, T, C)
+        y = self.resid_dropout(self.out_proj(y))
+        return y
+
+# Transformer blokunun əsas hissəsi
+class TransformerBlock(nn.Module):
+    def __init__(self, config):
+        super().__init__()
+        self.ln1 = nn.LayerNorm(config.n_embd)
+        self.attn = CausalSelfAttention(config)
+        self.ln2 = nn.LayerNorm(config.n_embd)
+        self.ff = nn.Sequential(
+            nn.Linear(config.n_embd, 4 * config.n_embd),
+            nn.GELU(),
+            nn.Linear(4 * config.n_embd, config.n_embd),
+            nn.Dropout(config.resid_dropout),
+        )
+
+    def forward(self, x, sin, cos):
+        x = x + self.attn(self.ln1(x), sin, cos)  # Residual connection
+        x = x + self.ff(self.ln2(x))
+        return x
+
+# GPT-2 modelinin əsas sinfi
+class GPT2Model(nn.Module):
+    def __init__(self, config):
+        super().__init__()
+        self.config = config
+
+        # Token və mövqe embeddingləri
+        self.token_embedding = nn.Embedding(config.vocab_size, config.n_embd)
+        self.pos_embedding = None  # Artıq rotary embedding istifadə edəcəyik
+
+        # Model qatları
+        self.blocks = nn.ModuleList([
+            TransformerBlock(config) for _ in range(config.n_layer)
+        ])
+        self.ln_f = nn.LayerNorm(config.n_embd)
+
+        # Çıxış qatını tokenlərlə paylaşırıq
+        self.head = nn.Linear(config.n_embd, config.vocab_size, bias=False)
+        self.head.weight = self.token_embedding.weight
+
+        self.dropout = nn.Dropout(config.embd_dropout)
+
+    def forward(self, idx):
+        B, T = idx.shape
+        device = idx.device
+
+        # Tokenləri embedding vektorlarına çevir
+        tok_emb = self.token_embedding(idx)  # [B, T, C]
+        x = self.dropout(tok_emb)
+
+        # Rotary pozisional embeddinglər
+        sin, cos = get_rotary_embedding(self.config.block_size, self.config.n_embd, device)
+        sin = sin.unsqueeze(0)  # [1, T, D]
+        cos = cos.unsqueeze(0)
+
+        # Bütün transformer bloklarından keç
+        for block in self.blocks:
+            x = block(x, sin, cos)
+
+        # Final normalization və çıxış
+        x = self.ln_f(x)
+        logits = self.head(x)  # [B, T, vocab_size]
+        return logits
+
+    # Yeni mətn yaratmaq üçün generate funksiyası
+    def generate(self, idx, max_new_tokens, temperature=1.0, top_k=None, repetition_penalty=1.0):
+        for _ in range(max_new_tokens):
+            idx_cond = idx[:, -self.config.block_size:]
+            logits = self(idx_cond)
+
+            logits = logits[:, -1, :] / temperature
+
+            # Təkrar sözləri azaldan cəza
+            if repetition_penalty != 1.0:
+                for i in range(logits.size(0)):
+                    for token_id in set(idx[i].tolist()):
+                        logits[i, token_id] /= repetition_penalty
+
+            # top-k sampling
+            if top_k is not None:
+                values, _ = torch.topk(logits, top_k)
+                min_val = values[:, -1].unsqueeze(1)
+                logits[logits < min_val] = -float('Inf')
+
+            probs = F.softmax(logits, dim=-1)
+            next_token = torch.multinomial(probs, num_samples=1)
+            idx = torch.cat((idx, next_token), dim=1)
+
+        return idx
+
+</code></pre>
+
+
+
+
+</body>
+</html>
