@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>Tokenizer Normalizer İzahı</title>
+    <style>
+        body {
+          font-family: "Fira Code", Consolas, monospace;
+          background-color: #f4f7fa;
+          color: #1e293b;
+          padding: 2rem;
+          line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+          color: #0f172a;
+          border-bottom: 2px solid #38bdf8;
+          padding-bottom: 0.3rem;
+        }
+
+        code {
+          background-color: #e2e8f0;
+          color: #0f172a;
+          padding: 0.2rem 0.5rem;
+          border-radius: 4px;
+          font-size: 0.95rem;
+        }
+
+        pre {
+          background-color: #0f172a;
+          color: #e0f2fe;
+          padding: 1rem;
+          border-radius: 6px;
+          overflow-x: auto;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .block {
+          background: #f8fafc;
+          border-left: 4px solid #0ea5e9;
+          padding: 1rem;
+          margin-bottom: 1.5rem;
+          border-radius: 4px;
+          transition: transform 0.2s ease;
+        }
+
+        .block:hover {
+          transform: scale(1.01);
+          box-shadow: 0 4px 12px rgba(14,165,233,0.2);
+        }
+
+        .title {
+          font-size: 1.1rem;
+          font-weight: bold;
+          color: #0369a1;
+          margin-bottom: 0.5rem;
+        }
+
+        .desc {
+          margin-left: 1rem;
+          font-size: 0.95rem;
+        }
+
+        .comment {
+          color: #94a3b8;
+          font-style: italic;
+        }
+
+        ul {
+          margin-top: 1rem;
+          margin-left: 2rem;
+        }
+
+        li {
+          margin-bottom: 0.5rem;
+        }
+
+        .highlight {
+          background-color: #e0f2fe;
+          color: #0369a1;
+          padding: 0.1rem 0.4rem;
+          border-radius: 3px;
+          font-weight: bold;
+        }
+
+        .code {
+          color: #bae6fd;
+        }
+    </style>
+
+</head>
+<body>
+
+<h2>Tokenizer Normalization Addımları – İzahı</h2>
+
+<pre>
+<span class="highlight">self.tokenizer.normalizer = normalizers.Sequence([</span>
+    <span class="comment"># 1. Unicode decomposition (diakritikləri ayırmaq üçün)</span>
+    NFD(),
+
+    <span class="comment"># 2. Riyazi və simvolik elementləri xüsusi token formatına salmaq</span>
+    normalizers.Replace(Regex(r"²"), "&lt;MATH&gt;²&lt;/MATH&gt;"),
+    normalizers.Replace(Regex(r"𝑓"), "f"),
+    normalizers.Replace(Regex(r"𝑥"), "x"),
+    normalizers.Replace(Regex(r"𝑦"), "y"),
+    normalizers.Replace(Regex(r"√"), "&lt;MATH&gt;√&lt;/MATH&gt;"),
+    normalizers.Replace(Regex(r"∀"), "&lt;MATH&gt;∀&lt;/MATH&gt;"),
+    normalizers.Replace(Regex(r"∈"), "&lt;MATH&gt;∈&lt;/MATH&gt;"),
+    normalizers.Replace(Regex(r"ℝ"), "&lt;MATH&gt;ℝ&lt;/MATH&gt;"),
+
+    <span class="comment"># 3. Qeyri-standart dırnaq və tırnaqları normal dırnaq işarələri ilə əvəz etmək</span>
+    normalizers.Replace(Regex(r"[《》«»]"), '"'),
+    normalizers.Replace(Regex(r"[“”„‟]"), '"'),
+    normalizers.Replace(Regex(r"[‘’‚‛]"), "'"),
+
+    <span class="comment"># 4. Müəlliflik simvolunu qorumaq üçün xüsusi format</span>
+    normalizers.Replace(Regex(r"©"), "&lt;SYMBOL&gt;©&lt;/SYMBOL&gt;"),
+
+    <span class="comment"># 5. İcazə verilənlərdən başqa hər şeyi silmək (emoji, hərflər, simvollar qalır)</span>
+    normalizers.Replace(
+        Regex(r"[^\wəöüğıçşƏÖÜĞIÇŞ\-.,!?@#₼$%:;'(){}<>=+*/\\&|^~`\\s😀-🙏🌀-🗿]"), ""
+    ),
+
+    <span class="comment"># 6. Artıq boşluqları tək boşluqla əvəz et</span>
+    normalizers.Replace(Regex(r"\s+"), " "),
+
+    <span class="comment"># 7. Bütün mətni kiçik hərflərə çevir</span>
+    Lowercase(),
+
+    <span class="comment"># 8. Yenidən birləşdirilmiş Unicode forması (çap uyğunluğu üçün)</span>
+    NFC()
+<span class="highlight">])</span>
+</pre>
+
+<pre class="highlight">
+<span class="comment"># Normalization ardıcıllığı təyin olunur:</span>
+self.tokenizer.normalizer = normalizers.Sequence([
+
+    <span class="comment">NFD(),</span>
+    <span class="comment"># Unicode Normal Form D: tərkibindəki diakritikləri ayırır (məs: "é" → "e" + " ́")</span>
+
+    <span class="comment">normalizers.Replace(Regex(r"²"), "&lt;MATH&gt;²&lt;/MATH&gt;"),</span>
+    <span class="comment"># "²" işarəsini matematik kimi tag-layır</span>
+
+    <span class="comment">normalizers.Replace(Regex(r"𝑓"), "f"),</span>
+    <span class="comment"># Unicode "math italic f" → normal "f"</span>
+
+    <span class="comment">normalizers.Replace(Regex(r"𝑥"), "x"),</span>
+    <span class="comment">normalizers.Replace(Regex(r"𝑦"), "y"),</span>
+    <span class="comment"># Eyni qayda ilə "𝑥", "𝑦" → normal x və y</span>
+
+    <span class="comment">normalizers.Replace(Regex(r"√"), "&lt;MATH&gt;√&lt;/MATH&gt;"),</span>
+    <span class="comment">normalizers.Replace(Regex(r"∀"), "&lt;MATH&gt;∀&lt;/MATH&gt;"),</span>
+    <span class="comment">normalizers.Replace(Regex(r"∈"), "&lt;MATH&gt;∈&lt;/MATH&gt;"),</span>
+    <span class="comment">normalizers.Replace(Regex(r"ℝ"), "&lt;MATH&gt;ℝ&lt;/MATH&gt;"),</span>
+    <span class="comment"># Bütün bu riyazi simvolları qoruyub saxlayır və "&lt;MATH&gt;" tag-larına alır</span>
+
+    <span class="comment">normalizers.Replace(Regex(r"[《》«»]"), "\""),</span>
+    <span class="comment"># Çin/Rus tipli dırnaqları standart dırnağa çevirir</span>
+
+    <span class="comment">normalizers.Replace(Regex(r"[“”„‟]"), "\""),</span>
+    <span class="comment">normalizers.Replace(Regex(r"[‘’‚‛]"), "'"),</span>
+    <span class="comment"># Müxtəlif dırnaq variantlarını normal formaya salır</span>
+
+    <span class="comment">normalizers.Replace(Regex(r"©"), "&lt;SYMBOL&gt;©&lt;/SYMBOL&gt;"),</span>
+    <span class="comment"># © simvolunu xüsusi SYMBOL tag-ına alır</span>
+
+    <span class="comment">normalizers.Replace(Regex(r"[^\wəöüğıçşƏÖÜĞIÇŞ\-.,!?@#₼$%:;'(){}<>=+*/\\&|^~`\s😀-🙏🌀-🗿]"), ""),</span>
+    <span class="comment"># Azərbaycan dilində və emoji/simvollarda olmayan xarici simvolları silir</span>
+
+    <span class="comment">normalizers.Replace(Regex(r"\s+"), " "),</span>
+    <span class="comment"># Birdən çox boşluq → tək boşluğa çevrilir</span>
+
+    <span class="comment">Lowercase(),</span>
+    <span class="comment"># Hamısını kiçik hərfə çevirir (sən istəmirsənsə, bunu çıxara bilərsən)</span>
+
+    <span class="comment">NFC()</span>
+    <span class="comment"># Unicode Normal Form C: diakritikləri və hərfləri birləşdirir (ə → ə)</span>
+
+])
+</pre>
+
+<p>
+    Bu `normalizer` sekansı Azərbaycan dili üçün <strong>matematik simvolları qoruyur</strong>,
+    <strong>Unicode uyğunsuzluqları düzəldir</strong>,
+    <strong>emoji və texniki elementləri saxlayır</strong>,
+    <strong>lazımsız simvolları təmizləyir</strong> və
+    <strong>boşluqları düzəldir</strong>.
+</p>
+
+<h2>🧩 Tokenizer Pre-Tokenizer Addımları – İzahı</h2>
+
+<pre>
+<span class="title">self.tokenizer.pre_tokenizer = pre_tokenizers.Sequence([</span>
+
+    <span class="comment"># 1. Riyazi blokları ayrıca token kimi tanı (isolated):</span>
+    Split(Regex(r"(<MATH>.*?</MATH>)"), behavior="isolated"),
+
+    <span class="comment"># 2. Simvol bloklarını ayrıca token kimi tanı:</span>
+    Split(Regex(r"(<SYMBOL>.*?</SYMBOL>)"), behavior="isolated"),
+
+    <span class="comment"># 3. Məşhur emoji (❤️‍🔥) ayrıca saxlanılsın:</span>
+    Split(Regex(r"(❤️‍🔥)"), behavior="isolated"),
+
+    <span class="comment"># 4. İstifadəçi adları (mentionlar) üçün regex: @istifadeci</span>
+    Split(Regex(r"(@[\wəöüğıçş]+)"), behavior="isolated"),
+
+    <span class="comment"># 5. Hashtag-lər üçün regex: #etiket</span>
+    Split(Regex(r"(#[\wəöüğıçş]+)"), behavior="isolated"),
+
+    <span class="comment"># 6. URL-lər: http:// və ya www. ilə başlayan:</span>
+    Split(Regex(r"(https?://\\S+|www\\.\\S+)"), behavior="isolated"),
+
+    <span class="comment"># 7. Telefon nömrələri: beynəlxalq format +994, boşluq və tire dəstəyi ilə</span>
+    Split(Regex(r"(\\+\\d{1,4}[\\s\\-]?\\(?\\d{1,4}\\)?[\\s\\-]?\\d{1,4}[\\s\\-]?\\d{1,4}[\\s\\-]?\\d{1,4})"),
+          behavior="isolated"),
+
+    <span class="comment"># 8. Python funksiyaları üçün: def funksiya_adi():</span>
+    Split(Regex(r"(def\\s+\\w+\\s*\\(.*\\):)"), behavior="isolated"),
+
+    <span class="comment"># 9. HTML və XML tag-ları:</span>
+    Split(Regex(r"(&lt;\\w+.*?&gt;)"), behavior="isolated"),
+
+    <span class="comment"># 10. Kompozit sözlər (ikili və üçlü birləşmələr):</span>
+    Split(Regex(r"([a-zəöüğıçş]+-[a-zəöüğıçş]+(?:-[a-zəöüğıçş]+)*)"), behavior="merged_with_next"),
+
+    <span class="comment"># 11. Rəqəmlər: 1,000.25 və faiz işarələri daxil olmaqla</span>
+    Split(Regex(r"(\\d{1,3}(?:,\\d{3})*(?:\\.\\d+)?%?)"), behavior="isolated"),
+
+    <span class="comment"># 12. Saat və zaman formatları: 12:45 və ya 09.30 kimi</span>
+    Split(Regex(r"(\\d{1,2}[:.]\\d{2})"), behavior="isolated"),
+
+    <span class="comment"># 13. Tarix formatı: 2025-07-23 kimi</span>
+    Split(Regex(r"(\\d{4}-\\d{2}-\\d{2})"), behavior="isolated"),
+
+    <span class="comment"># 14. Boşluqlara görə ayır (ən sadə bölücü)</span>
+    Whitespace(),
+
+    <span class="comment"># 15. Nöqtə, vergül, nida və digər punktuasiyalar ayrılsın</span>
+    Punctuation(behavior='isolated'),
+
+    <span class="comment"># 16. Rəqəmlər bütöv saxlanılsın (individual_digits=False)</span>
+    Digits(individual_digits=False)
+
+<span class="title">])</span>
+</pre>
+
+<h3>📌 Qısa izahat:</h3>
+<ul>
+    <li><strong>Split:</strong> Regex əsasında parçalama əməliyyatıdır.</li>
+    <li><strong>behavior="isolated":</strong> uyğun gələn hissəni ayrıca token kimi saxlayır.</li>
+    <li><strong>behavior="merged_with_next":</strong> uyğun gələn hissəni sonrakı tokenlə birləşdirir (məs. birləşik sözlər üçün).</li>
+    <li><strong>Whitespace, Punctuation, Digits:</strong> hazır pre-tokenizer komponentləridir – mətnin klassik bölünməsini təmin edir.</li>
+</ul>
+
+
+
+<p>Bu hissə modelə daxil olan mətnin necə parçalanacağını təyin edir. Yəni əvvəlcədən hansı strukturların necə <code>token</code>-ə çevriləcəyini müəyyən edir.</p>
+
+<div class="block">
+    <div class="title">Split(Regex(r"(&lt;MATH&gt;.*?&lt;/MATH&gt;)"), behavior="isolated")</div>
+    <p class="desc">Riyazi blokları (&lt;MATH&gt;...&lt;/MATH&gt;) tam şəkildə saxlayır. Məsələn, <code>&lt;MATH&gt;√𝑥²&lt;/MATH&gt;</code> bir token olur.</p>
+</div>
+
+<div class="block">
+    <div class="title">Split(Regex(r"(&lt;SYMBOL&gt;.*?&lt;/SYMBOL&gt;)"), behavior="isolated")</div>
+    <p class="desc">Simvol etiketi olan hissələri ayrıca saxlayır. Məsələn, <code>&lt;SYMBOL&gt;©&lt;/SYMBOL&gt;</code> kimi.</p>
+</div>
+
+<div class="block">
+    <div class="title">Split(Regex(r"(❤️‍🔥)"), behavior="isolated")</div>
+    <p class="desc">Spesifik emoji ardıcıllığını tam saxlayır. Bu emoji 3 fərqli kodpoint-dən ibarətdir, bir token kimi qorunur.</p>
+</div>
+
+<div class="block">
+    <div class="title">Split(Regex(r"(@[\wəöüğıçş]+)"), behavior="isolated")</div>
+    <p class="desc">@istifadeci şəklində mention-ları ayrıca saxlayır (məsələn: @ali_123).</p>
+</div>
+
+<div class="block">
+    <div class="title">Split(Regex(r"(#[\wəöüğıçş]+)"), behavior="isolated")</div>
+    <p class="desc">Hashtag-ları ayrıca saxlayır (məsələn: #asanxidmət).</p>
+</div>
+
+<div class="block">
+    <div class="title">Split(Regex(r"(https?://\\S+|www\\.\\S+)"), behavior="isolated")</div>
+    <p class="desc">URL-ləri tək token kimi saxlayır (məs: <code>https://asan.gov.az</code>).</p>
+</div>
+
+<div class="block">
+    <div class="title">Telefon nömrəsi regex</div>
+    <p class="desc">+994 50 123 45 67 formatlı nömrələri tanıyır və saxlayır.</p>
+</div>
+
+<div class="block">
+    <div class="title">Python kod blokları</div>
+    <p class="desc"><code>def my_function(param):</code> kimi blokları ayrıca saxlayır — proqramlaşdırma kodları üçün vacibdir.</p>
+</div>
+
+<div class="block">
+    <div class="title">HTML/XML tag-larını saxlayır</div>
+    <p class="desc"><code>&lt;div&gt;</code> və ya <code>&lt;a href=""&gt;</code> kimi tag-ları bir token kimi saxlayır.</p>
+</div>
+
+<div class="block">
+    <div class="title">Birləşik sözləri: Split(..., behavior="merged_with_next")</div>
+    <p class="desc">Məsələn: <code>Azərbaycan-Ermənistan-Türkiyə</code> sözünü tam saxlayır, parçalamır.</p>
+</div>
+
+<div class="block">
+    <div class="title">Rəqəmlər və faiz: 1,000.50 və ya 100%</div>
+    <p class="desc">Maliyyə və statistika cümlələri üçün vacibdir. Parçalanmadan saxlanılır.</p>
+</div>
+
+<div class="block">
+    <div class="title">Saat formatları</div>
+    <p class="desc"><code>13:45</code> və ya <code>09.30</code> zaman ifadələri bir token olur.</p>
+</div>
+
+<div class="block">
+    <div class="title">Tarix formatı</div>
+    <p class="desc">YYYY-MM-DD (məs: 2025-07-23) tarixləri ayrıca token olur.</p>
+</div>
+
+<div class="block">
+    <div class="title">Whitespace()</div>
+    <p class="desc">Boşluqlara əsaslanaraq sözləri ayırır. Ən klassik tokenization addımıdır.</p>
+</div>
+
+<div class="block">
+    <div class="title">Punctuation(behavior='isolated')</div>
+    <p class="desc">Nöqtə, vergül, nida, sual işarəsi və s. ayrıca saxlanılır. Məsələn: <code>Salam!</code> → ["Salam", "!"]</p>
+</div>
+
+<div class="block">
+    <div class="title">Digits(individual_digits=False)</div>
+    <p class="desc">Rəqəmləri bütöv saxlayır. <code>12345</code> → ["12345"] (hər rəqəm ayrıca deyil)</p>
+</div>
+
+</body>
+</html>

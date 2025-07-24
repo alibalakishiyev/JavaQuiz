@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>model.generate() funksiyasının parametrləri - Ətraflı izah</title>
+    <style>
+        body {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          max-width: 900px;
+          margin: 40px auto;
+          background: #f5f7fa;
+          color: #222;
+          line-height: 1.6;
+          padding: 0 20px;
+        }
+        h1 {
+          text-align: center;
+          color: #0b3d91;
+          margin-bottom: 40px;
+        }
+        h2 {
+          color: #1052a0;
+          margin-top: 30px;
+          border-bottom: 2px solid #1052a0;
+          padding-bottom: 6px;
+        }
+        p {
+          font-size: 16px;
+          margin: 10px 0 20px 0;
+        }
+        ul {
+          margin-left: 20px;
+          margin-bottom: 30px;
+        }
+        li {
+          margin-bottom: 15px;
+          font-size: 15px;
+        }
+        code {
+          background-color: #e2e8f0;
+          padding: 2px 6px;
+          border-radius: 5px;
+          font-family: Consolas, monospace;
+          color: #b33030;
+        }
+        pre {
+          background-color: #e9f0f8;
+          padding: 15px;
+          border-radius: 8px;
+          overflow-x: auto;
+          font-family: Consolas, monospace;
+          font-size: 14px;
+          line-height: 1.4;
+          color: #4b4b4b;
+          margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Python <code>model.generate()</code> funksiyasının parametrləri</h1>
+
+<p>Aşağıdakı Python kod nümunəsində istifadə olunan <code>model.generate()</code> funksiyasının parametrlərinin geniş və detallı izahını təqdim edirəm:</p>
+
+<pre><code>output_ids = model.generate(
+    input_ids=input_ids,
+    max_new_tokens=50,
+    temperature=0.6,
+    top_k=5,
+    top_p=0.85,
+    repetition_penalty=1.1,
+    do_sample=True
+)</code></pre>
+
+<h2>1. <code>input_ids=input_ids</code></h2>
+<p>
+    Modelə giriş olaraq token şəklində verilən məlumatdır. İstifadəçinin daxil etdiyi mətn əvvəlcə tokenizer vasitəsilə ədədlərə (token ID-lərə) çevrilir və bu <code>input_ids</code> kimi modelə ötürülür. Model bu tokenlərə baxaraq gələcək tokenləri yaradır.
+</p>
+
+<h2>2. <code>max_new_tokens=50</code></h2>
+<p>
+    Modelin girişdən sonra ən çox əlavə olaraq neçə yeni token (söz parçası) yaradacağını müəyyən edir. Burada <code>50</code> dəyəri o deməkdir ki, model maksimum 50 tokenlik yeni mətn istehsal edəcək. Bu, çıxışın uzunluğunu idarə etmək üçün çox vacibdir.
+</p>
+<ul>
+    <li>Əgər çox kiçik olsa, cavab çox qısa ola bilər.</li>
+    <li>Çox böyük olsa, çıxış çox uzun və bəzən əlaqəsiz ola bilər.</li>
+</ul>
+
+<h2>3. <code>temperature=0.6</code></h2>
+<p>
+    Temperatur modelin çıxışının təsadüfilik və müxtəlifliyini idarə edən parametrdir. Bu dəyər "yumşalma" və ya "sərtləşmə" funksiyasını tənzimləyir:
+</p>
+<ul>
+    <li><strong>Kiçik temperatur (<code>0.1-0.6</code>):</strong> Model çox daha deterministik davranır, ən ehtimallı tokenləri seçir, nəticə sabit, məntiqi və az müxtəlif olur.</li>
+    <li><strong>Yüksək temperatur (1.0 və daha çox):</strong> Model daha çox "risk" götürür, daha təsadüfi tokenlər seçir, yaradıcı və bəzən gözlənilməz cavablar verir.</li>
+</ul>
+<p><em>Burada <code>0.6</code> orta səviyyədə balans yaradaraq həm məntiqli, həm də kifayət qədər yaradıcı nəticələr əldə etməyə imkan verir.</em></p>
+
+<h2>4. <code>top_k=5</code></h2>
+<p>
+    Top-k sampling (nümunə götürmə) modeli hər seçim addımında ən çox ehtimala malik <code>k</code> tokeni saxlayır, qalanlarını kəsir. Yəni model yalnız ən güclü <code>5</code> ehtimalı olan tokenlərdən seçir.
+</p>
+<ul>
+    <li>Bu yanaşma modelin çıxışını məntiqi və fokuslanmış edir, amma çox sərt ola bilər.</li>
+    <li>Kiçik <code>k</code> daha dar seçim sahəsi deməkdir, çox kiçik karsa model təkrarlara daha meylli ola bilər.</li>
+</ul>
+
+<h2>5. <code>top_p=0.85</code> (nümunə götürmə üçün nucleus sampling)</h2>
+<p>
+    Top-p sampling, yəni nucleus sampling, modelin token ehtimallarını sıralayır və ən yuxarı tokenlərdən ibarət yığımı seçir ki, onların cəmi ən azı <code>p</code> (burada 0.85, yəni 85%) olsun.
+</p>
+<ul>
+    <li>Bu, top-k-dən fərqli olaraq daha çevikdir: ehtimalları çox fərqli olan tokenlərin sayı dəyişə bilər.</li>
+    <li>Top-p, ehtimalları çox aşağı olan tokenləri çıxarır, amma yüksək ehtimallı tokenlərin çoxluğunu saxlayır.</li>
+</ul>
+<p><em>Bu parametr <code>top_k</code> ilə birlikdə istifadə olunursa, həm fokuslanmış, həm də kifayət qədər müxtəlif seçim əldə edilir.</em></p>
+
+<h2>6. <code>repetition_penalty=1.1</code></h2>
+<p>
+    Təkrar cəzası (repetition penalty) eyni tokenlərin təkrar-təkrar yaranmasının qarşısını almaq üçün istifadə olunur.
+</p>
+<ul>
+    <li><code>1.0</code> dəyəri yoxdur, yəni heç bir cəza tətbiq edilmir.</li>
+    <li><code>1.1</code> kiçik təkrar cəzadır, yəni model bir tokeni təkrar seçəndə həmin tokenin ehtimalı azaldılır.</li>
+    <li>Bu cəza təkrarlanan və monoton çıxışların qarşısını almağa kömək edir.</li>
+</ul>
+
+<h2>7. <code>do_sample=True</code></h2>
+<p>
+    Sampling rejimini aktivləşdirir. Əgər <code>False</code> olsa, model hər zaman ən ehtimallı tokeni seçəcək (deterministik davranış). Əgər <code>True</code> olsa, model ehtimallara əsasən təsadüfi token seçir.
+</p>
+<ul>
+    <li><strong>Sampling= False</strong>: Daha təkrarlanan, amma sabit çıxış.</li>
+    <li><strong>Sampling= True</strong>: Daha yaradıcı, müxtəlif, təsadüfi çıxış.</li>
+</ul>
+
+<h2>Əlavə məqamlar</h2>
+<p>
+    - Bu parametrlərin birgə təsiri modelin çıxışını balanslaşdırır.
+    - Məsələn, çox aşağı <code>temperature</code> + <code>do_sample=False</code> modeli "sıxır", hər zaman eyni nəticəni verir.
+    - <code>top_k</code> və <code>top_p</code> sampling ilə birgə istifadə olunan <code>do_sample=True</code> modellərin çıxışında müxtəliflik və kreativlik artır.
+    - <code>repetition_penalty</code> isə uzun mətndə təkrarların qarşısını almağa yardım edir.
+</p>
+
+<h2>Qısa Xülasə</h2>
+<p>
+    Bu parametrlərlə modelə "məntiqi və eyni zamanda yaradıcı, təkrarlardan uzaq" cavablar verməsi üçün zəmin hazırlanır. İstədiyiniz çıxış xarakterinə uyğun parametrləri dəyişərək test edə bilərsiniz.
+</p>
+
+</body>
+</html>

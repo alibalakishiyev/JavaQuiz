@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>Self-Attention İzahı</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 30px;
+            max-width: 900px;
+            margin: auto;
+        }
+        h2 {
+            color: #4b0082;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-left: 3px solid #4b0082;
+            overflow-x: auto;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #888;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #ddd;
+        }
+        code {
+            color: #c7254e;
+            background-color: #f9f2f4;
+            padding: 2px 4px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>🧠 1. Self-Attention nədir və nə iş görür?</h2>
+<p>Self-Attention Transformer modelində hər bir sözün digər sözlərlə <strong>nə qədər əlaqəli olduğunu</strong> hesablamaq üçün istifadə olunur.</p>
+<p>Yəni hər söz digər bütün sözlərə “baxır” və özü üçün hansılarının <strong>daha vacib olduğunu</strong> tapır.</p>
+
+<h2>💡 Misal:</h2>
+<p><code>“Məryəm kitab oxuyur çünki o sevir.”</code> — burada “o” sözü “Məryəm”i nəzərdə tutur.</p>
+<p>Model bunu Self-Attention vasitəsilə anlaya bilər.</p>
+
+<h2>🔬 2. Riyazi Formul</h2>
+<p>Self-Attention formul aşağıdakı kimidir:</p>
+<p>
+    $$
+    \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+    $$
+</p>
+
+<table>
+    <tr><th>Simvol</th><th>Açıqlama</th></tr>
+    <tr><td><strong>Q (Query)</strong></td><td>Hədəf sözün sorğusu (nəyə baxmaq istəyir)</td></tr>
+    <tr><td><strong>K (Key)</strong></td><td>Digər sözlərin tanıdıcıları (baxılacaq sözlər)</td></tr>
+    <tr><td><strong>V (Value)</strong></td><td>Əsas informasiyanı daşıyan vektorlar</td></tr>
+    <tr><td><strong>d<sub>k</sub></strong></td><td>Key ölçüsü (normallaşma üçün)</td></tr>
+</table>
+
+<h2>🧮 3. Riyazi Hesablama – Sadə Nümunə</h2>
+
+<p>Tutaq ki, 3 sözlük cümləmiz var: <code>["Məryəm", "kitab", "o"]</code></p>
+<p>Hər biri 4 ölçülü vektorlarla təmsil olunur:</p>
+
+<pre><code>Q = [
+ [0.2, 0.4, 0.6, 0.1],   # Məryəm
+ [0.1, 0.3, 0.7, 0.0],   # kitab
+ [0.9, 0.1, 0.4, 0.3]    # o
+]
+
+K = [
+ [0.1, 0.3, 0.5, 0.2],   # Məryəm
+ [0.2, 0.2, 0.6, 0.1],   # kitab
+ [0.8, 0.1, 0.3, 0.4]    # o
+]</code></pre>
+
+<p>Hər söz üçün <code>Q_i ⋅ K_j</code> nöqtə hasilini tapırıq.</p>
+
+<p><strong>Misal:</strong> “o” sözünün “Məryəm”ə diqqəti:</p>
+<p>
+    $$
+    \begin{align*}
+    Q_o &= [0.9, 0.1, 0.4, 0.3] \\
+    K_{məryəm} &= [0.1, 0.3, 0.5, 0.2] \\
+    Q_o \cdot K_{məryəm} &= (0.9×0.1) + (0.1×0.3) + (0.4×0.5) + (0.3×0.2) \\
+    &= 0.09 + 0.03 + 0.20 + 0.06 = 0.38
+    \end{align*}
+    $$
+</p>
+
+<h2>📐 4. Skorları Normallaşdır</h2>
+<p>Əgər <code>d<sub>k</sub> = 4</code> isə, kök altı: <code>√4 = 2</code>.</p>
+<p>Bütün dot product skorları bu ədədə bölünür.</p>
+
+<h2>📊 5. Softmax tətbiqi</h2>
+<p>Normallaşmış skorlar üzərində <strong>Softmax</strong> tətbiq olunur ki, diqqət payları alınsın:</p>
+
+<p>
+    $$
+    \text{softmax}(z_i) = \frac{e^{z_i}}{\sum_j e^{z_j}}
+    $$
+</p>
+
+<h2>📦 6. Diqqət Payı ilə V dəyərlərinin çəkili cəmi</h2>
+<p>Nəticədə çıxış vektoru alınır:</p>
+
+<p>
+    $$
+    \text{output}_i = \sum_j \left( \text{attention score}_{i,j} \cdot V_j \right)
+    $$
+</p>
+
+<h2>🧠 Nəticədə Nə Baş Verir?</h2>
+<ul>
+    <li>“o” sözü “Məryəm”ə daha çox diqqət verirsə → model anlayacaq ki, “o” = “Məryəm”</li>
+    <li>Bütün sözlər bir-biri ilə əlaqəli şəkildə təhlil olunur</li>
+    <li>Bu prosesi paralel şəkildə bütün cümləyə tətbiq edir</li>
+</ul>
+
+<h2>🎯 Self-Attention nə işə yarayır?</h2>
+
+<table>
+    <tr><th>İmkan</th><th>Təsiri</th></tr>
+    <tr><td>Kontekstə əsasən əlaqə qurur</td><td>Əvəzlikləri düzgün anlamağa kömək edir</td></tr>
+    <tr><td>Uzun məsafəli əlaqə</td><td>Əvvəldən gələn sözləri xatırlayır</td></tr>
+    <tr><td>Paralel və sürətli</td><td>RNN-dən daha sürətli təlim və inferens</td></tr>
+    <tr><td>Transformer əsaslıdır</td><td>BERT, GPT və T5 bu əsasda qurulub</td></tr>
+</table>
+
+</body>
+</html>

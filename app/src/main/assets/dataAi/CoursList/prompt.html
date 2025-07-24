@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>GPT2 Model Prosesi - İzah</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          background: #f9f9f9;
+          padding: 30px;
+          line-height: 1.7;
+        }
+        pre, code {
+            background-color: #ffffff; /* ağ fon */
+            color: #000000;            /* qara mətn */
+        }
+        code {
+            background-color: #ffffff; /* Arxa fon: ağ */
+            color: #000000;            /* Mətnin rəngi: qara */
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: "Courier New", monospace;
+        }
+        pre {
+            background: #ffffff;       /* Arxa fon: ağ */
+            color: #000000;            /* Mətnin rəngi: qara */
+            padding: 10px;
+            border-left: 4px solid #ccc;
+            overflow-x: auto;
+        }
+        h2, h3 {
+          color: #444;
+        }
+        .section {
+          margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>GPT-2 Model Prosesi – Aşamalar və İzah</h1>
+
+<div class="section">
+    <h2>🔁 1. <code>prompt</code> daxil edəndə nə olur?</h2>
+    <p>
+        Məsələn:
+    <pre><code>Sualınızı daxil edin: Salam necəsən?</code></pre>
+    Bu input bu sətirdən oxunur:
+    <pre><code>prompt = input("\nSualınızı daxil edin (çıxmaq üçün 'quit' yazın): ")</code></pre>
+    </p>
+</div>
+
+<div class="section">
+    <h2>🧱 2. Tokenizer mərhələsi (input → ID-lər)</h2>
+    <pre><code>input_ids = tokenizer.encode(prompt, return_tensors='pt').to(device)</code></pre>
+    <p>
+        Bu hissə:
+    <ul>
+        <li><code>"Salam necəsən?"</code> sözlərini tokenizə edir → məsələn: <code>["Salam", "necəsən", "?"]</code></li>
+        <li>Sonra bu tokenləri ID-yə çevirir → məsələn: <code>[4231, 9821, 34]</code></li>
+        <li>Tensor formatına salır və modeli işlədiyi cihaz üzərinə göndərir.</li>
+    </ul>
+    </p>
+</div>
+
+<div class="section">
+    <h2>🧠 3. Modeldə nə baş verir?</h2>
+    <pre><code>output = model.generate(...)</code></pre>
+
+    <h3>🔹 a) Embedding Layer</h3>
+    <p>
+        Token ID-ləri vektorlara çevrilir:<br>
+        Məsələn: <code>4231 → [0.11, 0.85, ..., 0.22]</code> (ölçü: <code>n_embd</code>)
+    </p>
+
+    <h3>🔹 b) Rotary Positional Encoding</h3>
+    <p>
+        Hər tokenin mövqeyini fərqləndirmək üçün əlavə vektor informasiyası verilir.
+    </p>
+
+    <h3>🔁 c) Transformer Blokları</h3>
+    <p>Modeldə 12 blok var. Hər blokda:</p>
+
+    <h4>✅ Causal Self-Attention</h4>
+    <p>
+        Hər token ancaq özündən əvvəlkilərə baxır. Məsələn:
+    <ul>
+        <li><code>Salam</code> → tək</li>
+        <li><code>necəsən</code> → həm <code>Salam</code>ı, həm özünü görür</li>
+        <li><code>?</code> → hər üçünü görür</li>
+    </ul>
+    Q, K, V vektorları hesablanır və belə bir düsturla işləyir:
+    <pre><code>Attention(Q, K, V) = softmax(QKᵀ / √d) · V</code></pre>
+    </p>
+
+    <h4>✅ LayerNorm + Residual</h4>
+    <p>
+        Sabitliyi qorumaq üçün hər mərhələdən sonra tətbiq olunur:
+        <code>x + LayerNorm(layer(x))</code>
+    </p>
+
+    <h4>✅ Feed-Forward Network</h4>
+    <p>
+        Attention sonrası vektorlar daha da işlənir:
+    <pre><code>x = Linear1(x) → GELU → Linear2(x)</code></pre>
+    </p>
+
+    <h3>🔚 d) Çıxış: Logitlər və Sampling</h3>
+    <p>
+        Bloklardan sonra model növbəti tokenin ehtimallarını hesablayır.<br>
+        <code>generate()</code> funksiyası <b>sampling</b> edir:
+    <ul>
+        <li><code>top_k</code>, <code>top_p</code>, <code>temperature</code></li>
+        <li>Ən uyğun tokeni seçir</li>
+        <li>Yeni token əlavə olunur və proses davam edir</li>
+    </ul>
+    </p>
+</div>
+
+<div class="section">
+    <h2>🔄 4. Output Tokenlərdən Mətnə Keçid</h2>
+    <pre><code>
+tokens = tokenizer.convert_ids_to_tokens(output[0])
+final_text = loader.decoder.decode(tokens, skip_special_tokens=True)
+    </code></pre>
+    <p>
+        Model çıxışı ID-lərlə olur.<br>
+        Bu ID-lər tokenlərə çevrilir → <code>["Salam", "necəsən", "?"]</code><br>
+        Custom decoder vasitəsilə mətndə toplanır:
+    <pre><code>Cavab: Mən yaxşıyam, sən necəsən?</code></pre>
+    </p>
+</div>
+
+<div class="section">
+    <h2>✅ Bütöv Prosesi Sadə Dillə Desək:</h2>
+    <pre><code>
+Mətn daxil et → Tokenlər → ID → Vektorlar →
+Attention və FFN-lərlə emal → Yeni ID-lər →
+Token → Mətn
+    </code></pre>
+</div>
+
+<h2>GPT-2 Modelinə Sorğu (Prompt) Axını</h2>
+
+<ol>
+    <li><strong>İstifadəçi Prompt daxil edir:</strong><br>
+        Məsələn: <code>Salam, necəsən?</code>
+    </li>
+
+    <li><strong>Tokenizer bu promptu tokenlərə çevirir:</strong><br>
+        Əlifba, sözlər və hissəciklər aşağıdakı kimi unikal ID-lərə (vektorlara) çevrilir:<br>
+        <code>[2187, 43, 882, 28173]</code> &larr; bu token ID-lərdir (sözlərin rəqəmlərlə təmsilidir)
+    </li>
+
+    <li><strong>Bu token ID-lər tensora çevrilir:</strong><br>
+        Modelə verilmək üçün PyTorch tensora çevrilir:<br>
+        <code>input_ids = tensor([[2187, 43, 882, 28173]])</code><br>
+        Bu 1xN ölçülü bir vektordur, burada N = prompt uzunluğu
+    </li>
+
+    <li><strong>Model bu input tensoru alır və embedding verir:</strong><br>
+        Hər token ID üçün <code>d_model</code> ölçülü vektor çıxarılır (məsələn, d_model = 768):<br>
+        <code>X = input_ids * W_token_embedding</code><br>
+        Nəticədə ölçü: <code>[1, N, 768]</code>
+    </li>
+
+    <li><strong>Model içində Transformer blokları işləyir:</strong>
+        <ul>
+            <li><code>LayerNorm → SelfAttention → MLP → Residual Connections</code></li>
+            <li>Bu ardıcıl qatlarda tokenlər arasında kontekst qurulur</li>
+            <li>Riyazi olaraq: <code>Attention(Q, K, V) = softmax(QKᵀ / √dₖ) · V</code></li>
+        </ul>
+    </li>
+
+    <li><strong>Son çıxış vektoru logit-lərə çevrilir:</strong><br>
+        Hər mövcud token üçün ehtimal vektorları alınır:<br>
+        <code>logits = X * W_outᵀ</code> → ölçü: <code>[1, N, vocab_size]</code>
+    </li>
+
+    <li><strong>Sampling edilir (məsələn, top-k, top-p, temperature):</strong><br>
+        Ehtimallar içindən növbəti token seçilir:<br>
+        <code>next_token = sample(softmax(logits[-1]))</code>
+    </li>
+
+    <li><strong>Yeni tokenlər əlavə edilir və bu proses davam edir:</strong><br>
+        Bu döngü 100 tokenə qədər təkrarlanır (və ya <code>eos_token_id</code> gələnə kimi)
+    </li>
+
+    <li><strong>Əldə olunan tokenlər decoder ilə mətndə çevrilir:</strong><br>
+        <code>[2187, 43, 992] → "Salam, yaxşıyam."</code>
+    </li>
+</ol>
+
+<p><strong>Nəticə:</strong> Cavab istifadəçiyə göstərilir.</p>
+
+</body>
+</html>
