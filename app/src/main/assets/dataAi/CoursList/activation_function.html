@@ -49,6 +49,67 @@
 </head>
 <body>
 
+<div class="container">
+    <h1>Çox yaxşı sualdı 👍</h1>
+    <p class="lead">Bu, <strong>neyron şəbəkəsinin əsas hesablamasının</strong> riyazi formulu. Gəlin bunu sadə dildə + bir az rəsmi şəkildə izah edim:</p>
+
+    <hr/>
+
+    <h2>🔹 Formula</h2>
+    <div class="box">
+        <p>z = W . x + b</p>
+        <p>h = {activation}(z)</p>
+    </div>
+
+    <hr/>
+
+    <h2>🔹 Buradakı elementlər:</h2>
+    <ul>
+        <li><strong>x (input)</strong> → Giriş məlumatı (məsələn, bir şəkil pikselləri, bir cümlənin embedding-i və s.).</li>
+        <li style="margin-top:6px;">
+            <strong>W (weights / çəki matrisi)</strong> → Modelin öyrənməyə çalışdığı parametrlər.
+            <div class="code">Hər girişin çıxışa necə təsir göstərəcəyini müəyyənləşdirir — elə bil ki, "hansı xüsusiyyət vacibdir" bunu öyrənir.</div>
+        </li>
+        <li style="margin-top:6px;">
+            <strong>b (bias / qərəz vektoru)</strong> → Sabit termin.
+            <div class="code">Hesablamaya azacıq “köçürmə” əlavə edir; balansı düzəldən düymə kimi düşün.</div>
+        </li>
+        <li style="margin-top:6px;">
+            <strong>z (linear output / xam çıxış)</strong> → Girişlərlə çəkilərin hasili üstəgəl bias.
+            <div class="code">Hələ ki, neyron heç bir qərar verməyib — bu, xam hesablamadır.</div>
+        </li>
+        <li style="margin-top:6px;">
+            <strong>activation(z)</strong> → Aktivasiya funksiyası (ReLU, GELU və s.).
+            <div class="code">Bu, neyronu qeyri-xətti edir. Aktivasiya olmazsa, model sadəcə linear regression kimi işləyər və mürəkkəb nümunələri öyrənə bilməz.</div>
+        </li>
+    </ul>
+
+    <hr/>
+
+    <h2>🔹 Məcazi izah</h2>
+    <ul>
+        <li><strong>x</strong> → Sənə gələn məlumat (məsələn, 16 nəfər tələbənin imtahan cavabları).</li>
+        <li><strong>W</strong> → Müəllimin qiymətləndirmə meyarı (hansı suala daha çox əhəmiyyət verilir).</li>
+        <li><strong>b</strong> → Əlavə düzəliş (məsələn, müəllim ümumi 5 bal bonus verir).</li>
+        <li><strong>z</strong> → "Xam bal" — heç bir düzəliş edilməmiş nəticə.</li>
+        <li><strong>activation(z)</strong> → Əsl qərarı verən funksiya — kimin keçdiyi, kimin qaldığı və s.</li>
+    </ul>
+
+    <hr/>
+
+    <h2>⚡ Qısaca desək:</h2>
+    <ul>
+        <li><strong>W və b</strong> → modelin öyrəndiyi parametrlərdir</li>
+        <li><strong>x</strong> → giriş məlumatıdır</li>
+        <li><strong>z</strong> → linear nəticədir</li>
+        <li><strong>activation(z)</strong> → modeli ağıllı edən addımdır</li>
+    </ul>
+
+    <div class="code">İstəyirsən mən sənə bunu <em>rəqəmlərlə</em> kiçik bir misalda da göstərim (məsələn, 3 ölçülü giriş, sadə W və b ilə hesablama)?</div>
+
+    <footer>— Hazırlayan: Sənin köməkçin • İstifadə üçün saytda aç və brauzerdə bax.</footer>
+</div>
+
 <h1>🔆 Aktivasiya Funksiyası (Activation Function) və Riyazi İzahı</h1>
 
 <h2>1. Aktivasiya funksiyası nədir?</h2>
@@ -128,6 +189,63 @@
     Aktivasiya funksiyası Transformer modellərində daxil olan x-ləri qeyri-xətti şəkildə dəyişdirərək modelin mürəkkəb nümunələri öyrənməsini təmin edir.
     GELU, ReLU-nun daha inkişaf etmiş formasıdır və modern Transformer modellərində standartdır.
 </p>
+
+<h2>Neural Network Hesablama Nümunəsi</h2>
+
+<h3>Setup</h3>
+<p>
+    x = [1, 2, 3] <br>
+    W = [[0.2, -0.5, 1.0],<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;[-1.5, 0.7, 0.3]] <br>
+    b = [0.1, -0.2]
+</p>
+
+<hr>
+
+<h3>1) Linear Hesablama: <code>z = W·x + b</code></h3>
+<p>
+    Neyron 1: 0.2*1 + (-0.5)*2 + 1.0*3 + 0.1 = <b>2.3</b><br>
+    Neyron 2: -1.5*1 + 0.7*2 + 0.3*3 - 0.2 = <b>0.6</b><br>
+    <br>
+    <b>z = [2.3, 0.6]</b>
+</p>
+
+<hr>
+
+<h3>2) Aktivasiya</h3>
+
+<p><b>ReLU:</b> max(0, z)</p>
+<pre>h_relu = [2.3, 0.6]</pre>
+
+<p><b>GELU:</b> yumşaq keçid</p>
+<pre>h_gelu ≈ [2.276, 0.435]</pre>
+
+<hr>
+
+<h3>3) Çıxış Qatı</h3>
+<p>
+    w_out = [1.2, -0.7], b_out = 0.05
+</p>
+
+<p>
+    Əgər h_relu istifadə etsək:<br>
+    o = 1.2*2.3 -0.7*0.6 + 0.05 = <b>2.39</b><br>
+    sigmoid(2.39) ≈ <b>0.917</b>
+</p>
+
+<p>
+    Əgər h_gelu istifadə etsək:<br>
+    o ≈ 2.4767 → sigmoid(2.4767) ≈ <b>0.923</b>
+</p>
+
+<hr>
+
+<h3>Yekun</h3>
+<ul>
+    <li><code>W·x + b</code> → xam xətti hesablamadır</li>
+    <li><code>activation(z)</code> → qeyri-xətti transformasiya (ReLU, GELU və s.)</li>
+    <li>Aktivasiya nəticəni formalaşdırır və son çıxışa təsir edir</li>
+</ul>
 
 </body>
 </html>

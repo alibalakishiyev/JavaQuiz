@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TransformerDRLAgent İzahı</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 40px auto;
+          max-width: 900px;
+          line-height: 1.6;
+          color: #222;
+          background-color: #f4f4f4;
+          padding: 20px;
+        }
+        h1, h2 {
+          color: #004080;
+        }
+        .formula {
+            background: #e3f2fd;
+            border-left: 6px solid #2196f3;
+            padding: 7px;
+            margin: 15px 0;
+            font-family: monospace;
+            color: black;
+        }
+        code {
+            background-color: #eef;
+            padding: 3px 6px;
+            border-radius: 4px;
+        }
+        pre {
+          background: #eee;
+          padding: 10px;
+          overflow-x: auto;
+        }
+        section {
+            background: #e3f2fd;
+            border-left: 6px solid #2196f3;
+            padding: 7px;
+            margin: 15px 0;
+            font-family: Roboto, sans-serif; /* dəyişdirildi */
+            color: black;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+        }
+
+        ul {
+          margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+<h1>TransformerDRLAgent Kodu Haqqında Tam İzah</h1>
+
+<section>
+    <h2>1. Model sinifi: TransformerDRLAgent</h2>
+    <p><strong>Nə edir?</strong><br />
+        Bu sinif, agentin neyron şəbəkəsini təmsil edir. Burada vəziyyət (state) sekansı qəbul olunur və Transformer encoder vasitəsilə işlənir. Çıxışda iki şey verilir:</p>
+    <ul>
+        <li><strong>Policy head</strong> — verilən vəziyyətə görə hərəkət ehtimalları (softmax ilə).</li>
+        <li><strong>Value head</strong> — vəziyyətin dəyər qiyməti (real ədəd).</li>
+    </ul>
+    <p><strong>Əsas hissələr:</strong></p>
+    <ul>
+        <li><code>state_embedding</code>: Vəziyyət vektorlarını Transformer üçün uyğun ölçüyə (embed_size) çevirir.</li>
+        <li><code>transformer_encoder</code>: Transformer qatlarından ibarətdir, sekans məlumatlarını emal edir.</li>
+        <li><code>policy_head</code>: Hərəkət ehtimallarını çıxarır.</li>
+        <li><code>value_head</code>: Vəziyyətin dəyərini qiymətləndirir.</li>
+    </ul>
+    <p><strong>forward metodu:</strong><br />
+        Giriş kimi <code>(batch_size, seq_len, state_dim)</code> ölçülü tensor alır. Vəziyyətlər embedding-lənir, Transformer vasitəsilə işlənir, ən son zaman addımı götürülür və oradan həm policy, həm də value çıxarılır.</p>
+</section>
+
+<section>
+    <h2>2. Replay Memory</h2>
+    <p>Təcrübələrin (state, action, reward, next_state, done) yadda saxlanması üçün istifadə olunur.</p>
+    <ul>
+        <li><code>push</code> ilə təcrübə əlavə edilir,</li>
+        <li><code>sample</code> ilə təsadüfi minibatch götürülür,</li>
+    </ul>
+    <p>Bu, agentin təlimi üçün nümunə toplamaq üçün zəruridir.</p>
+</section>
+
+<section>
+    <h2>3. DRLTransformerAgent</h2>
+    <p>Bu, əsas agent sinifidir, yəni bütün təlim, hərəkət seçimi və yaddaş idarəsini burda aparırsan.</p>
+    <p><strong>Parametrlər və şəbəkələr:</strong></p>
+    <ul>
+        <li><code>policy_net</code>: Cari şəbəkə (öyrənilir).</li>
+        <li><code>target_net</code>: Stabil təlim üçün target şəbəkə, periodik olaraq <code>policy_net</code>-in çəkilərini kopyalayır.</li>
+    </ul>
+    <p><strong>select_action metodu:</strong></p>
+    <ul>
+        <li><code>epsilon</code>-greedy strategiyasını tətbiq edir:</li>
+        <ul>
+            <li><code>epsilon</code> ehtimalı ilə təsadüfi hərəkət seçir (exploration),</li>
+            <li>Əks halda, <code>policy_net</code>-dən ehtimalları alır və onlara görə hərəkət seçir (exploitation).</li>
+        </ul>
+    </ul>
+    <p><strong>update_epsilon metodu:</strong><br />
+        <code>epsilon</code> dəyərini tədricən azaldır ki, agent zamanla daha çox exploitation (öyrəndiklərini istifadə etmək) etsin.</p>
+    <p><strong>update_model metodu:</strong></p>
+    <ul>
+        <li>Replay memory-dən nümunə götürür,</li>
+        <li>Cari və target şəbəkələrdən dəyərləri hesablayır,</li>
+        <li>Advantage (üstünlük) və zərər funksiyasını (policy loss + value loss) hesablayır,</li>
+        <li>Optimizer ilə şəbəkə çəkilərini yeniləyir.</li>
+    </ul>
+    <p><strong>update_target_net metodu:</strong><br />
+        <code>target_net</code>-in çəkilərini <code>policy_net</code>-lə sinxronlaşdırır.</p>
+    <p><strong>save_experience metodu:</strong><br />
+        Təcrübəni replay memory-yə əlavə edir.</p>
+</section>
+
+<section>
+    <h2>4. Təlim döngəsi train_agent</h2>
+    <ul>
+        <li>Mühitdən vəziyyət alır,</li>
+        <li>Son 10 vəziyyəti yadda saxlayır (sekans kimi),</li>
+        <li>Agent hərəkət seçir, mühitə tətbiq edir,</li>
+        <li>Təcrübəni yaddaşa əlavə edir,</li>
+        <li>Şəbəkəni təlim etdirir,</li>
+        <li>Periodik olaraq target şəbəkəni yeniləyir,</li>
+        <li><code>epsilon</code>-u azaldır,</li>
+        <li>Hər epizodun mükafatını çap edir.</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Ümumi xülasə</h2>
+    <ul>
+        <li>Bu kod dərin gücləndirici öyrənmə üçün Transformer əsaslı bir agentdir.</li>
+        <li>Agent zamanla vəziyyətlərin ardıcıllığını Transformer vasitəsilə öyrənir.</li>
+        <li>Policy və value eyni anda öyrədilir (Actor-Critic tipli metod kimi).</li>
+        <li>Replay memory ilə təlimdə sabitlik təmin edilir.</li>
+        <li><code>epsilon</code>-greedy ilə balans exploration və exploitation arasında qorunur.</li>
+        <li>Target şəbəkə isə öyrənməni stabilləşdirir.</li>
+    </ul>
+</section>
+
+<section>
+    <h2>📌Tam Kod</h2>
+
+    <pre class="formula"><code class="formula">
+
+        import torch
+        import torch.nn as nn
+        import torch.optim as optim
+        import torch.nn.functional as F
+        from torch.distributions import Categorical
+        import numpy as np
+        from collections import deque
+        import random
+
+        # ===========================
+        # Hiperparametrlər (təlim parametrləri)
+        # ===========================
+        BATCH_SIZE = 32                 # Bir təlim addımında istifadə olunan nümunə sayı
+        LR = 1e-4                      # Öyrənmə sürəti (learning rate)
+        GAMMA = 0.99                   # Gələcək mükafatın endirim faktoru
+        EPSILON_START = 1.0            # Başlanğıcda təsadüfi hərəkət ehtimalı (exploration)
+        EPSILON_END = 0.01             # Minimum təsadüfi hərəkət ehtimalı
+        EPSILON_DECAY = 0.995          # Hər epizoddan sonra epsilon-un azalma dərəcəsi
+        TARGET_UPDATE = 10             # Target şəbəkənin yenilənmə epizodu (hər neçə epizodda)
+        MEMORY_CAPACITY = 10000        # Replay yaddaşının maksimum tutumu
+        EPISODES = 1000                # Təlimdə ümumi epizod sayı
+        HIDDEN_SIZE = 128              # Transformer feedforward qatının ölçüsü
+        NUM_HEADS = 4                  # Transformer-in çoxbaşlı diqqət (multi-head attention) sayı
+        NUM_LAYERS = 3                 # Transformer encoder qatlarının sayı
+        EMBED_SIZE = 64                # Vəziyyət embedding ölçüsü (gizli vektor ölçüsü)
+
+
+        # ===========================
+        # Transformer əsaslı Dərin Təkrarlanan Öyrənmə Agentinin Modeli
+        # ===========================
+        class TransformerDRLAgent(nn.Module):
+            def __init__(self, state_dim, action_dim):
+                super(TransformerDRLAgent, self).__init__()
+                self.state_dim = state_dim
+                self.action_dim = action_dim
+
+                # Vəziyyəti embedding ölçüsünə salmaq üçün tam bağlı qat
+                self.state_embedding = nn.Linear(state_dim, EMBED_SIZE)
+
+                # Transformer Encoder qatının tərifi
+                encoder_layer = nn.TransformerEncoderLayer(
+                    d_model=EMBED_SIZE,      # Transformer daxili ölçüsü
+                    nhead=NUM_HEADS,         # Diqqət başlıqları sayı
+                    dim_feedforward=HIDDEN_SIZE,  # Feedforward qatının ölçüsü
+                    dropout=0.1              # Dropout faizi (overfitting qarşısı üçün)
+                )
+
+                # Transformer Encoder qatlarının yığılışı (stack)
+                self.transformer_encoder = nn.TransformerEncoder(
+                    encoder_layer,
+                    num_layers=NUM_LAYERS
+                )
+
+                # Əməl (policy) ehtimallarını çıxarmaq üçün çıxış qatı
+                self.policy_head = nn.Linear(EMBED_SIZE, action_dim)
+
+                # Vəziyyət dəyərini qiymətləndirmək üçün çıxış qatı
+                self.value_head = nn.Linear(EMBED_SIZE, 1)
+
+            def forward(self, x):
+                # Giriş: (batch_size, seq_len, state_dim)
+                batch_size, seq_len, _ = x.shape
+
+                # Vəziyyəti embedding ölçüsünə çevir
+                x = self.state_embedding(x)  # (batch_size, seq_len, embed_size)
+
+                # Transformer input formatı: (seq_len, batch_size, embed_size)
+                x = x.transpose(0, 1)
+
+                # Transformer Encoder-un tətbiqi
+                x = self.transformer_encoder(x)
+
+                # Yenidən orijinal forma: (batch_size, seq_len, embed_size)
+                x = x.transpose(0, 1)
+
+                # Son zaman addımındakı vəziyyət (ən son state)
+                last_state = x[:, -1, :]
+
+                # Policy ehtimalları (softmax ilə) və state dəyəri
+                action_probs = F.softmax(self.policy_head(last_state), dim=-1)
+                state_value = self.value_head(last_state)
+
+                return action_probs, state_value
+
+
+        # ===========================
+        # Replay Memory: Təcrübələrin saxlanması üçün buffer
+        # ===========================
+        class ReplayMemory:
+            def __init__(self, capacity):
+                self.capacity = capacity
+                self.memory = deque(maxlen=capacity)  # Ən çox capacity yaddaş saxlayır
+
+            def push(self, state, action, reward, next_state, done):
+                # Təcrübəni buffer-a əlavə et
+                self.memory.append((state, action, reward, next_state, done))
+
+            def sample(self, batch_size):
+                # Təcrübələrdən təsadüfi nümunə götür
+                return random.sample(self.memory, batch_size)
+
+            def __len__(self):
+                # Hazırda buffer-dakı nümunə sayı
+                return len(self.memory)
+
+
+        # ===========================
+        # DRL Transformer Agent: Qərar vermə, təlim, və hərəkət seçmə funksiyaları
+        # ===========================
+        class DRLTransformerAgent:
+            def __init__(self, state_dim, action_dim):
+                self.state_dim = state_dim
+                self.action_dim = action_dim
+                self.epsilon = EPSILON_START  # Eksplorasiya ehtimalı (başlanğıc)
+
+                # Policy və target şəbəkələri yaradırıq
+                self.policy_net = TransformerDRLAgent(state_dim, action_dim)
+                self.target_net = TransformerDRLAgent(state_dim, action_dim)
+                self.target_net.load_state_dict(self.policy_net.state_dict())  # Target şəbəkəni policy-nin kopyası edirik
+                self.target_net.eval()  # Target şəbəkə eval rejimindədir (təlim deyil)
+
+                # Optimizer: Adam istifadə olunur
+                self.optimizer = optim.Adam(self.policy_net.parameters(), lr=LR)
+
+                # Replay memory (təcrübə yaddaşı)
+                self.memory = ReplayMemory(MEMORY_CAPACITY)
+
+                # Value loss üçün MSE
+                self.value_loss = nn.MSELoss()
+
+            def select_action(self, state_sequence):
+                """
+                Hərəkət seçimi (epsilon-greedy)
+                :param state_sequence: Son vəziyyətlər zənciri, shape=(seq_len, state_dim)
+                :return: seçilən hərəkətin indeksi (int)
+                """
+                if random.random() < self.epsilon:
+                    # Təsadüfi hərəkət (exploration)
+                    return random.randint(0, self.action_dim - 1)
+
+                # Eksploitasiya (modelin proqnozu əsasında)
+                with torch.no_grad():
+                    # Batch ölçüsü əlavə et (1 batch)
+                    state_sequence = torch.FloatTensor(state_sequence).unsqueeze(0)  # (1, seq_len, state_dim)
+                    probs, _ = self.policy_net(state_sequence)
+                    m = Categorical(probs)  # Hərəkət paylanması
+                    action = m.sample()
+                    return action.item()
+
+            def update_epsilon(self):
+                # Epsilon-un tədricən azalması (exploration→exploitation keçidi)
+                self.epsilon = max(EPSILON_END, self.epsilon * EPSILON_DECAY)
+
+            def update_model(self):
+                # Əgər kifayət qədər təcrübə yoxdursa, təlim etmirik
+                if len(self.memory) < BATCH_SIZE:
+                    return
+
+                # Replay memory-dən batch götür
+                transitions = self.memory.sample(BATCH_SIZE)
+                batch = list(zip(*transitions))  # states, actions, rewards, next_states, dones ayrılır
+
+                # Tensorlara çevir
+                state_seqs = torch.FloatTensor(np.array(batch[0]))
+                actions = torch.LongTensor(np.array(batch[1])).unsqueeze(1)
+                rewards = torch.FloatTensor(np.array(batch[2])).unsqueeze(1)
+                next_state_seqs = torch.FloatTensor(np.array(batch[3]))
+                dones = torch.FloatTensor(np.array(batch[4])).unsqueeze(1)
+
+                # Mövcud şəbəkədən cari Q dəyərləri (policy və value)
+                action_probs, state_values = self.policy_net(state_seqs)
+
+                # Target şəbəkədən gələcək vəziyyətlərin dəyərləri
+                _, next_state_values = self.target_net(next_state_seqs)
+
+                # Gözlənilən Q dəyərləri (reward + discount * next_state_value)
+                expected_state_values = rewards + GAMMA * next_state_values * (1 - dones)
+
+                # Advantage hesabla (fərq)
+                advantages = expected_state_values - state_values
+
+                # Policy loss - PPO tipli məntiqə bənzər (log prob * advantage)
+                m = Categorical(action_probs)
+                policy_loss = -m.log_prob(actions.squeeze()).unsqueeze(1) * advantages.detach()
+                policy_loss = policy_loss.mean()
+
+                # Value loss (MSE)
+                value_loss = self.value_loss(state_values, expected_state_values.detach())
+
+                # Ümumi zərər (loss)
+                loss = policy_loss + value_loss
+
+                # Geri yayılım və optimizasiya
+                self.optimizer.zero_grad()
+                loss.backward()
+                self.optimizer.step()
+
+            def update_target_net(self):
+                # Target şəbəkəni policy şəbəkənin parametrləri ilə yenilə
+                self.target_net.load_state_dict(self.policy_net.state_dict())
+
+            def save_experience(self, state_seq, action, reward, next_state_seq, done):
+                # Replay memory-ə təcrübə əlavə et
+                self.memory.push(state_seq, action, reward, next_state_seq, done)
+
+
+        # ===========================
+        # Təlim döngəsi (training loop)
+        # ===========================
+        def train_agent(env, agent, episodes=EPISODES):
+            for episode in range(episodes):
+                # Mühitin başlanğıcı
+                state_seq = deque(maxlen=10)  # Son 10 vəziyyəti saxlayırıq (sequence length = 10)
+                state = env.reset()
+                state_seq.append(state)
+
+                total_reward = 0
+                done = False
+
+                while not done:
+                    # Agentdən hərəkət seç
+                    action = agent.select_action(np.array(state_seq))
+
+                    # Hərəkəti mühitə tətbiq et
+                    next_state, reward, done, _ = env.step(action)
+
+                    # Sonrakı vəziyyətlər zəncirini yenilə
+                    next_state_seq = state_seq.copy()
+                    next_state_seq.append(next_state)
+
+                    # Təcrübəni yaddaşa əlavə et
+                    agent.save_experience(np.array(state_seq), action, reward, np.array(next_state_seq), done)
+
+                    # Modeli təlim etdir
+                    agent.update_model()
+
+                    # Vəziyyəti yenilə
+                    state_seq = next_state_seq
+                    total_reward += reward
+
+                # Target şəbəkəni mütəmadi olaraq yenilə
+                if episode % TARGET_UPDATE == 0:
+                    agent.update_target_net()
+
+                # Epsilon-u azaldırıq (exploration azalır)
+                agent.update_epsilon()
+
+                print(f"Episode {episode}, Total Reward: {total_reward}, Epsilon: {agent.epsilon:.2f}")
+
+
+        # ===========================
+        # Misal üçün istifadə
+        # ===========================
+        if __name__ == "__main__":
+            # Burada öz mühitini (env) yaratmalısan.
+            # Məsələn:
+            # env = YourEnvironment()
+            # state_dim = env.observation_space.shape[0]
+            # action_dim = env.action_space.n
+
+            # Test üçün dummy ölçülər:
+            state_dim = 10
+            action_dim = 4
+
+            agent = DRLTransformerAgent(state_dim, action_dim)
+
+            # Təlim döngəsini başlatmaq üçün
+            # train_agent(env, agent)
+
+
+</code></pre>
+
+</section>
+</body>
+</html>
