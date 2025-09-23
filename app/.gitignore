@@ -1,1 +1,12 @@
+# Android build files
 /build
+/app/build
+/.gradle
+/local.properties
+
+# IntelliJ / Android Studio
+.idea
+*.iml
+
+# Firebase config (gitə düşməsin deyə)
+app/google-services.json
