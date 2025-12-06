@@ -64,13 +64,13 @@ public class MainActivity extends AppCompatActivity {
     public static int checked;
     private AdView mAdView;
     private InterstitialAd mInterstitialAd;
-    private long lastAdShownTime = 0; // Son reklamın göstərildiyi vaxt (millisaniyə ilə)
-    private final long AD_INTERVAL = 60000; // Reklamlar arasındakı vaxt (60 saniyə)
+    private long lastAdShownTime = 0;
+    private final long AD_INTERVAL = 60000;
     private ImageView userIcon;
     private FirebaseAuth fAuth;
     private FirebaseFirestore fStore;
     private FirebaseChatHelper firebaseChatHelper;
-    private String chatRoomId = "main_bot_chat"; // Ümumi chat otağı ID
+    private String chatRoomId = "main_bot_chat";
     private List<ChatMessage> chatMessages = new ArrayList<>();
     private static final String CHAT_HISTORY_KEY = "chat_history";
     private ChatAdapter chatAdapter;

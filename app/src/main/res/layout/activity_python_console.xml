@@ -1,36 +1,233 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="8dp"
+    android:background="#263238">
 
-    <EditText
-        android:id="@+id/codeInput"
+    <!-- Başlık -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#37474F"
+        android:gravity="center_vertical">
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="←"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_margin="4dp"
+            android:padding="12dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Python Editor"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:padding="12dp"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <!-- Task Description - YUXARIDA -->
+    <TextView
+        android:id="@+id/taskDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Task Description"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:padding="12dp"
+        android:background="#37474F"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Kod Editörü Alanı -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:hint="Console"
-        android:inputType="textMultiLine"
-        android:fontFamily="monospace"/>
+        android:orientation="horizontal"
+        android:background="#1E282C"
+        android:layout_marginBottom="8dp">
 
-    <Button
-        android:id="@+id/runBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Çalıştır"/>
+        <!-- Satır Numaraları -->
+        <ScrollView
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:background="#263238"
+            android:scrollbars="none">
 
-    <ScrollView
+            <TextView
+                android:id="@+id/lineNumbers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:textColor="#546E7A"
+                android:textSize="14sp"
+                android:fontFamily="monospace"
+                android:gravity="right"
+                android:paddingTop="9dp"
+                android:paddingBottom="9dp"
+                android:paddingRight="8dp"
+                android:lineSpacingExtra="4dp"/>
+        </ScrollView>
+
+        <!-- Kod Editörü -->
+        <HorizontalScrollView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scrollbars="vertical|horizontal">
+
+            <EditText
+                android:id="@+id/codeInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="# Python Code"
+                android:textColorHint="#546E7A"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:inputType="textMultiLine|textNoSuggestions"
+                android:fontFamily="monospace"
+                android:background="@android:color/transparent"
+                android:paddingTop="9dp"
+                android:paddingBottom="9dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="16dp"
+                android:gravity="top|left"
+                android:minWidth="1000dp"
+                android:lineSpacingExtra="4dp"
+                android:breakStrategy="simple"
+                android:autoSizeTextType="none"/>
+        </HorizontalScrollView>
+    </LinearLayout>
+
+    <!-- Auto-complete Suggestions -->
+    <ListView
+        android:id="@+id/suggestionsList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="0.3"
+        android:background="#37474F"
+        android:visibility="gone"
+        android:layout_marginBottom="4dp"/>
 
-        <TextView
-            android:id="@+id/outputText"
+    <!-- Butonlar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
+
+        <Button
+            android:id="@+id/clearBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="🗑️ Clear"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:background="#FF5722"
+            android:padding="12dp"
+            android:layout_marginEnd="4dp"/>
+
+        <Button
+            android:id="@+id/runBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="▶ Run"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:background="#2196F3"
+            android:padding="16dp"
+            android:layout_marginStart="4dp"/>
+    </LinearLayout>
+
+    <!-- Çıktı Alanı - AŞAĞIDA -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="#1E282C">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:fontFamily="monospace"/>
-    </ScrollView>
+            android:orientation="horizontal"
+            android:background="#263238"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Çıktı"
+                android:textColor="#78909C"
+                android:textSize="12sp"
+                android:padding="8dp"/>
+
+            <Button
+                android:id="@+id/clearOutputBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Temizle"
+                android:textColor="#78909C"
+                android:textSize="10sp"
+                android:background="@android:color/transparent"
+                android:padding="4dp"
+                android:layout_marginEnd="8dp"/>
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/outputText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="> ..."
+                android:textColor="#B0BEC5"
+                android:textSize="14sp"
+                android:fontFamily="monospace"
+                android:background="@android:color/transparent"
+                android:padding="16dp"
+                android:lineSpacingExtra="4dp"/>
+        </ScrollView>
+
+        <!-- Ads -->
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adPythoneCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-5367924704859976/8399396085"/>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

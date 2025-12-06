@@ -16,16 +16,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ali.MainActivity;
-import com.ali.javaquizbyali.Derslik;
-import com.ali.javaquizbyali.Hazirliq;
 import com.ali.javaquizbyali.JuniorQuiz;
 import com.ali.kali.comandlist.CommandList;
 import com.ali.kali.console.Terminal;
 import com.ali.systemIn.R;
-import com.ali.javaquizbyali.codemodel.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.List;

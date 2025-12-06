@@ -1,0 +1,574 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Gradient Descent Alqoritmi",
+      "description": "Sadə gradient descent alqoritmini implementasiya edin",
+      "initialCode": "def gradient_descent(x, y, learning_rate=0.01, iterations=1000):\n    # Kodunuzu buraya yazın\n    return w, b\n\n# Test\nx = [1, 2, 3, 4, 5]\ny = [2, 4, 6, 8, 10]\nw, b = gradient_descent(x, y)\nprint(f\"w: {w}, b: {b}\")",
+      "tests": [
+        {
+          "input": "gradient_descent([1,2,3], [2,4,6])",
+          "expected": "(2.0, 0.0)",
+          "description": "Gradient descent düzgün işləməlidir"
+        }
+      ],
+      "solution": "w, b = 0, 0\nfor _ in range(iterations):\n    w_grad = sum(-2 * x_i * (y_i - (w*x_i + b)) for x_i, y_i in zip(x, y)) / len(x)\n    b_grad = sum(-2 * (y_i - (w*x_i + b)) for x_i, y_i in zip(x, y)) / len(x)\n    w -= learning_rate * w_grad\n    b -= learning_rate * b_grad\nreturn w, b"
+    },
+    {
+      "id": 2,
+      "title": "Sigmoid Aktivasiya Funksiyası",
+      "description": "Sigmoid aktivasiya funksiyasını implementasiya edin",
+      "initialCode": "import math\n\ndef sigmoid(x):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nresult = sigmoid(0)\nprint(\"sigmoid(0):\", result)",
+      "tests": [
+        {
+          "input": "sigmoid(0)",
+          "expected": "0.5",
+          "description": "sigmoid(0) = 0.5 olmalıdır"
+        },
+        {
+          "input": "sigmoid(2)",
+          "expected": "0.8807970779778823",
+          "description": "sigmoid(2) ~ 0.88 olmalıdır"
+        }
+      ],
+      "solution": "return 1 / (1 + math.exp(-x))"
+    },
+    {
+      "id": 3,
+      "title": "Softmax Funksiyası",
+      "description": "Softmax funksiyasını implementasiya edin",
+      "initialCode": "import math\n\ndef softmax(x):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nresult = softmax([1, 2, 3])\nprint(\"Softmax:\", result)",
+      "tests": [
+        {
+          "input": "softmax([1, 1, 1])",
+          "expected": "[0.333, 0.333, 0.333]",
+          "description": "Eyni dəyərlər eyni ehtimallar verməlidir"
+        }
+      ],
+      "solution": "exp_x = [math.exp(i) for i in x]\nsum_exp = sum(exp_x)\nreturn [i/sum_exp for i in exp_x]"
+    },
+    {
+      "id": 4,
+      "title": "Mean Squared Error",
+      "description": "Mean Squared Error loss funksiyasını hesablayın",
+      "initialCode": "def mse_loss(y_true, y_pred):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nresult = mse_loss([1, 2, 3], [1, 2, 3])\nprint(\"MSE:\", result)",
+      "tests": [
+        {
+          "input": "mse_loss([1,2,3], [1,2,3])",
+          "expected": "0.0",
+          "description": "Eyni dəyərlər 0 MSE verməlidir"
+        }
+      ],
+      "solution": "return sum((yt - yp) ** 2 for yt, yp in zip(y_true, y_pred)) / len(y_true)"
+    },
+    {
+      "id": 5,
+      "title": "K-Nearest Neighbors",
+      "description": "Sadə KNN klasifikasiya alqoritmini implementasiya edin",
+      "initialCode": "import math\n\ndef knn_predict(train_X, train_y, test_x, k=3):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\ntrain_X = [[1, 2], [2, 3], [3, 1]]\ntrain_y = [0, 0, 1]\nresult = knn_predict(train_X, train_y, [2, 2])\nprint(\"KNN prediction:\", result)",
+      "tests": [
+        {
+          "input": "knn_predict([[1,1],[2,2]], [0,1], [1.5,1.5])",
+          "expected": "0",
+          "description": "KNN düzgün proqnoz verməlidir"
+        }
+      ],
+      "solution": "distances = []\nfor i, train_x in enumerate(train_X):\n    dist = math.sqrt(sum((a - b) ** 2 for a, b in zip(train_x, test_x)))\n    distances.append((dist, train_y[i]))\ndistances.sort(key=lambda x: x[0])\nneighbors = [label for _, label in distances[:k]]\nreturn max(set(neighbors), key=neighbors.count)"
+    },
+    {
+      "id": 6,
+      "title": "Naive Bayes Classifier",
+      "description": "Sadə Naive Bayes klasifikatoru yaradın",
+      "initialCode": "def naive_bayes_train(X, y):\n    # Kodunuzu buraya yazın\n    return {}\n\ndef naive_bayes_predict(model, x):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nX = [[1, 0], [1, 1], [0, 1], [0, 0]]\ny = [1, 1, 0, 0]\nmodel = naive_bayes_train(X, y)\nresult = naive_bayes_predict(model, [1, 0])\nprint(\"Prediction:\", result)",
+      "tests": [
+        {
+          "input": "naive_bayes_predict(naive_bayes_train([[1,0],[0,1]], [1,0]), [1,0])",
+          "expected": "1",
+          "description": "Naive Bayes düzgün işləməlidir"
+        }
+      ],
+      "solution": "def naive_bayes_train(X, y):\n    classes = {}\n    for label in set(y):\n        classes[label] = {'count': y.count(label), 'features': {}}\n    \n    for i, sample in enumerate(X):\n        label = y[i]\n        for j, feature in enumerate(sample):\n            if j not in classes[label]['features']:\n                classes[label]['features'][j] = {}\n            classes[label]['features'][j][feature] = classes[label]['features'][j].get(feature, 0) + 1\n    \n    return classes\n\ndef naive_bayes_predict(model, x):\n    best_label, best_prob = None, -1\n    total_samples = sum(model[label]['count'] for label in model)\n    \n    for label in model:\n        prob = model[label]['count'] / total_samples\n        for i, feature in enumerate(x):\n            feature_counts = model[label]['features'].get(i, {})\n            total_feature = sum(feature_counts.values())\n            prob *= (feature_counts.get(feature, 0) + 1) / (total_feature + len(feature_counts))\n        \n        if prob > best_prob:\n            best_prob, best_label = prob, label\n    \n    return best_label"
+    },
+    {
+      "id": 7,
+      "title": "Decision Tree Split",
+      "description": "Decision Tree üçün ən yaxşı split nöqtəsini tapın",
+      "initialCode": "def find_best_split(X, y):\n    # Kodunuzu buraya yazın\n    return 0, 0, 0\n\n# Test\nX = [1, 2, 3, 4, 5]\ny = [0, 0, 1, 1, 1]\nresult = find_best_split(X, y)\nprint(\"Best split:\", result)",
+      "tests": [
+        {
+          "input": "find_best_split([1,2,3,4], [0,0,1,1])",
+          "expected": "(2.5, 1.0, 0)",
+          "description": "Ən yaxşı split nöqtəsini tapmalıdır"
+        }
+      ],
+      "solution": "best_gini = float('inf')\nbest_split = None\nbest_feature = None\n\nfor i in range(len(X)):\n    if i < len(X) - 1:\n        split_point = (X[i] + X[i+1]) / 2\n        left_y = [y[j] for j in range(len(X)) if X[j] <= split_point]\n        right_y = [y[j] for j in range(len(X)) if X[j] > split_point]\n        \n        gini_left = 1 - sum((left_y.count(c) / len(left_y)) ** 2 for c in set(left_y)) if left_y else 0\n        gini_right = 1 - sum((right_y.count(c) / len(right_y)) ** 2 for c in set(right_y)) if right_y else 0\n        \n        gini = (len(left_y) * gini_left + len(right_y) * gini_right) / len(X)\n        \n        if gini < best_gini:\n            best_gini, best_split, best_feature = gini, split_point, 0\n\nreturn best_split, best_gini, best_feature"
+    },
+    {
+      "id": 8,
+      "title": "ReLU Aktivasiya Funksiyası",
+      "description": "ReLU və onun törəməsini implementasiya edin",
+      "initialCode": "def relu(x):\n    # Kodunuzu buraya yazın\n    return 0\n\ndef relu_derivative(x):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nprint(\"ReLU(2):\", relu(2))\nprint(\"ReLU(-2):\", relu(-2))\nprint(\"ReLU derivative(2):\", relu_derivative(2))",
+      "tests": [
+        {
+          "input": "relu(5)",
+          "expected": "5",
+          "description": "ReLU müsbət ədədləri dəyişməməlidir"
+        },
+        {
+          "input": "relu(-5)",
+          "expected": "0",
+          "description": "ReLU mənfi ədədləri 0 etməlidir"
+        }
+      ],
+      "solution": "def relu(x):\n    return max(0, x)\n\ndef relu_derivative(x):\n    return 1 if x > 0 else 0"
+    },
+    {
+      "id": 9,
+      "title": "One-Hot Encoding",
+      "description": "Kateqorial məlumatları one-hot encoding formatına çevirin",
+      "initialCode": "def one_hot_encode(labels):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nresult = one_het_encode(['cat', 'dog', 'cat'])\nprint(\"One-hot encoding:\", result)",
+      "tests": [
+        {
+          "input": "one_hot_encode(['A','B','A'])",
+          "expected": "[[1,0],[0,1],[1,0]]",
+          "description": "One-hot encoding düzgün işləməlidir"
+        }
+      ],
+      "solution": "unique_labels = list(set(labels))\nencoding = []\nfor label in labels:\n    encoded = [1 if label == unique_label else 0 for unique_label in unique_labels]\n    encoding.append(encoded)\nreturn encoding"
+    },
+    {
+      "id": 10,
+      "title": "Confusion Matrix",
+      "description": "Confusion matrix hesablayın",
+      "initialCode": "def confusion_matrix(y_true, y_pred):\n    # Kodunuzu buraya yazın\n    return {}\n\n# Test\nresult = confusion_matrix([0,1,0,1], [0,1,1,0])\nprint(\"Confusion Matrix:\", result)",
+      "tests": [
+        {
+          "input": "confusion_matrix([0,1,0,1], [0,1,1,0])",
+          "expected": "{'TP': 1, 'TN': 1, 'FP': 1, 'FN': 1}",
+          "description": "Confusion matrix düzgün hesablanmalıdır"
+        }
+      ],
+      "solution": "TP = sum(1 for true, pred in zip(y_true, y_pred) if true == 1 and pred == 1)\nTN = sum(1 for true, pred in zip(y_true, y_pred) if true == 0 and pred == 0)\nFP = sum(1 for true, pred in zip(y_true, y_pred) if true == 0 and pred == 1)\nFN = sum(1 for true, pred in zip(y_true, y_pred) if true == 1 and pred == 0)\nreturn {'TP': TP, 'TN': TN, 'FP': FP, 'FN': FN}"
+    },
+    {
+      "id": 11,
+      "title": "Precision və Recall",
+      "description": "Precision və Recall metrikalarını hesablayın",
+      "initialCode": "def precision_recall(y_true, y_pred):\n    # Kodunuzu buraya yazın\n    return 0, 0\n\n# Test\nprec, rec = precision_recall([0,1,0,1], [0,1,1,0])\nprint(f\"Precision: {prec}, Recall: {rec}\")",
+      "tests": [
+        {
+          "input": "precision_recall([1,1,0,0], [1,0,0,1])",
+          "expected": "(0.5, 0.5)",
+          "description": "Precision və Recall düzgün hesablanmalıdır"
+        }
+      ],
+      "solution": "cm = confusion_matrix(y_true, y_pred)\nprecision = cm['TP'] / (cm['TP'] + cm['FP']) if (cm['TP'] + cm['FP']) > 0 else 0\nrecall = cm['TP'] / (cm['TP'] + cm['FN']) if (cm['TP'] + cm['FN']) > 0 else 0\nreturn precision, recall"
+    },
+    {
+      "id": 12,
+      "title": "K-Means Clustering",
+      "description": "Sadə K-Means clustering alqoritmini implementasiya edin",
+      "initialCode": "import random\n\ndef k_means(X, k=2, max_iters=100):\n    # Kodunuzu buraya yazın\n    return [], []\n\n# Test\nX = [[1, 2], [1, 4], [1, 0], [10, 2], [10, 4], [10, 0]]\ncentroids, labels = k_means(X)\nprint(\"Centroids:\", centroids)\nprint(\"Labels:\", labels)",
+      "tests": [
+        {
+          "input": "len(k_means([[1,1],[2,2],[8,8],[9,9]], 2)[0])",
+          "expected": "2",
+          "description": "K-Means 2 centroid qaytarmalıdır"
+        }
+      ],
+      "solution": "centroids = random.sample(X, k)\nfor _ in range(max_iters):\n    clusters = [[] for _ in range(k)]\n    for point in X:\n        distances = [sum((a - b) ** 2 for a, b in zip(point, centroid)) for centroid in centroids]\n        cluster_idx = distances.index(min(distances))\n        clusters[cluster_idx].append(point)\n    \n    new_centroids = []\n    for cluster in clusters:\n        if cluster:\n            new_centroid = [sum(dim) / len(cluster) for dim in zip(*cluster)]\n            new_centroids.append(new_centroid)\n        else:\n            new_centroids.append(centroids[clusters.index(cluster)])\n    \n    if new_centroids == centroids:\n        break\n    centroids = new_centroids\n\nlabels = []\nfor point in X:\n    distances = [sum((a - b) ** 2 for a, b in zip(point, centroid)) for centroid in centroids]\n    labels.append(distances.index(min(distances)))\n\nreturn centroids, labels"
+    },
+    {
+      "id": 13,
+      "title": "PCA - Principal Component Analysis",
+      "description": "Sadə PCA implementasiyası",
+      "initialCode": "import numpy as np\n\ndef pca(X, n_components=2):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nX = [[1, 2], [3, 4], [5, 6]]\nresult = pca(X)\nprint(\"PCA result shape:\", len(result))",
+      "tests": [
+        {
+          "input": "len(pca([[1,2],[3,4],[5,6]], 1))",
+          "expected": "3",
+          "description": "PCA düzgün ölçü azaltmalıdır"
+        }
+      ],
+      "solution": "X = np.array(X)\nX_meaned = X - np.mean(X, axis=0)\ncov_mat = np.cov(X_meaned, rowvar=False)\neigen_values, eigen_vectors = np.linalg.eigh(cov_mat)\nsorted_index = np.argsort(eigen_values)[::-1]\nsorted_eigenvectors = eigen_vectors[:, sorted_index]\neigenvector_subset = sorted_eigenvectors[:, 0:n_components]\nX_reduced = np.dot(eigenvector_subset.transpose(), X_meaned.transpose()).transpose()\nreturn X_reduced.tolist()"
+    },
+    {
+      "id": 14,
+      "title": "Linear Regression",
+      "description": "Sadə linear regression modeli",
+      "initialCode": "def linear_regression_fit(X, y):\n    # Kodunuzu buraya yazın\n    return 0, 0\n\ndef linear_regression_predict(w, b, X):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nX = [1, 2, 3, 4, 5]\ny = [2, 4, 6, 8, 10]\nw, b = linear_regression_fit(X, y)\npredictions = linear_regression_predict(w, b, [6, 7])\nprint(f\"w: {w}, b: {b}\")\nprint(\"Predictions:\", predictions)",
+      "tests": [
+        {
+          "input": "linear_regression_predict(*linear_regression_fit([1,2,3],[2,4,6]), [4])",
+          "expected": "[8.0]",
+          "description": "Linear regression düzgün proqnoz verməlidir"
+        }
+      ],
+      "solution": "def linear_regression_fit(X, y):\n    n = len(X)\n    sum_x = sum(X)\n    sum_y = sum(y)\n    sum_xy = sum(x * y for x, y in zip(X, y))\n    sum_x2 = sum(x ** 2 for x in X)\n    \n    w = (n * sum_xy - sum_x * sum_y) / (n * sum_x2 - sum_x ** 2)\n    b = (sum_y - w * sum_x) / n\n    \n    return w, b\n\ndef linear_regression_predict(w, b, X):\n    return [w * x + b for x in X]"
+    },
+    {
+      "id": 15,
+      "title": "Logistic Regression",
+      "description": "Sadə logistic regression modeli",
+      "initialCode": "import math\n\ndef logistic_regression_fit(X, y, learning_rate=0.01, epochs=1000):\n    # Kodunuzu buraya yazın\n    return 0, 0\n\ndef logistic_regression_predict(w, b, X):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nX = [[1], [2], [3], [4]]\ny = [0, 0, 1, 1]\nw, b = logistic_regression_fit(X, y)\npredictions = logistic_regression_predict(w, b, [[5]])\nprint(f\"w: {w}, b: {b}\")\nprint(\"Prediction for 5:\", predictions[0])",
+      "tests": [
+        {
+          "input": "logistic_regression_predict(*logistic_regression_fit([[1],[2]],[0,1]), [[3]])[0] > 0.5",
+          "expected": "True",
+          "description": "Logistic regression düzgün ehtimal verməlidir"
+        }
+      ],
+      "solution": "def logistic_regression_fit(X, y, learning_rate=0.01, epochs=1000):\n    w = 0\n    b = 0\n    n = len(X)\n    \n    for _ in range(epochs):\n        for i in range(n):\n            z = w * X[i][0] + b\n            prediction = 1 / (1 + math.exp(-z))\n            \n            dw = X[i][0] * (prediction - y[i])\n            db = prediction - y[i]\n            \n            w -= learning_rate * dw\n            b -= learning_rate * db\n    \n    return w, b\n\ndef logistic_regression_predict(w, b, X):\n    predictions = []\n    for x in X:\n        z = w * x[0] + b\n        prediction = 1 / (1 + math.exp(-z))\n        predictions.append(prediction)\n    return predictions"
+    },
+    {
+      "id": 16,
+      "title": "Cross-Entropy Loss",
+      "description": "Cross-entropy loss funksiyasını hesablayın",
+      "initialCode": "import math\n\ndef cross_entropy_loss(y_true, y_pred):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nresult = cross_entropy_loss([1, 0], [0.9, 0.1])\nprint(\"Cross-entropy loss:\", result)",
+      "tests": [
+        {
+          "input": "cross_entropy_loss([1,0], [0.9,0.1])",
+          "expected": "0.10536051565782628",
+          "description": "Cross-entropy loss düzgün hesablanmalıdır"
+        }
+      ],
+      "solution": "loss = 0\nfor i in range(len(y_true)):\n    loss += -y_true[i] * math.log(y_pred[i]) - (1 - y_true[i]) * math.log(1 - y_pred[i])\nreturn loss / len(y_true)"
+    },
+    {
+      "id": 17,
+      "title": "Feature Scaling - Standardization",
+      "description": "Feature'ları standardize edin",
+      "initialCode": "def standardize_features(X):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nresult = standardize_features([[1, 2], [3, 4], [5, 6]])\nprint(\"Standardized features:\", result)",
+      "tests": [
+        {
+          "input": "standardize_features([[1,2],[3,4]])",
+          "expected": "[[-1.0,-1.0],[1.0,1.0]]",
+          "description": "Feature'lar düzgün standardize olunmalıdır"
+        }
+      ],
+      "solution": "import numpy as np\nX = np.array(X)\nmean = np.mean(X, axis=0)\nstd = np.std(X, axis=0)\nX_standardized = (X - mean) / std\nreturn X_standardized.tolist()"
+    },
+    {
+      "id": 18,
+      "title": "Batch Gradient Descent",
+      "description": "Batch gradient descent optimizasiya alqoritmi",
+      "initialCode": "def batch_gradient_descent(X, y, learning_rate=0.01, epochs=1000):\n    # Kodunuzu buraya yazın\n    return [], 0\n\n# Test\nX = [[1], [2], [3]]\ny = [2, 4, 6]\nweights, bias = batch_gradient_descent(X, y)\nprint(f\"Weights: {weights}, Bias: {bias}\")",
+      "tests": [
+        {
+          "input": "batch_gradient_descent([[1],[2]],[2,4])",
+          "expected": "([2.0], 0.0)",
+          "description": "Batch GD düzgün parametrlər tapmalıdır"
+        }
+      ],
+      "solution": "n_samples = len(X)\nn_features = len(X[0])\nweights = [0] * n_features\nbias = 0\n\nfor _ in range(epochs):\n    y_pred = [sum(w * x for w, x in zip(weights, X[i])) + bias for i in range(n_samples)]\n    \n    dw = [0] * n_features\n    for j in range(n_features):\n        dw[j] = (-2 / n_samples) * sum(X[i][j] * (y[i] - y_pred[i]) for i in range(n_samples))\n    db = (-2 / n_samples) * sum(y[i] - y_pred[i] for i in range(n_samples))\n    \n    weights = [w - learning_rate * dw_j for w, dw_j in zip(weights, dw)]\n    bias -= learning_rate * db\n\nreturn weights, bias"
+    },
+    {
+      "id": 19,
+      "title": "Random Forest Prediction",
+      "description": "Random Forest üçün prediction funksiyası",
+      "initialCode": "def random_forest_predict(trees, X):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\ntrees = [\n    lambda x: 0 if x[0] < 2.5 else 1,\n    lambda x: 0 if x[1] < 2.5 else 1\n]\nresult = random_forest_predict(trees, [[1, 3], [3, 1]])\nprint(\"Random Forest predictions:\", result)",
+      "tests": [
+        {
+          "input": "random_forest_predict([lambda x: 0, lambda x: 1], [[1]])",
+          "expected": "[0]",
+          "description": "Random Forest voting etməlidir"
+        }
+      ],
+      "solution": "predictions = []\nfor sample in X:\n    tree_predictions = [tree(sample) for tree in trees]\n    final_prediction = max(set(tree_predictions), key=tree_predictions.count)\n    predictions.append(final_prediction)\nreturn predictions"
+    },
+    {
+      "id": 20,
+      "title": "Neural Network Forward Pass",
+      "description": "Sadə neural network'un forward pass'i",
+      "initialCode": "import math\n\ndef neural_network_forward(X, weights, biases):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nX = [[1, 2]]\nweights = [[[0.5, 0.1], [0.2, 0.3]], [[0.4, 0.6]]]\nbiases = [[0.1, 0.2], [0.3]]\nresult = neural_network_forward(X, weights, biases)\nprint(\"Neural Network output:\", result)",
+      "tests": [
+        {
+          "input": "neural_network_forward([[1,1]], [[[1,1],[1,1]], [[1,1]]], [[0,0],[0]])",
+          "expected": "[[0.881, 0.881]]",
+          "description": "Neural network düzgün forward pass etməlidir"
+        }
+      ],
+      "solution": "def sigmoid(x):\n    return 1 / (1 + math.exp(-x))\n\ndef neural_network_forward(X, weights, biases):\n    layer_output = X\n    \n    for i in range(len(weights)):\n        new_output = []\n        for j in range(len(weights[i][0])):\n            neuron_sum = biases[i][j]\n            for k in range(len(layer_output[0])):\n                for sample in layer_output:\n                    neuron_sum += sample[k] * weights[i][k][j]\n            new_output.append(sigmoid(neuron_sum))\n        layer_output = [new_output]\n    \n    return layer_output"
+    },
+    {
+      "id": 21,
+      "title": "Adam Optimizer",
+      "description": "Adam optimizasiya alqoritmini implementasiya edin",
+      "initialCode": "def adam_optimizer(gradients, m, v, t, learning_rate=0.001, beta1=0.9, beta2=0.999, epsilon=1e-8):\n    # Kodunuzu buraya yazın\n    return updated_params, m, v\n\n# Test\ngradients = [0.5, -0.3, 0.8]\nm = [0, 0, 0]\nv = [0, 0, 0]\nt = 1\nresult = adam_optimizer(gradients, m, v, t)\nprint(\"Adam update:\", result)",
+      "tests": [
+        {
+          "input": "adam_optimizer([0.1, 0.2], [0,0], [0,0], 1)",
+          "expected": "([-0.001, -0.002], [0.1, 0.2], [0.01, 0.04])",
+          "description": "Adam optimizer düzgün işləməlidir"
+        }
+      ],
+      "solution": "updated_params = []\nnew_m = []\nnew_v = []\nfor i in range(len(gradients)):\n    m_i = beta1 * m[i] + (1 - beta1) * gradients[i]\n    v_i = beta2 * v[i] + (1 - beta2) * (gradients[i] ** 2)\n    \n    m_hat = m_i / (1 - beta1 ** t)\n    v_hat = v_i / (1 - beta2 ** t)\n    \n    param_update = learning_rate * m_hat / (v_hat ** 0.5 + epsilon)\n    updated_params.append(-param_update)\n    new_m.append(m_i)\n    new_v.append(v_i)\n\nreturn updated_params, new_m, new_v"
+    },
+    {
+      "id": 22,
+      "title": "Transformer Positional Encoding",
+      "description": "Transformer modeli üçün positional encoding hesablayın",
+      "initialCode": "import math\n\ndef positional_encoding(seq_len, d_model):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nresult = positional_encoding(3, 4)\nprint(\"Positional encoding:\", result)",
+      "tests": [
+        {
+          "input": "len(positional_encoding(2, 4))",
+          "expected": "2",
+          "description": "Positional encoding düzgün ölçüdə olmalıdır"
+        }
+      ],
+      "solution": "pe = []\nfor pos in range(seq_len):\n    encoding = []\n    for i in range(d_model):\n        if i % 2 == 0:\n            value = math.sin(pos / (10000 ** (i / d_model)))\n        else:\n            value = math.cos(pos / (10000 ** ((i-1) / d_model)))\n        encoding.append(value)\n    pe.append(encoding)\nreturn pe"
+    },
+    {
+      "id": 23,
+      "title": "Attention Mechanism",
+      "description": "Sadə attention mechanism implementasiyası",
+      "initialCode": "import math\n\ndef attention(query, key, value):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nquery = [[1, 2]]\nkey = [[1, 0], [0, 1]]\nvalue = [[1, 2], [3, 4]]\nresult = attention(query, key, value)\nprint(\"Attention output:\", result)",
+      "tests": [
+        {
+          "input": "attention([[1,1]], [[1,1],[1,1]], [[1,0],[0,1]])",
+          "expected": "[[0.5, 0.5]]",
+          "description": "Attention düzgün hesablanmalıdır"
+        }
+      ],
+      "solution": "def softmax(x):\n    exp_x = [math.exp(i) for i in x]\n    sum_exp = sum(exp_x)\n    return [i/sum_exp for i in exp_x]\n\nscores = []\nfor k in key:\n    score = sum(q * k for q, k in zip(query[0], k))\n    scores.append(score)\n\nweights = softmax(scores)\noutput = [0] * len(value[0])\nfor i in range(len(weights)):\n    for j in range(len(value[i])):\n        output[j] += weights[i] * value[i][j]\n\nreturn [output]"
+    },
+    {
+      "id": 24,
+      "title": "Batch Normalization",
+      "description": "Batch normalization layer implementasiyası",
+      "initialCode": "def batch_norm(x, gamma=1, beta=0, epsilon=1e-5):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nresult = batch_norm([[1, 2], [3, 4]])\nprint(\"Batch norm:\", result)",
+      "tests": [
+        {
+          "input": "batch_norm([[1,1],[1,1]])",
+          "expected": "[[0.0,0.0],[0.0,0.0]]",
+          "description": "Batch normalization düzgün işləməlidir"
+        }
+      ],
+      "solution": "import numpy as np\nx = np.array(x)\nmean = np.mean(x, axis=0)\nvar = np.var(x, axis=0)\nx_normalized = (x - mean) / np.sqrt(var + epsilon)\noutput = gamma * x_normalized + beta\nreturn output.tolist()"
+    },
+    {
+      "id": 25,
+      "title": "Word2Vec Skip-gram",
+      "description": "Word2Vec Skip-gram modelinin negative sampling'i",
+      "initialCode": "def skip_gram_negative_sampling(target_word, context_word, negative_samples, vocab_size, embedding_dim=50):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nloss = skip_gram_negative_sampling(1, 2, [3, 4, 5], 100)\nprint(\"Skip-gram loss:\", loss)",
+      "tests": [
+        {
+          "input": "skip_gram_negative_sampling(0, 1, [2,3], 10) > 0",
+          "expected": "True",
+          "description": "Loss müsbət olmalıdır"
+        }
+      ],
+      "solution": "import math\nimport random\n\n# Simvolyozasiya üçün\nW = [[random.random() for _ in range(embedding_dim)] for _ in range(vocab_size)]\n\nloss = 0\n# Positive sample\npos_score = sum(W[target_word][i] * W[context_word][i] for i in range(embedding_dim))\nloss += -math.log(1 / (1 + math.exp(-pos_score)))\n\n# Negative samples\nfor neg_word in negative_samples:\n    neg_score = sum(W[target_word][i] * W[neg_word][i] for i in range(embedding_dim))\n    loss += -math.log(1 - 1 / (1 + math.exp(-neg_score)))\n\nreturn loss"
+    },
+    {
+      "id": 26,
+      "title": "GAN Generator Loss",
+      "description": "GAN generator loss funksiyasını hesablayın",
+      "initialCode": "def generator_loss(fake_predictions):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nresult = generator_loss([0.1, 0.9, 0.8])\nprint(\"Generator loss:\", result)",
+      "tests": [
+        {
+          "input": "generator_loss([0.9,0.9,0.9])",
+          "expected": "0.10536051565782628",
+          "description": "Generator loss düzgün hesablanmalıdır"
+        }
+      ],
+      "solution": "import math\nloss = 0\nfor pred in fake_predictions:\n    loss += math.log(pred)\nreturn -loss / len(fake_predictions)"
+    },
+    {
+      "id": 27,
+      "title": "CNN Convolution Operation",
+      "description": "Convolution operationunu implementasiya edin",
+      "initialCode": "def convolve2d(image, kernel):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nimage = [[1,2,3],[4,5,6],[7,8,9]]\nkernel = [[1,0],[0,1]]\nresult = convolve2d(image, kernel)\nprint(\"Convolution result:\", result)",
+      "tests": [
+        {
+          "input": "convolve2d([[1,1],[1,1]], [[1,1],[1,1]])",
+          "expected": "[[4]]",
+          "description": "Convolution düzgün işləməlidir"
+        }
+      ],
+      "solution": "import numpy as np\nimage = np.array(image)\nkernel = np.array(kernel)\ni_height, i_width = image.shape\nk_height, k_width = kernel.shape\n\noutput_height = i_height - k_height + 1\noutput_width = i_width - k_width + 1\n\nresult = []\nfor i in range(output_height):\n    row = []\n    for j in range(output_width):\n        window = image[i:i+k_height, j:j+k_width]\n        value = np.sum(window * kernel)\n        row.append(value)\n    result.append(row)\n\nreturn result"
+    },
+    {
+      "id": 28,
+      "title": "LSTM Cell",
+      "description": "LSTM cell'in forward pass'ini implementasiya edin",
+      "initialCode": "import math\n\ndef lstm_cell(x, h_prev, c_prev, Wf, Wi, Wo, Wc, bf, bi, bo, bc):\n    # Kodunuzu buraya yazın\n    return h_next, c_next\n\n# Test\nx = [0.5, 0.3]\nh_prev = [0, 0]\nc_prev = [0, 0]\n# Weights və biases\nresult = lstm_cell(x, h_prev, c_prev, [1,1], [1,1], [1,1], [1,1], 0, 0, 0, 0)\nprint(\"LSTM output:\", result)",
+      "tests": [
+        {
+          "input": "lstm_cell([1],[0],[0],[1],[1],[1],[1],0,0,0,0)",
+          "expected": "([0.5],[0.5])",
+          "description": "LSTM cell düzgün işləməlidir"
+        }
+      ],
+      "solution": "def sigmoid(x):\n    return 1 / (1 + math.exp(-x))\n\ndef tanh(x):\n    return math.tanh(x)\n\n# Gate calculations\nf = sigmoid(sum(x * w for x, w in zip(x, Wf)) + sum(h * w for h, w in zip(h_prev, Wf)) + bf)\ni = sigmoid(sum(x * w for x, w in zip(x, Wi)) + sum(h * w for h, w in zip(h_prev, Wi)) + bi)\no = sigmoid(sum(x * w for x, w in zip(x, Wo)) + sum(h * w for h, w in zip(h_prev, Wo)) + bo)\n\n# Candidate cell state\nc_candidate = tanh(sum(x * w for x, w in zip(x, Wc)) + sum(h * w for h, w in zip(h_prev, Wc)) + bc)\n\n# New cell state\nc_next = [f_val * c_prev_val + i_val * c_candidate_val for f_val, c_prev_val, i_val, c_candidate_val in zip(f, c_prev, i, c_candidate)]\n\n# New hidden state\nh_next = [o_val * tanh(c_val) for o_val, c_val in zip(o, c_next)]\n\nreturn h_next, c_next"
+    },
+    {
+      "id": 29,
+      "title": "Autoencoder",
+      "description": "Sadə autoencoder'in forward pass'ini implementasiya edin",
+      "initialCode": "import math\n\ndef autoencoder_forward(x, encoder_weights, decoder_weights):\n    # Kodunuzu buraya yazın\n    return reconstructed\n\n# Test\nx = [1, 2, 3]\nencoder_weights = [[0.1, 0.2], [0.3, 0.4], [0.5, 0.6]]\ndecoder_weights = [[0.1, 0.2, 0.3], [0.4, 0.5, 0.6]]\nresult = autoencoder_forward(x, encoder_weights, decoder_weights)\nprint(\"Autoencoder output:\", result)",
+      "tests": [
+        {
+          "input": "autoencoder_forward([1,1],[[1,0],[0,1]],[[1,0],[0,1]])",
+          "expected": "[1,1]",
+          "description": "Autoencoder düzgün işləməlidir"
+        }
+      ],
+      "solution": "def relu(x):\n    return max(0, x)\n\n# Encoding\nencoded = []\nfor j in range(len(encoder_weights[0])):\n    neuron_sum = 0\n    for i in range(len(x)):\n        neuron_sum += x[i] * encoder_weights[i][j]\n    encoded.append(relu(neuron_sum))\n\n# Decoding\nreconstructed = []\nfor j in range(len(decoder_weights[0])):\n    neuron_sum = 0\n    for i in range(len(encoded)):\n        neuron_sum += encoded[i] * decoder_weights[i][j]\n    reconstructed.append(relu(neuron_sum))\n\nreturn reconstructed"
+    },
+    {
+      "id": 30,
+      "title": "K-Fold Cross Validation",
+      "description": "K-fold cross validation alqoritmini implementasiya edin",
+      "initialCode": "def k_fold_split(X, y, k=5):\n    # Kodunuzu buraya yazın\n    return folds\n\n# Test\nX = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\ny = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1]\nresult = k_fold_split(X, y, 3)\nprint(\"K-fold splits:\", len(result))",
+      "tests": [
+        {
+          "input": "len(k_fold_split([1,2,3,4],[0,1,0,1],2))",
+          "expected": "2",
+          "description": "K-fold düzgün split etməlidir"
+        }
+      ],
+      "solution": "import random\n\n# Dataı qarışdır\ncombined = list(zip(X, y))\nrandom.shuffle(combined)\nX_shuffled, y_shuffled = zip(*combined)\n\nfold_size = len(X) // k\nfolds = []\n\nfor i in range(k):\n    start = i * fold_size\n    end = (i + 1) * fold_size if i < k - 1 else len(X)\n    \n    X_test = list(X_shuffled[start:end])\n    y_test = list(y_shuffled[start:end])\n    \n    X_train = list(X_shuffled[:start]) + list(X_shuffled[end:])\n    y_train = list(y_shuffled[:start]) + list(y_shuffled[end:])\n    \n    folds.append(((X_train, y_train), (X_test, y_test)))\n\nreturn folds"
+    },
+    {
+      "id": 31,
+      "title": "DBSCAN Clustering",
+      "description": "DBSCAN clustering alqoritmini implementasiya edin",
+      "initialCode": "import math\n\ndef dbscan(X, eps=0.5, min_samples=2):\n    # Kodunuzu buraya yazın\n    return labels\n\n# Test\nX = [[1, 2], [1, 1], [2, 2], [8, 8], [9, 9]]\nresult = dbscan(X)\nprint(\"DBSCAN labels:\", result)",
+      "tests": [
+        {
+          "input": "dbscan([[1,1],[1,2],[8,8]])",
+          "expected": "[0,0,1]",
+          "description": "DBSCAN düzgün cluster etməlidir"
+        }
+      ],
+      "solution": "def euclidean_distance(a, b):\n    return math.sqrt(sum((x - y) ** 2 for x, y in zip(a, b)))\n\nlabels = [-1] * len(X)  # -1 means noise\ncluster_id = 0\n\nfor i in range(len(X)):\n    if labels[i] != -1:\n        continue\n    \n    # Find neighbors\n    neighbors = []\n    for j in range(len(X)):\n        if euclidean_distance(X[i], X[j]) <= eps:\n            neighbors.append(j)\n    \n    if len(neighbors) < min_samples:\n        continue  # Noise point\n    \n    # Start new cluster\n    labels[i] = cluster_id\n    \n    # Expand cluster\n    seed_set = set(neighbors)\n    seed_set.discard(i)\n    \n    while seed_set:\n        j = seed_set.pop()\n        \n        if labels[j] == -1:\n            labels[j] = cluster_id\n        elif labels[j] != -1:\n            continue\n        \n        # Find neighbors of neighbor\n        j_neighbors = []\n        for k in range(len(X)):\n            if euclidean_distance(X[j], X[k]) <= eps:\n                j_neighbors.append(k)\n        \n        if len(j_neighbors) >= min_samples:\n            seed_set.update(j_neighbors)\n    \n    cluster_id += 1\n\nreturn labels"
+    },
+    {
+      "id": 32,
+      "title": "XGBoost Gradient Calculation",
+      "description": "XGBoost üçün gradient və hessian hesablayın",
+      "initialCode": "def xgboost_gradients(y_true, y_pred):\n    # Kodunuzu buraya yazın\n    return grad, hess\n\n# Test\ngrad, hess = xgboost_gradients([1, 0, 1], [0.9, 0.2, 0.8])\nprint(f\"Gradients: {grad}, Hessians: {hess}\")",
+      "tests": [
+        {
+          "input": "xgboost_gradients([1,0],[0.9,0.1])",
+          "expected": "([-0.1, 0.1], [0.09, 0.09])",
+          "description": "Gradient və hessian düzgün hesablanmalıdır"
+        }
+      ],
+      "solution": "import math\n\ngrad = []\nhess = []\n\nfor true, pred in zip(y_true, y_pred):\n    # Logistic loss üçün gradient və hessian\n    p = 1 / (1 + math.exp(-pred))\n    gradient = p - true\n    hessian = p * (1 - p)\n    \n    grad.append(gradient)\n    hess.append(hessian)\n\nreturn grad, hess"
+    },
+    {
+      "id": 33,
+      "title": "SVM Hinge Loss",
+      "description": "SVM üçün hinge loss funksiyasını hesablayın",
+      "initialCode": "def hinge_loss(y_true, y_pred):\n    # Kodunuzu buraya yazın\n    return loss\n\n# Test\nresult = hinge_loss([1, -1, 1], [0.8, -0.5, 1.2])\nprint(\"Hinge loss:\", result)",
+      "tests": [
+        {
+          "input": "hinge_loss([1,-1],[1.5,-0.5])",
+          "expected": "0.0",
+          "description": "Hinge loss düzgün hesablanmalıdır"
+        }
+      ],
+      "solution": "loss = 0\nfor true, pred in zip(y_true, y_pred):\n    margin = true * pred\n    loss += max(0, 1 - margin)\nreturn loss / len(y_true)"
+    },
+    {
+      "id": 34,
+      "title": "RBF Kernel",
+      "description": "Radial Basis Function kernelini hesablayın",
+      "initialCode": "import math\n\ndef rbf_kernel(X1, X2, gamma=0.1):\n    # Kodunuzu buraya yazın\n    return kernel_matrix\n\n# Test\nresult = rbf_kernel([[1, 2]], [[3, 4]])\nprint(\"RBF kernel:\", result)",
+      "tests": [
+        {
+          "input": "rbf_kernel([[1,1]],[[1,1]])",
+          "expected": "[[1.0]]",
+          "description": "RBF kernel düzgün hesablanmalıdır"
+        }
+      ],
+      "solution": "kernel_matrix = []\nfor x1 in X1:\n    row = []\n    for x2 in X2:\n        distance_sq = sum((a - b) ** 2 for a, b in zip(x1, x2))\n        kernel_value = math.exp(-gamma * distance_sq)\n        row.append(kernel_value)\n    kernel_matrix.append(row)\nreturn kernel_matrix"
+    },
+    {
+      "id": 35,
+      "title": "Policy Gradient",
+      "description": "REINFORCE alqoritmi üçün policy gradient hesablayın",
+      "initialCode": "def policy_gradient(log_probs, rewards, baseline=0):\n    # Kodunuzu buraya yazın\n    return gradient\n\n# Test\nresult = policy_gradient([-0.5, -1.0], [1, 2])\nprint(\"Policy gradient:\", result)",
+      "tests": [
+        {
+          "input": "policy_gradient([-0.1,-0.2],[1,2])",
+          "expected": "[-0.1,-0.4]",
+          "description": "Policy gradient düzgün hesablanmalıdır"
+        }
+      ],
+      "solution": "gradient = []\nfor log_prob, reward in zip(log_probs, rewards):\n    advantage = reward - baseline\n    grad = -log_prob * advantage  # Negative for gradient ascent\n    gradient.append(grad)\nreturn gradient"
+    },
+    {
+      "id": 36,
+      "title": "EM Algorithm - Gaussian Mixture",
+      "description": "EM alqoritminin E-step'ini implementasiya edin",
+      "initialCode": "import math\n\ndef em_estep(X, means, covariances, weights):\n    # Kodunuzu buraya yazın\n    return responsibilities\n\n# Test\nX = [[1], [2], [3]]\nmeans = [[1.5], [2.5]]\ncovariances = [[1], [1]]\nweights = [0.5, 0.5]\nresult = em_estep(X, means, covariances, weights)\nprint(\"Responsibilities:\", result)",
+      "tests": [
+        {
+          "input": "len(em_estep([[1],[2]],[[1],[2]],[1,1],[0.5,0.5]))",
+          "expected": "2",
+          "description": "E-step düzgün responsibilites qaytarmalıdır"
+        }
+      ],
+      "solution": "def gaussian_pdf(x, mean, cov):\n    return (1 / math.sqrt(2 * math.pi * cov)) * math.exp(-0.5 * (x[0] - mean[0]) ** 2 / cov)\n\nresponsibilities = []\nfor x in X:\n    probs = []\n    for k in range(len(means)):\n        prob = weights[k] * gaussian_pdf(x, means[k], covariances[k])\n        probs.append(prob)\n    \n    total_prob = sum(probs)\n    if total_prob > 0:\n        responsibilities.append([p / total_prob for p in probs])\n    else:\n        responsibilities.append([1/len(means)] * len(means))\n\nreturn responsibilities"
+    },
+    {
+      "id": 37,
+      "title": "t-SNE Similarity",
+      "description": "t-SNE üçün similarity matrisini hesablayın",
+      "initialCode": "import math\n\ndef tsne_similarities(X, perplexity=30):\n    # Kodunuzu buraya yazın\n    return P\n\n# Test\nresult = tsne_similarities([[1, 2], [3, 4]])\nprint(\"t-SNE similarities:\", result)",
+      "tests": [
+        {
+          "input": "tsne_similarities([[1,1],[2,2]])",
+          "expected": "[[0.0,1.0],[1.0,0.0]]",
+          "description": "t-SNE similarities düzgün hesablanmalıdır"
+        }
+      ],
+      "solution": "def euclidean_distance(a, b):\n    return math.sqrt(sum((x - y) ** 2 for x, y in zip(a, b)))\n\nn = len(X)\nP = [[0.0] * n for _ in range(n)]\n\nfor i in range(n):\n    # Calculate pairwise distances\n    distances = []\n    for j in range(n):\n        if i != j:\n            dist = euclidean_distance(X[i], X[j])\n            distances.append((j, dist))\n    \n    # Convert distances to similarities (simplified)\n    total_sim = sum(1/(1 + dist) for _, dist in distances)\n    for j, dist in distances:\n        P[i][j] = (1/(1 + dist)) / total_sim\n\nreturn P"
+    },
+    {
+      "id": 38,
+      "title": "Q-Learning Update",
+      "description": "Q-learning alqoritmi üçün update rule implementasiya edin",
+      "initialCode": "def q_learning_update(Q, state, action, reward, next_state, alpha=0.1, gamma=0.9):\n    # Kodunuzu buraya yazın\n    return Q\n\n# Test\nQ = {(0,0): {'up': 0, 'down': 0, 'left': 0, 'right': 0}}\nresult = q_learning_update(Q, (0,0), 'right', 1, (0,1))\nprint(\"Updated Q:\", result)",
+      "tests": [
+        {
+          "input": "q_learning_update({(0,0):{'a':0}},(0,0),'a',1,(0,0))[(0,0)]['a'] > 0",
+          "expected": "True",
+          "description": "Q-learning düzgün update etməlidir"
+        }
+      ],
+      "solution": "current_q = Q[state][action]\nmax_next_q = max(Q.get(next_state, {'default': 0}).values()) if Q.get(next_state) else 0\n\nnew_q = current_q + alpha * (reward + gamma * max_next_q - current_q)\n\nif state not in Q:\n    Q[state] = {}\nQ[state][action] = new_q\n\nreturn Q"
+    },
+    {
+      "id": 39,
+      "title": "BERT Masked Language Model",
+      "description": "BERT üçün masked language model loss'u hesablayın",
+      "initialCode": "import math\n\ndef bert_mlm_loss(masked_logits, target_ids, vocab_size):\n    # Kodunuzu buraya yazın\n    return loss\n\n# Test\nresult = bert_mlm_loss([[0.1, 0.9], [0.8, 0.2]], [1, 0], 2)\nprint(\"MLM loss:\", result)",
+      "tests": [
+        {
+          "input": "bert_mlm_loss([[0.9,0.1]],[1],2) > 0",
+          "expected": "True",
+          "description": "MLM loss müsbət olmalıdır"
+        }
+      ],
+      "solution": "loss = 0\nfor logits, target in zip(masked_logits, target_ids):\n    # Softmax\n    exp_logits = [math.exp(l) for l in logits]\n    sum_exp = sum(exp_logits)\n    probs = [e/sum_exp for e in exp_logits]\n    \n    # Cross-entropy loss\n    loss += -math.log(probs[target])\n\nreturn loss / len(masked_logits)"
+    },
+    {
+      "id": 40,
+      "title": "Graph Neural Network - Message Passing",
+      "description": "GNN üçün message passing layer implementasiya edin",
+      "initialCode": "def gnn_message_passing(node_features, adjacency_list, weights):\n    # Kodunuzu buraya yazın\n    return updated_features\n\n# Test\nnode_features = [[1, 2], [3, 4], [5, 6]]\nadjacency_list = [[1, 2], [0], [0]]\nweights = [[0.1, 0.2], [0.3, 0.4]]\nresult = gnn_message_passing(node_features, adjacency_list, weights)\nprint(\"GNN output:\", result)",
+      "tests": [
+        {
+          "input": "gnn_message_passing([[1,1]],[[0]],[1,1])",
+          "expected": "[[2,2]]",
+          "description": "GNN düzgün message passing etməlidir"
+        }
+      ],
+      "solution": "def relu(x):\n    return max(0, x)\n\nupdated_features = []\nfor i in range(len(node_features)):\n    # Aggregate neighbor messages\n    neighbor_messages = []\n    for neighbor in adjacency_list[i]:\n        # Transform neighbor features\n        transformed = []\n        for j in range(len(weights[0])):\n            value = sum(node_features[neighbor][k] * weights[k][j] for k in range(len(node_features[neighbor])))\n            transformed.append(relu(value))\n        neighbor_messages.append(transformed)\n    \n    # Average neighbor messages\n    if neighbor_messages:\n        aggregated = [sum(dim) / len(neighbor_messages) for dim in zip(*neighbor_messages)]\n    else:\n        aggregated = [0] * len(weights[0])\n    \n    # Combine with self features\n    new_features = []\n    for j in range(len(weights[0])):\n        self_contribution = sum(node_features[i][k] * weights[k][j] for k in range(len(node_features[i])))\n        combined = self_contribution + aggregated[j]\n        new_features.append(relu(combined))\n    \n    updated_features.append(new_features)\n\nreturn updated_features"
+    }
+  ]
+}

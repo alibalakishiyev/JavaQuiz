@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
-    id("com.chaquo.python") version "16.0.0"
+    id("com.chaquo.python") version "16.1.0"
 }
 
 android {
@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId = "com.ali.systemIn"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 34
         versionCode = 3
         versionName = "0.3"
 
@@ -38,8 +38,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     buildFeatures {
@@ -51,17 +51,22 @@ android {
 
 }
 
+chaquopy {
+
+}
+
+
 dependencies {
     // Firebase Libraries
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))  // Firebase BOM (Bill of Materials)
     implementation("com.google.firebase:firebase-analytics-ktx")          // Firebase Analytics
-    implementation("com.google.firebase:firebase-database:21.0.0")
-    implementation("com.google.firebase:firebase-storage:21.0.1")
-    implementation("com.google.firebase:firebase-auth:23.2.0")
-    implementation("com.google.firebase:firebase-firestore:25.1.3")
+    implementation("com.google.firebase:firebase-database:22.0.1")
+    implementation("com.google.firebase:firebase-storage:22.0.1")
+    implementation("com.google.firebase:firebase-auth:24.0.1")
+    implementation("com.google.firebase:firebase-firestore:26.0.2")
 
     // Google Play Services and Ads
-    implementation("com.google.android.gms:play-services-ads-lite:24.0.0")
+    implementation("com.google.android.gms:play-services-ads-lite:24.6.0")
 
     // Picasso for image loading
     implementation("com.squareup.picasso:picasso:2.8")
@@ -87,10 +92,10 @@ dependencies {
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
 
     // Code Libraries
-    implementation("org.codehaus.janino:janino:3.1.6")
+    implementation("org.codehaus.janino:janino:3.1.12")
 
     // Chat bot
-    implementation("com.google.code.gson:gson:2.8.9")
+    implementation("com.google.code.gson:gson:2.13.2")
 
 //    terminal
     testImplementation ("junit:junit:4.13.2")

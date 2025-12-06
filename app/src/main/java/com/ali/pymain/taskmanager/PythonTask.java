@@ -1,51 +1,59 @@
-package com.ali.javaquizbyali.codemodel;
+package com.ali.pymain.taskmanager;
 
+
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+import com.ali.MainActivity;
+import com.ali.pymain.PythonMain;
 import com.ali.systemIn.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Task extends AppCompatActivity {
+public class PythonTask extends AppCompatActivity {
 
-    private static final String TAG = "TaskActivity";
+    private static final String TAG = "PythonTaskActivity";
     private SharedPreferences sharedPreferences;
-    private static final String PREFS_NAME = "TaskProgress";
-    private List<TaskModel> tasks;
-    private TaskAdapter taskAdapter;
+    private static final String PREFS_NAME = "PythonTaskProgress";
+    private List<PythonTaskModel> tasks;
+    private PythonTaskAdapter taskAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
 
-        Log.d(TAG, "=== TASK ACTIVITY BAŞLADI ===");
+        Log.d(TAG, "Python Task Activity başladı");
 
         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
         // Load tasks from JSON
-        tasks = JsonUtils.loadTasksFromJson(this);
+        tasks = PythonJsonUtils.loadTasksFromJson(this);
 
         if (tasks == null || tasks.isEmpty()) {
             Log.e(TAG, "JSON faylı yüklənmədi VƏ YA boşdur");
-            Toast.makeText(this, "JSON faylı tapılmadı və ya boşdur!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Python taskları tapılmadı!", Toast.LENGTH_LONG).show();
             tasks = new ArrayList<>();
         } else {
-            Log.d(TAG, tasks.size() + " task JSON-dan yükləndi");
-            for (TaskModel task : tasks) {
-                Log.d(TAG, "Task: " + task.getId() + " - " + task.getTitle());
-            }
+            Log.d(TAG, tasks.size() + " Python task JSON-dan yükləndi");
+            Toast.makeText(this, tasks.size() + " Python task yükləndi", Toast.LENGTH_SHORT).show();
         }
 
         setupRecyclerView();
+        getOnBackPressedDispatcher().addCallback(this, callback);
+
     }
 
     private void setupRecyclerView() {
@@ -60,39 +68,29 @@ public class Task extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Listener-i burada yaradırıq
-        TaskAdapter.OnTaskClickListener clickListener = new TaskAdapter.OnTaskClickListener() {
+        PythonTaskAdapter.OnTaskClickListener clickListener = new PythonTaskAdapter.OnTaskClickListener() {
             @Override
-            public void onTaskClick(TaskModel task) {
+            public void onTaskClick(PythonTaskModel task) {
                 Log.d(TAG, "=== LISTENER ÇAĞIRILDI ===");
                 Log.d(TAG, "Clicked task: " + task.getTitle());
                 Log.d(TAG, "Task ID: " + task.getId());
-                openCodeActivity(task);
+                openPythonConsole(task);
             }
         };
 
-        taskAdapter = new TaskAdapter(tasks, clickListener, sharedPreferences);
+        taskAdapter = new PythonTaskAdapter(tasks, clickListener, sharedPreferences);
         recyclerView.setAdapter(taskAdapter);
 
         Log.d(TAG, "RecyclerView quruldu, " + tasks.size() + " task");
-
-        // Əlavə test: RecyclerView-in ölçülərini yoxla
-        recyclerView.post(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "RecyclerView height: " + recyclerView.getHeight() +
-                        ", width: " + recyclerView.getWidth());
-                Log.d(TAG, "RecyclerView child count: " + recyclerView.getChildCount());
-            }
-        });
     }
 
-    private void openCodeActivity(TaskModel task) {
-        Log.d(TAG, "=== OPEN CODE ACTIVITY ===");
+    private void openPythonConsole(PythonTaskModel task) {
+        Log.d(TAG, "=== OPEN PYTHON CONSOLE ===");
         Log.d(TAG, "Task: " + task.getTitle());
         Log.d(TAG, "Initial Code uzunluğu: " + task.getInitialCode().length());
 
         try {
-            Intent intent = new Intent(Task.this, CodeActivity.class);
+            Intent intent = new Intent(PythonTask.this, PythonConsole.class);
             intent.putExtra("TASK_ID", task.getId());
             intent.putExtra("TASK_TITLE", task.getTitle());
             intent.putExtra("TASK_DESCRIPTION", task.getDescription());
@@ -111,12 +109,12 @@ public class Task extends AppCompatActivity {
             intent.putExtra("TASK_TESTS", testsJson);
             intent.putExtra("TASK_SOLUTION", solution);
 
-            Log.d(TAG, "Bütün extra-lar əlavə edildi, startActivity çağırılır...");
+            Log.d(TAG, "Bütün extra-lar əlavə edildi, PythonConsole başladılır...");
             startActivity(intent);
             Log.d(TAG, "startActivity çağırıldı - UĞURLU!");
 
         } catch (Exception e) {
-            Log.e(TAG, "CodeActivity başlatma XƏTASI: " + e.getMessage());
+            Log.e(TAG, "PythonConsole başlatma XƏTASI: " + e.getMessage());
             e.printStackTrace();
             Toast.makeText(this, "Xəta: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -130,4 +128,29 @@ public class Task extends AppCompatActivity {
             taskAdapter.notifyDataSetChanged();
         }
     }
+
+    OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(PythonTask.this);
+            materialAlertDialogBuilder.setTitle(R.string.app_name);
+            materialAlertDialogBuilder.setMessage("Are you sure want to exit the quiz?");
+            materialAlertDialogBuilder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+                    dialog.dismiss();
+                }
+            });
+            materialAlertDialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+                    startActivity(new Intent(PythonTask.this , PythonMain.class));
+                    finish();
+                }
+            });
+
+            materialAlertDialogBuilder.show();
+        }
+
+    };
 }

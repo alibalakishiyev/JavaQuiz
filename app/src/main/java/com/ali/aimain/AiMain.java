@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ali.MainActivity;
 
 
+import com.ali.aimain.taskAimanager.AiTask;
 import com.ali.javaquizbyali.JuniorQuiz;
 import com.ali.systemIn.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -38,6 +39,7 @@ public class AiMain extends AppCompatActivity implements AlgoListener {
         arrayList.add(new Algo(R.drawable.math, "Mathematic", Mathematics.class));
         arrayList.add(new Algo(R.drawable.mathquiz64, "Ai Calculate", AICalculate.class));
         arrayList.add(new Algo(R.drawable.aiquiz64, "Ai Quiz", AIMathQuiz.class));
+        arrayList.add(new Algo(R.drawable.aitask64, "Ai Tasks", AiTask.class));
 
 
 

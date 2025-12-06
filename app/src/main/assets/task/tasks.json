@@ -1,0 +1,384 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Ədədin Kvadratı",
+      "description": "Bir ədədin kvadratını qaytaran funksiya yazın",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        int result = kvadrat(5);\n        System.out.println(\"5-in kvadratı: \" + result);\n    }\n    \n    public static int kvadrat(int eded) {\n        return 0;\n    }\n}",
+      "tests": [
+        {
+          "input": "kvadrat(5)",
+          "expected": "25",
+          "description": "5-in kvadratı 25 olmalıdır"
+        },
+        {
+          "input": "kvadrat(10)",
+          "expected": "100",
+          "description": "10-un kvadratı 100 olmalıdır"
+        }
+      ],
+      "solution": "return eded * eded;"
+    },
+    {
+      "id": 2,
+      "title": "Faktorial Hesabı",
+      "description": "Verilmiş ədədin faktorialını hesablayan funksiya",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        int result = faktorial(5);\n        System.out.println(\"5 faktorial: \" + result);\n    }\n    \n    public static int faktorial(int n) {\n        return 0;\n    }\n}",
+      "tests": [
+        {
+          "input": "faktorial(5)",
+          "expected": "120",
+          "description": "5 faktorial 120 olmalıdır"
+        },
+        {
+          "input": "faktorial(0)",
+          "expected": "1",
+          "description": "0 faktorial 1 olmalıdır"
+        }
+      ],
+      "solution": "if (n == 0) return 1; int faktorial = 1; for (int i = 1; i <= n; i++) { faktorial *= i; } return faktorial;"
+    },
+    {
+      "id": 3,
+      "title": "Palindrom Yoxlaması",
+      "description": "Sətrin palindrom olub-olmadığını yoxlayan funksiya",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(palindrom(\"ana\"));\n        System.out.println(palindrom(\"java\"));\n    }\n    \n    public static boolean palindrom(String str) {\n        return false;\n    }\n}",
+      "tests": [
+        {
+          "input": "palindrom(\"ana\")",
+          "expected": "true",
+          "description": "ana palindromdur"
+        },
+        {
+          "input": "palindrom(\"java\")",
+          "expected": "false",
+          "description": "java palindrom deyil"
+        }
+      ],
+      "solution": "int left = 0; int right = str.length() - 1; while (left < right) { if (str.charAt(left) != str.charAt(right)) { return false; } left++; right--; } return true;"
+    },
+    {
+      "id": 4,
+      "title": "Ədədin Tək/Cütlüyü",
+      "description": "Ədədin tək və ya cüt olduğunu yoxlayan funksiya",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(tekCut(4));\n        System.out.println(tekCut(7));\n    }\n    \n    public static String tekCut(int eded) {\n        return \"\";\n    }\n}",
+      "tests": [
+        {
+          "input": "tekCut(4)",
+          "expected": "Cüt",
+          "description": "4 cüt ədəddir"
+        },
+        {
+          "input": "tekCut(7)",
+          "expected": "Tək",
+          "description": "7 tək ədəddir"
+        }
+      ],
+      "solution": "if (eded % 2 == 0) { return \"Cüt\"; } else { return \"Tək\"; }"
+    },
+    {
+      "id": 5,
+      "title": "Maksimum Ədəd Tapma",
+      "description": "İki ədəddən böyüyünü tapan funksiya",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        int max = maksimum(10, 20);\n        System.out.println(\"Maksimum: \" + max);\n    }\n    \n    public static int maksimum(int a, int b) {\n        return 0;\n    }\n}",
+      "tests": [
+        {
+          "input": "maksimum(10, 20)",
+          "expected": "20",
+          "description": "20 daha böyükdür"
+        },
+        {
+          "input": "maksimum(15, 8)",
+          "expected": "15",
+          "description": "15 daha böyükdür"
+        }
+      ],
+      "solution": "if (a > b) { return a; } else { return b; }"
+    },
+    {
+      "id": 6,
+      "title": "Rəqəmlərin Cəmi",
+      "description": "Verilmiş ədədin rəqəmləri cəmini hesablayan funksiya",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        int cem = reqemlerCemi(123);\n        System.out.println(\"Rəqəmlər cəmi: \" + cem);\n    }\n    \n    public static int reqemlerCemi(int eded) {\n        return 0;\n    }\n}",
+      "tests": [
+        {
+          "input": "reqemlerCemi(123)",
+          "expected": "6",
+          "description": "1+2+3=6 olmalıdır"
+        },
+        {
+          "input": "reqemlerCemi(456)",
+          "expected": "15",
+          "description": "4+5+6=15 olmalıdır"
+        }
+      ],
+      "solution": "int cem = 0; while (eded > 0) { cem += eded % 10; eded /= 10; } return cem;"
+    },
+    {
+      "id": 7,
+      "title": "Fibonacci Sırası",
+      "description": "Verilmiş n-ci Fibonacci ədədini hesablayan funksiya",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        int fib = fibonacci(6);\n        System.out.println(\"6-cı Fibonacci: \" + fib);\n    }\n    \n    public static int fibonacci(int n) {\n        return 0;\n    }\n}",
+      "tests": [
+        {
+          "input": "fibonacci(6)",
+          "expected": "8",
+          "description": "6-cı Fibonacci 8 olmalıdır"
+        },
+        {
+          "input": "fibonacci(7)",
+          "expected": "13",
+          "description": "7-ci Fibonacci 13 olmalıdır"
+        }
+      ],
+      "solution": "if (n <= 1) return n; int a = 0, b = 1; for (int i = 2; i <= n; i++) { int temp = a + b; a = b; b = temp; } return b;"
+    },
+    {
+      "id": 8,
+      "title": "Sadə Ədəd Yoxlaması",
+      "description": "Ədədin sadə olub-olmadığını yoxlayan funksiya",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(sadeEded(7));\n        System.out.println(sadeEded(10));\n    }\n    \n    public static boolean sadeEded(int eded) {\n        return false;\n    }\n}",
+      "tests": [
+        {
+          "input": "sadeEded(7)",
+          "expected": "true",
+          "description": "7 sadə ədəddir"
+        },
+        {
+          "input": "sadeEded(10)",
+          "expected": "false",
+          "description": "10 sadə ədəd deyil"
+        }
+      ],
+      "solution": "if (eded <= 1) return false; for (int i = 2; i <= Math.sqrt(eded); i++) { if (eded % i == 0) { return false; } } return true;"
+    },
+    {
+      "id": 9,
+      "title": "Massivin Cəmi",
+      "description": "Massivin bütün elementlərinin cəmini hesablayan funksiya",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        int[] massiv = {1, 2, 3, 4, 5};\n        int cem = massivCemi(massiv);\n        System.out.println(\"Massiv cəmi: \" + cem);\n    }\n    \n    public static int massivCemi(int[] arr) {\n        return 0;\n    }\n}",
+      "tests": [
+        {
+          "input": "massivCemi(new int[]{1, 2, 3, 4, 5})",
+          "expected": "15",
+          "description": "1+2+3+4+5=15 olmalıdır"
+        },
+        {
+          "input": "massivCemi(new int[]{2, 4, 6, 8})",
+          "expected": "20",
+          "description": "2+4+6+8=20 olmalıdır"
+        }
+      ],
+      "solution": "int cem = 0; for (int i = 0; i < arr.length; i++) { cem += arr[i]; } return cem;"
+    },
+    {
+      "id": 10,
+      "title": "Sətri Tərsinə Çevir",
+      "description": "Verilmiş sətri tərsinə çevirən funksiya",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        String ters = tersineCevir(\"Java\");\n        System.out.println(ters);\n    }\n    \n    public static String tersineCevir(String str) {\n        return \"\";\n    }\n}",
+      "tests": [
+        {
+          "input": "tersineCevir(\"Java\")",
+          "expected": "avaJ",
+          "description": "Java tərsinə avaJ olur"
+        },
+        {
+          "input": "tersineCevir(\"hello\")",
+          "expected": "olleh",
+          "description": "hello tərsinə olleh olur"
+        }
+      ],
+      "solution": "String ters = \"\"; for (int i = str.length() - 1; i >= 0; i--) { ters += str.charAt(i); } return ters;"
+    },
+    {
+      "id": 11,
+      "title": "Ədədin Kvadratı",
+      "description": "Bir ədədin kvadratını qaytaran funksiya yazın",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        int result = kvadrat(5);\n        System.out.println(\"5-in kvadratı: \" + result);\n    }\n    \n    public static int kvadrat(int eded) {\n        return 0;\n    }\n}",
+      "tests": [
+        {
+          "input": "kvadrat(5)",
+          "expected": "25",
+          "description": "5-in kvadratı 25 olmalıdır"
+        },
+        {
+          "input": "kvadrat(10)",
+          "expected": "100",
+          "description": "10-un kvadratı 100 olmalıdır"
+        }
+      ],
+      "solution": "return eded * eded;"
+    },
+    {
+      "id": 12,
+      "title": "Faktorial Hesabı",
+      "description": "Verilmiş ədədin faktorialını hesablayan funksiya",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        int result = faktorial(5);\n        System.out.println(\"5 faktorial: \" + result);\n    }\n    \n    public static int faktorial(int n) {\n        return 0;\n    }\n}",
+      "tests": [
+        {
+          "input": "faktorial(5)",
+          "expected": "120",
+          "description": "5 faktorial 120 olmalıdır"
+        },
+        {
+          "input": "faktorial(0)",
+          "expected": "1",
+          "description": "0 faktorial 1 olmalıdır"
+        }
+      ],
+      "solution": "if (n == 0) return 1; int faktorial = 1; for (int i = 1; i <= n; i++) { faktorial *= i; } return faktorial;"
+    },
+    {
+      "id": 13,
+      "title": "Palindrom Yoxlaması",
+      "description": "Sətrin palindrom olub-olmadığını yoxlayan funksiya",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(palindrom(\"ana\"));\n        System.out.println(palindrom(\"java\"));\n    }\n    \n    public static boolean palindrom(String str) {\n        return false;\n    }\n}",
+      "tests": [
+        {
+          "input": "palindrom(\"ana\")",
+          "expected": "true",
+          "description": "ana palindromdur"
+        },
+        {
+          "input": "palindrom(\"java\")",
+          "expected": "false",
+          "description": "java palindrom deyil"
+        }
+      ],
+      "solution": "int left = 0; int right = str.length() - 1; while (left < right) { if (str.charAt(left) != str.charAt(right)) { return false; } left++; right--; } return true;"
+    },
+    {
+      "id": 14,
+      "title": "Ədədin Tək/Cütlüyü",
+      "description": "Ədədin tək və ya cüt olduğunu yoxlayan funksiya",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(tekCut(4));\n        System.out.println(tekCut(7));\n    }\n    \n    public static String tekCut(int eded) {\n        return \"\";\n    }\n}",
+      "tests": [
+        {
+          "input": "tekCut(4)",
+          "expected": "Cüt",
+          "description": "4 cüt ədəddir"
+        },
+        {
+          "input": "tekCut(7)",
+          "expected": "Tək",
+          "description": "7 tək ədəddir"
+        }
+      ],
+      "solution": "if (eded % 2 == 0) { return \"Cüt\"; } else { return \"Tək\"; }"
+    },
+    {
+      "id": 15,
+      "title": "Maksimum Ədəd Tapma",
+      "description": "İki ədəddən böyüyünü tapan funksiya",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        int max = maksimum(10, 20);\n        System.out.println(\"Maksimum: \" + max);\n    }\n    \n    public static int maksimum(int a, int b) {\n        return 0;\n    }\n}",
+      "tests": [
+        {
+          "input": "maksimum(10, 20)",
+          "expected": "20",
+          "description": "20 daha böyükdür"
+        },
+        {
+          "input": "maksimum(15, 8)",
+          "expected": "15",
+          "description": "15 daha böyükdür"
+        }
+      ],
+      "solution": "if (a > b) { return a; } else { return b; }"
+    },
+    {
+      "id": 16,
+      "title": "Rəqəmlərin Cəmi",
+      "description": "Verilmiş ədədin rəqəmləri cəmini hesablayan funksiya",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        int cem = reqemlerCemi(123);\n        System.out.println(\"Rəqəmlər cəmi: \" + cem);\n    }\n    \n    public static int reqemlerCemi(int eded) {\n        return 0;\n    }\n}",
+      "tests": [
+        {
+          "input": "reqemlerCemi(123)",
+          "expected": "6",
+          "description": "1+2+3=6 olmalıdır"
+        },
+        {
+          "input": "reqemlerCemi(456)",
+          "expected": "15",
+          "description": "4+5+6=15 olmalıdır"
+        }
+      ],
+      "solution": "int cem = 0; while (eded > 0) { cem += eded % 10; eded /= 10; } return cem;"
+    },
+    {
+      "id": 17,
+      "title": "Fibonacci Sırası",
+      "description": "Verilmiş n-ci Fibonacci ədədini hesablayan funksiya",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        int fib = fibonacci(6);\n        System.out.println(\"6-cı Fibonacci: \" + fib);\n    }\n    \n    public static int fibonacci(int n) {\n        return 0;\n    }\n}",
+      "tests": [
+        {
+          "input": "fibonacci(6)",
+          "expected": "8",
+          "description": "6-cı Fibonacci 8 olmalıdır"
+        },
+        {
+          "input": "fibonacci(7)",
+          "expected": "13",
+          "description": "7-ci Fibonacci 13 olmalıdır"
+        }
+      ],
+      "solution": "if (n <= 1) return n; int a = 0, b = 1; for (int i = 2; i <= n; i++) { int temp = a + b; a = b; b = temp; } return b;"
+    },
+    {
+      "id": 18,
+      "title": "Sadə Ədəd Yoxlaması",
+      "description": "Ədədin sadə olub-olmadığını yoxlayan funksiya",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(sadeEded(7));\n        System.out.println(sadeEded(10));\n    }\n    \n    public static boolean sadeEded(int eded) {\n        return false;\n    }\n}",
+      "tests": [
+        {
+          "input": "sadeEded(7)",
+          "expected": "true",
+          "description": "7 sadə ədəddir"
+        },
+        {
+          "input": "sadeEded(10)",
+          "expected": "false",
+          "description": "10 sadə ədəd deyil"
+        }
+      ],
+      "solution": "if (eded <= 1) return false; for (int i = 2; i <= Math.sqrt(eded); i++) { if (eded % i == 0) { return false; } } return true;"
+    },
+    {
+      "id": 19,
+      "title": "Massivin Cəmi",
+      "description": "Massivin bütün elementlərinin cəmini hesablayan funksiya",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        int[] massiv = {1, 2, 3, 4, 5};\n        int cem = massivCemi(massiv);\n        System.out.println(\"Massiv cəmi: \" + cem);\n    }\n    \n    public static int massivCemi(int[] arr) {\n        return 0;\n    }\n}",
+      "tests": [
+        {
+          "input": "massivCemi(new int[]{1, 2, 3, 4, 5})",
+          "expected": "15",
+          "description": "1+2+3+4+5=15 olmalıdır"
+        },
+        {
+          "input": "massivCemi(new int[]{2, 4, 6, 8})",
+          "expected": "20",
+          "description": "2+4+6+8=20 olmalıdır"
+        }
+      ],
+      "solution": "int cem = 0; for (int i = 0; i < arr.length; i++) { cem += arr[i]; } return cem;"
+    },
+    {
+      "id": 20,
+      "title": "Sətri Tərsinə Çevir",
+      "description": "Verilmiş sətri tərsinə çevirən funksiya",
+      "initialCode": "public class Main {\n    public static void main(String[] args) {\n        String ters = tersineCevir(\"Java\");\n        System.out.println(ters);\n    }\n    \n    public static String tersineCevir(String str) {\n        return \"\";\n    }\n}",
+      "tests": [
+        {
+          "input": "tersineCevir(\"Java\")",
+          "expected": "avaJ",
+          "description": "Java tərsinə avaJ olur"
+        },
+        {
+          "input": "tersineCevir(\"hello\")",
+          "expected": "olleh",
+          "description": "hello tərsinə olleh olur"
+        }
+      ],
+      "solution": "String ters = \"\"; for (int i = str.length() - 1; i >= 0; i--) { ters += str.charAt(i); } return ters;"
+    }
+  ]
+}

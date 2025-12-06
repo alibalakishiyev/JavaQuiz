@@ -1,14 +1,14 @@
 [versions]
-agp = "8.10.1"
+agp = "8.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-appcompat = "1.7.0"
+appcompat = "1.7.1"
 material = "1.12.0"
-activity = "1.10.1"
+activity = "1.12.0"
 constraintlayout = "2.2.1"
-navigationFragment = "2.8.9"
-navigationUi = "2.8.9"
+navigationFragment = "2.9.6"
+navigationUi = "2.9.6"
 playServicesAdsLite = "23.5.0"
 playServicesAds = "23.5.0"
 materialVersion = "1.13.0-alpha07"
@@ -21,6 +21,7 @@ credentials = "1.5.0"
 credentialsPlayServicesAuth = "1.5.0"
 googleid = "1.1.1"
 gradle = "16.0.0"
+firebaseAuthVersion = "24.0.1"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -43,6 +44,7 @@ credentials = { group = "androidx.credentials", name = "credentials", version.re
 credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentialsPlayServicesAuth" }
 googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
 gradle = { group = "com.chaquo.python", name = "gradle", version.ref = "gradle" }
+google-firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuthVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

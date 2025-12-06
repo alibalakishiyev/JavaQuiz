@@ -27,6 +27,9 @@
             android:name="com.ali.aimain.AIMathQuiz"
             android:exported="false" />
         <activity
+            android:name="com.ali.aimain.taskAimanager.AiTask"
+            android:exported="false" />
+        <activity
             android:name="com.ali.kali.comandlist.CommandList"
             android:exported="false" />
         <activity
@@ -36,7 +39,7 @@
             android:name="com.ali.aimain.Mathematics"
             android:exported="false" />
         <activity
-            android:name="com.ali.pymain.PythonConsole"
+            android:name="com.ali.pymain.taskmanager.PythonConsole"
             android:exported="false" />
         <activity
             android:name="com.ali.kali.LinuxMain"
@@ -58,6 +61,9 @@
             android:exported="false" />
         <activity
             android:name="com.ali.javaquizbyali.codemodel.Task"
+            android:exported="false" />
+        <activity
+            android:name="com.ali.pymain.taskmanager.PythonTask"
             android:exported="false" />
         <activity
             android:name="com.ali.javaquizbyali.JavaMain"

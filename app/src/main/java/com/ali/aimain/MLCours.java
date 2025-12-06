@@ -23,7 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ali.MainActivity;
-import com.ali.pymain.PythonConsole;
+import com.ali.pymain.taskmanager.PythonConsole;
 import com.ali.quizutility.AboutActivity;
 import com.ali.systemIn.R;
 import com.google.android.gms.ads.AdRequest;

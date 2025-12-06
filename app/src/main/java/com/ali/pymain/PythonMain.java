@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ali.MainActivity;
 import com.ali.javaquizbyali.JuniorQuiz;
+import com.ali.pymain.taskmanager.PythonConsole;
+import com.ali.pymain.taskmanager.PythonTask;
 import com.ali.systemIn.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -34,6 +36,7 @@ public class PythonMain extends AppCompatActivity implements AlgoListener {
         ArrayList<Algo> arrayList = new ArrayList<>();
         arrayList.add(new Algo(R.drawable.junior64, "Tezlikle", null));
         arrayList.add(new Algo(R.drawable.pythoncon48, "Python Console", PythonConsole.class));
+        arrayList.add(new Algo(R.drawable.taskpython, "Python Task", PythonTask.class));
 
 
 

@@ -1,0 +1,484 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Ədədin Kvadratı",
+      "description": "Bir ədədin kvadratını qaytaran funksiya yazın",
+      "initialCode": "def kvadrat(eded):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nresult = kvadrat(5)\nprint(\"5-in kvadratı:\", result)",
+      "tests": [
+        {
+          "input": "kvadrat(5)",
+          "expected": "25",
+          "description": "5-in kvadratı 25 olmalıdır"
+        },
+        {
+          "input": "kvadrat(10)",
+          "expected": "100",
+          "description": "10-un kvadratı 100 olmalıdır"
+        }
+      ],
+      "solution": "return eded * eded"
+    },
+    {
+      "id": 2,
+      "title": "Faktorial Hesabı",
+      "description": "Verilmiş ədədin faktorialını hesablayan funksiya",
+      "initialCode": "def faktorial(n):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nresult = faktorial(5)\nprint(\"5 faktorial:\", result)",
+      "tests": [
+        {
+          "input": "faktorial(5)",
+          "expected": "120",
+          "description": "5 faktorial 120 olmalıdır"
+        },
+        {
+          "input": "faktorial(0)",
+          "expected": "1",
+          "description": "0 faktorial 1 olmalıdır"
+        }
+      ],
+      "solution": "if n == 0:\n    return 1\nfaktorial = 1\nfor i in range(1, n + 1):\n    faktorial *= i\nreturn faktorial"
+    },
+    {
+      "id": 3,
+      "title": "Palindrom Yoxlaması",
+      "description": "Sətrin palindrom olub-olmadığını yoxlayan funksiya",
+      "initialCode": "def palindrom(text):\n    # Kodunuzu buraya yazın\n    return False\n\n# Test\nprint(\"ana palindrommu?\", palindrom(\"ana\"))\nprint(\"python palindrommu?\", palindrom(\"python\"))",
+      "tests": [
+        {
+          "input": "palindrom(\"ana\")",
+          "expected": "True",
+          "description": "ana palindromdur"
+        },
+        {
+          "input": "palindrom(\"python\")",
+          "expected": "False",
+          "description": "python palindrom deyil"
+        }
+      ],
+      "solution": "return text == text[::-1]"
+    },
+    {
+      "id": 4,
+      "title": "Ədədin Tək/Cütlüyü",
+      "description": "Ədədin tək və ya cüt olduğunu yoxlayan funksiya",
+      "initialCode": "def tek_cut(eded):\n    # Kodunuzu buraya yazın\n    return \"\"\n\n# Test\nprint(\"4:\", tek_cut(4))\nprint(\"7:\", tek_cut(7))",
+      "tests": [
+        {
+          "input": "tek_cut(4)",
+          "expected": "Cüt",
+          "description": "4 cüt ədəddir"
+        },
+        {
+          "input": "tek_cut(7)",
+          "expected": "Tək",
+          "description": "7 tək ədəddir"
+        }
+      ],
+      "solution": "if eded % 2 == 0:\n    return \"Cüt\"\nelse:\n    return \"Tək\""
+    },
+    {
+      "id": 5,
+      "title": "Maksimum Ədəd Tapma",
+      "description": "İki ədəddən böyüyünü tapan funksiya",
+      "initialCode": "def maksimum(a, b):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nprint(\"10 və 20-dən böyüyü:\", maksimum(10, 20))\nprint(\"15 və 8-dən böyüyü:\", maksimum(15, 8))",
+      "tests": [
+        {
+          "input": "maksimum(10, 20)",
+          "expected": "20",
+          "description": "20 daha böyükdür"
+        },
+        {
+          "input": "maksimum(15, 8)",
+          "expected": "15",
+          "description": "15 daha böyükdür"
+        }
+      ],
+      "solution": "if a > b:\n    return a\nelse:\n    return b"
+    },
+    {
+      "id": 6,
+      "title": "Rəqəmlərin Cəmi",
+      "description": "Verilmiş ədədin rəqəmləri cəmini hesablayan funksiya",
+      "initialCode": "def reqemler_cemi(eded):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nprint(\"123 rəqəmləri cəmi:\", reqemler_cemi(123))\nprint(\"456 rəqəmləri cəmi:\", reqemler_cemi(456))",
+      "tests": [
+        {
+          "input": "reqemler_cemi(123)",
+          "expected": "6",
+          "description": "1+2+3=6 olmalıdır"
+        },
+        {
+          "input": "reqemler_cemi(456)",
+          "expected": "15",
+          "description": "4+5+6=15 olmalıdır"
+        }
+      ],
+      "solution": "cem = 0\nfor reqem in str(eded):\n    cem += int(reqem)\nreturn cem"
+    },
+    {
+      "id": 7,
+      "title": "Fibonacci Sırası",
+      "description": "Verilmiş n-ci Fibonacci ədədini hesablayan funksiya",
+      "initialCode": "def fibonacci(n):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nprint(\"6-cı Fibonacci:\", fibonacci(6))\nprint(\"7-ci Fibonacci:\", fibonacci(7))",
+      "tests": [
+        {
+          "input": "fibonacci(6)",
+          "expected": "8",
+          "description": "6-cı Fibonacci 8 olmalıdır"
+        },
+        {
+          "input": "fibonacci(7)",
+          "expected": "13",
+          "description": "7-ci Fibonacci 13 olmalıdır"
+        }
+      ],
+      "solution": "if n <= 1:\n    return n\na, b = 0, 1\nfor i in range(2, n + 1):\n    a, b = b, a + b\nreturn b"
+    },
+    {
+      "id": 8,
+      "title": "Sadə Ədəd Yoxlaması",
+      "description": "Ədədin sadə olub-olmadığını yoxlayan funksiya",
+      "initialCode": "def sade_eded(eded):\n    # Kodunuzu buraya yazın\n    return False\n\n# Test\nprint(\"7 sadə ədədmi?\", sade_eded(7))\nprint(\"10 sadə ədədmi?\", sade_eded(10))",
+      "tests": [
+        {
+          "input": "sade_eded(7)",
+          "expected": "True",
+          "description": "7 sadə ədəddir"
+        },
+        {
+          "input": "sade_eded(10)",
+          "expected": "False",
+          "description": "10 sadə ədəd deyil"
+        }
+      ],
+      "solution": "if eded <= 1:\n    return False\nfor i in range(2, int(eded**0.5) + 1):\n    if eded % i == 0:\n        return False\nreturn True"
+    },
+    {
+      "id": 9,
+      "title": "Listin Cəmi",
+      "description": "Listin bütün elementlərinin cəmini hesablayan funksiya",
+      "initialCode": "def list_cemi(lst):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nprint(\"[1, 2, 3, 4, 5] cəmi:\", list_cemi([1, 2, 3, 4, 5]))\nprint(\"[2, 4, 6, 8] cəmi:\", list_cemi([2, 4, 6, 8]))",
+      "tests": [
+        {
+          "input": "list_cemi([1, 2, 3, 4, 5])",
+          "expected": "15",
+          "description": "1+2+3+4+5=15 olmalıdır"
+        },
+        {
+          "input": "list_cemi([2, 4, 6, 8])",
+          "expected": "20",
+          "description": "2+4+6+8=20 olmalıdır"
+        }
+      ],
+      "solution": "return sum(lst)"
+    },
+    {
+      "id": 10,
+      "title": "Sətri Tərsinə Çevir",
+      "description": "Verilmiş sətri tərsinə çevirən funksiya",
+      "initialCode": "def tersine_cevir(text):\n    # Kodunuzu buraya yazın\n    return \"\"\n\n# Test\nprint(\"Python tərsinə:\", tersine_cevir(\"Python\"))\nprint(\"hello tərsinə:\", tersine_cevir(\"hello\"))",
+      "tests": [
+        {
+          "input": "tersine_cevir(\"Python\")",
+          "expected": "nohtyP",
+          "description": "Python tərsinə nohtyP olur"
+        },
+        {
+          "input": "tersine_cevir(\"hello\")",
+          "expected": "olleh",
+          "description": "hello tərsinə olleh olur"
+        }
+      ],
+      "solution": "return text[::-1]"
+    },
+    {
+      "id": 11,
+      "title": "Vurma Cədvəli",
+      "description": "Verilmiş ədəd üçün vurma cədvəli yaradan funksiya",
+      "initialCode": "def vurma_cedveli(eded):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nprint(\"5 vurma cədvəli:\", vurma_cedveli(5))",
+      "tests": [
+        {
+          "input": "vurma_cedveli(5)",
+          "expected": "[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]",
+          "description": "5-in vurma cədvəli 10-a qədər"
+        }
+      ],
+      "solution": "return [eded * i for i in range(1, 11)]"
+    },
+    {
+      "id": 12,
+      "title": "Böyük Hərfə Çevir",
+      "description": "Sətri böyük hərflərə çevirən funksiya",
+      "initialCode": "def boyuk_herf(text):\n    # Kodunuzu buraya yazın\n    return \"\"\n\n# Test\nprint(\"salam dünya:\", boyuk_herf(\"salam dünya\"))",
+      "tests": [
+        {
+          "input": "boyuk_herf(\"salam dünya\")",
+          "expected": "SALAM DÜNYA",
+          "description": "Bütün hərflər böyük olmalıdır"
+        }
+      ],
+      "solution": "return text.upper()"
+    },
+    {
+      "id": 13,
+      "title": "Fahrenheit-dən Celsius-a",
+      "description": "Fahrenheit dərəcəsini Celsius-a çevirən funksiya",
+      "initialCode": "def fahrenheit_to_celsius(f):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nprint(\"32°F:\", fahrenheit_to_celsius(32), \"°C\")\nprint(\"212°F:\", fahrenheit_to_celsius(212), \"°C\")",
+      "tests": [
+        {
+          "input": "fahrenheit_to_celsius(32)",
+          "expected": "0.0",
+          "description": "32°F = 0°C olmalıdır"
+        },
+        {
+          "input": "fahrenheit_to_celsius(212)",
+          "expected": "100.0",
+          "description": "212°F = 100°C olmalıdır"
+        }
+      ],
+      "solution": "return (f - 32) * 5 / 9"
+    },
+    {
+      "id": 14,
+      "title": "Listdəki Tək Ədədlər",
+      "description": "Listdəki tək ədədləri qaytaran funksiya",
+      "initialCode": "def tek_ededler(lst):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nprint(\"[1, 2, 3, 4, 5, 6] tək ədədləri:\", tek_ededler([1, 2, 3, 4, 5, 6]))",
+      "tests": [
+        {
+          "input": "tek_ededler([1, 2, 3, 4, 5, 6])",
+          "expected": "[1, 3, 5]",
+          "description": "Tək ədədlər: 1, 3, 5"
+        }
+      ],
+      "solution": "return [x for x in lst if x % 2 != 0]"
+    },
+    {
+      "id": 15,
+      "title": "Söz Sayı",
+      "description": "Cümlədəki sözlərin sayını tapan funksiya",
+      "initialCode": "def soz_sayi(cumle):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nprint(\"'Salam dünya necəsən?' söz sayı:\", soz_sayi(\"Salam dünya necəsən?\"))",
+      "tests": [
+        {
+          "input": "soz_sayi(\"Salam dünya necəsən?\")",
+          "expected": "3",
+          "description": "3 söz olmalıdır"
+        }
+      ],
+      "solution": "return len(cumle.split())"
+    },
+    {
+      "id": 16,
+      "title": "Kvadrat Kök Tapma",
+      "description": "Ədədin kvadrat kökünü hesablayan funksiya (təxmini)",
+      "initialCode": "def kvadrat_kok(eded):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nprint(\"16 kvadrat kök:\", kvadrat_kok(16))\nprint(\"25 kvadrat kök:\", kvadrat_kok(25))",
+      "tests": [
+        {
+          "input": "kvadrat_kok(16)",
+          "expected": "4.0",
+          "description": "16 kvadrat kök 4 olmalıdır"
+        }
+      ],
+      "solution": "return eded ** 0.5"
+    },
+    {
+      "id": 17,
+      "title": "Ədədin Rəqəmləri",
+      "description": "Ədədin rəqəmlərini list şəklində qaytaran funksiya",
+      "initialCode": "def reqemler(eded):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nprint(\"123 rəqəmləri:\", reqemler(123))\nprint(\"4567 rəqəmləri:\", reqemler(4567))",
+      "tests": [
+        {
+          "input": "reqemler(123)",
+          "expected": "[1, 2, 3]",
+          "description": "123 rəqəmləri: 1, 2, 3"
+        }
+      ],
+      "solution": "return [int(reqem) for reqem in str(eded)]"
+    },
+    {
+      "id": 18,
+      "title": "Orta Qiymət",
+      "description": "Listdəki ədədlərin ortasını tapan funksiya",
+      "initialCode": "def orta_qiymet(lst):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nprint(\"[1, 2, 3, 4, 5] orta qiymət:\", orta_qiymet([1, 2, 3, 4, 5]))",
+      "tests": [
+        {
+          "input": "orta_qiymet([1, 2, 3, 4, 5])",
+          "expected": "3.0",
+          "description": "1,2,3,4,5 orta qiymət 3 olmalıdır"
+        }
+      ],
+      "solution": "return sum(lst) / len(lst)"
+    },
+    {
+      "id": 19,
+      "title": "Ən Uzun Söz",
+      "description": "Cümlədəki ən uzun sözü tapan funksiya",
+      "initialCode": "def en_uzun_soz(cumle):\n    # Kodunuzu buraya yazın\n    return \"\"\n\n# Test\nprint(\"ən uzun söz:\", en_uzun_soz(\"Python proqramlaşdırma dili\"))",
+      "tests": [
+        {
+          "input": "en_uzun_soz(\"Python proqramlaşdırma dili\")",
+          "expected": "proqramlaşdırma",
+          "description": "ən uzun söz 'proqramlaşdırma' olmalıdır"
+        }
+      ],
+      "solution": "sozler = cumle.split()\nreturn max(sozler, key=len)"
+    },
+    {
+      "id": 20,
+      "title": "Təkrar Eden Rəqəmlər",
+      "description": "Listdə təkrar edən rəqəmləri tapan funksiya",
+      "initialCode": "def tekrar_edenler(lst):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nprint(\"təkrar edənlər:\", tekrar_edenler([1, 2, 2, 3, 4, 4, 5]))",
+      "tests": [
+        {
+          "input": "tekrar_edenler([1, 2, 2, 3, 4, 4, 5])",
+          "expected": "[2, 4]",
+          "description": "təkrar edən rəqəmlər: 2 və 4"
+        }
+      ],
+      "solution": "return list(set([x for x in lst if lst.count(x) > 1]))"
+    },
+    {
+      "id": 21,
+      "title": "Vurma Cədvəli",
+      "description": "Verilmiş ədəd üçün vurma cədvəli yaradan funksiya",
+      "initialCode": "def vurma_cedveli(eded):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nprint(\"5 vurma cədvəli:\", vurma_cedveli(5))",
+      "tests": [
+        {
+          "input": "vurma_cedveli(5)",
+          "expected": "[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]",
+          "description": "5-in vurma cədvəli 10-a qədər"
+        }
+      ],
+      "solution": "return [eded * i for i in range(1, 11)]"
+    },
+    {
+      "id": 22,
+      "title": "Böyük Hərfə Çevir",
+      "description": "Sətri böyük hərflərə çevirən funksiya",
+      "initialCode": "def boyuk_herf(text):\n    # Kodunuzu buraya yazın\n    return \"\"\n\n# Test\nprint(\"salam dünya:\", boyuk_herf(\"salam dünya\"))",
+      "tests": [
+        {
+          "input": "boyuk_herf(\"salam dünya\")",
+          "expected": "SALAM DÜNYA",
+          "description": "Bütün hərflər böyük olmalıdır"
+        }
+      ],
+      "solution": "return text.upper()"
+    },
+    {
+      "id": 23,
+      "title": "Fahrenheit-dən Celsius-a",
+      "description": "Fahrenheit dərəcəsini Celsius-a çevirən funksiya",
+      "initialCode": "def fahrenheit_to_celsius(f):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nprint(\"32°F:\", fahrenheit_to_celsius(32), \"°C\")\nprint(\"212°F:\", fahrenheit_to_celsius(212), \"°C\")",
+      "tests": [
+        {
+          "input": "fahrenheit_to_celsius(32)",
+          "expected": "0.0",
+          "description": "32°F = 0°C olmalıdır"
+        },
+        {
+          "input": "fahrenheit_to_celsius(212)",
+          "expected": "100.0",
+          "description": "212°F = 100°C olmalıdır"
+        }
+      ],
+      "solution": "return (f - 32) * 5 / 9"
+    },
+    {
+      "id": 24,
+      "title": "Listdəki Tək Ədədlər",
+      "description": "Listdəki tək ədədləri qaytaran funksiya",
+      "initialCode": "def tek_ededler(lst):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nprint(\"[1, 2, 3, 4, 5, 6] tək ədədləri:\", tek_ededler([1, 2, 3, 4, 5, 6]))",
+      "tests": [
+        {
+          "input": "tek_ededler([1, 2, 3, 4, 5, 6])",
+          "expected": "[1, 3, 5]",
+          "description": "Tək ədədlər: 1, 3, 5"
+        }
+      ],
+      "solution": "return [x for x in lst if x % 2 != 0]"
+    },
+    {
+      "id": 25,
+      "title": "Söz Sayı",
+      "description": "Cümlədəki sözlərin sayını tapan funksiya",
+      "initialCode": "def soz_sayi(cumle):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nprint(\"'Salam dünya necəsən?' söz sayı:\", soz_sayi(\"Salam dünya necəsən?\"))",
+      "tests": [
+        {
+          "input": "soz_sayi(\"Salam dünya necəsən?\")",
+          "expected": "3",
+          "description": "3 söz olmalıdır"
+        }
+      ],
+      "solution": "return len(cumle.split())"
+    },
+    {
+      "id": 26,
+      "title": "Kvadrat Kök Tapma",
+      "description": "Ədədin kvadrat kökünü hesablayan funksiya (təxmini)",
+      "initialCode": "def kvadrat_kok(eded):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nprint(\"16 kvadrat kök:\", kvadrat_kok(16))\nprint(\"25 kvadrat kök:\", kvadrat_kok(25))",
+      "tests": [
+        {
+          "input": "kvadrat_kok(16)",
+          "expected": "4.0",
+          "description": "16 kvadrat kök 4 olmalıdır"
+        }
+      ],
+      "solution": "return eded ** 0.5"
+    },
+    {
+      "id": 27,
+      "title": "Ədədin Rəqəmləri",
+      "description": "Ədədin rəqəmlərini list şəklində qaytaran funksiya",
+      "initialCode": "def reqemler(eded):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nprint(\"123 rəqəmləri:\", reqemler(123))\nprint(\"4567 rəqəmləri:\", reqemler(4567))",
+      "tests": [
+        {
+          "input": "reqemler(123)",
+          "expected": "[1, 2, 3]",
+          "description": "123 rəqəmləri: 1, 2, 3"
+        }
+      ],
+      "solution": "return [int(reqem) for reqem in str(eded)]"
+    },
+    {
+      "id": 28,
+      "title": "Orta Qiymət",
+      "description": "Listdəki ədədlərin ortasını tapan funksiya",
+      "initialCode": "def orta_qiymet(lst):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nprint(\"[1, 2, 3, 4, 5] orta qiymət:\", orta_qiymet([1, 2, 3, 4, 5]))",
+      "tests": [
+        {
+          "input": "orta_qiymet([1, 2, 3, 4, 5])",
+          "expected": "3.0",
+          "description": "1,2,3,4,5 orta qiymət 3 olmalıdır"
+        }
+      ],
+      "solution": "return sum(lst) / len(lst)"
+    },
+    {
+      "id": 29,
+      "title": "Ən Uzun Söz",
+      "description": "Cümlədəki ən uzun sözü tapan funksiya",
+      "initialCode": "def en_uzun_soz(cumle):\n    # Kodunuzu buraya yazın\n    return \"\"\n\n# Test\nprint(\"ən uzun söz:\", en_uzun_soz(\"Python proqramlaşdırma dili\"))",
+      "tests": [
+        {
+          "input": "en_uzun_soz(\"Python proqramlaşdırma dili\")",
+          "expected": "proqramlaşdırma",
+          "description": "ən uzun söz 'proqramlaşdırma' olmalıdır"
+        }
+      ],
+      "solution": "sozler = cumle.split()\nreturn max(sozler, key=len)"
+    },
+    {
+      "id": 30,
+      "title": "Təkrar Eden Rəqəmlər",
+      "description": "Listdə təkrar edən rəqəmləri tapan funksiya",
+      "initialCode": "def tekrar_edenler(lst):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nprint(\"təkrar edənlər:\", tekrar_edenler([1, 2, 2, 3, 4, 4, 5]))",
+      "tests": [
+        {
+          "input": "tekrar_edenler([1, 2, 2, 3, 4, 4, 5])",
+          "expected": "[2, 4]",
+          "description": "təkrar edən rəqəmlər: 2 və 4"
+        }
+      ],
+      "solution": "return list(set([x for x in lst if lst.count(x) > 1]))"
+    }
+  ]
+}
