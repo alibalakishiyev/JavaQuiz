@@ -113,13 +113,25 @@
                     android:id="@+id/linuxMain"
                     android:layout_width="68dp"
                     android:layout_height="78dp"
+                    android:layout_marginStart="32dp"
                     android:layout_marginTop="24dp"
                     android:background="@color/material_on_background_disabled"
                     android:src="@drawable/linux64"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.093"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/javamain"/>
+                    app:layout_constraintTop_toBottomOf="@+id/javamain" />
+
+                <ImageButton
+                    android:id="@+id/postgresql"
+                    android:layout_width="68dp"
+                    android:layout_height="78dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="183dp"
+                    android:background="@color/white"
+                    android:src="@drawable/postgresql64"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/linuxMain"
+                    app:layout_constraintTop_toBottomOf="@+id/aimain" />
 
                 <ImageView
                     android:id="@+id/userIcon"

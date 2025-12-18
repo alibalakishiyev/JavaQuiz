@@ -1,5 +1,6 @@
 package com.ali.pymain.taskmanager;
 
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,6 +25,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ali.javaquizbyali.codemodel.TaskModel;
+
 import com.ali.systemIn.R;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
@@ -1077,27 +1079,295 @@ public class PythonConsole extends AppCompatActivity {
     }
 
     private boolean runPythonSingleTest(String code, TaskModel.Test test) {
-        String cleanCode = code.toLowerCase().replaceAll("\\s+", "");
-        String cleanSolution = solution != null ? solution.toLowerCase().replaceAll("\\s+", "") : "";
+        try {
+            // Tapşırıq nömrəsinə görə xüsusi yoxlamalar
+            switch (currentTaskId) {
+                case 1: // Kvadrat tapşırığı
+                    return checkSquareTask(code, test);
+                case 2: // Faktorial tapşırığı
+                    return checkFactorialTask(code, test);
+                case 3: // Tək/cüt tapşırığı
+                    return checkOddEvenTask(code, test);
+                case 4: // Maksimum tapşırığı
+                    return checkMaxTask(code, test);
+                case 5: // Tərsinə çevir tapşırığı
+                    return checkReverseTask(code, test);
+                case 6: // Toplama tapşırığı
+                    return checkSumTask(code, test);
+                default:
+                    return checkGenericTask(code, test);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-        if (!cleanSolution.isEmpty() && cleanCode.contains(cleanSolution)) {
-            return true;
+    // Kvadrat tapşırığı üçün yoxlama
+    private boolean checkSquareTask(String code, TaskModel.Test test) {
+        String input = test.getInput();
+        String expected = test.getExpected();
+
+        // Ədədin kvadratını hesablayan kod olmalıdır
+        boolean hasSquareLogic = code.contains("*") && code.contains("return") ||
+                code.contains("** 2") ||
+                code.contains("math.pow") ||
+                code.contains("eded * eded");
+
+        // Funksiya düzgün mü?
+        boolean hasCorrectFunction = code.contains("def kvadrat") ||
+                code.contains("def kvadrat(") ||
+                code.contains("def kvadrat (");
+
+        // Əgər test input və expected varsa, simulyasiya edək
+        if (input != null && expected != null) {
+            try {
+                // Sadə simulyasiya
+                int inputNum = Integer.parseInt(input.trim());
+                int expectedNum = Integer.parseInt(expected.trim());
+
+                // Kodda kvadrat əməliyyatı var?
+                if (code.contains("return " + inputNum + " * " + inputNum) ||
+                        code.contains("return " + inputNum + "*" + inputNum) ||
+                        code.contains("return " + inputNum + "**2") ||
+                        code.contains("return eded * eded") ||
+                        code.contains("return eded**2")) {
+                    return true;
+                }
+            } catch (NumberFormatException e) {
+                // Ədəd deyil
+            }
         }
 
-        switch (currentTaskId) {
-            case 1: // Toplama
-                return code.contains("a + b") || code.contains("return a + b");
-            case 2: // Faktorial
-                return code.contains("for") && code.contains("faktorial") && code.contains("return");
-            case 3: // Tək/Cüt
-                return code.contains("% 2") && (code.contains("if") || code.contains("else"));
-            case 4: // Maksimum
-                return code.contains("if") && code.contains("return") && code.contains("max");
-            case 5: // Siyahı cəmi
-                return code.contains("sum(") || (code.contains("for") && code.contains("total"));
-            default:
-                return code.contains("return") && !code.contains("return 0");
+        return hasSquareLogic && hasCorrectFunction;
+    }
+
+    // Faktorial tapşırığı üçün yoxlama
+    private boolean checkFactorialTask(String code, TaskModel.Test test) {
+        String input = test.getInput();
+        String expected = test.getExpected();
+
+        // Faktorial hesablayan məntiq
+        boolean hasFactorialLogic = (code.contains("for") || code.contains("while")) &&
+                (code.contains("*=") || code.contains("result *")) &&
+                code.contains("return");
+
+        // Funksiya adı düzgün mü?
+        boolean hasCorrectFunction = code.contains("def faktorial") ||
+                code.contains("def faktorial(");
+
+        // Test dəyərləri ilə yoxlama
+        if (input != null && expected != null) {
+            try {
+                int inputNum = Integer.parseInt(input.trim());
+                int expectedNum = Integer.parseInt(expected.trim());
+
+                // Məsələn: faktorial(5) = 120
+                if (inputNum == 5 && expectedNum == 120) {
+                    // Kodda 5-in faktorialını hesablamaq olmalı
+                    if (code.contains("for") && code.contains("range") &&
+                            (code.contains("1,") || code.contains("1, ")) &&
+                            code.contains("result = 1")) {
+                        return true;
+                    }
+                }
+            } catch (NumberFormatException e) {
+                // Ədəd deyil
+            }
         }
+
+        return hasFactorialLogic && hasCorrectFunction;
+    }
+
+    // Tək/cüt tapşırığı üçün yoxlama
+    private boolean checkOddEvenTask(String code, TaskModel.Test test) {
+        String input = test.getInput();
+        String expected = test.getExpected();
+
+        // Tək/cüt yoxlayan məntiq
+        boolean hasOddEvenLogic = code.contains("% 2") &&
+                (code.contains("==") || code.contains("!=")) &&
+                (code.contains("Tək") || code.contains("Cüt") ||
+                        code.contains("tek") || code.contains("cüt") ||
+                        code.contains("odd") || code.contains("even"));
+
+        // Test dəyərləri ilə yoxlama
+        if (input != null && expected != null) {
+            try {
+                int inputNum = Integer.parseInt(input.trim());
+                boolean isEven = expected.contains("Cüt") || expected.contains("cüt") || expected.contains("even");
+
+                // Kod düzgün yoxlayır?
+                if (isEven) {
+                    // Cüt üçün
+                    if (code.contains("% 2 == 0") && code.contains("Cüt")) {
+                        return true;
+                    }
+                } else {
+                    // Tək üçün
+                    if ((code.contains("% 2 == 1") || code.contains("% 2 != 0")) && code.contains("Tək")) {
+                        return true;
+                    }
+                }
+            } catch (NumberFormatException e) {
+                // Ədəd deyil
+            }
+        }
+
+        return hasOddEvenLogic;
+    }
+
+    // Maksimum tapşırığı üçün yoxlama
+    private boolean checkMaxTask(String code, TaskModel.Test test) {
+        String input = test.getInput();
+        String expected = test.getExpected();
+
+        // Maksimum tapma məntiqi
+        boolean hasMaxLogic = code.contains("if") &&
+                code.contains(">") &&
+                code.contains("return");
+
+        // Funksiya adı
+        boolean hasCorrectFunction = code.contains("def maksimum") ||
+                code.contains("def max") ||
+                code.contains("def maksimum(");
+
+        // Test dəyərləri ilə yoxlama
+        if (input != null && expected != null) {
+            try {
+                // Input formatı: "5, 10" kimi
+                String[] parts = input.split(",");
+                if (parts.length == 2) {
+                    int a = Integer.parseInt(parts[0].trim());
+                    int b = Integer.parseInt(parts[1].trim());
+                    int expectedNum = Integer.parseInt(expected.trim());
+
+                    // Kod düzgün müqayisə edir?
+                    if ((a > b && expectedNum == a) || (b > a && expectedNum == b)) {
+                        // Kodda bu məntiq var?
+                        if ((code.contains("a > b") && code.contains("return a")) ||
+                                (code.contains("b > a") && code.contains("return b")) ||
+                                code.contains("max(a, b)")) {
+                            return true;
+                        }
+                    }
+                }
+            } catch (NumberFormatException e) {
+                // Ədəd deyil
+            }
+        }
+
+        return hasMaxLogic && hasCorrectFunction;
+    }
+
+    // Tərsinə çevir tapşırığı üçün yoxlama
+    private boolean checkReverseTask(String code, TaskModel.Test test) {
+        String input = test.getInput();
+        String expected = test.getExpected();
+
+        // String-i tərsinə çevirmə məntiqi
+        boolean hasReverseLogic = (code.contains("for") || code.contains("while")) &&
+                (code.contains("[::-1]") || code.contains("reversed") ||
+                        code.contains("charAt") || code.contains("append"));
+
+        // Test dəyərləri ilə yoxlama
+        if (input != null && expected != null) {
+            // Məsələn: "salam" -> "malas"
+            String reversed = new StringBuilder(input).reverse().toString();
+            if (expected.equals(reversed)) {
+                // Kodda tərsinə çevirmə var?
+                if (code.contains("[::-1]") ||
+                        (code.contains("for") && code.contains("len") && code.contains("-1"))) {
+                    return true;
+                }
+            }
+        }
+
+        return hasReverseLogic;
+    }
+
+    // Toplama tapşırığı üçün yoxlama
+    private boolean checkSumTask(String code, TaskModel.Test test) {
+        String input = test.getInput();
+        String expected = test.getExpected();
+
+        // Toplama məntiqi
+        boolean hasSumLogic = code.contains("+") &&
+                code.contains("return");
+
+        // Test dəyərləri ilə yoxlama
+        if (input != null && expected != null) {
+            try {
+                String[] parts = input.split(",");
+                if (parts.length == 2) {
+                    int a = Integer.parseInt(parts[0].trim());
+                    int b = Integer.parseInt(parts[1].trim());
+                    int expectedSum = Integer.parseInt(expected.trim());
+
+                    if (a + b == expectedSum) {
+                        // Kodda toplama var?
+                        if (code.contains("return a + b") ||
+                                code.contains("return " + a + " + " + b) ||
+                                code.contains("cəm") || code.contains("cem") || code.contains("sum")) {
+                            return true;
+                        }
+                    }
+                }
+            } catch (NumberFormatException e) {
+                // Ədəd deyil
+            }
+        }
+
+        return hasSumLogic;
+    }
+
+    // Ümumi tapşırıq yoxlaması
+    private boolean checkGenericTask(String code, TaskModel.Test test) {
+        // Həll yolunu yoxla
+        if (solution != null && !solution.isEmpty()) {
+            String cleanCode = code.replaceAll("\\s+", "").toLowerCase();
+            String cleanSolution = solution.replaceAll("\\s+", "").toLowerCase();
+
+            // Əgər həll yolu kodun içindədirsə
+            if (cleanCode.contains(cleanSolution)) {
+                return true;
+            }
+
+            // Əgər həll yolunun əhəmiyyətli hissəsi varsa
+            if (cleanSolution.length() > 10) {
+                String partialSolution = cleanSolution.substring(0, Math.min(10, cleanSolution.length()));
+                if (cleanCode.contains(partialSolution)) {
+                    return true;
+                }
+            }
+        }
+
+        // Əsas Python elementləri
+        boolean hasBasicStructure = code.contains("def ") &&
+                code.contains("return") &&
+                !code.contains("return 0") &&
+                !code.contains("return None");
+
+        // Test output-u gözlənilən nəticəyə uyğundurmu?
+        String expected = test.getExpected();
+        if (expected != null) {
+            // Kodda expected dəyər var?
+            if (code.contains(expected)) {
+                return true;
+            }
+
+            // Əgər expected ədəddirsə, kodda hesablama var?
+            try {
+                int expectedNum = Integer.parseInt(expected.trim());
+                if (code.contains(String.valueOf(expectedNum))) {
+                    return true;
+                }
+            } catch (NumberFormatException e) {
+                // Ədəd deyil
+            }
+        }
+
+        return hasBasicStructure;
     }
 
     private void runBasicPythonAnalysis(String code, StringBuilder output) {

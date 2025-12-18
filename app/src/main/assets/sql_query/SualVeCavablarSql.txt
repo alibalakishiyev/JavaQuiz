@@ -1,0 +1,274 @@
+1. PostgreSQL nədir?
+Cavab: PostgreSQL açıq mənbəli (open-source), obyekt-relational tipli güclü verilənlər bazası idarəetmə sistemidir. Böyük həcmli məlumatlarla işləmək, yüksək təhlükəsizlik, ACID dəstəyi və genişləndirilə bilməsi ilə tanınır.
+
+2. PostgreSQL hansı dilləri dəstəkləyir?
+Cavab: PostgreSQL SQL əsaslıdır, amma əlavə olaraq PL/pgSQL, Python, Perl, JavaScript (PLV8), Ruby və C kimi dillərlə funksiyalar yazmağa imkan verir.
+
+3. PostgreSQL ilə MySQL arasındakı əsas fərq nədir?
+Cavab: PostgreSQL daha ciddi ACID uyğunluğu, complex query-lər, CTE, window function və JSONB kimi imkanlar təqdim edir. MySQL isə daha sadə və oxuma əməliyyatlarında sürətlidir.
+
+4. ACID nədir?
+Cavab:
+A – Atomicity: əməliyyat ya tam icra olunur, ya da heç icra olunmur  
+C – Consistency: data həmişə qaydalara uyğun qalır  
+I – Isolation: əməliyyatlar bir-birinə təsir etmir  
+D – Durability: commit olunmuş data itmir
+
+5. Database və Schema fərqi nədir?
+Cavab: Database əsas konteynerdir. Schema isə database daxilində obyektləri (table, view, function) qruplaşdırmaq üçündür.
+
+6. Primary Key nədir?
+Cavab: Cədvəldə hər sətri unikal tanıdan açardır. NULL ola bilməz və təkrarlana bilməz.
+
+7. Foreign Key nədir?
+Cavab: Bir cədvəldəki sütunun başqa cədvəldəki primary key-ə bağlı olmasıdır. Data əlaqəsini qoruyur.
+
+8. UNIQUE constraint nə üçündür?
+Cavab: Sütunda təkrarlanan dəyərin qarşısını alır, amma NULL ola bilər.
+
+9. NOT NULL nə edir?
+Cavab: Sütuna boş (NULL) dəyər yazılmasını qadağan edir.
+
+10. CHECK constraint nədir?
+Cavab: Məlumatın müəyyən şərtə uyğun olub-olmadığını yoxlayır.
+Məsələn: age > 18
+
+11. SERIAL nədir?
+Cavab: Avtomatik artan integer dəyər yaradır. Adətən primary key üçün istifadə olunur.
+
+12. BIGSERIAL nə vaxt istifadə olunur?
+Cavab: Milyardlarla data olduqda integer limiti çatmasın deyə.
+
+13. SELECT nə edir?
+Cavab: Cədvəldən məlumat oxumaq üçün istifadə olunur.
+
+14. WHERE nə üçündür?
+Cavab: Məlumatı filtr etmək üçün istifadə olunur.
+
+15. ORDER BY nə edir?
+Cavab: Nəticəni artan (ASC) və ya azalan (DESC) qaydada sıralayır.
+
+16. LIMIT nə üçündür?
+Cavab: Qaytarılan sətrlərin sayını məhdudlaşdırır.
+
+17. OFFSET nə edir?
+Cavab: Müəyyən sayda sətri ötürür (pagination üçün).
+
+18. INSERT əmri nə edir?
+Cavab: Cədvələ yeni data əlavə edir.
+
+19. UPDATE nə edir?
+Cavab: Mövcud datanı dəyişdirir.
+
+20. DELETE nə üçündür?
+Cavab: Məlumatı silir.
+
+21. TRUNCATE nədir?
+Cavab: Cədvəldəki bütün datanı sürətli şəkildə silir, rollback olmur.
+
+22. JOIN nədir?
+Cavab: Bir neçə cədvəldəki məlumatı əlaqələndirib oxumağa imkan verir.
+
+23. INNER JOIN nə edir?
+Cavab: Hər iki cədvəldə uyğun olan sətrləri qaytarır.
+
+24. LEFT JOIN nə edir?
+Cavab: Sol cədvəldəki bütün sətrləri, sağdan uyğun olanları gətirir.
+
+25. RIGHT JOIN nədir?
+Cavab: Sağ cədvəldəki bütün sətrləri saxlayır.
+
+26. FULL JOIN nədir?
+Cavab: Hər iki cədvəldə olan bütün sətrləri göstərir.
+
+27. INDEX nədir?
+Cavab: Axtarışları sürətləndirmək üçün istifadə olunur.
+
+28. Index-in mənfi tərəfi nədir?
+Cavab: INSERT və UPDATE əməliyyatlarını bir az yavaşladır.
+
+29. UNIQUE INDEX nədir?
+Cavab: Təkrarlanan dəyərin qarşısını alan index növüdür.
+
+30. B-Tree index nədir?
+Cavab: Default index növüdür, əksər sorğular üçün uyğundur.
+
+31. HASH index nədir?
+Cavab: Yalnız equality (=) əməliyyatları üçün istifadə olunur.
+
+32. GIN index nə üçündür?
+Cavab: JSONB, array və full-text search üçün idealdır.
+
+33. JSONB nədir?
+Cavab: Binary formatda saxlanılan JSON-dur, sürətlidir.
+
+34. JSON və JSONB fərqi nədir?
+Cavab: JSON saxlanılan kimi qalır, JSONB isə parse olunaraq saxlanır.
+
+35. VIEW nədir?
+Cavab: Saxlanılan SELECT sorğusudur, virtual cədvəl kimidir.
+
+36. MATERIALIZED VIEW nədir?
+Cavab: Nəticəni fiziki saxlayır, refresh tələb edir.
+
+37. TRANSACTION nədir?
+Cavab: Bir neçə əməliyyatın birlikdə icrası blokudur.
+
+38. BEGIN nə edir?
+Cavab: Transaction başlayır.
+
+39. COMMIT nə edir?
+Cavab: Dəyişiklikləri təsdiqləyir.
+
+40. ROLLBACK nədir?
+Cavab: Dəyişiklikləri geri qaytarır.
+
+41. LOCK nə üçündür?
+Cavab: Eyni anda data dəyişməsinin qarşısını alır.
+
+42. DEADLOCK nədir?
+Cavab: İki transaction-un bir-birini gözləməsidir.
+
+43. FUNCTION nədir?
+Cavab: Dəyər qaytaran server-side kod blokudur.
+
+44. PROCEDURE nədir?
+Cavab: Dəyər qaytarmaya da bilər, transaction idarə edə bilər.
+
+45. TRIGGER nədir?
+Cavab: INSERT/UPDATE/DELETE zamanı avtomatik işləyən koddur.
+
+46. BEFORE trigger nə edir?
+Cavab: Əməliyyatdan əvvəl icra olunur.
+
+47. AFTER trigger nə edir?
+Cavab: Əməliyyatdan sonra icra olunur.
+
+48. SEQUENCE nədir?
+Cavab: Avtomatik artan rəqəm generatorudur.
+
+49. VACUUM nə edir?
+Cavab: Silinmiş datanı təmizləyir və performansı artırır.
+
+50. ANALYZE nə üçündür?
+Cavab: Query planner üçün statistik məlumat yaradır.
+
+51. EXPLAIN nə edir?
+Cavab: Sorğunun necə icra olunacağını göstərir.
+
+52. EXPLAIN ANALYZE nədir?
+Cavab: Real icra vaxtını da göstərir.
+
+53. CTE (WITH) nədir?
+Cavab: Müvəqqəti query nəticəsi yaradır.
+
+54. Recursive CTE nədir?
+Cavab: Özünü çağıran sorğular üçündür (tree strukturu).
+
+55. Window function nədir?
+Cavab: ROW_NUMBER, RANK kimi analitik funksiyalardır.
+
+56. ROW_NUMBER nə edir?
+Cavab: Sətirlərə sıra nömrəsi verir.
+
+57. PARTITION BY nədir?
+Cavab: Window function-u qruplara bölür.
+
+58. GROUP BY nə üçündür?
+Cavab: Məlumatı qruplaşdırır.
+
+59. HAVING nə edir?
+Cavab: GROUP BY sonrası filtr edir.
+
+60. COUNT nədir?
+Cavab: Sətrlərin sayını qaytarır.
+
+61. SUM nə edir?
+Cavab: Rəqəmləri toplayır.
+
+62. AVG nədir?
+Cavab: Orta qiyməti hesablayır.
+
+63. MIN və MAX nə üçündür?
+Cavab: Ən kiçik və ən böyük dəyəri tapır.
+
+64. NULL nə deməkdir?
+Cavab: Dəyərin olmaması deməkdir.
+
+65. IS NULL nə üçündür?
+Cavab: NULL yoxlaması edir.
+
+66. COALESCE nə edir?
+Cavab: NULL olan dəyəri əvəz edir.
+
+67. CASE WHEN nədir?
+Cavab: Şərtli məntiq qurmaq üçün istifadə olunur.
+
+68. TEXT və VARCHAR fərqi nədir?
+Cavab: PostgreSQL-də demək olar ki, performans fərqi yoxdur.
+
+69. TIMESTAMP nədir?
+Cavab: Tarix və saat məlumatını saxlayır.
+
+70. TIMESTAMPTZ nədir?
+Cavab: Timezone dəstəyi olan timestamp-dır.
+
+71. NOW() nə edir?
+Cavab: Cari tarix və saatı qaytarır.
+
+72. CURRENT_DATE nədir?
+Cavab: Cari tarixi qaytarır.
+
+73. COPY nə üçündür?
+Cavab: Data import/export üçün çox sürətlidir.
+
+74. CSV faylı necə import edilir?
+Cavab: COPY table FROM 'file.csv' CSV HEADER;
+
+75. Role nədir?
+Cavab: İstifadəçi və icazə sistemidir.
+
+76. GRANT nə edir?
+Cavab: İcazə verir.
+
+77. REVOKE nədir?
+Cavab: İcazəni geri alır.
+
+78. SUPERUSER nədir?
+Cavab: Bütün icazələrə sahib istifadəçidir.
+
+79. pg_dump nə üçündür?
+Cavab: Backup almaq üçün.
+
+80. pg_restore nə edir?
+Cavab: Backup-dan bərpa edir.
+
+81. Logical replication nədir?
+Cavab: Data səviyyəsində replikasiyadır.
+
+82. Physical replication nədir?
+Cavab: Disk səviyyəsində replikasiyadır.
+
+83. WAL nədir?
+Cavab: Write-Ahead Log – data təhlükəsizliyi üçündür.
+
+84. Connection pool nə üçündür?
+Cavab: DB bağlantılarını səmərəli idarə edir.
+
+85. pgAdmin nədir?
+Cavab: PostgreSQL üçün GUI idarəetmə alətidir.
+
+86. Schema search_path nədir?
+Cavab: Hansı schema-nın əvvəl axtarılacağını müəyyən edir.
+
+87. Temporary table nədir?
+Cavab: Session bitəndə avtomatik silinir.
+
+88. Performance tuning nədir?
+Cavab: Sorğuları və index-ləri optimallaşdırmaqdır.
+
+89. Normalization nədir?
+Cavab: Data təkrarını azaltmaq üçün strukturlaşdırmadır.
+
+90. PostgreSQL niyə enterprise səviyyəsindədir?
+Cavab: Güclü təhlükəsizlik, stabil işləmə, genişlənə bilmə və yüksək performansa görə.

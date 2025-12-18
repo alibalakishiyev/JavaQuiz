@@ -24,6 +24,18 @@
             android:name="com.ali.aimain.AICalculate"
             android:exported="false" />
         <activity
+            android:name="com.ali.postgresql.PostgreSqlMain"
+            android:exported="false" />
+        <activity
+            android:name="com.ali.postgresql.taskPostgreSqlManager.PostgreSqlTask"
+            android:exported="false" />
+        <activity
+            android:name="com.ali.postgresql.SqlHazirliq"
+            android:exported="false" />
+        <activity
+            android:name="com.ali.postgresql.SqlQuiz"
+            android:exported="false" />
+        <activity
             android:name="com.ali.aimain.AIMathQuiz"
             android:exported="false" />
         <activity
@@ -110,6 +122,9 @@
             android:exported="true" />
         <activity
             android:name="com.ali.javaquizbyali.SplashJavaActivity"
+            android:exported="true" />
+        <activity
+            android:name="com.ali.postgresql.SplashPostgreSqActivity"
             android:exported="true" />
         <activity
             android:name="com.ali.MainActivity"

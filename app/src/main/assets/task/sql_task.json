@@ -1,0 +1,564 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Bütün Məlumatları Seçmək",
+      "description": "employees cədvəlindən bütün məlumatları seçin",
+      "initialCode": "-- Kodunuzu buraya yazın\nSELECT * FROM employees;",
+      "tests": [
+        {
+          "input": "employees cədvəli: id, name, salary\nDəyərlər: (1, 'Ali', 1000), (2, 'Aysel', 1500)",
+          "expected": "id | name  | salary\n1  | Ali   | 1000\n2  | Aysel | 1500",
+          "description": "Bütün sətirləri qaytarmalıdır"
+        }
+      ],
+      "solution": "SELECT * FROM employees;"
+    },
+    {
+      "id": 2,
+      "title": "WHERE Şərti",
+      "description": "Maşı 1000-dən çox olan işçiləri seçin",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali',800), (2,'Aysel',1200), (3,'Mehmet',950)",
+          "expected": "id | name  | salary\n2  | Aysel | 1200",
+          "description": "Yalnız 1000-dən yuxarı maaşı olanları göstərməlidir"
+        }
+      ],
+      "solution": "SELECT * FROM employees WHERE salary > 1000;"
+    },
+    {
+      "id": 3,
+      "title": "ORDER BY Sıralama",
+      "description": "İşçiləri maaşa görə azalan sıra ilə sıralayın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali',800), (2,'Aysel',1200), (3,'Mehmet',950)",
+          "expected": "id | name   | salary\n2  | Aysel  | 1200\n3  | Mehmet | 950\n1  | Ali    | 800",
+          "description": "Maaşa görə azalan sıra ilə sıralanmalıdır"
+        }
+      ],
+      "solution": "SELECT * FROM employees ORDER BY salary DESC;"
+    },
+    {
+      "id": 4,
+      "title": "COUNT Funksiyası",
+      "description": "Cədvəldə neçə işçi olduğunu hesablayın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali',800), (2,'Aysel',1200), (3,'Mehmet',950)",
+          "expected": "3",
+          "description": "Ümumi işçi sayını qaytarmalıdır"
+        }
+      ],
+      "solution": "SELECT COUNT(*) FROM employees;"
+    },
+    {
+      "id": 5,
+      "title": "GROUP BY",
+      "description": "Hər departament üzrə orta maaşı hesablayın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali',800,'IT'), (2,'Aysel',1200,'HR'), (3,'Mehmet',950,'IT')",
+          "expected": "departament | avg_salary\nIT          | 875\nHR          | 1200",
+          "description": "Departamentlər üzrə orta maaşı göstərməlidir"
+        }
+      ],
+      "solution": "SELECT department, AVG(salary) as avg_salary FROM employees GROUP BY department;"
+    },
+    {
+      "id": 6,
+      "title": "JOIN əməliyyatı",
+      "description": "İşçiləri onların departamentləri ilə birləşdirin",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali',1), departments: (1,'IT')\n(2,'Aysel',2), (2,'HR')",
+          "expected": "id | name  | department_name\n1  | Ali   | IT\n2  | Aysel | HR",
+          "description": "İki cədvəli birləşdirməlidir"
+        }
+      ],
+      "solution": "SELECT e.id, e.name, d.name as department_name FROM employees e JOIN departments d ON e.department_id = d.id;"
+    },
+    {
+      "id": 7,
+      "title": "LIKE operatoru",
+      "description": "Adı 'A' ilə başlayan işçiləri tapın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali',800), (2,'Aysel',1200), (3,'Mehmet',950)",
+          "expected": "id | name  | salary\n1  | Ali   | 800\n2  | Aysel | 1200",
+          "description": "Yalnız 'A' ilə başlayan adları göstərməlidir"
+        }
+      ],
+      "solution": "SELECT * FROM employees WHERE name LIKE 'A%';"
+    },
+    {
+      "id": 8,
+      "title": "IN operatoru",
+      "description": "Müəyyən şəhərlərdə olan işçiləri tapın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali','Baku'), (2,'Aysel','Gence'), (3,'Mehmet','Baku')",
+          "expected": "id | name   | city\n1  | Ali    | Baku\n3  | Mehmet | Baku",
+          "description": "Yalnız Baku və Sumqayit şəhərlərində olanları göstərməlidir"
+        }
+      ],
+      "solution": "SELECT * FROM employees WHERE city IN ('Baku', 'Sumqayit');"
+    },
+    {
+      "id": 9,
+      "title": "BETWEEN operatoru",
+      "description": "Maaşı 800 ilə 1000 arasında olan işçiləri tapın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali',800), (2,'Aysel',1200), (3,'Mehmet',950)",
+          "expected": "id | name   | salary\n1  | Ali    | 800\n3  | Mehmet | 950",
+          "description": "Maaşı 800-1000 arası olanları göstərməlidir"
+        }
+      ],
+      "solution": "SELECT * FROM employees WHERE salary BETWEEN 800 AND 1000;"
+    },
+    {
+      "id": 10,
+      "title": "DISTINCT",
+      "description": "Müxtəlif şəhərlərin siyahısını alın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali','Baku'), (2,'Aysel','Gence'), (3,'Mehmet','Baku')",
+          "expected": "city\nBaku\nGence",
+          "description": "Təkrarlanmayan şəhər adlarını göstərməlidir"
+        }
+      ],
+      "solution": "SELECT DISTINCT city FROM employees;"
+    },
+    {
+      "id": 11,
+      "title": "SUM funksiyası",
+      "description": "Bütün işçilərin ümumi maaşını hesablayın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali',800), (2,'Aysel',1200), (3,'Mehmet',950)",
+          "expected": "2950",
+          "description": "Bütün maaşların cəmini göstərməlidir"
+        }
+      ],
+      "solution": "SELECT SUM(salary) FROM employees;"
+    },
+    {
+      "id": 12,
+      "title": "MAX funksiyası",
+      "description": "Ən yüksək maaşı tapın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali',800), (2,'Aysel',1200), (3,'Mehmet',950)",
+          "expected": "1200",
+          "description": "Ən yüksək maaşı göstərməlidir"
+        }
+      ],
+      "solution": "SELECT MAX(salary) FROM employees;"
+    },
+    {
+      "id": 13,
+      "title": "MIN funksiyası",
+      "description": "Ən aşağı maaşı tapın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali',800), (2,'Aysel',1200), (3,'Mehmet',950)",
+          "expected": "800",
+          "description": "Ən aşağı maaşı göstərməlidir"
+        }
+      ],
+      "solution": "SELECT MIN(salary) FROM employees;"
+    },
+    {
+      "id": 14,
+      "title": "AVG funksiyası",
+      "description": "Orta maaşı hesablayın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali',800), (2,'Aysel',1200), (3,'Mehmet',950)",
+          "expected": "983.33",
+          "description": "Orta maaşı göstərməlidir"
+        }
+      ],
+      "solution": "SELECT AVG(salary) FROM employees;"
+    },
+    {
+      "id": 15,
+      "title": "HAVING şərti",
+      "description": "Orta maaşı 900-dən çox olan departamentləri tapın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali',800,'IT'), (2,'Aysel',1200,'HR'), (3,'Mehmet',950,'IT')",
+          "expected": "department | avg_salary\nHR          | 1200",
+          "description": "Yalnız orta maaşı 900-dən yuxarı olan departamentləri göstərməlidir"
+        }
+      ],
+      "solution": "SELECT department, AVG(salary) as avg_salary FROM employees GROUP BY department HAVING AVG(salary) > 900;"
+    },
+    {
+      "id": 16,
+      "title": "Subquery",
+      "description": "Orta maaşdan yuxarı maaş alan işçiləri tapın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali',800), (2,'Aysel',1200), (3,'Mehmet',950)",
+          "expected": "id | name  | salary\n2  | Aysel | 1200",
+          "description": "Yalnız orta maaşdan yuxarı alanları göstərməlidir"
+        }
+      ],
+      "solution": "SELECT * FROM employees WHERE salary > (SELECT AVG(salary) FROM employees);"
+    },
+    {
+      "id": 17,
+      "title": "UPDATE əməliyyatı",
+      "description": "Bütün IT işçilərinin maaşını 10% artırın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali',800,'IT'), (2,'Aysel',1200,'HR')",
+          "expected": "IT işçilərinin maaşı: 880",
+          "description": "Yalnız IT işçilərinin maaşını artırmalıdır"
+        }
+      ],
+      "solution": "UPDATE employees SET salary = salary * 1.1 WHERE department = 'IT';"
+    },
+    {
+      "id": 18,
+      "title": "DELETE əməliyyatı",
+      "description": "Maaşı 500-dən aşağı olan işçiləri silin",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali',800), (2,'Aysel',400), (3,'Mehmet',950)",
+          "expected": "Yalnız Ali və Mehmet qalmalıdır",
+          "description": "Yalnız 500-dən aşağı maaşı olanları silməlidir"
+        }
+      ],
+      "solution": "DELETE FROM employees WHERE salary < 500;"
+    },
+    {
+      "id": 19,
+      "title": "INSERT əməliyyatı",
+      "description": "Yeni işçi əlavə edin",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "Boş employees cədvəli",
+          "expected": "Yeni sətir əlavə olunmalıdır",
+          "description": "Yeni işçini daxil etməlidir"
+        }
+      ],
+      "solution": "INSERT INTO employees (id, name, salary, department) VALUES (4, 'Nermin', 1100, 'Finance');"
+    },
+    {
+      "id": 20,
+      "title": "CREATE TABLE",
+      "description": "Yeni products cədvəli yaradın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "Cədvəl yoxdur",
+          "expected": "products cədvəli yaradılmalıdır",
+          "description": "Düzgün strukturla cədvəl yaratmalıdır"
+        }
+      ],
+      "solution": "CREATE TABLE products (id INT PRIMARY KEY, name VARCHAR(100), price DECIMAL(10,2), category VARCHAR(50));"
+    },
+    {
+      "id": 21,
+      "title": "ALTER TABLE",
+      "description": "Cədvələ yeni sütun əlavə edin",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees cədvəli: id, name, salary",
+          "expected": "email sütunu əlavə olunmalıdır",
+          "description": "Cədvələ yeni sütun əlavə etməlidir"
+        }
+      ],
+      "solution": "ALTER TABLE employees ADD COLUMN email VARCHAR(100);"
+    },
+    {
+      "id": 22,
+      "title": "DROP TABLE",
+      "description": "Cədvəli silin",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "temp_data cədvəli mövcuddur",
+          "expected": "Cədvəl silinməlidir",
+          "description": "Cədvəli tamamilə silməlidir"
+        }
+      ],
+      "solution": "DROP TABLE temp_data;"
+    },
+    {
+      "id": 23,
+      "title": "TRUNCATE TABLE",
+      "description": "Cədvəlin bütün məlumatlarını silin",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "logs cədvəli: 100 sətir",
+          "expected": "0 sətir qalmalıdır",
+          "description": "Bütün məlumatları silməli, cədvəli saxlamağıdır"
+        }
+      ],
+      "solution": "TRUNCATE TABLE logs;"
+    },
+    {
+      "id": 24,
+      "title": "CASE ifadəsi",
+      "description": "Maaşa görə kateqoriya təyin edin",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali',800), (2,'Aysel',1200), (3,'Mehmet',2000)",
+          "expected": "name  | category\nAli   | Orta\nAysel | Yüksək\nMehmet| Çox yüksək",
+          "description": "Maaşa görə kateqoriya təyin etməlidir"
+        }
+      ],
+      "solution": "SELECT name, CASE WHEN salary < 1000 THEN 'Orta' WHEN salary < 1500 THEN 'Yüksək' ELSE 'Çox yüksək' END as category FROM employees;"
+    },
+    {
+      "id": 25,
+      "title": "COALESCE funksiyası",
+      "description": "NULL dəyərləri əvəz edin",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali',NULL), (2,'Aysel',1200)",
+          "expected": "name  | salary\nAli   | 0\nAysel | 1200",
+          "description": "NULL dəyərləri 0 ilə əvəz etməlidir"
+        }
+      ],
+      "solution": "SELECT name, COALESCE(salary, 0) as salary FROM employees;"
+    },
+    {
+      "id": 26,
+      "title": "CONCAT funksiyası",
+      "description": "Ad və soyadı birləşdirin",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali','Aliyev'), (2,'Aysel','Həsənova')",
+          "expected": "full_name\nAli Aliyev\nAysel Həsənova",
+          "description": "Ad və soyadı birləşdirməlidir"
+        }
+      ],
+      "solution": "SELECT CONCAT(name, ' ', surname) as full_name FROM employees;"
+    },
+    {
+      "id": 27,
+      "title": "DATE funksiyaları",
+      "description": "Bu günün tarixini və 30 gün sonranı hesablayın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "Cari tarix: 2024-01-15",
+          "expected": "today       | next_month\n2024-01-15  | 2024-02-14",
+          "description": "Cari tarixi və 30 gün sonranı göstərməlidir"
+        }
+      ],
+      "solution": "SELECT CURDATE() as today, DATE_ADD(CURDATE(), INTERVAL 30 DAY) as next_month;"
+    },
+    {
+      "id": 28,
+      "title": "LIMIT",
+      "description": "İlk 5 işçini seçin",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: 10 sətir",
+          "expected": "5 sətir qaytarılmalıdır",
+          "description": "Yalnız ilk 5 sətri göstərməlidir"
+        }
+      ],
+      "solution": "SELECT * FROM employees LIMIT 5;"
+    },
+    {
+      "id": 29,
+      "title": "OFFSET",
+      "description": "İkinci 5 işçini seçin (6-10)",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: 10 sətir",
+          "expected": "6-10 sətirləri",
+          "description": "İlk 5-i atlayıb növbəti 5-i göstərməlidir"
+        }
+      ],
+      "solution": "SELECT * FROM employees LIMIT 5 OFFSET 5;"
+    },
+    {
+      "id": 30,
+      "title": "UNION",
+      "description": "İki cədvəli birləşdirin",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "current_emp: (1,'Ali'), past_emp: (2,'Vəli')",
+          "expected": "id | name\n1  | Ali\n2  | Vəli",
+          "description": "İki cədvəlin bütün sətirlərini birləşdirməlidir"
+        }
+      ],
+      "solution": "SELECT id, name FROM current_employees UNION SELECT id, name FROM past_employees;"
+    },
+    {
+      "id": 31,
+      "title": "EXISTS",
+      "description": "Sifarişi olan müştəriləri tapın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "customers: (1,'Ali'), orders: (100,1,'2024-01-01')\n(2,'Aysel'), (null,2,null)",
+          "expected": "id | name\n1  | Ali",
+          "description": "Yalnız sifarişi olan müştəriləri göstərməlidir"
+        }
+      ],
+      "solution": "SELECT * FROM customers c WHERE EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id);"
+    },
+    {
+      "id": 32,
+      "title": "NOT NULL constraint",
+      "description": "Email-i NULL olmayan işçiləri tapın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali','ali@mail.com'), (2,'Aysel',NULL)",
+          "expected": "id | name | email\n1  | Ali  | ali@mail.com",
+          "description": "Yalnız email-i dolu olanları göstərməlidir"
+        }
+      ],
+      "solution": "SELECT * FROM employees WHERE email IS NOT NULL;"
+    },
+    {
+      "id": 33,
+      "title": "FOREIGN KEY",
+      "description": "İşçiləri departamentlərlə birləşdirin (foreign key ilə)",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali',1), departments: (1,'IT')",
+          "expected": "İki cədvəl birləşdirilməlidir",
+          "description": "Foreign key istifadə edərək JOIN etməlidir"
+        }
+      ],
+      "solution": "SELECT e.name, d.department_name FROM employees e JOIN departments d ON e.department_id = d.id;"
+    },
+    {
+      "id": 34,
+      "title": "VIEW yaratmaq",
+      "description": "Yüksək maaşlı işçilər üçün view yaradın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees cədvəli",
+          "expected": "View yaradılmalıdır",
+          "description": "Maaşı 1000-dən yuxarı olanlar üçün view yaratmalıdır"
+        }
+      ],
+      "solution": "CREATE VIEW high_salary_employees AS SELECT * FROM employees WHERE salary > 1000;"
+    },
+    {
+      "id": 35,
+      "title": "INDEX yaratmaq",
+      "description": "Performans üçün index yaradın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees cədvəli",
+          "expected": "Index yaradılmalıdır",
+          "description": "Ad sütunu üçün index yaratmalıdır"
+        }
+      ],
+      "solution": "CREATE INDEX idx_employee_name ON employees(name);"
+    },
+    {
+      "id": 36,
+      "title": "STRING funksiyaları",
+      "description": "Adın uzunluğunu hesablayın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali'), (2,'Aysel')",
+          "expected": "name  | length\nAli   | 3\nAysel | 5",
+          "description": "Hər adın uzunluğunu göstərməlidir"
+        }
+      ],
+      "solution": "SELECT name, LENGTH(name) as length FROM employees;"
+    },
+    {
+      "id": 37,
+      "title": "ROUND funksiyası",
+      "description": "Orta maaşı yuvarlaqlayın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali',850), (2,'Aysel',1200)",
+          "expected": "1025",
+          "description": "Orta maaşı tam ədədə yuvarlaqlamalıdır"
+        }
+      ],
+      "solution": "SELECT ROUND(AVG(salary)) as avg_salary FROM employees;"
+    },
+    {
+      "id": 38,
+      "title": "NULLIF funksiyası",
+      "description": "Sıfır dəyərləri NULL-a çevirin",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "sales: (1,100), (2,0)",
+          "expected": "id | amount\n1  | 100\n2  | NULL",
+          "description": "0 dəyərlərini NULL-a çevirməlidir"
+        }
+      ],
+      "solution": "SELECT id, NULLIF(amount, 0) as amount FROM sales;"
+    },
+    {
+      "id": 39,
+      "title": "WINDOW funksiyası",
+      "description": "Hər işçinin maaş sırasını tapın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees: (1,'Ali',800), (2,'Aysel',1200), (3,'Mehmet',950)",
+          "expected": "name   | salary | rank\nAysel  | 1200   | 1\nMehmet | 950    | 2\nAli    | 800    | 3",
+          "description": "Maaşa görə sıralama etməlidir"
+        }
+      ],
+      "solution": "SELECT name, salary, RANK() OVER (ORDER BY salary DESC) as rank FROM employees;"
+    },
+    {
+      "id": 40,
+      "title": "TRIGGER yaratmaq",
+      "description": "İşçi əlavə edildikdə log yazan trigger yaradın",
+      "initialCode": "-- Kodunuzu buraya yazın",
+      "tests": [
+        {
+          "input": "employees cədvəlinə yeni işçi əlavə edilir",
+          "expected": "log_cədvəlinə yeni qeyd düşməlidir",
+          "description": "INSERT zamanı trigger işləməlidir"
+        }
+      ],
+      "solution": "CREATE TRIGGER after_employee_insert AFTER INSERT ON employees FOR EACH ROW INSERT INTO employee_logs (employee_id, action, timestamp) VALUES (NEW.id, 'INSERTED', NOW());"
+    }
+  ]
+}

@@ -1,0 +1,412 @@
+{
+  "postgresql_questions1": [
+    {
+      "question": "PostgreSQL nədir?",
+      "answer1": "A) Proqramlaşdırma dili",
+      "answer2": "B) Açıq mənbəli obyekt-münasibətli verilənlər bazası idarəetmə sistemi",
+      "answer3": "C) Yalnız Windows üçün nəzərdə tutulmuş verilənlər bazası",
+      "answer4": "D) Cədvəl redaktoru",
+      "correct": "B) Açıq mənbəli obyekt-münasibətli verilənlər bazası idarəetmə sistemi"
+    },
+    {
+      "question": "PostgreSQL-də yeni bir verilənlər bazası yaratmaq üçün hansı əmr istifadə olunur?",
+      "answer1": "A) CREATE DATABASE",
+      "answer2": "B) NEW DATABASE",
+      "answer3": "C) ADD DATABASE",
+      "answer4": "D) MAKE DATABASE",
+      "correct": "A) CREATE DATABASE"
+    },
+    {
+      "question": "PostgreSQL-də cədvəl yaratmaq üçün aşağıdakı əmrlərdən hansı doğrudur?",
+      "answer1": "A) CREATE TABLE table_name (column1 datatype, column2 datatype);",
+      "answer2": "B) MAKE TABLE table_name (column1, column2);",
+      "answer3": "C) NEW TABLE table_name WITH (column1, column2);",
+      "answer4": "D) ADD TABLE table_name (datatype column1, datatype column2);",
+      "correct": "A) CREATE TABLE table_name (column1 datatype, column2 datatype);"
+    },
+    {
+      "question": "Aşağıdakı PostgreSQL sorğularından hansı 'users' cədvəlindən bütün məlumatları seçər?",
+      "answer1": "A) GET * FROM users;",
+      "answer2": "B) SELECT ALL FROM users;",
+      "answer3": "C) SELECT * FROM users;",
+      "answer4": "D) FETCH * FROM users;",
+      "correct": "C) SELECT * FROM users;"
+    },
+    {
+      "question": "PostgreSQL-də məlumat əlavə etmək üçün hansı əmr istifadə olunur?",
+      "answer1": "A) INSERT INTO",
+      "answer2": "B) ADD TO",
+      "answer3": "C) PUT INTO",
+      "answer4": "D) CREATE INTO",
+      "correct": "A) INSERT INTO"
+    },
+    {
+      "question": "PostgreSQL-də cədvəldəki məlumatları yeniləmək üçün hansı əmr istifadə olunur?",
+      "answer1": "A) MODIFY",
+      "answer2": "B) CHANGE",
+      "answer3": "C) UPDATE",
+      "answer4": "D) ALTER",
+      "correct": "C) UPDATE"
+    },
+    {
+      "question": "PostgreSQL-də cədvəldən məlumat silmək üçün hansı əmr istifadə olunur?",
+      "answer1": "A) REMOVE",
+      "answer2": "B) DELETE",
+      "answer3": "C) DROP",
+      "answer4": "D) ERASE",
+      "correct": "B) DELETE"
+    },
+    {
+      "question": "PostgreSQL-də cədvəli tamamilə silmək üçün hansı əmr istifadə olunur?",
+      "answer1": "A) DELETE TABLE",
+      "answer2": "B) REMOVE TABLE",
+      "answer3": "C) DROP TABLE",
+      "answer4": "D) ERASE TABLE",
+      "correct": "C) DROP TABLE"
+    },
+    {
+      "question": "PostgreSQL-də sütun əlavə etmək üçün hansı əmr istifadə olunur?",
+      "answer1": "A) ADD COLUMN",
+      "answer2": "B) INSERT COLUMN",
+      "answer3": "C) NEW COLUMN",
+      "answer4": "D) CREATE COLUMN",
+      "correct": "A) ADD COLUMN"
+    },
+    {
+      "question": "PostgreSQL-də hansı data tipi mətn məlumatları üçün istifadə olunur?",
+      "answer1": "A) INTEGER",
+      "answer2": "B) TEXT",
+      "answer3": "C) BOOLEAN",
+      "answer4": "D) FLOAT",
+      "correct": "B) TEXT"
+    }
+  ],
+  "postgresql_questions2": [
+    {
+      "question": "Aşağıdakı PostgreSQL sorğularından hansı 'age' sütunu 18-dən böyük olan istifadəçiləri seçər?",
+      "answer1": "A) SELECT * FROM users WHERE age > 18;",
+      "answer2": "B) SELECT * FROM users HAVING age > 18;",
+      "answer3": "C) SELECT * FROM users IF age > 18;",
+      "answer4": "D) GET * FROM users WHERE age > 18;",
+      "correct": "A) SELECT * FROM users WHERE age > 18;"
+    },
+    {
+      "question": "PostgreSQL-də məlumatları artan qaydada sıralamaq üçün hansı açar söz istifadə olunur?",
+      "answer1": "A) ASC",
+      "answer2": "B) UP",
+      "answer3": "C) INCREASE",
+      "answer4": "D) HIGH",
+      "correct": "A) ASC"
+    },
+    {
+      "question": "PostgreSQL-də məlumatları azalan qaydada sıralamaq üçün hansı açar söz istifadə olunur?",
+      "answer1": "A) DESC",
+      "answer2": "B) DOWN",
+      "answer3": "C) DECREASE",
+      "answer4": "D) LOW",
+      "correct": "A) DESC"
+    },
+    {
+      "question": "PostgreSQL-də cədvəldəki unikal dəyərləri seçmək üçün hansı açar söz istifadə olunur?",
+      "answer1": "A) UNIQUE",
+      "answer2": "B) DISTINCT",
+      "answer3": "C) DIFFERENT",
+      "answer4": "D) ONLY",
+      "correct": "B) DISTINCT"
+    },
+    {
+      "question": "PostgreSQL-də məlumatları qruplaşdırmaq üçün hansı açar söz istifadə olunur?",
+      "answer1": "A) CATEGORIZE",
+      "answer2": "B) GROUP",
+      "answer3": "C) GROUP BY",
+      "answer4": "D) SORT BY",
+      "correct": "C) GROUP BY"
+    },
+    {
+      "question": "PostgreSQL-də iki cədvəli birləşdirmək üçün hansı əmr istifadə olunur?",
+      "answer1": "A) MERGE",
+      "answer2": "B) COMBINE",
+      "answer3": "C) JOIN",
+      "answer4": "D) CONNECT",
+      "correct": "C) JOIN"
+    },
+    {
+      "question": "PostgreSQL-də INNER JOIN nə edir?",
+      "answer1": "A) Yalnız sol cədvəldəki bütün qeydləri göstərir",
+      "answer2": "B) Yalnız sağ cədvəldəki bütün qeydləri göstərir",
+      "answer3": "C) Hər iki cədvəldə uyğun gələn qeydləri göstərir",
+      "answer4": "D) Heç bir uyğunluq olmasa belə bütün qeydləri göstərir",
+      "correct": "C) Hər iki cədvəldə uyğun gələn qeydləri göstərir"
+    },
+    {
+      "question": "PostgreSQL-də LEFT JOIN nə edir?",
+      "answer1": "A) Sol cədvəlin bütün qeydlərini və sağ cədvəldə uyğun gələnləri göstərir",
+      "answer2": "B) Sağ cədvəlin bütün qeydlərini və sol cədvəldə uyğun gələnləri göstərir",
+      "answer3": "C) Yalnız hər iki cədvəldə uyğun gələn qeydləri göstərir",
+      "answer4": "D) Heç bir cədvəlin qeydlərini göstərmir",
+      "correct": "A) Sol cədvəlin bütün qeydlərini və sağ cədvəldə uyğun gələnləri göstərir"
+    },
+    {
+      "question": "PostgreSQL-də cədvəl məlumatlarını limitləmək üçün hansı açar söz istifadə olunur?",
+      "answer1": "A) TOP",
+      "answer2": "B) LIMIT",
+      "answer3": "C) RESTRICT",
+      "answer4": "D) MAX",
+      "correct": "B) LIMIT"
+    },
+    {
+      "question": "PostgreSQL-də sorğu nəticələrində səhifələmə üçün OFFSET nə üçün istifadə olunur?",
+      "answer1": "A) Nəticələri sıralamaq üçün",
+      "answer2": "B) Nəticələri filtrləmək üçün",
+      "answer3": "C) Müəyyən sayda nəticəni atlamaq üçün",
+      "answer4": "D) Nəticələri qruplaşdırmaq üçün",
+      "correct": "C) Müəyyən sayda nəticəni atlamaq üçün"
+    }
+  ],
+  "postgresql_questions3": [
+    {
+      "question": "PostgreSQL-də PRIMARY KEY nədir?",
+      "answer1": "A) Cədvəldəki hər bir sətri unikal şəkildə identifikasiya edir",
+      "answer2": "B) Cədvəldəki əsas məlumatları göstərir",
+      "answer3": "C) Cədvəlin əsas strukturu",
+      "answer4": "D) Cədvəldəki bütün sütunların cəmi",
+      "correct": "A) Cədvəldəki hər bir sətri unikal şəkildə identifikasiya edir"
+    },
+    {
+      "question": "PostgreSQL-də FOREIGN KEY nədir?",
+      "answer1": "A) Digər cədvəlin PRIMARY KEY ilə əlaqə qurur",
+      "answer2": "B) Xarici fayllara keçid üçün istifadə olunur",
+      "answer3": "C) Yalnız xarici verilənlər bazaları üçün istifadə olunur",
+      "answer4": "D) Cədvəlin xarici görünüşünü təyin edir",
+      "correct": "A) Digər cədvəlin PRIMARY KEY ilə əlaqə qurur"
+    },
+    {
+      "question": "PostgreSQL-də CHECK constraint nə edir?",
+      "answer1": "A) Sütuna daxil ediləcək dəyərlərə məhdudiyyət qoyur",
+      "answer2": "B) Yalnız rəqəmsal dəyərləri yoxlayır",
+      "answer3": "C) Cədvəlin yoxlanış zamanını təyin edir",
+      "answer4": "D) Sütunun adını yoxlayır",
+      "correct": "A) Sütuna daxil ediləcək dəyərlərə məhdudiyyət qoyur"
+    },
+    {
+      "question": "PostgreSQL-də NOT NULL constraint nə edir?",
+      "answer1": "A) Sütunun boş qala bilməyəcəyini təmin edir",
+      "answer2": "B) Sütunun yalnız rəqəmsal dəyərlər qəbul edəcəyini təmin edir",
+      "answer3": "C) Sütunun həmişə NULL olacağını təmin edir",
+      "answer4": "D) Sütunun adını dəyişdirir",
+      "correct": "A) Sütunun boş qala bilməyəcəyini təmin edir"
+    },
+    {
+      "question": "PostgreSQL-də UNIQUE constraint nə edir?",
+      "answer1": "A) Sütundakı bütün dəyərlərin unikal olmasını təmin edir",
+      "answer2": "B) Sütunun yalnız bir dəyər ala biləcəyini təmin edir",
+      "answer3": "C) Sütunun adının unikal olmasını təmin edir",
+      "answer4": "D) Cədvəlin unikal adını təyin edir",
+      "correct": "A) Sütundakı bütün dəyərlərin unikal olmasını təmin edir"
+    },
+    {
+      "question": "PostgreSQL-də DEFAULT constraint nə edir?",
+      "answer1": "A) Sütun üçün standart dəyər təyin edir",
+      "answer2": "B) Sütunu avtomatik silir",
+      "answer3": "C) Sütunun tipini dəyişdirir",
+      "answer4": "D) Cədvəlin standart adını təyin edir",
+      "correct": "A) Sütun üçün standart dəyər təyin edir"
+    },
+    {
+      "question": "PostgreSQL-də INDEX nə üçün istifadə olunur?",
+      "answer1": "A) Verilənlər bazasında axtarış sürətini artırmaq üçün",
+      "answer2": "B) Cədvəlin ölçüsünü azaltmaq üçün",
+      "answer3": "C) Verilənlər bazasını şifrələmək üçün",
+      "answer4": "D) Cədvəlləri birləşdirmək üçün",
+      "correct": "A) Verilənlər bazasında axtarış sürətini artırmaq üçün"
+    },
+    {
+      "question": "PostgreSQL-də SERIAL data tipi nə edir?",
+      "answer1": "A) Avtomatik artan tam ədəd yaradır",
+      "answer2": "B) Mətn məlumatları üçün istifadə olunur",
+      "answer3": "C) Tarix vaxt məlumatları üçün istifadə olunur",
+      "answer4": "D) Boolean dəyərlər üçün istifadə olunur",
+      "correct": "A) Avtomatik artan tam ədəd yaradır"
+    },
+    {
+      "question": "PostgreSQL-də VIEW nədir?",
+      "answer1": "A) Virtual cədvəl",
+      "answer2": "B) Fiziki cədvəl",
+      "answer3": "C) Verilənlər bazası faylı",
+      "answer4": "D) İndeks növü",
+      "correct": "A) Virtual cədvəl"
+    },
+    {
+      "question": "PostgreSQL-də TRANSACTION nədir?",
+      "answer1": "A) Verilənlər bazası əməliyyatlarının atomik vahidi",
+      "answer2": "B) Cədvəlin adı",
+      "answer3": "C) Verilənlər bazasının növü",
+      "answer4": "D) Sorğu növü",
+      "correct": "A) Verilənlər bazası əməliyyatlarının atomic vahidi"
+    }
+  ],
+  "postgresql_questions4": [
+    {
+      "question": "PostgreSQL-də aşağıdakı sorğu nə edir?\nSELECT COUNT(*) FROM users;",
+      "answer1": "A) 'users' cədvəlindəki sətirlərin sayını qaytarır",
+      "answer2": "B) 'users' cədvəlindəki sütunların sayını qaytarır",
+      "answer3": "C) 'users' cədvəlindəki bütün məlumatları silir",
+      "answer4": "D) 'users' cədvəlini yenidən yaradır",
+      "correct": "A) 'users' cədvəlindəki sətirlərin sayını qaytarır"
+    },
+    {
+      "question": "PostgreSQL-də aşağıdakı sorğu nə edir?\nSELECT AVG(price) FROM products;",
+      "answer1": "A) 'products' cədvəlindəki qiymətlərin ortalamasını hesablayır",
+      "answer2": "B) 'products' cədvəlindəki ən yüksək qiyməti tapır",
+      "answer3": "C) 'products' cədvəlindəki ən aşağı qiyməti tapır",
+      "answer4": "D) 'products' cədvəlindəki qiymətlərin cəmini hesablayır",
+      "correct": "A) 'products' cədvəlindəki qiymətlərin ortalamasını hesablayır"
+    },
+    {
+      "question": "PostgreSQL-də aşağıdakı sorğu nə edir?\nSELECT MAX(salary) FROM employees;",
+      "answer1": "A) 'employees' cədvəlindəki ən yüksək maaşı tapır",
+      "answer2": "B) 'employees' cədvəlindəki maaşların cəmini hesablayır",
+      "answer3": "C) 'employees' cədvəlindəki orta maaşı hesablayır",
+      "answer4": "D) 'employees' cədvəlindəki ən aşağı maaşı tapır",
+      "correct": "A) 'employees' cədvəlindəki ən yüksək maaşı tapır"
+    },
+    {
+      "question": "PostgreSQL-də aşağıdakı sorğu nə edir?\nSELECT MIN(age) FROM students;",
+      "answer1": "A) 'students' cədvəlindəki ən kiçik yaşı tapır",
+      "answer2": "B) 'students' cədvəlindəki yaşların cəmini hesablayır",
+      "answer3": "C) 'students' cədvəlindəki orta yaşı hesablayır",
+      "answer4": "D) 'students' cədvəlindəki ən böyük yaşı tapır",
+      "correct": "A) 'students' cədvəlindəki ən kiçik yaşı tapır"
+    },
+    {
+      "question": "PostgreSQL-də aşağıdakı sorğu nə edir?\nSELECT SUM(quantity) FROM orders;",
+      "answer1": "A) 'orders' cədvəlindəki miqdarların cəmini hesablayır",
+      "answer2": "B) 'orders' cədvəlindəki miqdarların ortalamasını hesablayır",
+      "answer3": "C) 'orders' cədvəlindəki ən yüksək miqdarı tapır",
+      "answer4": "D) 'orders' cədvəlindəki ən aşağı miqdarı tapır",
+      "correct": "A) 'orders' cədvəlindəki miqdarların cəmini hesablayır"
+    },
+    {
+      "question": "PostgreSQL-də aşağıdakı sorğu nə edir?\nSELECT name, COUNT(*) FROM products GROUP BY name;",
+      "answer1": "A) Hər bir məhsul adı üçün sayını qaytarır",
+      "answer2": "B) Bütün məhsulların ümumi sayını qaytarır",
+      "answer3": "C) Məhsulları adlarına görə sıralayır",
+      "answer4": "D) Məhsul adlarını dəyişdirir",
+      "correct": "A) Hər bir məhsul adı üçün sayını qaytarır"
+    },
+    {
+      "question": "PostgreSQL-də aşağıdakı sorğu nə edir?\nSELECT department, AVG(salary) FROM employees GROUP BY department HAVING AVG(salary) > 50000;",
+      "answer1": "A) Orta maaşı 50000-dən çox olan departamentləri qaytarır",
+      "answer2": "B) Bütün departamentlərin orta maaşını qaytarır",
+      "answer3": "C) Orta maaşı 50000-dən az olan departamentləri qaytarır",
+      "answer4": "D) Departamentləri maaşa görə sıralayır",
+      "correct": "A) Orta maaşı 50000-dən çox olan departamentləri qaytarır"
+    },
+    {
+      "question": "PostgreSQL-də aşağıdakı sorğu nə edir?\nSELECT * FROM customers WHERE city IN ('Baku', 'London', 'Paris');",
+      "answer1": "A) Müəyyən edilmiş şəhərlərdə olan müştəriləri seçir",
+      "answer2": "B) Bütün şəhərlərdəki müştəriləri seçir",
+      "answer3": "C) Yalnız Bakıdakı müştəriləri seçir",
+      "answer4": "D) Heç bir şəhərdə olmayan müştəriləri seçir",
+      "correct": "A) Müəyyən edilmiş şəhərlərdə olan müştəriləri seçir"
+    },
+    {
+      "question": "PostgreSQL-də aşağıdakı sorğu nə edir?\nSELECT * FROM orders WHERE order_date BETWEEN '2024-01-01' AND '2024-12-31';",
+      "answer1": "A) 2024-cü il ərzindəki sifarişləri seçir",
+      "answer2": "B) Yalnız 2024-cü ilin yanvar ayındakı sifarişləri seçir",
+      "answer3": "C) 2024-cü ildən sonrakı sifarişləri seçir",
+      "answer4": "D) 2024-cü ildən əvvəlki sifarişləri seçir",
+      "correct": "A) 2024-cü il ərzindəki sifarişləri seçir"
+    },
+    {
+      "question": "PostgreSQL-də aşağıdakı sorğu nə edir?\nSELECT name, email FROM users WHERE email LIKE '%@gmail.com';",
+      "answer1": "A) Gmail ünvanı olan istifadəçiləri seçir",
+      "answer2": "B) Gmail ünvanı olmayan istifadəçiləri seçir",
+      "answer3": "C) Bütün istifadəçiləri seçir",
+      "answer4": "D) Yalnız adı 'gmail' olan istifadəçiləri seçir",
+      "correct": "A) Gmail ünvanı olan istifadəçiləri seçir"
+    }
+  ],
+  "postgresql_questions5": [
+    {
+      "question": "PostgreSQL-də aşağıdakı sorğu nə edir?\nCREATE INDEX idx_name ON users (name);",
+      "answer1": "A) 'users' cədvəlinin 'name' sütununda indeks yaradır",
+      "answer2": "B) 'users' cədvəlində yeni sütun əlavə edir",
+      "answer3": "C) 'users' cədvəlini silir",
+      "answer4": "D) 'users' cədvəlinin adını dəyişdirir",
+      "correct": "A) 'users' cədvəlinin 'name' sütununda indeks yaradır"
+    },
+    {
+      "question": "PostgreSQL-də aşağıdakı sorğu nə edir?\nCREATE VIEW active_users AS SELECT * FROM users WHERE active = true;",
+      "answer1": "A) Aktiv istifadəçiləri göstərən virtual cədvəl yaradır",
+      "answer2": "B) Yeni cədvəl yaradır",
+      "answer3": "C) Aktiv istifadəçiləri silir",
+      "answer4": "D) İstifadəçilərin aktiv statusunu dəyişdirir",
+      "correct": "A) Aktiv istifadəçiləri göstərən virtual cədvəl yaradır"
+    },
+    {
+      "question": "PostgreSQL-də aşağıdakı sorğu nə edir?\nBEGIN;\nUPDATE accounts SET balance = balance - 100 WHERE id = 1;\nUPDATE accounts SET balance = balance + 100 WHERE id = 2;\nCOMMIT;",
+      "answer1": "A) Pul köçürmə əməliyyatını atomik şəkildə yerinə yetirir",
+      "answer2": "B) Hesabları silir",
+      "answer3": "C) Yeni hesablar yaradır",
+      "answer4": "D) Bütün hesabların balansını sıfırlayır",
+      "correct": "A) Pul köçürmə əməliyyatını atomik şəkildə yerinə yetirir"
+    },
+    {
+      "question": "PostgreSQL-də aşağıdakı sorğu nə edir?\nEXPLAIN SELECT * FROM users WHERE age > 25;",
+      "answer1": "A) Sorğunun icra planını göstərir",
+      "answer2": "B) Sorğunu icra edir",
+      "answer3": "C) Sorğunu ləğv edir",
+      "answer4": "D) Yeni sorğu yaradır",
+      "correct": "A) Sorğunun icra planını göstərir"
+    },
+    {
+      "question": "PostgreSQL-də aşağıdakı sorğu nə edir?\nVACUUM users;",
+      "answer1": "A) 'users' cədvəlindəki boş yerləri təmizləyir",
+      "answer2": "B) 'users' cədvəlini silir",
+      "answer3": "C) 'users' cədvəlini kopyalayır",
+      "answer4": "D) 'users' cədvəlinə yeni məlumat əlavə edir",
+      "correct": "A) 'users' cədvəlindəki boş yerləri təmizləyir"
+    },
+    {
+      "question": "PostgreSQL-də aşağıdakı sorğu nə edir?\nALTER TABLE users ADD COLUMN phone VARCHAR(20);",
+      "answer1": "A) 'users' cədvəlinə telefon nömrəsi sütunu əlavə edir",
+      "answer2": "B) 'users' cədvəlindən telefon sütununu silir",
+      "answer3": "C) 'users' cədvəlinin adını dəyişdirir",
+      "answer4": "D) 'users' cədvəlindəki telefon nömrələrini yeniləyir",
+      "correct": "A) 'users' cədvəlinə telefon nömrəsi sütunu əlavə edir"
+    },
+    {
+      "question": "PostgreSQL-də aşağıdakı sorğu nə edir?\nCREATE USER john WITH PASSWORD 'secret123';",
+      "answer1": "A) Yeni istifadəçi yaradır",
+      "answer2": "B) Yeni cədvəl yaradır",
+      "answer3": "C) Yeni verilənlər bazası yaradır",
+      "answer4": "D) İstifadəçini silir",
+      "correct": "A) Yeni istifadəçi yaradır"
+    },
+    {
+      "question": "PostgreSQL-də aşağıdakı sorğu nə edir?\nGRANT SELECT ON users TO john;",
+      "answer1": "A) John istifadəçisinə 'users' cədvəlini oxuma icazəsi verir",
+      "answer2": "B) John istifadəçisinin bütün icazələrini ləğv edir",
+      "answer3": "C) John istifadəçisini silir",
+      "answer4": "D) John istifadəçisinə yeni rol verir",
+      "correct": "A) John istifadəçisinə 'users' cədvəlini oxuma icazəsi verir"
+    },
+    {
+      "question": "PostgreSQL-də aşağıdakı sorğu nə edir?\nREVOKE INSERT ON orders FROM mary;",
+      "answer1": "A) Mary istifadəçisindən 'orders' cədvəlinə məlumat əlavə etmə icazəsini alır",
+      "answer2": "B) Mary istifadəçisinə yeni icazələr verir",
+      "answer3": "C) Mary istifadəçisini silir",
+      "answer4": "D) Mary istifadəçisinin bütün icazələrini bərpa edir",
+      "correct": "A) Mary istifadəçisindən 'orders' cədvəlinə məlumat əlavə etmə icazəsini alır"
+    },
+    {
+      "question": "PostgreSQL-də aşağıdakı sorğu nə edir?\nBACKUP DATABASE mydb TO '/backup/mydb_backup.sql';",
+      "answer1": "A) Verilənlər bazasının backupını yaradır",
+      "answer2": "B) Verilənlər bazasını silir",
+      "answer3": "C) Verilənlər bazasını bərpa edir",
+      "answer4": "D) Verilənlər bazasının adını dəyişdirir",
+      "correct": "A) Verilənlər bazasının backupını yaradır"
+    }
+  ]
+}

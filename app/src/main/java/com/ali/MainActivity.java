@@ -36,6 +36,8 @@ import com.ali.chatBot.ChatMessage;
 import com.ali.chatBot.FirebaseChatHelper;
 import com.ali.javaquizbyali.SplashJavaActivity;
 import com.ali.kali.SplashLinuxActivity;
+//import com.ali.postgresql.SplashPostgreSqActivity;
+import com.ali.postgresql.SplashPostgreSqActivity;
 import com.ali.pymain.SplashPyActivity;
 import com.ali.quizutility.AboutActivity;
 import com.ali.systemIn.R;
@@ -60,7 +62,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageButton javamain, aboutcard, pymain, aimain, linuxMain, helpButton, closeHelpButton;
+    ImageButton javamain, aboutcard, postgresql, pymain, aimain, linuxMain, helpButton, closeHelpButton;
     public static int checked;
     private AdView mAdView;
     private InterstitialAd mInterstitialAd;
@@ -165,6 +167,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 loadInterstitialAd();
                 startActivity(new Intent(MainActivity.this, SplashJavaActivity.class));
+
+            }
+        });
+
+        postgresql.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadInterstitialAd();
+                startActivity(new Intent(MainActivity.this, SplashPostgreSqActivity.class));
 
             }
         });
@@ -277,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
         javamain = findViewById(R.id.javamain);
         pymain = findViewById(R.id.pymain);
         aimain = findViewById(R.id.aimain);
+        postgresql = findViewById(R.id.postgresql);
         linuxMain = findViewById(R.id.linuxMain);
         aboutcard = findViewById(R.id.aboutCard);
         userIcon = findViewById(R.id.userIcon);
