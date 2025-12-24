@@ -12,62 +12,68 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class PostgreSqlJsonUtils {
-
     private static final String TAG = "SqlJsonUtils";
 
     public static List<PostgreSqlTaskModel> loadTasksFromJson(Context context) {
         try {
-            Log.d(TAG, "Sql JSON faylı yüklənir...");
+            Log.d(TAG, "SQL JSON faylı yüklənir...");
 
-            // Əvvəlcə assets/python_tasks.json yoxla
+            // Assets qovluğunda axtar
+            String[] possiblePaths = {
+                    "task/sql_task.json",
+                    "sql_task.json",
+                    "tasks/sql_task.json"
+            };
+
             InputStream is = null;
-            try {
-                is = context.getAssets().open("sql_task.json");
-                Log.d(TAG, "sql_tasks.json faylı tapıldı");
-            } catch (Exception e) {
-                // Əgər tapılmazsa, digər yerlərdə yoxla
+            String foundPath = null;
+
+            for (String path : possiblePaths) {
                 try {
-                    is = context.getAssets().open("task/sql_task.json");
-                    Log.d(TAG, "sql_task.json task qovluğunda tapıldı");
-                } catch (Exception e2) {
-                    Log.e(TAG, "sql_task.json faylı heç yerdə tapılmadı");
-                    return null;
+                    is = context.getAssets().open(path);
+                    foundPath = path;
+                    Log.d(TAG, "Fayl tapıldı: " + path);
+                    break;
+                } catch (Exception e) {
+                    // Növbəti yolu yoxla
                 }
             }
 
+            if (is == null) {
+                Log.e(TAG, "Heç bir SQL JSON faylı tapılmadı!");
+                return null;
+            }
+
+            // Faylı oxu
             int size = is.available();
             byte[] buffer = new byte[size];
-            int bytesRead = is.read(buffer);
+            is.read(buffer);
             is.close();
 
-            Log.d(TAG, "Fayl oxundu, ölçü: " + size + " bytes, oxunan: " + bytesRead + " bytes");
-
             String json = new String(buffer, StandardCharsets.UTF_8);
-            Log.d(TAG, "JSON məzmunu (ilk 500 simvol): " + json.substring(0, Math.min(500, json.length())));
+            Log.d(TAG, "JSON faylı oxundu, ölçü: " + size + " bytes");
 
+            // JSON-u parse et
             Gson gson = new Gson();
-            Type taskListType = new TypeToken<TaskList>() {}.getType();
-            TaskList taskList = gson.fromJson(json, taskListType);
+            Type responseType = new TypeToken<SqlTaskResponse>() {}.getType();
+            SqlTaskResponse response = gson.fromJson(json, responseType);
 
-            if (taskList != null && taskList.getTasks() != null) {
-                Log.d(TAG, taskList.getTasks().size() + " Sql task uğurla yükləndi");
-                for (PostgreSqlTaskModel task : taskList.getTasks()) {
-                    Log.d(TAG, "Yüklənən task: " + task.getId() + " - " + task.getTitle());
-                }
+            if (response != null && response.getTasks() != null) {
+                Log.d(TAG, response.getTasks().size() + " SQL task yükləndi");
+                return response.getTasks();
             } else {
-                Log.e(TAG, "Sql task list null və ya boş");
+                Log.e(TAG, "JSON parse edilərkən xəta");
+                return null;
             }
 
-            return taskList != null ? taskList.getTasks() : null;
-
         } catch (Exception e) {
-            Log.e(TAG, "Sql JSON faylı yüklənərkən xəta: " + e.getMessage());
-            e.printStackTrace();
+            Log.e(TAG, "JSON yükləmə xətası: " + e.getMessage(), e);
             return null;
         }
     }
 
-    private static class TaskList {
+    // JSON response structure
+    private static class SqlTaskResponse {
         private List<PostgreSqlTaskModel> tasks;
 
         public List<PostgreSqlTaskModel> getTasks() {

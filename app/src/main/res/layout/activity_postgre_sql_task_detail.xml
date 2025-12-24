@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/gray_very_light">
+
+    <!-- Üst Panel -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/primary"
+        android:padding="12dp"
+        android:elevation="4dp">
+
+        <TextView
+            android:id="@+id/taskTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/taskDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:alpha="0.9"/>
+
+    </LinearLayout>
+
+    <!-- Əsas Məzmun -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- İlkin SQL -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_background"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📝 İlkin SQL Sorğusu:"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="4dp"/>
+
+                <TextView
+                    android:id="@+id/initialQueryText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/gray_light"
+                    android:padding="8dp"
+                    android:textSize="12sp"
+                    android:fontFamily="monospace"
+                    android:textColor="@color/black"/>
+
+            </LinearLayout>
+
+            <!-- SQL Editor -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_background"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="✏️ SQL Editor:"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="4dp"/>
+
+                <EditText
+                    android:id="@+id/sqlQueryInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:gravity="top|start"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:padding="12dp"
+                    android:background="@drawable/edittext_background"
+                    android:textSize="13sp"
+                    android:fontFamily="monospace"
+                    android:scrollbars="vertical"
+                    android:layout_marginBottom="8dp"/>
+
+                <!-- Quick Query Buttons -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <Button
+                        android:id="@+id/btnSelectAll"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="SELECT *"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="2dp"
+                        android:backgroundTint="@color/primary"/>
+
+                    <Button
+                        android:id="@+id/btnWhere"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="WHERE"
+                        android:textSize="10sp"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:backgroundTint="@color/orange"/>
+
+                    <Button
+                        android:id="@+id/btnJoin"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="JOIN"
+                        android:textSize="10sp"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:backgroundTint="@color/accent"/>
+
+                    <Button
+                        android:id="@+id/btnGroupBy"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="GROUP BY"
+                        android:textSize="10sp"
+                        android:layout_marginStart="2dp"
+                        android:backgroundTint="@color/green"/>
+
+                </LinearLayout>
+
+                <!-- Əsas Butonlar -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="4dp">
+
+                    <Button
+                        android:id="@+id/executeButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="🚀 İcra et"
+                        android:textAllCaps="false"
+                        android:layout_marginEnd="2dp"
+                        android:backgroundTint="@color/primary"/>
+
+                    <Button
+                        android:id="@+id/showTablesButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="📋 Cədvəllər"
+                        android:textAllCaps="false"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:backgroundTint="@color/accent"/>
+
+                </LinearLayout>
+
+                <!-- Admin Butonları -->
+                <LinearLayout
+                    android:id="@+id/adminButtons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:layout_marginBottom="4dp">
+
+                    <Button
+                        android:id="@+id/resetButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="🔄 Sıfırla"
+                        android:textAllCaps="false"
+                        android:layout_marginEnd="2dp"
+                        android:backgroundTint="@color/red"/>
+
+                    <Button
+                        android:id="@+id/newTableButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="➕ Yeni Cədvəl"
+                        android:textAllCaps="false"
+                        android:layout_marginStart="2dp"
+                        android:backgroundTint="@color/green"/>
+
+                </LinearLayout>
+
+                <!-- Task Butonları -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/checkButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="✅ Taski yoxla"
+                        android:textAllCaps="false"
+                        android:layout_marginEnd="2dp"
+                        android:backgroundTint="@color/green"/>
+
+                    <Button
+                        android:id="@+id/showSolutionButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="💡 Həlli göstər"
+                        android:textAllCaps="false"
+                        android:layout_marginStart="2dp"
+                        android:backgroundTint="@color/orange"/>
+
+                </LinearLayout>
+
+                <!-- Admin Mode Toggle -->
+                <Button
+                    android:id="@+id/adminModeButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🔒 Admin Modu: BAĞLI"
+                    android:textAllCaps="false"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/red"/>
+
+            </LinearLayout>
+
+            <!-- Nəticə Sahəsi Başlığı -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📊 Nəticə:"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Nəticə Konteyneri - Horizontal və Vertical Scroll -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:elevation="8dp">
+
+        <!-- Scroll bar göstərici -->
+        <TextView
+            android:id="@+id/scrollHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="↔️ Cədvəli sağa-sola sürüşdürə bilərsiniz"
+            android:textSize="10sp"
+            android:textColor="@color/gray_dark"
+            android:gravity="center"
+            android:padding="4dp"
+            android:background="@color/gray_very_light"
+            android:visibility="gone"/>
+
+        <!-- Horizontal və Vertical Scroll -->
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="horizontal"
+            android:fillViewport="true">
+
+            <ScrollView
+                android:id="@+id/verticalScrollView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                android:fillViewport="true">
+
+                <!-- Nəticə konteyneri -->
+                <LinearLayout
+                    android:id="@+id/resultContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp"/>
+
+            </ScrollView>
+        </HorizontalScrollView>
+
+        <!-- AdView aşağıda -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:background="@color/gray_very_light">
+
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/SqlAdView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-5367924704859976/8399396085"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

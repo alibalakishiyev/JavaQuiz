@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "name": "Laptop Dell XPS",
+    "price": 1200.00,
+    "category": "Electronics",
+    "stock": 50,
+    "supplier": "Dell Inc.",
+    "description": "Yüksək performanslı laptop",
+    "rating": 4.5,
+    "discount": 10.0
+  },
+  {
+    "id": 2,
+    "name": "Wireless Mouse",
+    "price": 25.00,
+    "category": "Electronics",
+    "stock": 200,
+    "supplier": "Logitech",
+    "description": "Rəqsli simsiz siçan",
+    "rating": 4.2,
+    "discount": 5.0
+  },
+  {
+    "id": 3,
+    "name": "Mechanical Keyboard",
+    "price": 80.00,
+    "category": "Electronics",
+    "stock": 150,
+    "supplier": "Corsair",
+    "description": "RGB işıqlı mexaniki klaviatura",
+    "rating": 4.7,
+    "discount": 0.0
+  }
+]

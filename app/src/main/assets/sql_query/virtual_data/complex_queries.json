@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Join Example",
+    "query": "SELECT e.name as İşçi, e.salary as Maaş, d.name as Şöbə, d.location as Yer FROM employees e INNER JOIN departments d ON e.department = d.name WHERE e.salary > 3000"
+  },
+  {
+    "id": 2,
+    "name": "Multiple Join",
+    "query": "SELECT c.first_name, c.last_name, p.name as Məhsul, o.quantity, o.total_amount FROM customers c JOIN orders o ON c.id = o.customer_id JOIN products p ON o.product_id = p.id ORDER BY o.total_amount DESC"
+  },
+  {
+    "id": 3,
+    "name": "Group By Having",
+    "query": "SELECT department as Şöbə, COUNT(*) as İşçi_Sayı, AVG(salary) as Ortalama_Maaş, SUM(salary) as Ümumi_Maaş FROM employees GROUP BY department HAVING AVG(salary) > 2500 ORDER BY Ortalama_Maaş DESC"
+  },
+  {
+    "id": 4,
+    "name": "Subquery",
+    "query": "SELECT name, salary FROM employees WHERE salary > (SELECT AVG(salary) FROM employees) ORDER BY salary DESC"
+  },
+  {
+    "id": 5,
+    "name": "Nested Subquery",
+    "query": "SELECT name, department, salary FROM employees WHERE salary = (SELECT MAX(salary) FROM employees WHERE department = 'IT')"
+  },
+  {
+    "id": 6,
+    "name": "Case When",
+    "query": "SELECT name, salary, CASE WHEN salary < 2000 THEN 'Aşağı' WHEN salary BETWEEN 2000 AND 3500 THEN 'Orta' WHEN salary BETWEEN 3501 AND 5000 THEN 'Yüksək' ELSE 'Çox Yüksək' END as Maaş_Qrupu FROM employees ORDER BY salary DESC"
+  }
+]

@@ -6,7 +6,7 @@ public class PostgreSqlTaskModel {
     private int id;
     private String title;
     private String description;
-    private String initialCode;
+    private String initialQuery;
     private List<Test> tests;
     private String solution;
 
@@ -20,8 +20,8 @@ public class PostgreSqlTaskModel {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public String getInitialCode() { return initialCode; }
-    public void setInitialCode(String initialCode) { this.initialCode = initialCode; }
+    public String getInitialQuery() { return initialQuery; }
+    public void setInitialQuery(String initialQuery) { this.initialQuery = initialQuery; }
 
     public List<Test> getTests() { return tests; }
     public void setTests(List<Test> tests) { this.tests = tests; }

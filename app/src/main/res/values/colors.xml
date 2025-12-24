@@ -44,4 +44,19 @@
     <color name="light_blue">#E3F2FD</color>
 
 
+    <!-- Əsas rənglər -->
+    <color name="primary">#3F51B5</color>
+    <color name="primary_dark">#303F9F</color>
+    <color name="accent">#FF4081</color>
+    <color name="orange">#FF9800</color>
+    <color name="gray_medium">#E0E0E0</color>
+    <color name="gray_very_light">#F9F9F9</color>
+<!--     sql-->
+    <color name="blue_light">#E3F2FD</color>
+    <color name="green_light">#E8F5E9</color>
+    <color name="orange_light">#FFF3E0</color>
+    <color name="purple_light">#F3E5F5</color>
+    <color name="gray_dark">#757575</color>
+
+
 </resources>

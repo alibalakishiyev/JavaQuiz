@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Ali Məmmədov",
+    "age": 28,
+    "salary": 2500.00,
+    "department": "IT",
+    "city": "Baku",
+    "hire_date": "2020-05-15",
+    "email": "ali@company.com",
+    "phone": "+994501234567",
+    "bonus": 500.00
+  },
+  {
+    "id": 2,
+    "name": "Aysel Həsənova",
+    "age": 32,
+    "salary": 3200.00,
+    "department": "HR",
+    "city": "Gəncə",
+    "hire_date": "2019-08-20",
+    "email": "aysel@company.com",
+    "phone": "+994502345678",
+    "bonus": 400.00
+  },
+  {
+    "id": 3,
+    "name": "Mehmet Əliyev",
+    "age": 25,
+    "salary": 1800.00,
+    "department": "IT",
+    "city": "Baku",
+    "hire_date": "2021-03-10",
+    "email": "mehmet@company.com",
+    "phone": "+994503456789",
+    "bonus": 300.00
+  }
+]

@@ -1,0 +1,46 @@
+[
+  {
+    "category": "SELECT",
+    "queries": [
+      "SELECT * FROM employees LIMIT 5",
+      "SELECT name, salary FROM employees WHERE salary > 3000",
+      "SELECT department, AVG(salary) as avg_salary FROM employees GROUP BY department",
+      "SELECT * FROM employees ORDER BY salary DESC LIMIT 3"
+    ]
+  },
+  {
+    "category": "INSERT",
+    "queries": [
+      "INSERT INTO employees (name, age, salary, department, city) VALUES ('Yeni İşçi', 25, 2000, 'IT', 'Baku')",
+      "INSERT INTO products (name, price, category, stock) VALUES ('Yeni Məhsul', 99.99, 'Electronics', 50)"
+    ]
+  },
+  {
+    "category": "UPDATE",
+    "queries": [
+      "UPDATE employees SET salary = salary * 1.1 WHERE department = 'IT'",
+      "UPDATE products SET price = price * 0.9 WHERE category = 'Electronics'"
+    ]
+  },
+  {
+    "category": "DELETE",
+    "queries": [
+      "DELETE FROM employees WHERE age > 60",
+      "DELETE FROM products WHERE stock = 0"
+    ]
+  },
+  {
+    "category": "CREATE TABLE",
+    "queries": [
+      "CREATE TABLE test_table (id INTEGER PRIMARY KEY, name TEXT NOT NULL, value REAL)",
+      "CREATE TABLE users (user_id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT, created_date DATETIME DEFAULT CURRENT_TIMESTAMP)"
+    ]
+  },
+  {
+    "category": "ALTER TABLE",
+    "queries": [
+      "ALTER TABLE employees ADD COLUMN address TEXT",
+      "ALTER TABLE products ADD COLUMN weight REAL"
+    ]
+  }
+]

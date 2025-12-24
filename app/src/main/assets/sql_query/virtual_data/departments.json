@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "IT",
+    "location": "Baku",
+    "budget": 500000.00,
+    "manager_id": 1,
+    "employee_count": 6
+  },
+  {
+    "id": 2,
+    "name": "HR",
+    "location": "Gəncə",
+    "budget": 200000.00,
+    "manager_id": 2,
+    "employee_count": 4
+  },
+  {
+    "id": 3,
+    "name": "Finance",
+    "location": "Sumqayıt",
+    "budget": 300000.00,
+    "manager_id": 4,
+    "employee_count": 4
+  }
+]

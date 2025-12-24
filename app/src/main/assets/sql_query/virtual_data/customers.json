@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "first_name": "Cavid",
+    "last_name": "Hüseynov",
+    "email": "cavid@gmail.com",
+    "phone": "+994501234567",
+    "city": "Baku",
+    "country": "Azerbaijan",
+    "loyalty_points": 100,
+    "total_spent": 1250.00
+  },
+  {
+    "id": 2,
+    "first_name": "Nigar",
+    "last_name": "Əliyeva",
+    "email": "nigar@mail.ru",
+    "phone": "+994502345678",
+    "city": "Gəncə",
+    "country": "Azerbaijan",
+    "loyalty_points": 50,
+    "total_spent": 80.00
+  },
+  {
+    "id": 3,
+    "first_name": "Ruslan",
+    "last_name": "Quliyev",
+    "email": "ruslan@yahoo.com",
+    "phone": "+994503456789",
+    "city": "Sumqayıt",
+    "country": "Azerbaijan",
+    "loyalty_points": 200,
+    "total_spent": 980.00
+  }
+]

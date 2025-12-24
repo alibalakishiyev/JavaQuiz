@@ -63,6 +63,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     ImageButton javamain, aboutcard, postgresql, pymain, aimain, linuxMain, helpButton, closeHelpButton;
+
     public static int checked;
     private AdView mAdView;
     private InterstitialAd mInterstitialAd;

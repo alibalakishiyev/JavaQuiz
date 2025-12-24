@@ -18,7 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ali.MainActivity;
 import com.ali.javaquizbyali.JuniorQuiz;
 import com.ali.postgresql.taskPostgreSqlManager.PostgreSqlTask;
+import com.ali.postgresql.taskPostgreSqlManager.PostgreSqlTaskDetail;
+import com.ali.postgresql.taskPostgreSqlManager.VirtualDatabaseHelper;
 import com.ali.systemIn.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
@@ -27,15 +31,20 @@ import java.util.List;
 
 public class PostgreSqlMain extends AppCompatActivity implements AlgoListener {
 
+    private AdView SQLMainadView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.postgresql_main);
 
+
+
         ArrayList<Algo> arrayList = new ArrayList<>();
         arrayList.add(new Algo(R.drawable.sql_quiz48, "SQL Quiz", SqlQuiz.class));
-        arrayList.add(new Algo(R.drawable.sql48, "SQL Hazirliq", SqlHazirliq.class));
+        arrayList.add(new Algo(R.drawable.sqlcours48, "SQL Hazirliq", SqlHazirliq.class));
         arrayList.add(new Algo(R.drawable.sqltask48, "SQL Task", PostgreSqlTask.class));
+        arrayList.add(new Algo(R.drawable.sql48, "SQL DataBase", PostgreSqlTaskDetail.class));
 
 
 
@@ -45,6 +54,9 @@ public class PostgreSqlMain extends AppCompatActivity implements AlgoListener {
         recyclerView.setAdapter(algoAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
+        SQLMainadView = findViewById(R.id.SQLMainadView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        SQLMainadView.loadAd(adRequest);
         getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
@@ -85,6 +97,8 @@ class AlgoAdapter extends RecyclerView.Adapter<AlgoViewHolder> {
 
     private List<Algo> algoList;
     private AlgoListener algoListener;
+
+    private AdView mAdView,SqlMainAdView;
 
     public AlgoAdapter(List<Algo> algoList, AlgoListener listener) {
         this.algoList = algoList;

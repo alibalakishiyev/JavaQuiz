@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "company_name": "Dell Inc.",
+    "contact_person": "John Smith",
+    "phone": "+1-800-123456",
+    "email": "sales@dell.com",
+    "city": "Texas",
+    "rating": 4.5,
+    "products_supplied": 50
+  },
+  {
+    "id": 2,
+    "company_name": "Logitech",
+    "contact_person": "Maria Garcia",
+    "phone": "+1-800-234567",
+    "email": "support@logitech.com",
+    "city": "California",
+    "rating": 4.7,
+    "products_supplied": 30
+  },
+  {
+    "id": 3,
+    "company_name": "Samsung",
+    "contact_person": "Kim Lee",
+    "phone": "+82-2-345678",
+    "email": "info@samsung.com",
+    "city": "Seoul",
+    "rating": 4.8,
+    "products_supplied": 40
+  }
+]

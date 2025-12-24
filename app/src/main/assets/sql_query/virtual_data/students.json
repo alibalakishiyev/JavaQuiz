@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "full_name": "Əli Hüseynov",
+    "faculty": "İnformasiya Texnologiyaları",
+    "course": 3,
+    "gpa": 3.8,
+    "scholarship": 1500.00,
+    "enrollment_date": "2021-09-01",
+    "email": "ali@edu.az"
+  },
+  {
+    "id": 2,
+    "full_name": "Aysel Qədimova",
+    "faculty": "İqtisadiyyat",
+    "course": 2,
+    "gpa": 3.5,
+    "scholarship": 1200.00,
+    "enrollment_date": "2022-09-01",
+    "email": "aysel@edu.az"
+  },
+  {
+    "id": 3,
+    "full_name": "Rəşad Məmmədov",
+    "faculty": "Mexanika",
+    "course": 4,
+    "gpa": 3.9,
+    "scholarship": 2000.00,
+    "enrollment_date": "2020-09-01",
+    "email": "reshad@edu.az"
+  }
+]

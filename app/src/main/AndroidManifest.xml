@@ -21,6 +21,9 @@
         android:theme="@style/Theme.SystemIn"
         tools:targetApi="31">
         <activity
+            android:name="com.ali.postgresql.taskPostgreSqlManager.PostgreSqlTaskDetail"
+            android:exported="false" />
+        <activity
             android:name="com.ali.aimain.AICalculate"
             android:exported="false" />
         <activity
