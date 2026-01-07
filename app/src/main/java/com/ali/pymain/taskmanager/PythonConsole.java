@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,7 +19,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,6 +71,11 @@ public class PythonConsole extends AppCompatActivity {
     private List<TaskModel.Test> tests;
     private String solution;
     private String initialCode;
+
+    private LinearLayout outputContainer;
+
+    private LinearLayout codeEditorLayout;
+    private Button hideOutputBtn;
 
     // Auto-complete üçün
     private ListView suggestionsList;
@@ -157,6 +166,8 @@ public class PythonConsole extends AppCompatActivity {
         setupTaskData();
         setupFirebase();
         setupPython();
+        outputContainer = findViewById(R.id.outputContainer); // YENİ
+        hideOutputBtn = findViewById(R.id.hideOutputBtn); // YENİ
         setupPreferences();
         setupEventListeners();
         setupAutoComplete();
@@ -169,12 +180,19 @@ public class PythonConsole extends AppCompatActivity {
         codeInput = findViewById(R.id.codeInput);
         outputText = findViewById(R.id.outputText);
         lineNumbers = findViewById(R.id.lineNumbers);
+        outputContainer = findViewById(R.id.outputContainer);
+        codeEditorLayout = findViewById(R.id.codeEditorLayout); // BU SƏTRİ ƏLAVƏ EDİN
+        hideOutputBtn = findViewById(R.id.hideOutputBtn);
         Button backBtn = findViewById(R.id.backBtn);
         Button clearBtn = findViewById(R.id.clearBtn);
         Button runBtn = findViewById(R.id.runBtn);
         Button clearOutputBtn = findViewById(R.id.clearOutputBtn);
         suggestionsList = findViewById(R.id.suggestionsList);
         taskDescription = findViewById(R.id.taskDescription);
+
+        // DEBUG: Dəyişənlərin null olmadığını yoxlayaq
+        Log.d("PythonConsole", "codeEditorLayout: " + (codeEditorLayout != null ? "tapıldı" : "NULL"));
+        Log.d("PythonConsole", "outputContainer: " + (outputContainer != null ? "tapıldı" : "NULL"));
     }
 
     private void setupTaskData() {
@@ -241,8 +259,13 @@ public class PythonConsole extends AppCompatActivity {
             onBackPressed();
         });
 
-        // Run butonu
-        runBtn.setOnClickListener(v -> runPythonCode());
+        // Run butonu - DEBUG üçün Toast əlavə edin
+        runBtn.setOnClickListener(v -> {
+            Log.d("PythonConsole", "RUN düyməsinə basıldı");
+            Toast.makeText(PythonConsole.this, "RUN basıldı", Toast.LENGTH_SHORT).show();
+            showOutputPanel();
+            runPythonCode();
+        });
 
         // Clear butonu
         clearBtn.setOnClickListener(v -> {
@@ -253,7 +276,73 @@ public class PythonConsole extends AppCompatActivity {
         });
 
         // Clear output butonu
-        clearOutputBtn.setOnClickListener(v -> outputText.setText("> ..."));
+        clearOutputBtn.setOnClickListener(v -> {
+            outputText.setText("> ...");
+            Toast.makeText(PythonConsole.this, "Çıxış təmizləndi", Toast.LENGTH_SHORT).show();
+        });
+
+        // Hide output butonu
+        hideOutputBtn.setOnClickListener(v -> hideOutputPanel());
+    }
+
+    // Çıxış panelini göstər
+    // Çıxış panelini göstər - SADƏ VERSİYA
+    private void showOutputPanel() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Log.d("PythonConsole", "showOutputPanel çağırıldı");
+
+                    // Əgər outputContainer null-dursa, tap
+                    if (outputContainer == null) {
+                        outputContainer = findViewById(R.id.outputContainer);
+                        Log.d("PythonConsole", "outputContainer yenidən tapıldı: " + (outputContainer != null));
+                    }
+
+                    if (outputContainer != null) {
+                        if (outputContainer.getVisibility() != View.VISIBLE) {
+                            Log.d("PythonConsole", "Çıxış paneli VISIBLE edilir");
+                            outputContainer.setVisibility(View.VISIBLE);
+
+                            // Weight-ləri tənzimlə
+                            LinearLayout.LayoutParams editorParams = (LinearLayout.LayoutParams) findViewById(R.id.codeEditorLayout).getLayoutParams();
+                            LinearLayout.LayoutParams outputParams = (LinearLayout.LayoutParams) outputContainer.getLayoutParams();
+
+                            editorParams.weight = 1f;
+                            outputParams.weight = 1f;
+
+                            // Layout-u yenilə
+                            outputContainer.requestLayout();
+                            findViewById(R.id.codeEditorLayout).requestLayout();
+
+                            // Scroll-u aşağı apar
+                            ScrollView scrollView = (ScrollView) outputContainer.getChildAt(1);
+                            if (scrollView != null) {
+                                scrollView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        scrollView.fullScroll(View.FOCUS_DOWN);
+                                    }
+                                });
+                            }
+                        }
+                    } else {
+                        Log.e("PythonConsole", "outputContainer NULL!");
+                        Toast.makeText(PythonConsole.this, "Çıxış paneli tapılmadı", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    Log.e("PythonConsole", "showOutputPanel xətası: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void hideOutputPanel() {
+        if (outputContainer.getVisibility() == View.VISIBLE) {
+            outputContainer.setVisibility(View.GONE);
+        }
     }
 
     private void setupAutoComplete() {
@@ -708,6 +797,8 @@ public class PythonConsole extends AppCompatActivity {
         });
     }
 
+
+
     private void executeWithInput(String userInput) {
         new Thread(new Runnable() {
             @Override
@@ -911,7 +1002,7 @@ public class PythonConsole extends AppCompatActivity {
 
         if (!errors.isEmpty()) {
             output.append("❌ PYTHON XƏTALARI:\n");
-            output.append("════════════════════\n\n");
+            output.append("══════════════════════════════════════\n\n");
 
             for (CompilerError error : errors) {
                 output.append("📌 Sətir ").append(error.lineNumber).append(": ")
@@ -920,9 +1011,8 @@ public class PythonConsole extends AppCompatActivity {
             }
 
             output.append("⚠ Xətaları düzəldin və yenidən cəhd edin.\n");
-            output.append("════════════════════\n\n");
+            output.append("══════════════════════════════════════\n\n");
         } else {
-            output.append("✅ Sintaksis xətası yoxdur. Kod işlədilə bilər.\n\n");
 
             // JSON testləri varsa onları işlə
             if (tests != null && !tests.isEmpty()) {
@@ -934,8 +1024,6 @@ public class PythonConsole extends AppCompatActivity {
 
         // Real Python kodunu işlə
         executePythonCode(code, output);
-
-        showResult(output.toString(), false);
     }
 
     private List<CompilerError> checkPythonSyntaxErrors(String code) {
@@ -1471,11 +1559,52 @@ public class PythonConsole extends AppCompatActivity {
         }
     }
 
+    // PythonConsole.java faylında
     private void markTaskAsCompleted() {
-        SharedPreferences taskPrefs = getSharedPreferences(TASK_PREFS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = taskPrefs.edit();
-        editor.putBoolean("python_task_" + currentTaskId + "_completed", true);
-        editor.apply();
+        try {
+            Log.d("PythonConsole", "markTaskAsCompleted çağırıldı - Task ID: " + currentTaskId);
+
+            // EYNİ KEY-İ İSTİFADƏ ET - CodeActivity ilə eyni olsun
+            SharedPreferences taskPrefs = getSharedPreferences("TaskProgress", MODE_PRIVATE);
+            SharedPreferences.Editor editor = taskPrefs.edit();
+
+            // CodeActivity ilə EYNİ key strukturunu istifadə et
+            editor.putBoolean("task_" + currentTaskId + "_completed", true);
+
+            // Python üçün əlavə key də saxla (əgər PythonTaskAdapter ayrıca istifadə edirsə)
+            editor.putBoolean("python_task_" + currentTaskId + "_completed", true);
+
+            editor.apply();
+
+            Log.d("PythonConsole", "Task " + currentTaskId + " SharedPreferences-ə yazıldı");
+
+            // Toast və avtomatik geri qayıt
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(PythonConsole.this,
+                            "✅ Task " + currentTaskId + " tamamlandı!",
+                            Toast.LENGTH_LONG).show();
+
+                    // 1.5 saniyə sonra avtomatik geri qayıt
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Result göndər ki, list yenilənsin
+                            Intent returnIntent = new Intent();
+                            returnIntent.putExtra("task_id", currentTaskId);
+                            returnIntent.putExtra("completed", true);
+                            setResult(RESULT_OK, returnIntent);
+                            finish();
+                        }
+                    }, 2500);
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("PythonConsole", "markTaskAsCompleted xətası: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Override

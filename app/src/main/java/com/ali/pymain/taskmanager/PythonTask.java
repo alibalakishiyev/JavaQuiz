@@ -26,7 +26,7 @@ public class PythonTask extends AppCompatActivity {
 
     private static final String TAG = "PythonTaskActivity";
     private SharedPreferences sharedPreferences;
-    private static final String PREFS_NAME = "PythonTaskProgress";
+    private static final String PREFS_NAME = "TaskProgress";
     private List<PythonTaskModel> tasks;
     private PythonTaskAdapter taskAdapter;
 
@@ -37,7 +37,7 @@ public class PythonTask extends AppCompatActivity {
 
         Log.d(TAG, "Python Task Activity başladı");
 
-        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("TaskProgress", MODE_PRIVATE);
 
         // Load tasks from JSON
         tasks = PythonJsonUtils.loadTasksFromJson(this);

@@ -4,43 +4,98 @@
     "queries": [
       "SELECT * FROM employees LIMIT 5",
       "SELECT name, salary FROM employees WHERE salary > 3000",
-      "SELECT department, AVG(salary) as avg_salary FROM employees GROUP BY department",
-      "SELECT * FROM employees ORDER BY salary DESC LIMIT 3"
+      "SELECT department, AVG(salary) AS avg_salary FROM employees GROUP BY department",
+      "SELECT * FROM employees ORDER BY salary DESC LIMIT 3",
+      "SELECT name, city FROM employees WHERE city = 'Baku'",
+      "SELECT COUNT(*) FROM employees",
+      "SELECT department, COUNT(*) FROM employees GROUP BY department",
+      "SELECT * FROM employees WHERE hire_date >= '2022-01-01'",
+      "SELECT name FROM employees WHERE email LIKE '%@company.com'",
+      "SELECT DISTINCT city FROM employees"
     ]
   },
   {
     "category": "INSERT",
     "queries": [
       "INSERT INTO employees (name, age, salary, department, city) VALUES ('Yeni İşçi', 25, 2000, 'IT', 'Baku')",
-      "INSERT INTO products (name, price, category, stock) VALUES ('Yeni Məhsul', 99.99, 'Electronics', 50)"
+      "INSERT INTO products (name, price, category, stock) VALUES ('Yeni Məhsul', 99.99, 'Electronics', 50)",
+      "INSERT INTO departments (name, location, budget) VALUES ('Marketing', 'Baku', 150000)",
+      "INSERT INTO customers (first_name, last_name, email) VALUES ('Elvin', 'Qasımov', 'elvin@mail.com')",
+      "INSERT INTO orders (customer_id, total_amount, status) VALUES (1, 250.00, 'pending')",
+      "INSERT INTO employees (name, age, salary, department, city) VALUES ('Aysun Əliyeva', 29, 2800, 'HR', 'Gəncə')"
     ]
   },
   {
     "category": "UPDATE",
     "queries": [
       "UPDATE employees SET salary = salary * 1.1 WHERE department = 'IT'",
-      "UPDATE products SET price = price * 0.9 WHERE category = 'Electronics'"
+      "UPDATE products SET price = price * 0.9 WHERE category = 'Electronics'",
+      "UPDATE employees SET city = 'Baku' WHERE city IS NULL",
+      "UPDATE customers SET loyalty_points = loyalty_points + 10 WHERE total_spent > 500",
+      "UPDATE orders SET status = 'completed' WHERE order_date < '2024-01-01'",
+      "UPDATE departments SET budget = budget + 50000 WHERE name = 'IT'"
     ]
   },
   {
     "category": "DELETE",
     "queries": [
       "DELETE FROM employees WHERE age > 60",
-      "DELETE FROM products WHERE stock = 0"
+      "DELETE FROM products WHERE stock = 0",
+      "DELETE FROM orders WHERE status = 'cancelled'",
+      "DELETE FROM customers WHERE total_spent = 0",
+      "DELETE FROM employees WHERE department = 'Test'",
+      "DELETE FROM departments WHERE budget < 10000"
     ]
   },
   {
     "category": "CREATE TABLE",
     "queries": [
       "CREATE TABLE test_table (id INTEGER PRIMARY KEY, name TEXT NOT NULL, value REAL)",
-      "CREATE TABLE users (user_id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT, created_date DATETIME DEFAULT CURRENT_TIMESTAMP)"
+      "CREATE TABLE users (user_id SERIAL PRIMARY KEY, username VARCHAR(50) UNIQUE, password TEXT, created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
+      "CREATE TABLE logs (id SERIAL PRIMARY KEY, message TEXT, created_at TIMESTAMP)",
+      "CREATE TABLE payments (id SERIAL PRIMARY KEY, order_id INTEGER, amount NUMERIC, payment_date DATE)",
+      "CREATE TABLE roles (id SERIAL PRIMARY KEY, role_name VARCHAR(50))"
     ]
   },
   {
     "category": "ALTER TABLE",
     "queries": [
       "ALTER TABLE employees ADD COLUMN address TEXT",
-      "ALTER TABLE products ADD COLUMN weight REAL"
+      "ALTER TABLE products ADD COLUMN weight REAL",
+      "ALTER TABLE customers ADD COLUMN birth_date DATE",
+      "ALTER TABLE orders ADD COLUMN shipped_date DATE",
+      "ALTER TABLE employees ALTER COLUMN salary TYPE NUMERIC(10,2)",
+      "ALTER TABLE users ADD COLUMN is_active BOOLEAN DEFAULT true"
+    ]
+  },
+  {
+    "category": "JOIN",
+    "queries": [
+      "SELECT e.name, d.name FROM employees e JOIN departments d ON e.department = d.name",
+      "SELECT c.first_name, o.total_amount FROM customers c JOIN orders o ON c.id = o.customer_id",
+      "SELECT o.id, p.name FROM orders o JOIN products p ON o.product_id = p.id",
+      "SELECT e.name, d.location FROM employees e LEFT JOIN departments d ON e.department = d.name",
+      "SELECT c.first_name, SUM(o.total_amount) FROM customers c JOIN orders o ON c.id = o.customer_id GROUP BY c.first_name"
+    ]
+  },
+  {
+    "category": "SUBQUERY",
+    "queries": [
+      "SELECT name FROM employees WHERE salary > (SELECT AVG(salary) FROM employees)",
+      "SELECT * FROM products WHERE price = (SELECT MAX(price) FROM products)",
+      "SELECT name FROM employees WHERE department IN (SELECT name FROM departments WHERE budget > 200000)",
+      "SELECT * FROM customers WHERE total_spent > (SELECT AVG(total_spent) FROM customers)",
+      "SELECT department FROM employees GROUP BY department HAVING COUNT(*) > (SELECT AVG(cnt) FROM (SELECT COUNT(*) cnt FROM employees GROUP BY department) t)"
+    ]
+  },
+  {
+    "category": "AGGREGATE",
+    "queries": [
+      "SELECT COUNT(*) FROM orders",
+      "SELECT SUM(total_amount) FROM orders",
+      "SELECT AVG(price) FROM products",
+      "SELECT MAX(salary) FROM employees",
+      "SELECT MIN(budget) FROM departments"
     ]
   }
 ]

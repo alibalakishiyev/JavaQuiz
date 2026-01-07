@@ -28,5 +28,275 @@
     "scholarship": 2000.00,
     "enrollment_date": "2020-09-01",
     "email": "reshad@edu.az"
+  },
+  {
+    "id": 4,
+    "full_name": "Leyla Əliyeva",
+    "faculty": "Kimya",
+    "course": 1,
+    "gpa": 3.6,
+    "scholarship": 1100.00,
+    "enrollment_date": "2023-09-01",
+    "email": "leyla@edu.az"
+  },
+  {
+    "id": 5,
+    "full_name": "Tural Məmmədli",
+    "faculty": "Biologiya",
+    "course": 2,
+    "gpa": 3.7,
+    "scholarship": 1300.00,
+    "enrollment_date": "2022-09-01",
+    "email": "tural@edu.az"
+  },
+  {
+    "id": 6,
+    "full_name": "Nigar Həsənova",
+    "faculty": "İnformasiya Texnologiyaları",
+    "course": 3,
+    "gpa": 3.4,
+    "scholarship": 1000.00,
+    "enrollment_date": "2021-09-01",
+    "email": "nigar@edu.az"
+  },
+  {
+    "id": 7,
+    "full_name": "Kamran Quliyev",
+    "faculty": "İqtisadiyyat",
+    "course": 4,
+    "gpa": 3.9,
+    "scholarship": 1800.00,
+    "enrollment_date": "2020-09-01",
+    "email": "kamran@edu.az"
+  },
+  {
+    "id": 8,
+    "full_name": "Sevda Rzayeva",
+    "faculty": "Mexanika",
+    "course": 1,
+    "gpa": 3.3,
+    "scholarship": 900.00,
+    "enrollment_date": "2023-09-01",
+    "email": "sevda@edu.az"
+  },
+  {
+    "id": 9,
+    "full_name": "Orxan Həsənov",
+    "faculty": "Kimya",
+    "course": 2,
+    "gpa": 3.8,
+    "scholarship": 1400.00,
+    "enrollment_date": "2022-09-01",
+    "email": "orxan@edu.az"
+  },
+  {
+    "id": 10,
+    "full_name": "Fatimə Əliyeva",
+    "faculty": "Biologiya",
+    "course": 3,
+    "gpa": 3.7,
+    "scholarship": 1250.00,
+    "enrollment_date": "2021-09-01",
+    "email": "fatime@edu.az"
+  },
+  {
+    "id": 11,
+    "full_name": "Elvin Məmmədov",
+    "faculty": "İnformasiya Texnologiyaları",
+    "course": 2,
+    "gpa": 3.5,
+    "scholarship": 1200.00,
+    "enrollment_date": "2022-09-01",
+    "email": "elvin@edu.az"
+  },
+  {
+    "id": 12,
+    "full_name": "Aytac Rəhimova",
+    "faculty": "İqtisadiyyat",
+    "course": 1,
+    "gpa": 3.4,
+    "scholarship": 1000.00,
+    "enrollment_date": "2023-09-01",
+    "email": "aytac@edu.az"
+  },
+  {
+    "id": 13,
+    "full_name": "Rauf Quliyev",
+    "faculty": "Mexanika",
+    "course": 3,
+    "gpa": 3.8,
+    "scholarship": 1500.00,
+    "enrollment_date": "2021-09-01",
+    "email": "rauf@edu.az"
+  },
+  {
+    "id": 14,
+    "full_name": "Sona Hüseynova",
+    "faculty": "Kimya",
+    "course": 4,
+    "gpa": 3.9,
+    "scholarship": 1800.00,
+    "enrollment_date": "2020-09-01",
+    "email": "sona@edu.az"
+  },
+  {
+    "id": 15,
+    "full_name": "Elnur Əliyev",
+    "faculty": "Biologiya",
+    "course": 2,
+    "gpa": 3.6,
+    "scholarship": 1300.00,
+    "enrollment_date": "2022-09-01",
+    "email": "elnur@edu.az"
+  },
+  {
+    "id": 16,
+    "full_name": "Nigar Məmmədova",
+    "faculty": "İnformasiya Texnologiyaları",
+    "course": 1,
+    "gpa": 3.3,
+    "scholarship": 900.00,
+    "enrollment_date": "2023-09-01",
+    "email": "nigar2@edu.az"
+  },
+  {
+    "id": 17,
+    "full_name": "Turan Hüseynli",
+    "faculty": "İqtisadiyyat",
+    "course": 3,
+    "gpa": 3.7,
+    "scholarship": 1400.00,
+    "enrollment_date": "2021-09-01",
+    "email": "turan@edu.az"
+  },
+  {
+    "id": 18,
+    "full_name": "Ceyhun Rzayev",
+    "faculty": "Mexanika",
+    "course": 2,
+    "gpa": 3.5,
+    "scholarship": 1200.00,
+    "enrollment_date": "2022-09-01",
+    "email": "ceyhun@edu.az"
+  },
+  {
+    "id": 19,
+    "full_name": "Aysu Məmmədova",
+    "faculty": "Kimya",
+    "course": 3,
+    "gpa": 3.6,
+    "scholarship": 1250.00,
+    "enrollment_date": "2021-09-01",
+    "email": "aysu@edu.az"
+  },
+  {
+    "id": 20,
+    "full_name": "Ramin Əliyev",
+    "faculty": "Biologiya",
+    "course": 4,
+    "gpa": 3.9,
+    "scholarship": 1800.00,
+    "enrollment_date": "2020-09-01",
+    "email": "ramin@edu.az"
+  },
+  {
+    "id": 21,
+    "full_name": "Fidan Məmmədova",
+    "faculty": "İnformasiya Texnologiyaları",
+    "course": 2,
+    "gpa": 3.5,
+    "scholarship": 1100.00,
+    "enrollment_date": "2022-09-01",
+    "email": "fidan@edu.az"
+  },
+  {
+    "id": 22,
+    "full_name": "Orxan Rzayev",
+    "faculty": "İqtisadiyyat",
+    "course": 1,
+    "gpa": 3.4,
+    "scholarship": 1000.00,
+    "enrollment_date": "2023-09-01",
+    "email": "orxan@edu.az"
+  },
+  {
+    "id": 23,
+    "full_name": "Kamran Məmmədli",
+    "faculty": "Mexanika",
+    "course": 3,
+    "gpa": 3.8,
+    "scholarship": 1500.00,
+    "enrollment_date": "2021-09-01",
+    "email": "kamran@edu.az"
+  },
+  {
+    "id": 24,
+    "full_name": "Səidə Hüseynova",
+    "faculty": "Kimya",
+    "course": 2,
+    "gpa": 3.5,
+    "scholarship": 1200.00,
+    "enrollment_date": "2022-09-01",
+    "email": "saide@edu.az"
+  },
+  {
+    "id": 25,
+    "full_name": "Eldar Əliyev",
+    "faculty": "Biologiya",
+    "course": 1,
+    "gpa": 3.3,
+    "scholarship": 950.00,
+    "enrollment_date": "2023-09-01",
+    "email": "eldar@edu.az"
+  },
+  {
+    "id": 26,
+    "full_name": "Ləman Məmmədova",
+    "faculty": "İnformasiya Texnologiyaları",
+    "course": 4,
+    "gpa": 3.9,
+    "scholarship": 1800.00,
+    "enrollment_date": "2020-09-01",
+    "email": "leman@edu.az"
+  },
+  {
+    "id": 27,
+    "full_name": "Nicat Hüseynli",
+    "faculty": "İqtisadiyyat",
+    "course": 3,
+    "gpa": 3.7,
+    "scholarship": 1400.00,
+    "enrollment_date": "2021-09-01",
+    "email": "nicat@edu.az"
+  },
+  {
+    "id": 28,
+    "full_name": "Aynur Rzayeva",
+    "faculty": "Mexanika",
+    "course": 2,
+    "gpa": 3.6,
+    "scholarship": 1250.00,
+    "enrollment_date": "2022-09-01",
+    "email": "aynur@edu.az"
+  },
+  {
+    "id": 29,
+    "full_name": "Rəşad Əliyev",
+    "faculty": "Kimya",
+    "course": 3,
+    "gpa": 3.8,
+    "scholarship": 1500.00,
+    "enrollment_date": "2021-09-01",
+    "email": "reshad2@edu.az"
+  },
+  {
+    "id": 30,
+    "full_name": "Zəhra Məmmədova",
+    "faculty": "Biologiya",
+    "course": 4,
+    "gpa": 3.9,
+    "scholarship": 1800.00,
+    "enrollment_date": "2020-09-01",
+    "email": "zehra@edu.az"
   }
 ]

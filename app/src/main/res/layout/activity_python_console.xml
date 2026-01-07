@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="8dp"
     android:background="#263238">
 
-    <!-- Başlık -->
+    <!-- Başlıq -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
             android:gravity="center"/>
     </LinearLayout>
 
-    <!-- Task Description - YUXARIDA -->
+    <!-- Task Description -->
     <TextView
         android:id="@+id/taskDescription"
         android:layout_width="match_parent"
@@ -51,11 +51,12 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"/>
 
-    <!-- Kod Editörü Alanı -->
+    <!-- Kod Editörü Alanı - DİQQƏT: ID ƏLAVƏ EDİLDİ -->
     <LinearLayout
+        android:id="@+id/codeEditorLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:orientation="horizontal"
         android:background="#1E282C"
         android:layout_marginBottom="8dp">
@@ -155,13 +156,15 @@
             android:layout_marginStart="4dp"/>
     </LinearLayout>
 
-    <!-- Çıktı Alanı - AŞAĞIDA -->
+    <!-- Çıktı Alanı (GİZLƏNƏ BİLƏN) -->
     <LinearLayout
+        android:id="@+id/outputContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="0"
         android:orientation="vertical"
-        android:background="#1E282C">
+        android:background="#1E282C"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -189,6 +192,17 @@
                 android:background="@android:color/transparent"
                 android:padding="4dp"
                 android:layout_marginEnd="8dp"/>
+
+            <Button
+                android:id="@+id/hideOutputBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="✕"
+                android:textColor="#78909C"
+                android:textSize="14sp"
+                android:background="@android:color/transparent"
+                android:padding="4dp"
+                android:layout_marginEnd="8dp"/>
         </LinearLayout>
 
         <ScrollView
@@ -211,7 +225,7 @@
 
         <!-- Ads -->
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/adContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -220,14 +234,14 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            <com.google.android.gms.ads.AdView
                 android:id="@+id/adPythoneCode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="8dp"
-                ads:adSize="BANNER"
-                ads:adUnitId="ca-app-pub-5367924704859976/8399396085"/>
+                app:adSize="BANNER"
+                app:adUnitId="ca-app-pub-5367924704859976/8399396085"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

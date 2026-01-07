@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.ali.javaquizbyali.codemodel.TaskAdapter;
+import com.ali.javaquizbyali.codemodel.TaskModel;
 import com.ali.systemIn.R;
 
 import java.util.List;
@@ -67,24 +69,37 @@ public class PythonTaskAdapter extends RecyclerView.Adapter<PythonTaskAdapter.Py
             Log.d("PythonTaskViewHolder", "ViewHolder yaradıldı");
         }
 
-        public void bind(PythonTaskModel task, OnTaskClickListener listener, SharedPreferences sharedPreferences) {
-            Log.d("PythonTaskViewHolder", "bind çağırıldı - Task: " + task.getTitle());
+        public void bind(PythonTaskModel task, PythonTaskAdapter.OnTaskClickListener listener, SharedPreferences sharedPreferences) {
+            Log.d("TaskViewHolder", "bind çağırıldı - Task: " + task.getTitle());
 
             // Task məlumatlarını set et
             taskTitle.setText(task.getId() + ". " + task.getTitle());
             taskDescription.setText(task.getDescription());
 
             // Statusu yoxla
-            boolean isCompleted = sharedPreferences.getBoolean("python_task_" + task.getId() + "_completed", false);
+            boolean isCompleted = sharedPreferences.getBoolean("task_" + task.getId() + "_completed", false);
             updateStatus(isCompleted);
 
-            // Click listener
+            // ƏSAS DÜZƏLİŞ: Sadəcə BİR click listener istifadə edirik
             if (taskItemLayout != null) {
                 taskItemLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d("PythonTaskViewHolder", "=== PYTHON TASK CLICKED ===");
-                        Log.d("PythonTaskViewHolder", "Clicked task: " + task.getTitle());
+                        Log.d("TaskViewHolder", "=== TASK CLICKED - BIRINCI DEFE ===");
+                        Log.d("TaskViewHolder", "Clicked task: " + task.getTitle());
+
+                        if (listener != null) {
+                            listener.onTaskClick(task);
+                        }
+                    }
+                });
+            } else {
+                // Fallback: Əgər layout tapılmazsa, itemView istifadə et
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("TaskViewHolder", "=== ITEMVIEW CLICKED ===");
+                        Log.d("TaskViewHolder", "Clicked task: " + task.getTitle());
 
                         if (listener != null) {
                             listener.onTaskClick(task);
@@ -92,6 +107,8 @@ public class PythonTaskAdapter extends RecyclerView.Adapter<PythonTaskAdapter.Py
                     }
                 });
             }
+
+            // TextView-lərə click listener ƏLAVƏ ETMİRİK - bu qarışıqlıq yaradır
         }
 
         private void updateStatus(boolean isCompleted) {
@@ -105,5 +122,8 @@ public class PythonTaskAdapter extends RecyclerView.Adapter<PythonTaskAdapter.Py
                 taskStatus.setBackgroundColor(itemView.getResources().getColor(android.R.color.holo_red_dark));
             }
         }
+
     }
+
+
 }

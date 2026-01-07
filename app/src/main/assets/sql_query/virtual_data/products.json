@@ -6,7 +6,7 @@
     "category": "Electronics",
     "stock": 50,
     "supplier": "Dell Inc.",
-    "description": "Yüksək performanslı laptop",
+    "description": "Yüksək performanslı premium laptop",
     "rating": 4.5,
     "discount": 10.0
   },
@@ -17,7 +17,7 @@
     "category": "Electronics",
     "stock": 200,
     "supplier": "Logitech",
-    "description": "Rəqsli simsiz siçan",
+    "description": "Erqonomik simsiz siçan",
     "rating": 4.2,
     "discount": 5.0
   },
@@ -31,5 +31,306 @@
     "description": "RGB işıqlı mexaniki klaviatura",
     "rating": 4.7,
     "discount": 0.0
+  },
+  {
+    "id": 4,
+    "name": "Gaming Monitor 27\"",
+    "price": 350.00,
+    "category": "Electronics",
+    "stock": 60,
+    "supplier": "ASUS",
+    "description": "144Hz Full HD monitor",
+    "rating": 4.6,
+    "discount": 8.0
+  },
+  {
+    "id": 5,
+    "name": "USB-C Hub",
+    "price": 45.00,
+    "category": "Accessories",
+    "stock": 180,
+    "supplier": "Anker",
+    "description": "Çoxportlu USB-C adapter",
+    "rating": 4.3,
+    "discount": 5.0
+  },
+  {
+    "id": 6,
+    "name": "External SSD 1TB",
+    "price": 140.00,
+    "category": "Storage",
+    "stock": 90,
+    "supplier": "Samsung",
+    "description": "Yüksək sürətli portativ SSD",
+    "rating": 4.8,
+    "discount": 12.0
+  },
+  {
+    "id": 7,
+    "name": "Smartphone Samsung S23",
+    "price": 980.00,
+    "category": "Mobile",
+    "stock": 40,
+    "supplier": "Samsung",
+    "description": "Flagship Android telefon",
+    "rating": 4.7,
+    "discount": 7.0
+  },
+  {
+    "id": 8,
+    "name": "Bluetooth Headphones",
+    "price": 120.00,
+    "category": "Audio",
+    "stock": 130,
+    "supplier": "Sony",
+    "description": "Səsboğucu qulaqlıq",
+    "rating": 4.6,
+    "discount": 10.0
+  },
+  {
+    "id": 9,
+    "name": "Smart Watch",
+    "price": 210.00,
+    "category": "Wearables",
+    "stock": 75,
+    "supplier": "Xiaomi",
+    "description": "Fitness və sağlamlıq saatı",
+    "rating": 4.4,
+    "discount": 6.0
+  },
+  {
+    "id": 10,
+    "name": "Tablet iPad Air",
+    "price": 650.00,
+    "category": "Tablets",
+    "stock": 55,
+    "supplier": "Apple",
+    "description": "Yüngül və güclü planşet",
+    "rating": 4.8,
+    "discount": 5.0
+  },
+
+  {
+    "id": 11,
+    "name": "Wireless Charger",
+    "price": 35.00,
+    "category": "Accessories",
+    "stock": 160,
+    "supplier": "Baseus",
+    "description": "Sürətli simsiz şarj cihazı",
+    "rating": 4.1,
+    "discount": 4.0
+  },
+  {
+    "id": 12,
+    "name": "Gaming Chair",
+    "price": 290.00,
+    "category": "Furniture",
+    "stock": 30,
+    "supplier": "DXRacer",
+    "description": "Erqonomik oyun kreslosu",
+    "rating": 4.5,
+    "discount": 15.0
+  },
+  {
+    "id": 13,
+    "name": "Webcam HD",
+    "price": 70.00,
+    "category": "Accessories",
+    "stock": 110,
+    "supplier": "Logitech",
+    "description": "1080p video kamera",
+    "rating": 4.3,
+    "discount": 5.0
+  },
+  {
+    "id": 14,
+    "name": "Power Bank 20000mAh",
+    "price": 60.00,
+    "category": "Accessories",
+    "stock": 140,
+    "supplier": "Xiaomi",
+    "description": "Yüksək tutumlu powerbank",
+    "rating": 4.6,
+    "discount": 8.0
+  },
+  {
+    "id": 15,
+    "name": "Router Wi-Fi 6",
+    "price": 180.00,
+    "category": "Networking",
+    "stock": 45,
+    "supplier": "TP-Link",
+    "description": "Yüksək sürətli router",
+    "rating": 4.5,
+    "discount": 6.0
+  },
+
+  {
+    "id": 16,
+    "name": "Smart TV 55\"",
+    "price": 820.00,
+    "category": "Electronics",
+    "stock": 25,
+    "supplier": "LG",
+    "description": "4K UHD Smart TV",
+    "rating": 4.7,
+    "discount": 10.0
+  },
+  {
+    "id": 17,
+    "name": "Soundbar",
+    "price": 260.00,
+    "category": "Audio",
+    "stock": 40,
+    "supplier": "JBL",
+    "description": "Ev kinoteatrı üçün soundbar",
+    "rating": 4.6,
+    "discount": 7.0
+  },
+  {
+    "id": 18,
+    "name": "Graphics Tablet",
+    "price": 95.00,
+    "category": "Design",
+    "stock": 85,
+    "supplier": "Wacom",
+    "description": "Rəssamlar üçün qrafik planşet",
+    "rating": 4.4,
+    "discount": 5.0
+  },
+  {
+    "id": 19,
+    "name": "Microphone USB",
+    "price": 110.00,
+    "category": "Audio",
+    "stock": 70,
+    "supplier": "Blue",
+    "description": "Podcast və stream üçün mikrofon",
+    "rating": 4.6,
+    "discount": 6.0
+  },
+  {
+    "id": 20,
+    "name": "Laptop Stand",
+    "price": 40.00,
+    "category": "Accessories",
+    "stock": 190,
+    "supplier": "Ugreen",
+    "description": "Alüminium laptop altlığı",
+    "rating": 4.2,
+    "discount": 3.0
+  },
+
+  {
+    "id": 21,
+    "name": "Smart Light Bulb",
+    "price": 22.00,
+    "category": "Smart Home",
+    "stock": 220,
+    "supplier": "Philips",
+    "description": "Ağıllı LED lampa",
+    "rating": 4.3,
+    "discount": 5.0
+  },
+  {
+    "id": 22,
+    "name": "VR Headset",
+    "price": 450.00,
+    "category": "Gaming",
+    "stock": 20,
+    "supplier": "Meta",
+    "description": "Virtual reallıq eynəyi",
+    "rating": 4.5,
+    "discount": 12.0
+  },
+  {
+    "id": 23,
+    "name": "Drone Mini",
+    "price": 380.00,
+    "category": "Gadgets",
+    "stock": 35,
+    "supplier": "DJI",
+    "description": "Kamera ilə mini dron",
+    "rating": 4.7,
+    "discount": 10.0
+  },
+  {
+    "id": 24,
+    "name": "E-Book Reader",
+    "price": 160.00,
+    "category": "Books",
+    "stock": 65,
+    "supplier": "Amazon",
+    "description": "Elektron kitab oxuyucu",
+    "rating": 4.6,
+    "discount": 6.0
+  },
+  {
+    "id": 25,
+    "name": "Action Camera",
+    "price": 300.00,
+    "category": "Photography",
+    "stock": 45,
+    "supplier": "GoPro",
+    "description": "4K action kamera",
+    "rating": 4.7,
+    "discount": 9.0
+  },
+
+  {
+    "id": 26,
+    "name": "Keyboard Wrist Rest",
+    "price": 18.00,
+    "category": "Accessories",
+    "stock": 210,
+    "supplier": "HyperX",
+    "description": "Əl üçün rahat dayaq",
+    "rating": 4.1,
+    "discount": 2.0
+  },
+  {
+    "id": 27,
+    "name": "NAS Storage",
+    "price": 520.00,
+    "category": "Storage",
+    "stock": 15,
+    "supplier": "Synology",
+    "description": "Şəbəkə yaddaş sistemi",
+    "rating": 4.8,
+    "discount": 10.0
+  },
+  {
+    "id": 28,
+    "name": "Projector",
+    "price": 680.00,
+    "category": "Electronics",
+    "stock": 22,
+    "supplier": "Epson",
+    "description": "Full HD proyektor",
+    "rating": 4.5,
+    "discount": 8.0
+  },
+  {
+    "id": 29,
+    "name": "Smart Door Lock",
+    "price": 240.00,
+    "category": "Smart Home",
+    "stock": 28,
+    "supplier": "Xiaomi",
+    "description": "Barmaq izi ilə ağıllı qapı kilidi",
+    "rating": 4.4,
+    "discount": 7.0
+  },
+  {
+    "id": 30,
+    "name": "Desk Lamp LED",
+    "price": 55.00,
+    "category": "Home Office",
+    "stock": 120,
+    "supplier": "Philips",
+    "description": "Göz qoruyan LED masa lampası",
+    "rating": 4.3,
+    "discount": 5.0
   }
 ]

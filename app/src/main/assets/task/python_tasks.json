@@ -479,6 +479,256 @@
         }
       ],
       "solution": "return list(set([x for x in lst if lst.count(x) > 1]))"
+    },
+    {
+      "id": 31,
+      "title": "1-dən n-ə qədər cəm",
+      "description": "For döngüsü ilə 1-dən n-ə qədər olan ədədlərin cəmini hesablayın",
+      "initialCode": "def bir_den_n_kadar_cem(n):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nprint(\"1-dən 5-ə qədər cəm:\", bir_den_n_kadar_cem(5))\nprint(\"1-dən 10-a qədər cəm:\", bir_den_n_kadar_cem(10))",
+      "tests": [
+        {
+          "input": "bir_den_n_kadar_cem(5)",
+          "expected": "15",
+          "description": "1+2+3+4+5=15 olmalıdır"
+        },
+        {
+          "input": "bir_den_n_kadar_cem(10)",
+          "expected": "55",
+          "description": "1-dən 10-a qədər cəm 55 olmalıdır"
+        }
+      ],
+      "solution": "cem = 0\nfor i in range(1, n + 1):\n    cem += i\nreturn cem"
+    },
+    {
+      "id": 32,
+      "title": "Tək ədədlərin cəmi",
+      "description": "For döngüsü ilə 1-dən n-ə qədər olan tək ədədlərin cəmini hesablayın",
+      "initialCode": "def tek_ededlerin_cemi(n):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nprint(\"1-dən 10-a qədər tək ədədlər cəmi:\", tek_ededlerin_cemi(10))\nprint(\"1-dən 20-yə qədər tək ədədlər cəmi:\", tek_ededlerin_cemi(20))",
+      "tests": [
+        {
+          "input": "tek_ededlerin_cemi(10)",
+          "expected": "25",
+          "description": "1+3+5+7+9=25 olmalıdır"
+        },
+        {
+          "input": "tek_ededlerin_cemi(20)",
+          "expected": "100",
+          "description": "1-dən 20-yə qədər tək ədədlər cəmi 100 olmalıdır"
+        }
+      ],
+      "solution": "cem = 0\nfor i in range(1, n + 1):\n    if i % 2 != 0:\n        cem += i\nreturn cem"
+    },
+    {
+      "id": 33,
+      "title": "For ilə vurma cədvəli",
+      "description": "Nested for döngüsü ilə vurma cədvəli yaradın (1x1-dən 5x5-ə qədər)",
+      "initialCode": "def vurma_cedveli_goster(n):\n    # Kodunuzu buraya yazın\n    return \"\"\n\n# Test\nprint(\"Vurma cədvəli (1-5):\")\nprint(vurma_cedveli_goster(5))",
+      "tests": [
+        {
+          "input": "vurma_cedveli_goster(3)",
+          "expected": "1 2 3 \n2 4 6 \n3 6 9 ",
+          "description": "3x3 vurma cədvəli düzgün formatda olmalıdır"
+        }
+      ],
+      "solution": "result = \"\"\nfor i in range(1, n + 1):\n    for j in range(1, n + 1):\n        result += str(i * j) + \" \"\n    result += \"\\n\"\nreturn result"
+    },
+    {
+      "id": 34,
+      "title": "While ilə faktorial",
+      "description": "While döngüsü ilə ədədin faktorialını hesablayın",
+      "initialCode": "def faktorial_while(n):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nprint(\"5 faktorial (while):\", faktorial_while(5))\nprint(\"7 faktorial (while):\", faktorial_while(7))",
+      "tests": [
+        {
+          "input": "faktorial_while(5)",
+          "expected": "120",
+          "description": "5 faktorial 120 olmalıdır"
+        },
+        {
+          "input": "faktorial_while(7)",
+          "expected": "5040",
+          "description": "7 faktorial 5040 olmalıdır"
+        }
+      ],
+      "solution": "faktorial = 1\nsayac = 1\nwhile sayac <= n:\n    faktorial *= sayac\n    sayac += 1\nreturn faktorial"
+    },
+    {
+      "id": 35,
+      "title": "For-else istifadəsi",
+      "description": "For-else istifadə edərək sadə ədəd yoxlaması",
+      "initialCode": "def sade_eded_for_else(eded):\n    # Kodunuzu buraya yazın\n    return False\n\n# Test\nprint(\"7 sadə ədədmi? (for-else):\", sade_eded_for_else(7))\nprint(\"9 sadə ədədmi? (for-else):\", sade_eded_for_else(9))",
+      "tests": [
+        {
+          "input": "sade_eded_for_else(7)",
+          "expected": "True",
+          "description": "7 sadə ədəd olmalıdır"
+        },
+        {
+          "input": "sade_eded_for_else(9)",
+          "expected": "False",
+          "description": "9 sadə ədəd olmamalıdır"
+        }
+      ],
+      "solution": "if eded < 2:\n    return False\nfor i in range(2, int(eded**0.5) + 1):\n    if eded % i == 0:\n        break\nelse:\n    return True\nreturn False"
+    },
+    {
+      "id": 36,
+      "title": "Nested loop ilə üçbucaq",
+      "description": "Nested for döngüsü ilə üçbucaq şəkli çəkin",
+      "initialCode": "def ucbuqaq_cek(n):\n    # Kodunuzu buraya yazın\n    return \"\"\n\n# Test\nprint(\"5 sətir üçbucaq:\")\nprint(ucbuqaq_cek(5))",
+      "tests": [
+        {
+          "input": "ucbuqaq_cek(3)",
+          "expected": "* \n* * \n* * * ",
+          "description": "3 sətirlik üçbucaq düzgün çəkilməlidir"
+        }
+      ],
+      "solution": "result = \"\"\nfor i in range(1, n + 1):\n    for j in range(i):\n        result += \"* \"\n    result += \"\\n\"\nreturn result"
+    },
+    {
+      "id": 37,
+      "title": "Break ilə axtarış",
+      "description": "Listdə axtarılan elementi tapanda dayanan loop",
+      "initialCode": "def axtaris_break(lst, axtarilan):\n    # Kodunuzu buraya yazın\n    return -1\n\n# Test\nprint(\"[3, 7, 2, 8, 5] listində 8:\", axtaris_break([3, 7, 2, 8, 5], 8))\nprint(\"[3, 7, 2, 8, 5] listində 10:\", axtaris_break([3, 7, 2, 8, 5], 10))",
+      "tests": [
+        {
+          "input": "axtaris_break([3, 7, 2, 8, 5], 8)",
+          "expected": "3",
+          "description": "8-in indeksi 3 olmalıdır (0-dan başlayaraq)"
+        },
+        {
+          "input": "axtaris_break([3, 7, 2, 8, 5], 10)",
+          "expected": "-1",
+          "description": "10 tapılmadığı üçün -1 qaytarmalıdır"
+        }
+      ],
+      "solution": "for i in range(len(lst)):\n    if lst[i] == axtarilan:\n        return i\nreturn -1"
+    },
+    {
+      "id": 38,
+      "title": "Continue ilə cüt ədədlər",
+      "description": "Continue istifadə edərək listdən tək ədədləri çıxarın",
+      "initialCode": "def cut_ededler_continue(lst):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nprint(\"[1, 2, 3, 4, 5, 6] cüt ədədləri:\", cut_ededler_continue([1, 2, 3, 4, 5, 6]))",
+      "tests": [
+        {
+          "input": "cut_ededler_continue([1, 2, 3, 4, 5, 6])",
+          "expected": "[2, 4, 6]",
+          "description": "Yalnız cüt ədədlər qaytarılmalıdır"
+        }
+      ],
+      "solution": "netice = []\nfor eded in lst:\n    if eded % 2 != 0:\n        continue\n    netice.append(eded)\nreturn netice"
+    },
+    {
+      "id": 39,
+      "title": "Range parametrləri",
+      "description": "Fərqli range parametrləri ilə loop yazın (start, stop, step)",
+      "initialCode": "def aralig_hesabla(start, stop, step):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nprint(\"2-dən 10-a qədər 2 addım:\", aralig_hesabla(2, 10, 2))\nprint(\"10-dan 1-ə qədər -1 addım:\", aralig_hesabla(10, 0, -1))",
+      "tests": [
+        {
+          "input": "aralig_hesabla(2, 10, 2)",
+          "expected": "[2, 4, 6, 8]",
+          "description": "2,4,6,8 olmalıdır"
+        },
+        {
+          "input": "aralig_hesabla(10, 0, -1)",
+          "expected": "[10, 9, 8, 7, 6, 5, 4, 3, 2, 1]",
+          "description": "10-dan 1-ə qədər geriyə"
+        }
+      ],
+      "solution": "netice = []\nfor i in range(start, stop, step):\n    netice.append(i)\nreturn netice"
+    },
+    {
+      "id": 40,
+      "title": "İç-içə listlərdə loop",
+      "description": "Nested list (matris) üzərində loop edərək cəmi hesablayın",
+      "initialCode": "def nested_list_cemi(matris):\n    # Kodunuzu buraya yazın\n    return 0\n\n# Test\nmatris = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]\nprint(\"3x3 matris cəmi:\", nested_list_cemi(matris))",
+      "tests": [
+        {
+          "input": "nested_list_cemi([[1, 2], [3, 4]])",
+          "expected": "10",
+          "description": "1+2+3+4=10 olmalıdır"
+        },
+        {
+          "input": "nested_list_cemi([[1, 2, 3], [4, 5, 6]])",
+          "expected": "21",
+          "description": "1-dən 6-ya qədər cəm 21 olmalıdır"
+        }
+      ],
+      "solution": "cem = 0\nfor setir in matris:\n    for element in setir:\n        cem += element\nreturn cem"
+    },
+    {
+      "id": 41,
+      "title": "Enumerate ilə loop",
+      "description": "Enumerate istifadə edərək list elementlərinin indeks və dəyərlərini çap edin",
+      "initialCode": "def enumerate_loop(lst):\n    # Kodunuzu buraya yazın\n    return \"\"\n\n# Test\nprint(\"['alma', 'armud', 'banan'] indeksləri:\")\nprint(enumerate_loop(['alma', 'armud', 'banan']))",
+      "tests": [
+        {
+          "input": "enumerate_loop(['alma', 'armud', 'banan'])",
+          "expected": "0: alma\n1: armud\n2: banan\n",
+          "description": "İndeks və dəyərlər düzgün formatda olmalıdır"
+        }
+      ],
+      "solution": "netice = \"\"\nfor indeks, deyer in enumerate(lst):\n    netice += f\"{indeks}: {deyer}\\n\"\nreturn netice"
+    },
+    {
+      "id": 42,
+      "title": "Zip ilə paralel loop",
+      "description": "Zip istifadə edərək iki listi paralel iterate edin",
+      "initialCode": "def zip_loop(list1, list2):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nprint(\"[1, 2, 3] və ['a', 'b', 'c'] cütləri:\", zip_loop([1, 2, 3], ['a', 'b', 'c']))",
+      "tests": [
+        {
+          "input": "zip_loop([1, 2, 3], ['a', 'b', 'c'])",
+          "expected": "['1:a', '2:b', '3:c']",
+          "description": "Rəqəm və hərf cütləri formatlı şəkildə qaytarılmalıdır"
+        }
+      ],
+      "solution": "netice = []\nfor reqem, herf in zip(list1, list2):\n    netice.append(f\"{reqem}:{herf}\")\nreturn netice"
+    },
+    {
+      "id": 43,
+      "title": "List comprehension ilə kvadratlar",
+      "description": "List comprehension istifadə edərək ədədlərin kvadratlarını yaradın",
+      "initialCode": "def kvadratlar_comprehension(lst):\n    # Kodunuzu buraya yazın\n    return []\n\n# Test\nprint(\"[1, 2, 3, 4, 5] kvadratları:\", kvadratlar_comprehension([1, 2, 3, 4, 5]))",
+      "tests": [
+        {
+          "input": "kvadratlar_comprehension([1, 2, 3, 4, 5])",
+          "expected": "[1, 4, 9, 16, 25]",
+          "description": "Hər ədədin kvadratı hesablanmalıdır"
+        }
+      ],
+      "solution": "return [x**2 for x in lst]"
+    },
+    {
+      "id": 44,
+      "title": "Dictionary comprehension",
+      "description": "Dictionary comprehension ilə ədədin kvadratlarını dictionary yaradın",
+      "initialCode": "def kvadrat_dict_comprehension(lst):\n    # Kodunuzu buraya yazın\n    return {}\n\n# Test\nprint(\"[1, 2, 3, 4, 5] kvadrat dictionary:\", kvadrat_dict_comprehension([1, 2, 3, 4, 5]))",
+      "tests": [
+        {
+          "input": "kvadrat_dict_comprehension([1, 2, 3, 4, 5])",
+          "expected": "{1: 1, 2: 4, 3: 9, 4: 16, 5: 25}",
+          "description": "Ədəd: kvadrat dictionary-si yaradılmalıdır"
+        }
+      ],
+      "solution": "return {x: x**2 for x in lst}"
+    },
+    {
+      "id": 45,
+      "title": "While ilə ədəd təxmini",
+      "description": "While loop ilə kvadrat kök təxmini hesablayın",
+      "initialCode": "def kvadrat_kok_while(eded, dəqiqlik=0.0001):\n    # Kodunuzu buraya yazın\n    return 0.0\n\n# Test\nprint(\"16 kvadrat kök təxmini:\", kvadrat_kok_while(16))\nprint(\"25 kvadrat kök təxmini:\", kvadrat_kok_while(25))",
+      "tests": [
+        {
+          "input": "kvadrat_kok_while(16)",
+          "expected": "4.0",
+          "description": "16 kvadrat kökü 4-ə yaxın olmalıdır"
+        },
+        {
+          "input": "kvadrat_kok_while(25)",
+          "expected": "5.0",
+          "description": "25 kvadrat kökü 5-ə yaxın olmalıdır"
+        }
+      ],
+      "solution": "tahmin = eded / 2.0\nwhile abs(tahmin * tahmin - eded) > dəqiqlik:\n    tahmin = (tahmin + eded / tahmin) / 2.0\nreturn tahmin"
     }
   ]
 }

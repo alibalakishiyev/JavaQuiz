@@ -28,5 +28,275 @@
     "city": "Seoul",
     "rating": 4.8,
     "products_supplied": 40
+  },
+  {
+    "id": 4,
+    "company_name": "HP",
+    "contact_person": "Linda Brown",
+    "phone": "+1-800-345678",
+    "email": "contact@hp.com",
+    "city": "New York",
+    "rating": 4.4,
+    "products_supplied": 35
+  },
+  {
+    "id": 5,
+    "company_name": "Apple",
+    "contact_person": "Steve Johnson",
+    "phone": "+1-800-456789",
+    "email": "sales@apple.com",
+    "city": "California",
+    "rating": 4.9,
+    "products_supplied": 60
+  },
+  {
+    "id": 6,
+    "company_name": "Asus",
+    "contact_person": "David Kim",
+    "phone": "+82-2-567890",
+    "email": "support@asus.com",
+    "city": "Seoul",
+    "rating": 4.6,
+    "products_supplied": 45
+  },
+  {
+    "id": 7,
+    "company_name": "Acer",
+    "contact_person": "Sophia Lee",
+    "phone": "+1-800-678901",
+    "email": "info@acer.com",
+    "city": "Texas",
+    "rating": 4.3,
+    "products_supplied": 25
+  },
+  {
+    "id": 8,
+    "company_name": "Microsoft",
+    "contact_person": "Paul Walker",
+    "phone": "+1-800-789012",
+    "email": "support@microsoft.com",
+    "city": "Washington",
+    "rating": 4.8,
+    "products_supplied": 55
+  },
+  {
+    "id": 9,
+    "company_name": "Lenovo",
+    "contact_person": "Anna Chen",
+    "phone": "+86-10-12345678",
+    "email": "sales@lenovo.com",
+    "city": "Beijing",
+    "rating": 4.5,
+    "products_supplied": 50
+  },
+  {
+    "id": 10,
+    "company_name": "Sony",
+    "contact_person": "James Park",
+    "phone": "+81-3-12345678",
+    "email": "contact@sony.com",
+    "city": "Tokyo",
+    "rating": 4.7,
+    "products_supplied": 40
+  },
+  {
+    "id": 11,
+    "company_name": "Intel",
+    "contact_person": "Michael Scott",
+    "phone": "+1-800-890123",
+    "email": "support@intel.com",
+    "city": "California",
+    "rating": 4.6,
+    "products_supplied": 55
+  },
+  {
+    "id": 12,
+    "company_name": "AMD",
+    "contact_person": "Nancy White",
+    "phone": "+1-800-901234",
+    "email": "info@amd.com",
+    "city": "Texas",
+    "rating": 4.5,
+    "products_supplied": 45
+  },
+  {
+    "id": 13,
+    "company_name": "Cisco",
+    "contact_person": "Robert Lewis",
+    "phone": "+1-800-012345",
+    "email": "sales@cisco.com",
+    "city": "California",
+    "rating": 4.7,
+    "products_supplied": 35
+  },
+  {
+    "id": 14,
+    "company_name": "Huawei",
+    "contact_person": "Li Wei",
+    "phone": "+86-21-12345678",
+    "email": "support@huawei.com",
+    "city": "Shanghai",
+    "rating": 4.6,
+    "products_supplied": 50
+  },
+  {
+    "id": 15,
+    "company_name": "Xiaomi",
+    "contact_person": "Zhang Wei",
+    "phone": "+86-21-23456789",
+    "email": "info@xiaomi.com",
+    "city": "Beijing",
+    "rating": 4.5,
+    "products_supplied": 40
+  },
+  {
+    "id": 16,
+    "company_name": "TP-Link",
+    "contact_person": "Wang Fang",
+    "phone": "+86-20-34567890",
+    "email": "support@tplink.com",
+    "city": "Shenzhen",
+    "rating": 4.4,
+    "products_supplied": 30
+  },
+  {
+    "id": 17,
+    "company_name": "Razer",
+    "contact_person": "Chris Brown",
+    "phone": "+1-800-234890",
+    "email": "sales@razer.com",
+    "city": "California",
+    "rating": 4.7,
+    "products_supplied": 25
+  },
+  {
+    "id": 18,
+    "company_name": "Alienware",
+    "contact_person": "Alex Turner",
+    "phone": "+1-800-345901",
+    "email": "contact@alienware.com",
+    "city": "Texas",
+    "rating": 4.8,
+    "products_supplied": 35
+  },
+  {
+    "id": 19,
+    "company_name": "Google",
+    "contact_person": "Sundar Pichai",
+    "phone": "+1-800-456012",
+    "email": "info@google.com",
+    "city": "California",
+    "rating": 4.9,
+    "products_supplied": 60
+  },
+  {
+    "id": 20,
+    "company_name": "Facebook",
+    "contact_person": "Mark Zuckerberg",
+    "phone": "+1-800-567123",
+    "email": "support@facebook.com",
+    "city": "California",
+    "rating": 4.7,
+    "products_supplied": 50
+  },
+  {
+    "id": 21,
+    "company_name": "Amazon",
+    "contact_person": "Jeff Bezos",
+    "phone": "+1-800-678234",
+    "email": "sales@amazon.com",
+    "city": "Washington",
+    "rating": 4.8,
+    "products_supplied": 70
+  },
+  {
+    "id": 22,
+    "company_name": "eBay",
+    "contact_person": "Pierre Omidyar",
+    "phone": "+1-800-789345",
+    "email": "contact@ebay.com",
+    "city": "California",
+    "rating": 4.6,
+    "products_supplied": 45
+  },
+  {
+    "id": 23,
+    "company_name": "Oracle",
+    "contact_person": "Larry Ellison",
+    "phone": "+1-800-890456",
+    "email": "info@oracle.com",
+    "city": "California",
+    "rating": 4.7,
+    "products_supplied": 40
+  },
+  {
+    "id": 24,
+    "company_name": "IBM",
+    "contact_person": "Arvind Krishna",
+    "phone": "+1-800-901567",
+    "email": "support@ibm.com",
+    "city": "New York",
+    "rating": 4.6,
+    "products_supplied": 50
+  },
+  {
+    "id": 25,
+    "company_name": "Adobe",
+    "contact_person": "Shantanu Narayen",
+    "phone": "+1-800-012678",
+    "email": "info@adobe.com",
+    "city": "California",
+    "rating": 4.7,
+    "products_supplied": 35
+  },
+  {
+    "id": 26,
+    "company_name": "Nvidia",
+    "contact_person": "Jensen Huang",
+    "phone": "+1-800-123789",
+    "email": "sales@nvidia.com",
+    "city": "California",
+    "rating": 4.9,
+    "products_supplied": 60
+  },
+  {
+    "id": 27,
+    "company_name": "AMD Corp",
+    "contact_person": "Lisa Su",
+    "phone": "+1-800-234890",
+    "email": "support@amd.com",
+    "city": "Texas",
+    "rating": 4.8,
+    "products_supplied": 50
+  },
+  {
+    "id": 28,
+    "company_name": "Qualcomm",
+    "contact_person": "Cristiano Amon",
+    "phone": "+1-800-345901",
+    "email": "info@qualcomm.com",
+    "city": "California",
+    "rating": 4.7,
+    "products_supplied": 40
+  },
+  {
+    "id": 29,
+    "company_name": "Spotify",
+    "contact_person": "Daniel Ek",
+    "phone": "+46-8-1234567",
+    "email": "support@spotify.com",
+    "city": "Stockholm",
+    "rating": 4.6,
+    "products_supplied": 35
+  },
+  {
+    "id": 30,
+    "company_name": "Twitter",
+    "contact_person": "Elon Musk",
+    "phone": "+1-800-567890",
+    "email": "info@twitter.com",
+    "city": "California",
+    "rating": 4.5,
+    "products_supplied": 30
   }
 ]

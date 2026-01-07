@@ -2,6 +2,7 @@ package com.ali.postgresql.taskPostgreSqlManager;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -560,6 +561,7 @@ public class PostgreSqlTaskDetail extends AppCompatActivity {
         resultContainer.addView(messageView);
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -583,13 +585,9 @@ public class PostgreSqlTaskDetail extends AppCompatActivity {
             materialAlertDialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int i) {
-
                     if (fAuth.getCurrentUser() != null) {
-                        startActivity(new Intent(getApplicationContext(), PostgreSqlMain.class));
                         finish();
-                    }else{
-                        startActivity(new Intent(PostgreSqlTaskDetail.this, Login.class));
-                        finish();
+
                     }
 
                 }

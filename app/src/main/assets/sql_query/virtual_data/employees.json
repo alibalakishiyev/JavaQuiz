@@ -1,38 +1,35 @@
 [
-  {
-    "id": 1,
-    "name": "Ali Məmmədov",
-    "age": 28,
-    "salary": 2500.00,
-    "department": "IT",
-    "city": "Baku",
-    "hire_date": "2020-05-15",
-    "email": "ali@company.com",
-    "phone": "+994501234567",
-    "bonus": 500.00
-  },
-  {
-    "id": 2,
-    "name": "Aysel Həsənova",
-    "age": 32,
-    "salary": 3200.00,
-    "department": "HR",
-    "city": "Gəncə",
-    "hire_date": "2019-08-20",
-    "email": "aysel@company.com",
-    "phone": "+994502345678",
-    "bonus": 400.00
-  },
-  {
-    "id": 3,
-    "name": "Mehmet Əliyev",
-    "age": 25,
-    "salary": 1800.00,
-    "department": "IT",
-    "city": "Baku",
-    "hire_date": "2021-03-10",
-    "email": "mehmet@company.com",
-    "phone": "+994503456789",
-    "bonus": 300.00
-  }
+  { "id": 1, "name": "Ali Məmmədov", "age": 28, "salary": 2500.00, "department": "IT", "city": "Baku", "hire_date": "2020-05-15", "email": "ali@company.com", "phone": "+994501234567", "bonus": 500.00 },
+  { "id": 2, "name": "Aysel Həsənova", "age": 32, "salary": 3200.00, "department": "HR", "city": "Gəncə", "hire_date": "2019-08-20", "email": "aysel@company.com", "phone": "+994502345678", "bonus": 400.00 },
+  { "id": 3, "name": "Mehmet Əliyev", "age": 25, "salary": 1800.00, "department": "IT", "city": "Baku", "hire_date": "2021-03-10", "email": "mehmet@company.com", "phone": "+994503456789", "bonus": 300.00 },
+
+  { "id": 4, "name": "Elvin Rzayev", "age": 35, "salary": 4100.00, "department": "Finance", "city": "Sumqayıt", "hire_date": "2018-11-02", "email": "elvin@company.com", "phone": "+994504567890", "bonus": 800.00 },
+  { "id": 5, "name": "Nigar Əliyeva", "age": 27, "salary": 2200.00, "department": "Marketing", "city": "Baku", "hire_date": "2021-06-01", "email": "nigar@company.com", "phone": "+994505678901", "bonus": 350.00 },
+  { "id": 6, "name": "Orxan İsmayılov", "age": 30, "salary": 2900.00, "department": "Sales", "city": "Şəki", "hire_date": "2020-09-14", "email": "orxan@company.com", "phone": "+994506789012", "bonus": 450.00 },
+  { "id": 7, "name": "Leyla Kərimova", "age": 29, "salary": 2600.00, "department": "Customer Support", "city": "Lənkəran", "hire_date": "2019-12-05", "email": "leyla@company.com", "phone": "+994507890123", "bonus": 380.00 },
+  { "id": 8, "name": "Tural Süleymanov", "age": 34, "salary": 3600.00, "department": "Logistics", "city": "Mingəçevir", "hire_date": "2017-04-18", "email": "tural@company.com", "phone": "+994508901234", "bonus": 600.00 },
+  { "id": 9, "name": "Günel Abbasova", "age": 26, "salary": 2100.00, "department": "Legal", "city": "Baku", "hire_date": "2022-01-10", "email": "gunel@company.com", "phone": "+994509012345", "bonus": 300.00 },
+  { "id": 10, "name": "Ramin Quliyev", "age": 38, "salary": 4800.00, "department": "R&D", "city": "Naxçıvan", "hire_date": "2016-07-22", "email": "ramin@company.com", "phone": "+994501112233", "bonus": 900.00 },
+
+  { "id": 11, "name": "Fidan Əhmədli", "age": 24, "salary": 1700.00, "department": "HR", "city": "Bərdə", "hire_date": "2023-02-01", "email": "fidan@company.com", "phone": "+994502223344", "bonus": 200.00 },
+  { "id": 12, "name": "Kamran Hacıyev", "age": 41, "salary": 5200.00, "department": "Management", "city": "Baku", "hire_date": "2015-10-30", "email": "kamran@company.com", "phone": "+994503334455", "bonus": 1200.00 },
+  { "id": 13, "name": "Zəhra İmanova", "age": 31, "salary": 3400.00, "department": "Finance", "city": "Quba", "hire_date": "2019-05-09", "email": "zehra@company.com", "phone": "+994504445566", "bonus": 500.00 },
+  { "id": 14, "name": "Murad Aslanov", "age": 27, "salary": 2300.00, "department": "QA", "city": "Qazax", "hire_date": "2021-08-16", "email": "murad@company.com", "phone": "+994505556677", "bonus": 320.00 },
+  { "id": 15, "name": "Aytac Orucova", "age": 33, "salary": 3100.00, "department": "Training", "city": "Masallı", "hire_date": "2018-03-12", "email": "aytac@company.com", "phone": "+994506667788", "bonus": 420.00 },
+  { "id": 16, "name": "Samir Əliyev", "age": 29, "salary": 2800.00, "department": "Data Analytics", "city": "Baku", "hire_date": "2020-01-20", "email": "samir@company.com", "phone": "+994507778899", "bonus": 450.00 },
+  { "id": 17, "name": "Sevinc Rəhimova", "age": 36, "salary": 3900.00, "department": "Operations", "city": "Sabirabad", "hire_date": "2017-09-08", "email": "sevinc@company.com", "phone": "+994508889900", "bonus": 650.00 },
+  { "id": 18, "name": "Emin Məlikov", "age": 28, "salary": 2600.00, "department": "PR", "city": "Baku", "hire_date": "2020-06-11", "email": "emin@company.com", "phone": "+994509990011", "bonus": 400.00 },
+  { "id": 19, "name": "Lala Səfərova", "age": 34, "salary": 3700.00, "department": "Product", "city": "Sumqayıt", "hire_date": "2018-12-19", "email": "lala@company.com", "phone": "+994501010101", "bonus": 550.00 },
+  { "id": 20, "name": "Adil Bayramov", "age": 26, "salary": 2400.00, "department": "UX/UI", "city": "Baku", "hire_date": "2021-04-07", "email": "adil@company.com", "phone": "+994502020202", "bonus": 360.00 },
+
+  { "id": 21, "name": "Rauf Hüseynli", "age": 39, "salary": 4600.00, "department": "Mobile Dev", "city": "Gəncə", "hire_date": "2016-02-14", "email": "rauf@company.com", "phone": "+994503030303", "bonus": 800.00 },
+  { "id": 22, "name": "Könül Əliyeva", "age": 31, "salary": 3300.00, "department": "Web Dev", "city": "Baku", "hire_date": "2019-07-25", "email": "konul@company.com", "phone": "+994504040404", "bonus": 500.00 },
+  { "id": 23, "name": "Ceyhun Nəsirov", "age": 35, "salary": 4200.00, "department": "Cloud", "city": "Baku", "hire_date": "2017-11-03", "email": "ceyhun@company.com", "phone": "+994505050505", "bonus": 700.00 },
+  { "id": 24, "name": "Amina Qasımova", "age": 23, "salary": 1600.00, "department": "Intern", "city": "Baku", "hire_date": "2023-06-01", "email": "amina@company.com", "phone": "+994506060606", "bonus": 150.00 },
+  { "id": 25, "name": "Nihat Məcidov", "age": 37, "salary": 4400.00, "department": "DevOps", "city": "Sumqayıt", "hire_date": "2016-08-29", "email": "nihat@company.com", "phone": "+994507070707", "bonus": 750.00 },
+  { "id": 26, "name": "Səbinə Rüstəmli", "age": 28, "salary": 2700.00, "department": "Compliance", "city": "Baku", "hire_date": "2020-10-13", "email": "sabina@company.com", "phone": "+994508080808", "bonus": 420.00 },
+  { "id": 27, "name": "Vüsal Abdullayev", "age": 42, "salary": 5000.00, "department": "Security", "city": "Tovuz", "hire_date": "2014-05-21", "email": "vusal@company.com", "phone": "+994509090909", "bonus": 1000.00 },
+  { "id": 28, "name": "Şəms Qurbanov", "age": 34, "salary": 3600.00, "department": "Infrastructure", "city": "Baku", "hire_date": "2018-01-17", "email": "sems@company.com", "phone": "+994501111000", "bonus": 600.00 },
+  { "id": 29, "name": "Nərmin Əliyeva", "age": 27, "salary": 2300.00, "department": "Support", "city": "Quba", "hire_date": "2021-09-09", "email": "narmin@company.com", "phone": "+994502222000", "bonus": 350.00 },
+  { "id": 30, "name": "İlqar Rəhimov", "age": 40, "salary": 4700.00, "department": "Audit", "city": "Baku", "hire_date": "2015-03-04", "email": "ilqar@company.com", "phone": "+994503333000", "bonus": 850.00 }
 ]

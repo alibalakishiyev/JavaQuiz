@@ -1,35 +1,34 @@
 [
-  {
-    "id": 1,
-    "first_name": "Cavid",
-    "last_name": "Hüseynov",
-    "email": "cavid@gmail.com",
-    "phone": "+994501234567",
-    "city": "Baku",
-    "country": "Azerbaijan",
-    "loyalty_points": 100,
-    "total_spent": 1250.00
-  },
-  {
-    "id": 2,
-    "first_name": "Nigar",
-    "last_name": "Əliyeva",
-    "email": "nigar@mail.ru",
-    "phone": "+994502345678",
-    "city": "Gəncə",
-    "country": "Azerbaijan",
-    "loyalty_points": 50,
-    "total_spent": 80.00
-  },
-  {
-    "id": 3,
-    "first_name": "Ruslan",
-    "last_name": "Quliyev",
-    "email": "ruslan@yahoo.com",
-    "phone": "+994503456789",
-    "city": "Sumqayıt",
-    "country": "Azerbaijan",
-    "loyalty_points": 200,
-    "total_spent": 980.00
-  }
+  { "id": 1, "first_name": "Cavid", "last_name": "Hüseynov", "email": "cavid@gmail.com", "phone": "+994501234567", "city": "Baku", "country": "Azerbaijan", "loyalty_points": 100, "total_spent": 1250.00 },
+  { "id": 2, "first_name": "Nigar", "last_name": "Əliyeva", "email": "nigar@mail.ru", "phone": "+994502345678", "city": "Gəncə", "country": "Azerbaijan", "loyalty_points": 50, "total_spent": 80.00 },
+  { "id": 3, "first_name": "Ruslan", "last_name": "Quliyev", "email": "ruslan@yahoo.com", "phone": "+994503456789", "city": "Sumqayıt", "country": "Azerbaijan", "loyalty_points": 200, "total_spent": 980.00 },
+  { "id": 4, "first_name": "Aysel", "last_name": "Məmmədova", "email": "aysel@hotmail.com", "phone": "+994504567890", "city": "Şəki", "country": "Azerbaijan", "loyalty_points": 320, "total_spent": 2150.75 },
+  { "id": 5, "first_name": "Elvin", "last_name": "Rzayev", "email": "elvin@gmail.com", "phone": "+994505678901", "city": "Mingəçevir", "country": "Azerbaijan", "loyalty_points": 75, "total_spent": 410.40 },
+  { "id": 6, "first_name": "Leyla", "last_name": "Kərimova", "email": "leyla@mail.ru", "phone": "+994506789012", "city": "Lənkəran", "country": "Azerbaijan", "loyalty_points": 180, "total_spent": 1320.00 },
+  { "id": 7, "first_name": "Orxan", "last_name": "İsmayılov", "email": "orxan@yahoo.com", "phone": "+994507890123", "city": "Naxçıvan", "country": "Azerbaijan", "loyalty_points": 20, "total_spent": 55.00 },
+  { "id": 8, "first_name": "Günel", "last_name": "Abbasova", "email": "gunel@gmail.com", "phone": "+994508901234", "city": "Quba", "country": "Azerbaijan", "loyalty_points": 260, "total_spent": 1785.90 },
+  { "id": 9, "first_name": "Tural", "last_name": "Süleymanov", "email": "tural@mail.ru", "phone": "+994509012345", "city": "Zaqatala", "country": "Azerbaijan", "loyalty_points": 95, "total_spent": 640.00 },
+  { "id": 10, "first_name": "Fidan", "last_name": "Əhmədli", "email": "fidan@gmail.com", "phone": "+994501112233", "city": "Bərdə", "country": "Azerbaijan", "loyalty_points": 410, "total_spent": 3120.30 },
+
+  { "id": 11, "first_name": "Kamran", "last_name": "Nəsirov", "email": "kamran@mail.ru", "phone": "+994502223344", "city": "Sabirabad", "country": "Azerbaijan", "loyalty_points": 60, "total_spent": 290.00 },
+  { "id": 12, "first_name": "Zəhra", "last_name": "Qasımova", "email": "zehra@gmail.com", "phone": "+994503334455", "city": "Masallı", "country": "Azerbaijan", "loyalty_points": 150, "total_spent": 870.60 },
+  { "id": 13, "first_name": "Emin", "last_name": "Şahbazov", "email": "emin@yahoo.com", "phone": "+994504445566", "city": "Qazax", "country": "Azerbaijan", "loyalty_points": 35, "total_spent": 120.00 },
+  { "id": 14, "first_name": "Aynur", "last_name": "Tağıyeva", "email": "aynur@mail.ru", "phone": "+994505556677", "city": "Göyçay", "country": "Azerbaijan", "loyalty_points": 210, "total_spent": 1560.80 },
+  { "id": 15, "first_name": "Murad", "last_name": "Həsənli", "email": "murad@gmail.com", "phone": "+994506667788", "city": "Salyan", "country": "Azerbaijan", "loyalty_points": 90, "total_spent": 510.00 },
+  { "id": 16, "first_name": "Nərgiz", "last_name": "Rəhimova", "email": "nergiz@hotmail.com", "phone": "+994507778899", "city": "Astara", "country": "Azerbaijan", "loyalty_points": 275, "total_spent": 1999.99 },
+  { "id": 17, "first_name": "Samir", "last_name": "Əliyev", "email": "samir@yahoo.com", "phone": "+994508889900", "city": "Tovuz", "country": "Azerbaijan", "loyalty_points": 45, "total_spent": 260.00 },
+  { "id": 18, "first_name": "Amina", "last_name": "Mustafayeva", "email": "amina@gmail.com", "phone": "+994509990011", "city": "Qusar", "country": "Azerbaijan", "loyalty_points": 330, "total_spent": 2400.00 },
+  { "id": 19, "first_name": "Rauf", "last_name": "Babazadə", "email": "rauf@mail.ru", "phone": "+994501223344", "city": "Şamaxı", "country": "Azerbaijan", "loyalty_points": 70, "total_spent": 380.00 },
+  { "id": 20, "first_name": "Sevda", "last_name": "İbrahimova", "email": "sevda@gmail.com", "phone": "+994502334455", "city": "Ağcabədi", "country": "Azerbaijan", "loyalty_points": 190, "total_spent": 1110.45 },
+
+  { "id": 21, "first_name": "Rəşad", "last_name": "Qurbanov", "email": "reshad@yahoo.com", "phone": "+994503445566", "city": "Füzuli", "country": "Azerbaijan", "loyalty_points": 55, "total_spent": 295.00 },
+  { "id": 22, "first_name": "Könül", "last_name": "Səmədova", "email": "konul@mail.ru", "phone": "+994504556677", "city": "İsmayıllı", "country": "Azerbaijan", "loyalty_points": 240, "total_spent": 1680.00 },
+  { "id": 23, "first_name": "Adil", "last_name": "Yusifov", "email": "adil@gmail.com", "phone": "+994505667788", "city": "Balakən", "country": "Azerbaijan", "loyalty_points": 30, "total_spent": 95.00 },
+  { "id": 24, "first_name": "Lalə", "last_name": "Hüseynli", "email": "lale@hotmail.com", "phone": "+994506778899", "city": "Qobustan", "country": "Azerbaijan", "loyalty_points": 165, "total_spent": 890.00 },
+  { "id": 25, "first_name": "Nicad", "last_name": "Orucov", "email": "nicad@yahoo.com", "phone": "+994507889900", "city": "Xırdalan", "country": "Azerbaijan", "loyalty_points": 115, "total_spent": 720.00 },
+  { "id": 26, "first_name": "Gülşən", "last_name": "Hacıyeva", "email": "gulshen@gmail.com", "phone": "+994508990011", "city": "Saatlı", "country": "Azerbaijan", "loyalty_points": 205, "total_spent": 1490.00 },
+  { "id": 27, "first_name": "İlqar", "last_name": "Məlikov", "email": "ilgar@mail.ru", "phone": "+994509101112", "city": "Ağdam", "country": "Azerbaijan", "loyalty_points": 85, "total_spent": 460.00 },
+  { "id": 28, "first_name": "Afaq", "last_name": "Zeynallı", "email": "afaq@gmail.com", "phone": "+994501212223", "city": "Kürdəmir", "country": "Azerbaijan", "loyalty_points": 295, "total_spent": 2090.00 },
+  { "id": 29, "first_name": "Vüqar", "last_name": "Ələkbərov", "email": "vugar@yahoo.com", "phone": "+994502323334", "city": "Ucar", "country": "Azerbaijan", "loyalty_points": 40, "total_spent": 180.00 },
+  { "id": 30, "first_name": "Nərmin", "last_name": "Paşayeva", "email": "narmin@gmail.com", "phone": "+994503434445", "city": "Xaçmaz", "country": "Azerbaijan", "loyalty_points": 360, "total_spent": 2750.00 }
 ]
