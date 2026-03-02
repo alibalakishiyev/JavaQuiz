@@ -1,6 +1,6 @@
 package com.ali.pymain.taskmanager;
 
-
+// Importları düzəldək
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,8 +28,8 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ali.javaquizbyali.codemodel.TaskModel;
-
+// DÜZƏLİŞ: AiTaskModel import edirik
+import com.ali.aimain.taskAimanager.AiTaskModel;
 import com.ali.systemIn.R;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
@@ -47,6 +47,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -66,16 +67,23 @@ public class PythonConsole extends AppCompatActivity {
     private static final String KEY_SAVED_CODE = "saved_code";
     private static final String TASK_PREFS = "TaskProgress";
 
-    // Task məlumatları
+    // DÜZƏLİŞ: AiTaskModel.Test istifadə edirik
     private int currentTaskId;
-    private List<TaskModel.Test> tests;
+    private List<AiTaskModel.Test> tests;
     private String solution;
     private String initialCode;
 
     private LinearLayout outputContainer;
-
     private LinearLayout codeEditorLayout;
     private Button hideOutputBtn;
+    private Button dontKnowBtn;
+
+    // Undo/Redo üçün dəyişənlər
+    private Button undoBtn;
+    private Button redoBtn;
+    private Stack<String> undoStack = new Stack<>();
+    private Stack<String> redoStack = new Stack<>();
+    private boolean isUndoRedoOperation = false;
 
     // Auto-complete üçün
     private ListView suggestionsList;
@@ -93,15 +101,14 @@ public class PythonConsole extends AppCompatActivity {
         put("list", new String[]{
                 "append(item)", "extend(iterable)", "insert(index, item)", "remove(item)",
                 "pop(index)", "clear()", "index(item)", "count(item)", "sort()", "reverse()",
-                "copy()", "len()"
+                "copy()"
         });
         put("dict", new String[]{
                 "keys()", "values()", "items()", "get(key, default)", "pop(key)",
                 "popitem()", "clear()", "copy()", "update(other_dict)", "setdefault(key, default)"
         });
         put("int", new String[]{
-                "bit_length()", "to_bytes(length, byteorder)", "from_bytes(bytes, byteorder)",
-                "abs()", "bin()", "hex()", "oct()"
+                "bit_length()", "to_bytes(length, byteorder)", "from_bytes(bytes, byteorder)"
         });
         put("float", new String[]{
                 "is_integer()", "hex()", "fromhex(string)", "as_integer_ratio()"
@@ -110,7 +117,7 @@ public class PythonConsole extends AppCompatActivity {
 
     // Python anahtar kelimeleri
     private static final String[] PYTHON_KEYWORDS = {
-            "def", "class", "if", "else", "elif", "while", "for", "in", "return", "switch",
+            "def", "class", "if", "else", "elif", "while", "for", "in", "return",
             "import", "from", "as", "try", "except", "finally", "with", "lambda",
             "and", "or", "not", "is", "None", "True", "False", "pass", "break", "print",
             "continue", "global", "nonlocal", "assert", "raise", "yield", "async", "await"
@@ -122,14 +129,14 @@ public class PythonConsole extends AppCompatActivity {
             "filter()", "float()", "int()", "len()", "list()", "map()", "max()", "min()", "ord()",
             "range()", "reversed()", "round()", "set()", "sorted()", "str()", "sum()", "tuple()", "type()",
             "zip()", "open()", "input()", "format()", "help()", "id()", "isinstance()", "issubclass()",
-            "print()", "range()", "input()", "len()", "sum()", "sorted()"
+            "print()"
     };
 
     // Python module adları
     private static final String[] PYTHON_MODULES = {
             "math", "random", "datetime", "json", "re", "os", "sys", "time",
             "collections", "itertools", "functools", "decimal", "fractions",
-            "statistics", "hashlib", "base64", "csv", "html"
+            "statistics", "hashlib", "base64", "csv", "html", "numpy", "pandas"
     };
 
     // Renkler
@@ -143,6 +150,19 @@ public class PythonConsole extends AppCompatActivity {
     private static final int COLOR_MODULE = Color.parseColor("#673AB7"); // Tünd bənövşəyi
 
     private boolean isApplyingHighlighting = false;
+
+    // Test nəticəsi üçün inner class
+    private class TestResult {
+        boolean passed;
+        String actual;
+        String error;
+
+        TestResult(boolean passed, String actual, String error) {
+            this.passed = passed;
+            this.actual = actual;
+            this.error = error;
+        }
+    }
 
     // Compiler xətası sinfi
     private class CompilerError {
@@ -166,14 +186,15 @@ public class PythonConsole extends AppCompatActivity {
         setupTaskData();
         setupFirebase();
         setupPython();
-        outputContainer = findViewById(R.id.outputContainer); // YENİ
-        hideOutputBtn = findViewById(R.id.hideOutputBtn); // YENİ
         setupPreferences();
         setupEventListeners();
         setupAutoComplete();
         setupSuggestions();
         setupAdMob();
         setupBackPressedCallback();
+
+        // Undo stack-ə ilkin kodu yadda saxla
+        saveToUndoStack();
     }
 
     private void initializeViews() {
@@ -181,7 +202,7 @@ public class PythonConsole extends AppCompatActivity {
         outputText = findViewById(R.id.outputText);
         lineNumbers = findViewById(R.id.lineNumbers);
         outputContainer = findViewById(R.id.outputContainer);
-        codeEditorLayout = findViewById(R.id.codeEditorLayout); // BU SƏTRİ ƏLAVƏ EDİN
+        codeEditorLayout = findViewById(R.id.codeEditorLayout);
         hideOutputBtn = findViewById(R.id.hideOutputBtn);
         Button backBtn = findViewById(R.id.backBtn);
         Button clearBtn = findViewById(R.id.clearBtn);
@@ -190,11 +211,16 @@ public class PythonConsole extends AppCompatActivity {
         suggestionsList = findViewById(R.id.suggestionsList);
         taskDescription = findViewById(R.id.taskDescription);
 
-        // DEBUG: Dəyişənlərin null olmadığını yoxlayaq
-        Log.d("PythonConsole", "codeEditorLayout: " + (codeEditorLayout != null ? "tapıldı" : "NULL"));
-        Log.d("PythonConsole", "outputContainer: " + (outputContainer != null ? "tapıldı" : "NULL"));
+        // Yeni düymələr
+        dontKnowBtn = findViewById(R.id.dontKnowBtn);
+        undoBtn = findViewById(R.id.undoBtn);
+        redoBtn = findViewById(R.id.redoBtn);
+
+        Log.d("PythonConsole", "Views initialized - dontKnowBtn: " + (dontKnowBtn != null));
+        Log.d("PythonConsole", "undoBtn: " + (undoBtn != null) + ", redoBtn: " + (redoBtn != null));
     }
 
+    // DÜZƏLİŞ: AiTaskModel.Test istifadə edirik
     private void setupTaskData() {
         Intent intent = getIntent();
         if (intent != null) {
@@ -214,11 +240,12 @@ public class PythonConsole extends AppCompatActivity {
                 taskDescription.setVisibility(View.GONE);
             }
 
-            // Parse tests from JSON
+            // Parse tests from JSON - AiTaskModel.Test üçün
             if (testsJson != null && !testsJson.isEmpty()) {
                 Gson gson = new Gson();
-                Type testListType = new TypeToken<List<TaskModel.Test>>() {}.getType();
+                Type testListType = new TypeToken<List<AiTaskModel.Test>>() {}.getType();
                 tests = gson.fromJson(testsJson, testListType);
+                Log.d("PythonConsole", "Loaded " + (tests != null ? tests.size() : 0) + " tests");
             }
         }
     }
@@ -252,6 +279,7 @@ public class PythonConsole extends AppCompatActivity {
         setupLineNumbers();
         setupSyntaxHighlighting();
         setupAutoIndent();
+        setupUndoRedo();
 
         // Back butonu
         backBtn.setOnClickListener(v -> {
@@ -259,16 +287,17 @@ public class PythonConsole extends AppCompatActivity {
             onBackPressed();
         });
 
-        // Run butonu - DEBUG üçün Toast əlavə edin
+        // Run butonu
         runBtn.setOnClickListener(v -> {
             Log.d("PythonConsole", "RUN düyməsinə basıldı");
-            Toast.makeText(PythonConsole.this, "RUN basıldı", Toast.LENGTH_SHORT).show();
             showOutputPanel();
             runPythonCode();
         });
 
         // Clear butonu
         clearBtn.setOnClickListener(v -> {
+            saveToUndoStack();
+            clearRedoStack();
             codeInput.setText(initialCode != null ? initialCode : "");
             outputText.setText("> ...");
             hideSuggestions();
@@ -283,66 +312,265 @@ public class PythonConsole extends AppCompatActivity {
 
         // Hide output butonu
         hideOutputBtn.setOnClickListener(v -> hideOutputPanel());
+
+        // Bilmirəm düyməsi
+        if (dontKnowBtn != null) {
+            dontKnowBtn.setOnClickListener(v -> {
+                Log.d("PythonConsole", "Bilmirəm düyməsinə basıldı");
+                showSolutionInCode();
+            });
+        }
+
+        // Undo düyməsi
+        if (undoBtn != null) {
+            undoBtn.setOnClickListener(v -> undo());
+        }
+
+        // Redo düyməsi
+        if (redoBtn != null) {
+            redoBtn.setOnClickListener(v -> redo());
+        }
     }
 
-    // Çıxış panelini göstər
-    // Çıxış panelini göstər - SADƏ VERSİYA
-    private void showOutputPanel() {
-        runOnUiThread(new Runnable() {
+    private void setupUndoRedo() {
+        codeInput.addTextChangedListener(new TextWatcher() {
             @Override
-            public void run() {
-                try {
-                    Log.d("PythonConsole", "showOutputPanel çağırıldı");
-
-                    // Əgər outputContainer null-dursa, tap
-                    if (outputContainer == null) {
-                        outputContainer = findViewById(R.id.outputContainer);
-                        Log.d("PythonConsole", "outputContainer yenidən tapıldı: " + (outputContainer != null));
-                    }
-
-                    if (outputContainer != null) {
-                        if (outputContainer.getVisibility() != View.VISIBLE) {
-                            Log.d("PythonConsole", "Çıxış paneli VISIBLE edilir");
-                            outputContainer.setVisibility(View.VISIBLE);
-
-                            // Weight-ləri tənzimlə
-                            LinearLayout.LayoutParams editorParams = (LinearLayout.LayoutParams) findViewById(R.id.codeEditorLayout).getLayoutParams();
-                            LinearLayout.LayoutParams outputParams = (LinearLayout.LayoutParams) outputContainer.getLayoutParams();
-
-                            editorParams.weight = 1f;
-                            outputParams.weight = 1f;
-
-                            // Layout-u yenilə
-                            outputContainer.requestLayout();
-                            findViewById(R.id.codeEditorLayout).requestLayout();
-
-                            // Scroll-u aşağı apar
-                            ScrollView scrollView = (ScrollView) outputContainer.getChildAt(1);
-                            if (scrollView != null) {
-                                scrollView.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        scrollView.fullScroll(View.FOCUS_DOWN);
-                                    }
-                                });
-                            }
-                        }
-                    } else {
-                        Log.e("PythonConsole", "outputContainer NULL!");
-                        Toast.makeText(PythonConsole.this, "Çıxış paneli tapılmadı", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (Exception e) {
-                    Log.e("PythonConsole", "showOutputPanel xətası: " + e.getMessage());
-                    e.printStackTrace();
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if (!isUndoRedoOperation) {
+                    saveToUndoStack();
                 }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                updateUndoRedoButtons();
+            }
+        });
+    }
+
+    private void saveToUndoStack() {
+        String currentCode = codeInput.getText().toString();
+        if (undoStack.isEmpty() || !undoStack.peek().equals(currentCode)) {
+            undoStack.push(currentCode);
+            if (undoStack.size() > 50) {
+                undoStack.removeElementAt(0);
+            }
+        }
+    }
+
+    private void clearRedoStack() {
+        redoStack.clear();
+    }
+
+    private void undo() {
+        if (undoStack.size() > 1) {
+            isUndoRedoOperation = true;
+
+            String currentCode = codeInput.getText().toString();
+            redoStack.push(currentCode);
+
+            undoStack.pop();
+            String previousCode = undoStack.peek();
+
+            codeInput.setText(previousCode);
+            updateLineNumbers(previousCode);
+            applySyntaxHighlighting(codeInput.getText());
+
+            isUndoRedoOperation = false;
+            updateUndoRedoButtons();
+
+            Toast.makeText(this, "Geri qaytarıldı", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Geri qaytarmaq mümkün deyil", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void redo() {
+        if (!redoStack.isEmpty()) {
+            isUndoRedoOperation = true;
+
+            String codeToRestore = redoStack.pop();
+
+            undoStack.push(codeInput.getText().toString());
+
+            codeInput.setText(codeToRestore);
+            updateLineNumbers(codeToRestore);
+            applySyntaxHighlighting(codeInput.getText());
+
+            isUndoRedoOperation = false;
+            updateUndoRedoButtons();
+
+            Toast.makeText(this, "İrəli qaytarıldı", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "İrəli qaytarmaq mümkün deyil", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void updateUndoRedoButtons() {
+        if (undoBtn != null) {
+            undoBtn.setEnabled(undoStack.size() > 1);
+        }
+        if (redoBtn != null) {
+            redoBtn.setEnabled(!redoStack.isEmpty());
+        }
+    }
+
+    private void showOutputPanel() {
+        runOnUiThread(() -> {
+            try {
+                if (outputContainer == null) {
+                    outputContainer = findViewById(R.id.outputContainer);
+                }
+
+                if (outputContainer != null) {
+                    if (outputContainer.getVisibility() != View.VISIBLE) {
+                        outputContainer.setVisibility(View.VISIBLE);
+
+                        LinearLayout.LayoutParams editorParams = (LinearLayout.LayoutParams) findViewById(R.id.codeEditorLayout).getLayoutParams();
+                        LinearLayout.LayoutParams outputParams = (LinearLayout.LayoutParams) outputContainer.getLayoutParams();
+
+                        editorParams.weight = 1f;
+                        outputParams.weight = 1f;
+
+                        outputContainer.requestLayout();
+                        findViewById(R.id.codeEditorLayout).requestLayout();
+
+                        ScrollView scrollView = (ScrollView) outputContainer.getChildAt(1);
+                        if (scrollView != null) {
+                            scrollView.post(() -> scrollView.fullScroll(View.FOCUS_DOWN));
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Log.e("PythonConsole", "showOutputPanel xətası: " + e.getMessage());
             }
         });
     }
 
     private void hideOutputPanel() {
-        if (outputContainer.getVisibility() == View.VISIBLE) {
+        if (outputContainer != null && outputContainer.getVisibility() == View.VISIBLE) {
             outputContainer.setVisibility(View.GONE);
         }
+    }
+
+    private void showSolutionInCode() {
+        if (solution != null && !solution.isEmpty()) {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Həll kodunu göstər")
+                    .setMessage("Bu əməliyyat cari kodun üzərinə həll kodunu yazacaq. Davam etmək istəyirsiniz?")
+                    .setPositiveButton("Bəli", (dialog, which) -> {
+                        saveToUndoStack();
+                        clearRedoStack();
+
+                        String fullSolution = prepareSolutionCode(solution);
+                        codeInput.setText(fullSolution);
+                        updateLineNumbers(fullSolution);
+                        applySyntaxHighlighting(codeInput.getText());
+                        saveCodeToStorage();
+
+                        Toast.makeText(PythonConsole.this,
+                                "Həll kodu əlavə edildi! Kodları öyrənin və sonra test edin.",
+                                Toast.LENGTH_LONG).show();
+
+                        showOutputPanel();
+                        outputText.setText("> Həll kodu əlavə edildi. İndi kodu işlədə bilərsiniz.");
+                    })
+                    .setNegativeButton("Xeyr", null)
+                    .show();
+        } else {
+            Toast.makeText(this, "Bu tapşırıq üçün həll kodu mövcud deyil!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String prepareSolutionCode(String solutionCode) {
+        StringBuilder fullCode = new StringBuilder();
+
+        String taskTitle = getIntent().getStringExtra("TASK_TITLE");
+
+        fullCode.append("# ===========================================\n");
+        fullCode.append("# TAPŞIRIQ: ").append(taskTitle != null ? taskTitle : "Task " + currentTaskId).append("\n");
+        fullCode.append("# HƏLL KODU (avtomatik əlavə edildi)\n");
+        fullCode.append("# ===========================================\n\n");
+
+        String functionName = extractFunctionName(initialCode);
+
+        if (functionName != null && !functionName.isEmpty()) {
+            String functionHeader = findFunctionHeader(initialCode, functionName);
+            if (functionHeader != null) {
+                fullCode.append(functionHeader).append("\n");
+
+                String[] solutionLines = solutionCode.split("\n");
+                for (String line : solutionLines) {
+                    fullCode.append("    ").append(line).append("\n");
+                }
+                fullCode.append("\n");
+            } else {
+                fullCode.append(initialCode).append("\n\n");
+                fullCode.append("# Həll kodu:\n");
+                fullCode.append(solutionCode).append("\n\n");
+            }
+        } else {
+            fullCode.append(initialCode).append("\n\n");
+            fullCode.append("# Həll kodu:\n");
+            fullCode.append(solutionCode).append("\n\n");
+        }
+
+        String testCode = extractTestCode(initialCode);
+        if (testCode != null && !testCode.isEmpty()) {
+            fullCode.append("\n# ===========================================\n");
+            fullCode.append("# TEST KODU:\n");
+            fullCode.append("# ===========================================\n");
+            fullCode.append(testCode).append("\n");
+        }
+
+        return fullCode.toString();
+    }
+
+    private String extractFunctionName(String code) {
+        if (code == null || code.isEmpty()) return null;
+
+        Pattern pattern = Pattern.compile("def\\s+(\\w+)\\s*\\(");
+        Matcher matcher = pattern.matcher(code);
+
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return null;
+    }
+
+    private String findFunctionHeader(String code, String functionName) {
+        if (code == null || functionName == null) return null;
+
+        String[] lines = code.split("\n");
+        for (String line : lines) {
+            if (line.trim().startsWith("def " + functionName)) {
+                return line.trim();
+            }
+        }
+        return null;
+    }
+
+    private String extractTestCode(String code) {
+        if (code == null || code.isEmpty()) return null;
+
+        StringBuilder testCode = new StringBuilder();
+        String[] lines = code.split("\n");
+        boolean inTestSection = false;
+
+        for (String line : lines) {
+            if (line.trim().startsWith("# Test") || line.trim().contains("print(")) {
+                inTestSection = true;
+            }
+
+            if (inTestSection) {
+                testCode.append(line).append("\n");
+            }
+        }
+
+        return testCode.length() > 0 ? testCode.toString() : null;
     }
 
     private void setupAutoComplete() {
@@ -356,7 +584,6 @@ public class PythonConsole extends AppCompatActivity {
                 previousLength = s.length();
                 isDeleting = after < count;
 
-                // Son kelimeyi al
                 if (start > 0 && s.length() > 0) {
                     int wordStart = start;
                     while (wordStart > 0 && Character.isLetterOrDigit(s.charAt(wordStart - 1))) {
@@ -370,7 +597,6 @@ public class PythonConsole extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 updateLineNumbers(s.toString());
 
-                // Nöqtə daxil etdikdə smart completion göstər
                 if (!isDeleting && count == 1 && s.charAt(start) == '.') {
                     showSmartCompletion(s.toString(), start);
                 } else if (s.length() > 0) {
@@ -379,7 +605,6 @@ public class PythonConsole extends AppCompatActivity {
                     hideSuggestions();
                 }
 
-                // Avtomatik indentasiya əlavə et
                 if (!isDeleting && before == 0 && count == 1) {
                     char lastChar = s.charAt(start);
                     if (lastChar == '\n') {
@@ -403,7 +628,6 @@ public class PythonConsole extends AppCompatActivity {
     private void autoIndent(int position, String fullText, int newlinePosition) {
         Editable editable = codeInput.getText();
         if (position > 1) {
-            // Cari sətri al (Enter basılan sətir)
             int currentLineStart = fullText.lastIndexOf('\n', newlinePosition - 1);
             if (currentLineStart == -1) currentLineStart = 0;
             else currentLineStart++;
@@ -411,19 +635,15 @@ public class PythonConsole extends AppCompatActivity {
             String currentLine = fullText.substring(currentLineStart, Math.min(newlinePosition, fullText.length()));
             String currentLineTrimmed = currentLine.trim();
 
-            // Əgər cari sətirdə pass, return və ya comment varsa, indent azalt
             if (currentLineTrimmed.equals("pass") || currentLineTrimmed.equals("return") ||
                     currentLineTrimmed.startsWith("#") || currentLineTrimmed.isEmpty()) {
-                // Əvvəlki sətirləri yoxla
                 int indentLevel = calculateIndentLevelForPython(fullText, newlinePosition);
 
-                // Indentasiya yarat
                 StringBuilder indent = new StringBuilder();
                 for (int i = 0; i < indentLevel; i++) {
                     indent.append("    ");
                 }
 
-                // Cari sətirdə artıq indent var?
                 String existingText = editable.toString();
                 if (position < existingText.length()) {
                     int spaces = 0;
@@ -442,7 +662,6 @@ public class PythonConsole extends AppCompatActivity {
                     editable.insert(position, indent.toString());
                 }
             } else {
-                // Normal indent hesabla
                 int indentLevel = calculateIndentLevelForPython(fullText, newlinePosition);
 
                 StringBuilder indent = new StringBuilder();
@@ -463,7 +682,6 @@ public class PythonConsole extends AppCompatActivity {
         for (String line : lines) {
             String trimmedLine = line.trim();
 
-            // Çoxsətirli yorumları idarə et
             if (trimmedLine.contains("\"\"\"") || trimmedLine.contains("'''")) {
                 int count = countOccurrences(trimmedLine, "\"\"\"") + countOccurrences(trimmedLine, "'''");
                 if (count % 2 != 0) {
@@ -472,12 +690,10 @@ public class PythonConsole extends AppCompatActivity {
             }
 
             if (!inBlockComment && !trimmedLine.startsWith("#")) {
-                // Sətirdə : varsa və boşluq yoxdursa, indent artır
                 if (trimmedLine.endsWith(":") && !trimmedLine.contains("#")) {
                     indentLevel++;
                 }
 
-                // Sətir boşdursa və ya pass/return varsa, indent azalt
                 if (trimmedLine.isEmpty() || trimmedLine.equals("pass") ||
                         trimmedLine.equals("return") || trimmedLine.startsWith("return ")) {
                     indentLevel = Math.max(0, indentLevel - 1);
@@ -489,11 +705,10 @@ public class PythonConsole extends AppCompatActivity {
     }
 
     private void autoAddIndentAfterColon(int position) {
-        new android.os.Handler().postDelayed(() -> {
+        new Handler().postDelayed(() -> {
             Editable editable = codeInput.getText();
             int currentPos = codeInput.getSelectionStart();
 
-            // Cari sətirdə neçə indent olduğunu hesabla
             String text = editable.toString();
             int lineStart = text.lastIndexOf('\n', currentPos - 1);
             if (lineStart == -1) lineStart = 0;
@@ -508,13 +723,9 @@ public class PythonConsole extends AppCompatActivity {
                 }
             }
 
-            // Indent sayını 4-ə böl
             int indentLevel = indentCount / 4;
-
-            // : sonra bir artır
             indentLevel++;
 
-            // Yeni indent yarat
             StringBuilder newIndent = new StringBuilder();
             for (int i = 0; i < indentLevel; i++) {
                 newIndent.append("    ");
@@ -523,14 +734,12 @@ public class PythonConsole extends AppCompatActivity {
             String newText = "\n" + newIndent.toString();
             editable.insert(currentPos, newText);
 
-            // İmleci yeni sətirə qoy
             codeInput.setSelection(currentPos + 1 + newIndent.length());
         }, 100);
     }
 
     private void showSmartCompletion(String text, int position) {
         try {
-            // Nöqtədən əvvəlki dəyişəni tap
             int dotPos = position;
             int varStart = dotPos - 1;
 
@@ -546,7 +755,6 @@ public class PythonConsole extends AppCompatActivity {
                 if (varType != null && TYPE_METHODS.containsKey(varType)) {
                     String[] methods = TYPE_METHODS.get(varType);
                     if (methods != null && methods.length > 0) {
-                        // Yeni adapter yarat
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                                 this,
                                 android.R.layout.simple_list_item_1,
@@ -554,21 +762,17 @@ public class PythonConsole extends AppCompatActivity {
                         );
                         suggestionsList.setAdapter(adapter);
                         suggestionsList.setVisibility(View.VISIBLE);
-
-                        // Yeni adapter-i saxla
                         suggestionsAdapter = adapter;
                         return;
                     }
                 }
             }
 
-            // Standart suggestionları göstər
             List<String> allSuggestions = new ArrayList<>();
             allSuggestions.addAll(Arrays.asList(PYTHON_KEYWORDS));
             allSuggestions.addAll(Arrays.asList(PYTHON_BUILTINS));
             allSuggestions.addAll(Arrays.asList(PYTHON_MODULES));
 
-            // Yeni adapter yarat
             ArrayAdapter<String> adapter = new ArrayAdapter<>(
                     this,
                     android.R.layout.simple_list_item_1,
@@ -576,8 +780,6 @@ public class PythonConsole extends AppCompatActivity {
             );
             suggestionsList.setAdapter(adapter);
             suggestionsList.setVisibility(View.VISIBLE);
-
-            // Yeni adapter-i saxla
             suggestionsAdapter = adapter;
         } catch (Exception e) {
             e.printStackTrace();
@@ -590,7 +792,6 @@ public class PythonConsole extends AppCompatActivity {
         for (String line : lines) {
             line = line.trim();
 
-            // Dəyişən bəyannaməsi axtar
             if (line.contains(varName + " = ") || line.contains(varName + "=")) {
                 String rightSide = line.substring(line.indexOf('=') + 1).trim();
 
@@ -629,30 +830,23 @@ public class PythonConsole extends AppCompatActivity {
                     android.R.layout.simple_list_item_1, suggestions);
             suggestionsList.setAdapter(suggestionsAdapter);
 
-            suggestionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    try {
-                        if (suggestionsAdapter != null && position >= 0 && position < suggestionsAdapter.getCount()) {
-                            String selected = suggestionsAdapter.getItem(position);
-                            if (selected != null) {
-                                insertSuggestion(selected);
-                                hideSuggestions();
-                            }
+            suggestionsList.setOnItemClickListener((parent, view, position, id) -> {
+                try {
+                    if (suggestionsAdapter != null && position >= 0 && position < suggestionsAdapter.getCount()) {
+                        String selected = suggestionsAdapter.getItem(position);
+                        if (selected != null) {
+                            insertSuggestion(selected);
+                            hideSuggestions();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
 
-            // EditText-dən kənara kliklənəndə suggestions-u gizlət
-            codeInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if (!hasFocus) {
-                        hideSuggestions();
-                    }
+            codeInput.setOnFocusChangeListener((v, hasFocus) -> {
+                if (!hasFocus) {
+                    hideSuggestions();
                 }
             });
         } catch (Exception e) {
@@ -685,15 +879,10 @@ public class PythonConsole extends AppCompatActivity {
                 return;
             }
 
-            // Clear və notify əvvəlcə
             suggestionsAdapter.clear();
-
-            // Yeni list-i əlavə et
             for (String item : filtered) {
                 suggestionsAdapter.add(item);
             }
-
-            // Notify dataset changed
             suggestionsAdapter.notifyDataSetChanged();
             suggestionsList.setVisibility(View.VISIBLE);
 
@@ -738,7 +927,6 @@ public class PythonConsole extends AppCompatActivity {
             if (wordStart <= cursorPos && cursorPos <= editable.length()) {
                 editable.replace(wordStart, cursorPos, suggestion);
 
-                // Əgər suggestionda mötərizə varsa, imleci içinə qoy
                 if (suggestion.contains("()")) {
                     int parenPos = suggestion.indexOf('(');
                     if (parenPos != -1) {
@@ -760,60 +948,9 @@ public class PythonConsole extends AppCompatActivity {
     }
 
     private void hideSuggestions() {
-        suggestionsList.setVisibility(View.GONE);
-    }
-
-    private void showInputDialog(final String prompt) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(PythonConsole.this);
-                builder.setTitle("Input tələb olunur");
-                builder.setMessage(prompt);
-
-                final EditText input = new EditText(PythonConsole.this);
-                input.setTextColor(Color.WHITE);
-                input.setHint("Daxil edin...");
-                input.setHintTextColor(Color.GRAY);
-                builder.setView(input);
-
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String userInput = input.getText().toString();
-                        executeWithInput(userInput);
-                    }
-                });
-
-                builder.setNegativeButton("Ləğv et", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        executeWithInput("");
-                    }
-                });
-
-                builder.show();
-            }
-        });
-    }
-
-
-
-    private void executeWithInput(String userInput) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String code = codeInput.getText().toString();
-                    String result = py.getModule("executor")
-                            .callAttr("run_code", code, userInput)
-                            .toString();
-                    showResult(result, false);
-                } catch (Exception e) {
-                    showResult("Xəta: " + e.getMessage(), true);
-                }
-            }
-        }).start();
+        if (suggestionsList != null) {
+            suggestionsList.setVisibility(View.GONE);
+        }
     }
 
     private void setupAdMob() {
@@ -849,7 +986,6 @@ public class PythonConsole extends AppCompatActivity {
         try {
             String text = editable.toString();
 
-            // Mevcut vurgulamaları temizle
             ForegroundColorSpan[] spans = editable.getSpans(0, editable.length(), ForegroundColorSpan.class);
             for (ForegroundColorSpan span : spans) {
                 editable.removeSpan(span);
@@ -857,40 +993,26 @@ public class PythonConsole extends AppCompatActivity {
 
             if (text.isEmpty()) return;
 
-            // Default color
             editable.setSpan(new ForegroundColorSpan(Color.WHITE), 0, editable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-            // Comments
             highlightPattern(editable, "#.*", COLOR_COMMENT);
             highlightPattern(editable, "\"\"\"[\\s\\S]*?\"\"\"", COLOR_COMMENT);
             highlightPattern(editable, "'''[\\s\\S]*?'''", COLOR_COMMENT);
-
-            // Strings
             highlightPattern(editable, "\"[^\"]*\"", COLOR_STRING);
             highlightPattern(editable, "'[^']*'", COLOR_STRING);
-
-            // Numbers
             highlightPattern(editable, "\\b\\d+\\.?\\d*\\b", COLOR_NUMBER);
-            highlightPattern(editable, "\\b\\d+\\.\\d+\\b", COLOR_NUMBER);
-
-            // Classes
             highlightPattern(editable, "\\bclass\\s+(\\w+)", COLOR_CLASS);
-
-            // Functions
             highlightPattern(editable, "\\bdef\\s+(\\w+)", COLOR_FUNCTION);
 
-            // Keywords
             for (String keyword : PYTHON_KEYWORDS) {
                 highlightPattern(editable, "\\b" + keyword + "\\b", COLOR_KEYWORD);
             }
 
-            // Built-in functions
             for (String builtin : PYTHON_BUILTINS) {
                 String funcName = builtin.replace("()", "");
                 highlightPattern(editable, "\\b" + funcName + "\\b", COLOR_BUILTIN);
             }
 
-            // Modules
             for (String module : PYTHON_MODULES) {
                 highlightPattern(editable, "\\b" + module + "\\b", COLOR_MODULE);
             }
@@ -927,14 +1049,11 @@ public class PythonConsole extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        codeInput.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    lineNumbers.scrollTo(0, codeInput.getScrollY());
-                }
-                return false;
+        codeInput.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                lineNumbers.scrollTo(0, codeInput.getScrollY());
             }
+            return false;
         });
 
         updateLineNumbers(codeInput.getText().toString());
@@ -955,16 +1074,7 @@ public class PythonConsole extends AppCompatActivity {
     }
 
     private void setupAutoIndent() {
-        codeInput.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-                    // Biz artıq TextWatcher-də idarə edirik
-                    return false;
-                }
-                return false;
-            }
-        });
+        codeInput.setOnKeyListener((v, keyCode, event) -> false);
     }
 
     private void saveCodeToStorage() {
@@ -997,7 +1107,6 @@ public class PythonConsole extends AppCompatActivity {
 
         StringBuilder output = new StringBuilder();
 
-        // Əvvəlcə sintaksis xətalarını yoxla
         List<CompilerError> errors = checkPythonSyntaxErrors(code);
 
         if (!errors.isEmpty()) {
@@ -1012,17 +1121,14 @@ public class PythonConsole extends AppCompatActivity {
 
             output.append("⚠ Xətaları düzəldin və yenidən cəhd edin.\n");
             output.append("══════════════════════════════════════\n\n");
-        } else {
-
-            // JSON testləri varsa onları işlə
-            if (tests != null && !tests.isEmpty()) {
-                runPythonTests(code, output);
-            } else {
-                runBasicPythonAnalysis(code, output);
-            }
         }
 
-        // Real Python kodunu işlə
+        if (tests != null && !tests.isEmpty()) {
+            runPythonTests(code, output);
+        } else {
+            runBasicPythonAnalysis(code, output);
+        }
+
         executePythonCode(code, output);
     }
 
@@ -1035,7 +1141,6 @@ public class PythonConsole extends AppCompatActivity {
                 String line = lines[i];
                 int lineNum = i + 1;
 
-                // 1. Qeyri-balanse mötərizələr
                 int openPar = countOccurrences(line, "(");
                 int closePar = countOccurrences(line, ")");
                 int openBracket = countOccurrences(line, "[");
@@ -1053,7 +1158,6 @@ public class PythonConsole extends AppCompatActivity {
                     errors.add(new CompilerError("Fiquarlı mötərizələrdə balanssızlıq", lineNum, "Sintaksis xətası"));
                 }
 
-                // 2. Qeyri-bağlanmış string
                 int singleQuotes = countOccurrences(line, "'");
                 int doubleQuotes = countOccurrences(line, "\"");
 
@@ -1063,19 +1167,15 @@ public class PythonConsole extends AppCompatActivity {
 
                 String trimmedLine = line.trim();
 
-                // 3. Def olmadan : istifadəsi
                 if (trimmedLine.endsWith(":") && !trimmedLine.matches(".*\\b(def|class|if|elif|else|for|while|try|except|finally|with)\\b.*")) {
                     errors.add(new CompilerError("Yalnış : istifadəsi", lineNum, "Sintaksis xətası"));
                 }
 
-                // 4. Def sonra boşluq yoxluğu - DÜZƏLDİLDİ
                 if (trimmedLine.startsWith("def ")) {
-                    // "def " sonrasını al
                     String afterDef = trimmedLine.substring(4).trim();
                     if (afterDef.isEmpty()) {
                         errors.add(new CompilerError("def-dən sonra funksiya adı tələb olunur", lineNum, "Funksiya xətası"));
                     } else {
-                        // Funksiya adını tap
                         String funcName = afterDef.split("[\\s(]")[0];
                         if (funcName.isEmpty() || !funcName.matches("[a-zA-Z_][a-zA-Z0-9_]*")) {
                             errors.add(new CompilerError("Yalnış funksiya adı: " + funcName, lineNum, "Funksiya xətası"));
@@ -1083,14 +1183,11 @@ public class PythonConsole extends AppCompatActivity {
                     }
                 }
 
-                // 5. Class sonra boşluq yoxluğu - DÜZƏLDİLDİ
                 if (trimmedLine.startsWith("class ")) {
-                    // "class " sonrasını al
                     String afterClass = trimmedLine.substring(6).trim();
                     if (afterClass.isEmpty()) {
                         errors.add(new CompilerError("class-dən sonra sinif adı tələb olunur", lineNum, "Sinif xətası"));
                     } else {
-                        // Sinif adını tap
                         String className = afterClass.split("[\\s(:]")[0];
                         if (className.isEmpty() || !className.matches("[a-zA-Z_][a-zA-Z0-9_]*")) {
                             errors.add(new CompilerError("Yalnış sinif adı: " + className, lineNum, "Sinif xətası"));
@@ -1098,12 +1195,10 @@ public class PythonConsole extends AppCompatActivity {
                     }
                 }
 
-                // 6. Import xətası
                 if (trimmedLine.startsWith("import") && trimmedLine.contains(";")) {
                     errors.add(new CompilerError("import-da ; istifadə etməyin", lineNum, "Import xətası"));
                 }
 
-                // 7. Indentasiya xətası (qeyri-bərabər boşluqlar)
                 if (!trimmedLine.isEmpty() && line.startsWith(" ") && !line.startsWith("    ")) {
                     int spaces = 0;
                     while (spaces < line.length() && line.charAt(spaces) == ' ') {
@@ -1131,89 +1226,117 @@ public class PythonConsole extends AppCompatActivity {
         return count;
     }
 
+    // DÜZƏLİŞ: AiTaskModel.Test istifadə edirik
     private void runPythonTests(String code, StringBuilder output) {
         output.append("🧪 PYTHON TEST NƏTİCƏLƏRİ:\n\n");
 
         int passedTests = 0;
         int totalTests = tests.size();
+        boolean allTestsPassed = true;
 
         for (int i = 0; i < tests.size(); i++) {
-            TaskModel.Test test = tests.get(i);
-            boolean passed = runPythonSingleTest(code, test);
-            if (passed) {
+            AiTaskModel.Test test = tests.get(i);
+            TestResult result = runPythonSingleTestWithDetails(code, test);
+
+            if (result.passed) {
                 passedTests++;
                 output.append("✅ TEST ").append(i + 1).append(": ").append(test.getDescription()).append("\n");
                 output.append("   Giriş: ").append(test.getInput()).append("\n");
                 output.append("   Gözlənilən: ").append(test.getExpected()).append("\n");
+                output.append("   Alınan: ").append(result.actual).append("\n");
                 output.append("   Status: UĞURLU\n\n");
             } else {
+                allTestsPassed = false;
                 output.append("❌ TEST ").append(i + 1).append(": ").append(test.getDescription()).append("\n");
                 output.append("   Giriş: ").append(test.getInput()).append("\n");
                 output.append("   Gözlənilən: ").append(test.getExpected()).append("\n");
+                output.append("   Alınan: ").append(result.actual).append("\n");
+                if (!result.error.isEmpty()) {
+                    output.append("   Xəta: ").append(result.error).append("\n");
+                }
                 output.append("   Status: UĞURSUZ\n\n");
             }
         }
 
         output.append("📊 ÜMUMİ TEST NƏTİCƏSİ: ").append(passedTests).append("/").append(totalTests);
 
-        if (passedTests == totalTests) {
+        if (allTestsPassed && totalTests > 0) {
             output.append("\n\n🎉 TƏBRİKLƏR! Bütün testlər keçdi!");
             markTaskAsCompleted();
         } else {
             output.append("\n\n⚠ Bəzi testlər uğursuz oldu. Kodunuzu yoxlayın.");
+            if (passedTests == totalTests - 1) {
+                output.append("\n💪 Az qalıb! Bir test daha keçsəydi tamamlanacaqdı.");
+            }
         }
 
         output.append("\n════════════════════\n");
+        outputText.setText(output.toString());
     }
 
-    private boolean runPythonSingleTest(String code, TaskModel.Test test) {
+    // DÜZƏLİŞ: AiTaskModel.Test istifadə edirik
+    private TestResult runPythonSingleTestWithDetails(String code, AiTaskModel.Test test) {
         try {
-            String testInput = test.getInput();  // "kvadrat(5)"
-            String expectedStr = test.getExpected(); // "25"
+            String testInput = test.getInput();
+            String expectedStr = test.getExpected();
 
-            // Python kodunu hazırla
             String fullCode = code + "\n\n";
             fullCode += "# Test icrası\n";
             fullCode += "try:\n";
             fullCode += "    # Funksiyanı çağır\n";
             fullCode += "    actual_result = " + testInput + "\n";
-            fullCode += "    expected_result = " + expectedStr + "  # String-i int-ə çevir\n";
             fullCode += "    \n";
-            fullCode += "    print('ACTUAL:' + str(actual_result))\n";
-            fullCode += "    print('EXPECTED:' + str(expected_result))\n";
+            fullCode += "    # Nəticəni yoxla\n";
+            fullCode += "    print('ACTUAL:' + repr(actual_result))\n";
+            fullCode += "    \n";
+            fullCode += "    # Gözlənilən nəticə\n";
+            fullCode += "    expected = " + expectedStr + "\n";
+            fullCode += "    print('EXPECTED:' + repr(expected))\n";
             fullCode += "    \n";
             fullCode += "    # Müqayisə et\n";
-            fullCode += "    if actual_result == expected_result:\n";
+            fullCode += "    if actual_result == expected:\n";
             fullCode += "        print('TEST_PASSED')\n";
             fullCode += "    else:\n";
             fullCode += "        print('TEST_FAILED')\n";
             fullCode += "        \n";
             fullCode += "except Exception as e:\n";
-            fullCode += "    print('TEST_ERROR:' + str(e))";
+            fullCode += "    print('TEST_ERROR:' + repr(e))";
 
             Log.d("PythonTest", "Test kodu:\n" + fullCode);
 
-            // Kodu icra et
             String output = py.getModule("executor")
                     .callAttr("run_code", fullCode, "")
                     .toString();
 
             Log.d("PythonTest", "Test output:\n" + output);
 
-            // Nəticəni təhlil et
-            return output.contains("TEST_PASSED");
+            String[] lines = output.split("\n");
+            String actual = "";
+            boolean passed = false;
+            String error = "";
+
+            for (String line : lines) {
+                if (line.startsWith("ACTUAL:")) {
+                    actual = line.substring(7).trim();
+                } else if (line.startsWith("TEST_PASSED")) {
+                    passed = true;
+                } else if (line.startsWith("TEST_ERROR:")) {
+                    error = line.substring(11).trim();
+                }
+            }
+
+            return new TestResult(passed, actual, error);
 
         } catch (Exception e) {
             Log.e("PythonTest", "Test icrası xətası: " + e.getMessage());
             e.printStackTrace();
-            return false;
+            return new TestResult(false, "", "Xəta: " + e.getMessage());
         }
     }
 
     private void runBasicPythonAnalysis(String code, StringBuilder output) {
         output.append("📊 KOD ANALİZİ:\n\n");
 
-        // Sinif kontrolü
         if (code.contains("class")) {
             output.append("✓ Sinif tapıldı\n");
             Pattern classPattern = Pattern.compile("class\\s+(\\w+)");
@@ -1223,7 +1346,6 @@ public class PythonConsole extends AppCompatActivity {
             }
         }
 
-        // Funksiya sayı
         Pattern funcPattern = Pattern.compile("def\\s+(\\w+)");
         Matcher funcMatcher = funcPattern.matcher(code);
         int funcCount = 0;
@@ -1243,7 +1365,6 @@ public class PythonConsole extends AppCompatActivity {
         }
         output.append("\n");
 
-        // Import sayı
         Pattern importPattern = Pattern.compile("import\\s+(\\w+)");
         Matcher importMatcher = importPattern.matcher(code);
         int importCount = 0;
@@ -1252,7 +1373,6 @@ public class PythonConsole extends AppCompatActivity {
         }
         output.append("✓ Import sayı: ").append(importCount).append("\n");
 
-        // Print sayı
         Pattern printPattern = Pattern.compile("print\\s*\\(");
         Matcher printMatcher = printPattern.matcher(code);
         int printCount = 0;
@@ -1268,7 +1388,6 @@ public class PythonConsole extends AppCompatActivity {
         output.append("🚀 PYTHON ÇIXIŞI:\n");
         output.append("══════════════════\n");
 
-        // Real Python kodunu icra et
         try {
             String result = py.getModule("executor")
                     .callAttr("run_code", code, "")
@@ -1277,7 +1396,6 @@ public class PythonConsole extends AppCompatActivity {
             output.append("📋 Nəticə:\n");
             output.append(result).append("\n");
 
-            // Əgər input varsa, onu ayrıca idarə et
             if (code.contains("input(")) {
                 Pattern pattern = Pattern.compile("input\\(['\"]([^'\"]+)['\"]\\)");
                 Matcher matcher = pattern.matcher(code);
@@ -1287,61 +1405,75 @@ public class PythonConsole extends AppCompatActivity {
                 }
             }
 
-            output.append("══════════════════\n");
-            outputText.setText(output.toString());
-
         } catch (Exception e) {
             output.append("❌ Çalışdırma xətası:\n");
             output.append(e.getMessage()).append("\n");
-            output.append("══════════════════\n");
-            outputText.setText(output.toString());
         }
+
+        output.append("══════════════════\n");
+        outputText.setText(output.toString());
     }
 
-    // PythonConsole.java faylında
     private void markTaskAsCompleted() {
         try {
-            Log.d("PythonConsole", "markTaskAsCompleted çağırıldı - Task ID: " + currentTaskId);
+            Log.d("PythonConsole", "=== TASK TAMAMLAMA BAŞLADI ===");
+            Log.d("PythonConsole", "Task ID: " + currentTaskId);
 
-            // EYNİ KEY-İ İSTİFADƏ ET - CodeActivity ilə eyni olsun
-            SharedPreferences taskPrefs = getSharedPreferences("TaskProgress", MODE_PRIVATE);
-            SharedPreferences.Editor editor = taskPrefs.edit();
+            // Intent-dən task tipini al
+            String taskType = getIntent().getStringExtra("TASK_TYPE");
+            Log.d("PythonConsole", "Task Type: " + taskType);
 
-            // CodeActivity ilə EYNİ key strukturunu istifadə et
-            editor.putBoolean("task_" + currentTaskId + "_completed", true);
+            SharedPreferences prefs;
+            String key;
 
-            // Python üçün əlavə key də saxla (əgər PythonTaskAdapter ayrıca istifadə edirsə)
-            editor.putBoolean("python_task_" + currentTaskId + "_completed", true);
+            // Task tipinə görə preference açarını təyin et
+            if (taskType != null && taskType.equals("ai")) {
+                // AI taskı üçün
+                prefs = getSharedPreferences("AiTaskProgress", MODE_PRIVATE);
+                key = "ai_task_" + currentTaskId + "_completed";
+                Log.d("PythonConsole", "AI taskı tamamlanır, açar: " + key);
+            } else {
+                // Python taskı üçün
+                prefs = getSharedPreferences("TaskProgress", MODE_PRIVATE);
+                key = "task_" + currentTaskId + "_completed";
+                Log.d("PythonConsole", "Python taskı tamamlanır, açar: " + key);
+            }
 
+            // Preference-a yaz
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean(key, true);
             editor.apply();
 
-            Log.d("PythonConsole", "Task " + currentTaskId + " SharedPreferences-ə yazıldı");
+            // Yoxlama
+            boolean saved = prefs.getBoolean(key, false);
+            Log.d("PythonConsole", "Yazıldı? " + saved);
 
-            // Toast və avtomatik geri qayıt
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(PythonConsole.this,
-                            "✅ Task " + currentTaskId + " tamamlandı!",
-                            Toast.LENGTH_LONG).show();
+            // AI taskı üçün əlavə olaraq digər preference-lərə də yazaq (köməkçi)
+            if (taskType != null && taskType.equals("ai")) {
+                SharedPreferences extraPrefs = getSharedPreferences("TaskProgress", MODE_PRIVATE);
+                extraPrefs.edit().putBoolean("task_" + currentTaskId + "_completed", true).apply();
+                Log.d("PythonConsole", "Əlavə olaraq TaskProgress-ə də yazıldı");
+            }
 
-                    // 1.5 saniyə sonra avtomatik geri qayıt
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Result göndər ki, list yenilənsin
-                            Intent returnIntent = new Intent();
-                            returnIntent.putExtra("task_id", currentTaskId);
-                            returnIntent.putExtra("completed", true);
-                            setResult(RESULT_OK, returnIntent);
-                            finish();
-                        }
-                    }, 2500);
-                }
+            Log.d("PythonConsole", "=== TASK TAMAMLAMA BITDI ===");
+
+            runOnUiThread(() -> {
+                Toast.makeText(PythonConsole.this,
+                        "✅ Task " + currentTaskId + " tamamlandı!",
+                        Toast.LENGTH_LONG).show();
+
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("TASK_ID", currentTaskId);
+                returnIntent.putExtra("COMPLETED", true);
+                returnIntent.putExtra("TASK_TYPE", taskType); // Task tipini geri qaytar
+                setResult(RESULT_OK, returnIntent);
+
+                // Activity-ni bağla
+                finish();
             });
 
         } catch (Exception e) {
-            Log.e("PythonConsole", "markTaskAsCompleted xətası: " + e.getMessage());
+            Log.e("PythonConsole", "Xəta: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -1365,12 +1497,9 @@ public class PythonConsole extends AppCompatActivity {
     }
 
     private void showResult(String text, boolean isError) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                outputText.setTextColor(isError ? 0xFFFF0000 : 0xFF00AA00);
-                outputText.setText(text);
-            }
+        runOnUiThread(() -> {
+            outputText.setTextColor(isError ? 0xFFFF0000 : 0xFF00AA00);
+            outputText.setText(text);
         });
     }
 
@@ -1379,22 +1508,12 @@ public class PythonConsole extends AppCompatActivity {
         public void handleOnBackPressed() {
             MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(PythonConsole.this);
             materialAlertDialogBuilder.setTitle(R.string.app_name);
-            materialAlertDialogBuilder.setMessage("Are you sure want to exit the app?");
-            materialAlertDialogBuilder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int i) {
-                    dialog.dismiss();
-                }
-            });
-            materialAlertDialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int i) {
-                    saveCodeToStorage();
-                    if (fAuth.getCurrentUser() != null) {
-                        finish();
-
-                    }
-
+            materialAlertDialogBuilder.setMessage("Are you sure want to exit?");
+            materialAlertDialogBuilder.setNegativeButton(android.R.string.no, (dialog, i) -> dialog.dismiss());
+            materialAlertDialogBuilder.setPositiveButton(android.R.string.yes, (dialog, i) -> {
+                saveCodeToStorage();
+                if (fAuth.getCurrentUser() != null) {
+                    finish();
                 }
             });
             materialAlertDialogBuilder.show();

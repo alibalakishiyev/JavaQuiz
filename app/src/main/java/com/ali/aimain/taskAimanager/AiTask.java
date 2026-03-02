@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ali.aimain.AiMain;
 import com.ali.pymain.PythonMain;
 import com.ali.pymain.taskmanager.PythonConsole;
 import com.ali.systemIn.R;
@@ -95,6 +96,9 @@ public class AiTask extends AppCompatActivity {
             intent.putExtra("TASK_DESCRIPTION", task.getDescription());
             intent.putExtra("INITIAL_CODE", task.getInitialCode());
 
+            // ƏN ÖNƏMLİ HİSSƏ - TASK TYPE ƏLAVƏ EDİN
+            intent.putExtra("TASK_TYPE", "ai"); // AI taskı olduğunu bildir
+
             // Convert tests to JSON
             com.google.gson.Gson gson = new com.google.gson.Gson();
             String testsJson = "[]";
@@ -112,12 +116,44 @@ public class AiTask extends AppCompatActivity {
             startActivity(intent);
             Log.d(TAG, "startActivity çağırıldı - UĞURLU!");
 
+            // startActivityForResult istifadə edin
+            startActivityForResult(intent, 1); // 1 requestCode-dur
+            Log.d(TAG, "startActivityForResult çağırıldı - UĞURLU!");
+
         } catch (Exception e) {
             Log.e(TAG, "PythonConsole başlatma XƏTASI: " + e.getMessage());
             e.printStackTrace();
             Toast.makeText(this, "Xəta: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.d(TAG, "onActivityResult çağırıldı - requestCode: " + requestCode + ", resultCode: " + resultCode);
+
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            if (data != null) {
+                int taskId = data.getIntExtra("TASK_ID", -1);
+                boolean completed = data.getBooleanExtra("COMPLETED", false);
+                String taskType = data.getStringExtra("TASK_TYPE");
+
+                Log.d(TAG, "Task qayıtdı - ID: " + taskId + ", Completed: " + completed + ", Type: " + taskType);
+
+                // SharedPreferences-dən oxu və UI yenilə
+                boolean isCompleted = sharedPreferences.getBoolean("ai_task_" + taskId + "_completed", false);
+                Log.d(TAG, "SharedPreferences-də status: " + isCompleted);
+
+                // Adapter-i yenilə
+                if (taskAdapter != null) {
+                    taskAdapter.notifyDataSetChanged();
+                }
+            }
+        }
+    }
+
+
 
     @Override
     protected void onResume() {
@@ -143,7 +179,7 @@ public class AiTask extends AppCompatActivity {
             materialAlertDialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int i) {
-                    startActivity(new Intent(AiTask.this , PythonMain.class));
+                    startActivity(new Intent(AiTask.this , AiMain.class));
                     finish();
                 }
             });
