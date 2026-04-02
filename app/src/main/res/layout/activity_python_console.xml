@@ -15,16 +15,19 @@
         android:background="#37474F"
         android:gravity="center_vertical">
 
+
+        <!-- YENİ: Menyu Düyməsi (Üç nöqtə) -->
         <Button
-            android:id="@+id/backBtn"
+            android:id="@+id/menuBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="←"
+            android:text="⋮"
             android:textColor="#FFFFFF"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_margin="4dp"
-            android:padding="12dp"/>
+            android:padding="8dp"
+            android:visibility="visible"/>
 
         <TextView
             android:layout_width="0dp"
@@ -36,6 +39,7 @@
             android:textStyle="bold"
             android:padding="12dp"
             android:gravity="center"/>
+
         <LinearLayout
             android:layout_width="100dp"
             android:layout_height="50dp"
@@ -57,20 +61,18 @@
 
             <Button
                 android:id="@+id/redoBtn"
-                android:layout_width="2dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="↪"
+                android:text="↪ İrəli"
                 android:backgroundTint="#4CAF50"
-                android:layout_margin="2dp"
-                android:padding="2dp"
+                android:layout_margin="4dp"
+                android:padding="8dp"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
                 android:enabled="false" />
         </LinearLayout>
     </LinearLayout>
-    <!-- Run düyməsinin yanında və ya aşağıda Undo/Redo düymələri əlavə edin -->
-
 
     <!-- Task Description -->
     <TextView
@@ -85,7 +87,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"/>
 
-    <!-- Kod Editörü Alanı - DİQQƏT: ID ƏLAVƏ EDİLDİ -->
+    <!-- Kod Editörü Alanı -->
     <LinearLayout
         android:id="@+id/codeEditorLayout"
         android:layout_width="match_parent"
@@ -157,24 +159,12 @@
         android:visibility="gone"
         android:layout_marginBottom="4dp"/>
 
-    <!-- Butonlar -->
+    <!-- Butonlar (Sadəcə Run və Bilmirəm qalır, digərləri menyuya köçürüldü) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginBottom="8dp">
-
-        <Button
-            android:id="@+id/clearBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="🗑️ Clear"
-            android:textColor="#FFFFFF"
-            android:textSize="14sp"
-            android:background="#FF5722"
-            android:padding="12dp"
-            android:layout_marginEnd="4dp"/>
 
         <Button
             android:id="@+id/runBtn"
@@ -187,108 +177,139 @@
             android:textStyle="bold"
             android:background="#2196F3"
             android:padding="16dp"
-            android:layout_marginStart="4dp"/>
-        <!-- Run düyməsinin yanında və ya aşağıda Bilmirəm düyməsi əlavə edin -->
+            android:layout_marginEnd="4dp"/>
+
         <Button
             android:id="@+id/dontKnowBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Bilmirəm"
+            android:layout_weight="1"
+            android:text="❓ Bilmirəm"
             android:backgroundTint="#FF5722"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
             android:padding="12dp"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Çıktı Alanı (GİZLƏNƏ BİLƏN) -->
+    <!-- KONSOL / Çıktı Alanı -->
     <LinearLayout
         android:id="@+id/outputContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0"
+        android:layout_weight="1.5"
         android:orientation="vertical"
         android:background="#1E282C"
-        android:visibility="gone">
+        android:visibility="visible"
+        android:animateLayoutChanges="true">
 
+        <!-- Konsol Başlıq -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:background="#263238"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Çıktı"
+                android:text="📟 Konsol Çıktısı"
                 android:textColor="#78909C"
                 android:textSize="12sp"
+                android:textStyle="bold"
                 android:padding="8dp"/>
+
+            <Button
+                android:id="@+id/copyOutputBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📋 Kopyala"
+                android:textColor="#64B5F6"
+                android:textSize="11sp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="6dp"
+                android:layout_marginEnd="4dp"/>
 
             <Button
                 android:id="@+id/clearOutputBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Temizle"
+                android:text="🗑️ Təmizlə"
                 android:textColor="#78909C"
-                android:textSize="10sp"
-                android:background="@android:color/transparent"
-                android:padding="4dp"
-                android:layout_marginEnd="8dp"/>
+                android:textSize="11sp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="6dp"
+                android:layout_marginEnd="4dp"/>
 
             <Button
                 android:id="@+id/hideOutputBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="✕"
+                android:text="▼"
                 android:textColor="#78909C"
                 android:textSize="14sp"
-                android:background="@android:color/transparent"
-                android:padding="4dp"
-                android:layout_marginEnd="8dp"/>
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="6dp"
+                android:layout_marginEnd="4dp"/>
         </LinearLayout>
 
+        <!-- Konsol Mətn Sahəsi -->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="#1A1E22"
+            android:padding="8dp"
+            android:scrollbars="vertical">
 
             <TextView
                 android:id="@+id/outputText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="> ..."
-                android:textColor="#B0BEC5"
-                android:textSize="14sp"
+                android:text="> Proqramı işə salın..."
+                android:textColor="#E0E0E0"
+                android:textSize="13sp"
                 android:fontFamily="monospace"
                 android:background="@android:color/transparent"
-                android:padding="16dp"
+                android:padding="12dp"
                 android:lineSpacingExtra="4dp"
+                android:lineSpacingMultiplier="1.2"
                 android:textIsSelectable="true"
-                android:focusable="false"
-                android:clickable="false"
-                android:longClickable="true"/>
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:clickable="true"
+                android:longClickable="true"
+                android:linksClickable="false"
+                android:cursorVisible="false"
+                android:gravity="top|start"
+                android:scrollbars="vertical"
+                android:maxLines="500"
+                android:scrollHorizontally="false"
+                android:autoLink="none"/>
         </ScrollView>
 
-        <!-- Ads -->
+        <!-- Reklam Container -->
         <LinearLayout
             android:id="@+id/adContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <com.google.android.gms.ads.AdView
                 android:id="@+id/adPythoneCode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="8dp"
                 app:adSize="BANNER"
                 app:adUnitId="ca-app-pub-5367924704859976/8399396085"/>
         </LinearLayout>

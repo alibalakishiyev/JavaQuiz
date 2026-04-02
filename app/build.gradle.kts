@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
-    id("com.chaquo.python") version "16.1.0"
+    id("com.chaquo.python") version "17.0.0"
 }
 
 android {
@@ -11,9 +11,9 @@ android {
     defaultConfig {
         applicationId = "com.ali.systemIn"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 3
-        versionName = "0.3"
+        targetSdk = 35
+        versionCode = 4
+        versionName = "0.4"
 
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -52,7 +52,31 @@ android {
 }
 
 chaquopy {
+    defaultConfig {
+        version = "3.11"
+        pip {
+            // These usually work
+            install("numpy")      // ✅ Works
+            install("pillow")     // ✅ Works
+            install("requests")   // ✅ Works
+            install("python-dateutil")  // ✅ Works
 
+            // These may or may not work depending on version
+            install("pandas")     // ⚠️ Limited versions, might work
+            install("matplotlib") // ⚠️ May have issues
+            install("cryptography") // ⚠️ Complex build
+
+
+            // These typically DON'T work
+            // install("scipy")     // ❌ Not available
+//            install("torch")     // ❌ Not available
+//             install("tensorflow") // ❌ Not available
+            // install("scikit-learn") // ❌ May have issues
+//             install("transformers") // ❌ Depends on torch
+            // install("opencv-python") // ❌ Not available
+             install("keras")     // ❌ Depends on tensorflow
+        }
+    }
 }
 
 
@@ -67,6 +91,7 @@ dependencies {
 
     // Google Play Services and Ads
     implementation("com.google.android.gms:play-services-ads-lite:24.6.0")
+    implementation("com.google.android.play:asset-delivery:2.2.0")
 
     // Picasso for image loading
     implementation("com.squareup.picasso:picasso:2.8")
@@ -99,5 +124,6 @@ dependencies {
 
 //    terminal
     testImplementation ("junit:junit:4.13.2")
+
 
 }

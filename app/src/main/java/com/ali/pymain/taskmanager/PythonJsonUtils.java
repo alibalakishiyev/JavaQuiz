@@ -20,7 +20,7 @@ public class PythonJsonUtils {
             // Əvvəlcə assets/python_tasks.json yoxla
             InputStream is = null;
             try {
-                is = context.getAssets().open("python_tasks.json");
+                is = context.getAssets().open("task/python_tasks.json");
                 Log.d(TAG, "python_tasks.json faylı tapıldı");
             } catch (Exception e) {
                 // Əgər tapılmazsa, digər yerlərdə yoxla
