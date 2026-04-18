@@ -25,6 +25,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,7 +37,6 @@ import com.ali.chatBot.ChatMessage;
 import com.ali.chatBot.FirebaseChatHelper;
 import com.ali.javaquizbyali.SplashJavaActivity;
 import com.ali.kali.SplashLinuxActivity;
-//import com.ali.postgresql.SplashPostgreSqActivity;
 import com.ali.postgresql.SplashPostgreSqActivity;
 import com.ali.pymain.SplashPyActivity;
 import com.ali.quizutility.AboutActivity;
@@ -59,32 +59,37 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class MainActivity extends AppCompatActivity {
 
-    ImageButton javamain, aboutcard, postgresql, pymain, aimain, linuxMain, helpButton, closeHelpButton;
-
-    public static int checked;
+    // UI Components
+    private ImageButton javamain, aimain, pymain, linuxMain, postgresql, aboutCardBtn, helpButton, closeChatButton;
+    private ImageView userIcon;
+    private CardView javaCard, aiCard, pythonCard, linuxCard, postgresqlCard, aboutCard;
     private AdView mAdView;
     private InterstitialAd mInterstitialAd;
-    private long lastAdShownTime = 0;
-    private final long AD_INTERVAL = 60000;
-    private ImageView userIcon;
-    private FirebaseAuth fAuth;
-    private FirebaseFirestore fStore;
-    private FirebaseChatHelper firebaseChatHelper;
-    private String chatRoomId = "main_bot_chat";
-    private List<ChatMessage> chatMessages = new ArrayList<>();
-    private static final String CHAT_HISTORY_KEY = "chat_history";
-    private ChatAdapter chatAdapter;
+
+    // Chat components
     private RecyclerView chatRecyclerView;
     private EditText messageInput;
     private Button sendButton;
     private RelativeLayout chatContainer;
-    private boolean isFirstTime = true;
-    private static final String PREF_USER_LOGGED_IN = "user_logged_in";
-    private boolean wasUserLoggedIn = false;
+    private List<ChatMessage> chatMessages = new ArrayList<>();
+    private ChatAdapter chatAdapter;
+    private FirebaseChatHelper firebaseChatHelper;
 
+    // Firebase
+    private FirebaseAuth fAuth;
+    private FirebaseFirestore fStore;
+
+    // Constants
+    private static final String CHAT_HISTORY_KEY = "chat_history";
+    private static final String PREF_USER_LOGGED_IN = "user_logged_in";
+    private final long AD_INTERVAL = 60000;
+    private long lastAdShownTime = 0;
+    private boolean isFirstTime = true;
+    private boolean wasUserLoggedIn = false;
+    private String chatRoomId = "main_bot_chat";
+    public static int checked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,18 +97,58 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+        initializeFirebase();
+        initializeViews();
+        setupTheme();
+        setupClickListeners();
+        setupChat();
+        loadInterstitialAd();
+        loadChatHistory();
+        setupBackPressedCallback();
+
+        // Banner reklam
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+    }
+
+    private void initializeFirebase() {
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         firebaseChatHelper = new FirebaseChatHelper();
-        initializeViews();
-        initializeChatAdapter();
-        loadInterstitialAd();
-        showInterstitialAd();
-        loadChatHistory();
+    }
 
+    private void initializeViews() {
+        // Buttons
+        javamain = findViewById(R.id.javamain);
+        aimain = findViewById(R.id.aimain);
+        pymain = findViewById(R.id.pymain);
+        linuxMain = findViewById(R.id.linuxMain);
+        postgresql = findViewById(R.id.postgresql);
+        aboutCardBtn = findViewById(R.id.aboutCardBtn);
+        helpButton = findViewById(R.id.helpButton);
+        closeChatButton = findViewById(R.id.closeChatButton);
+        userIcon = findViewById(R.id.userIcon);
 
+        // Cards
+        javaCard = findViewById(R.id.javaCard);
+        aiCard = findViewById(R.id.aiCard);
+        pythonCard = findViewById(R.id.pythonCard);
+        linuxCard = findViewById(R.id.linuxCard);
+        postgresqlCard = findViewById(R.id.postgresqlCard);
+        aboutCard = findViewById(R.id.aboutCard);
+
+        // Chat
+        chatContainer = findViewById(R.id.chatContainer);
+        chatRecyclerView = findViewById(R.id.chatRecyclerView);
+        messageInput = findViewById(R.id.messageInput);
+        sendButton = findViewById(R.id.sendButton);
+
+        // Ad
+        mAdView = findViewById(R.id.adView);
+    }
+
+    private void setupTheme() {
         SharedPreferences sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
         int default1;
         switch (Configuration.UI_MODE_NIGHT_MASK & AppCompatDelegate.getDefaultNightMode()) {
             case AppCompatDelegate.MODE_NIGHT_NO:
@@ -115,9 +160,22 @@ public class MainActivity extends AppCompatActivity {
             default:
                 default1 = 2;
         }
-
         checked = sharedPreferences.getInt("checked", default1);
-        switch (checked) {
+        applyTheme(checked);
+
+        // İstifadəçi giriş statusunu yoxla
+        SharedPreferences prefs = getSharedPreferences("ChatPrefs", MODE_PRIVATE);
+        wasUserLoggedIn = prefs.getBoolean(PREF_USER_LOGGED_IN, false);
+        boolean isCurrentlyLoggedIn = fAuth.getCurrentUser() != null;
+
+        if (wasUserLoggedIn && !isCurrentlyLoggedIn) {
+            clearChatHistory();
+        }
+        prefs.edit().putBoolean(PREF_USER_LOGGED_IN, isCurrentlyLoggedIn).apply();
+    }
+
+    private void applyTheme(int themeMode) {
+        switch (themeMode) {
             case 0:
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 break;
@@ -131,242 +189,73 @@ public class MainActivity extends AppCompatActivity {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY);
                 break;
         }
+    }
 
-        // İstifadəçinin əvvəllər giriş edib-etmədiyini yoxlayaq
-        SharedPreferences prefs = getSharedPreferences("ChatPrefs", MODE_PRIVATE);
-        wasUserLoggedIn = prefs.getBoolean(PREF_USER_LOGGED_IN, false);
-
-        // İndiki giriş statusunu yoxlayaq
-        boolean isCurrentlyLoggedIn = fAuth.getCurrentUser() != null;
-
-        // Əgər istifadəçi çıxış edibsə, tarixçəni təmizləyək
-        if (wasUserLoggedIn && !isCurrentlyLoggedIn) {
-            clearChatHistory();
-        }
-
-        // Yeni giriş statusunu saxlayaq
-        prefs.edit().putBoolean(PREF_USER_LOGGED_IN, isCurrentlyLoggedIn).apply();
-
-
-        ImageButton closeChatButton = findViewById(R.id.closeChatButton);
-
-        // Help button klik hadisəsi
+    private void setupClickListeners() {
+        javamain.setOnClickListener(v -> navigateWithAd(SplashJavaActivity.class));
+        aimain.setOnClickListener(v -> navigateWithAd(SplashAiActivity.class));
+        pymain.setOnClickListener(v -> navigateWithAd(SplashPyActivity.class));
+        linuxMain.setOnClickListener(v -> navigateWithAd(SplashLinuxActivity.class));
+        postgresql.setOnClickListener(v -> navigateWithAd(SplashPostgreSqActivity.class));
+        aboutCardBtn.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, AboutActivity.class)));
         helpButton.setOnClickListener(v -> toggleChatVisibility());
-
-        // Mesaj göndər düyməsi
+        closeChatButton.setOnClickListener(v -> closeChat());
         sendButton.setOnClickListener(v -> sendUserMessage());
-
-        // Chat bağlama düyməsi
-        closeChatButton.setOnClickListener(v -> {
-            chatContainer.setVisibility(View.GONE);
-            // Listenerləri silin AMMA mesajları silməyin
-            firebaseChatHelper.removeListeners(chatRoomId);
-        });
-
-        javamain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadInterstitialAd();
-                startActivity(new Intent(MainActivity.this, SplashJavaActivity.class));
-
-            }
-        });
-
-        postgresql.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadInterstitialAd();
-                startActivity(new Intent(MainActivity.this, SplashPostgreSqActivity.class));
-
-            }
-        });
-
-        pymain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadInterstitialAd();
-                startActivity(new Intent(MainActivity.this, SplashPyActivity.class));
-
-            }
-        });
-
-        aimain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadInterstitialAd();
-                startActivity(new Intent(MainActivity.this, SplashAiActivity.class));
-
-            }
-        });
-
-        linuxMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadInterstitialAd();
-                startActivity(new Intent(MainActivity.this, SplashLinuxActivity.class));
-
-            }
-        });
-
-
-        aboutcard = findViewById(R.id.aboutCard);
-        aboutcard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AboutActivity.class));
-
-            }
-        });
-
-        // İstifadəçi İkonu
-        userIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // PopupMenu yarat
-                PopupMenu popupMenu = new PopupMenu(MainActivity.this, userIcon);
-                popupMenu.getMenuInflater().inflate(R.menu.user_menu, popupMenu.getMenu());
-
-                // **Anonim istifadəçi yoxlanışı**
-                if (fAuth.getCurrentUser() == null) {
-                    // Anonim istifadəçidirsə, yalnız Login və Sign Up göstər
-                    popupMenu.getMenu().findItem(R.id.menu_profile).setVisible(false);
-                    popupMenu.getMenu().findItem(R.id.menu_logout).setVisible(false);
-                    popupMenu.getMenu().findItem(R.id.menu_login).setVisible(true);
-                    popupMenu.getMenu().findItem(R.id.menu_signup).setVisible(true);
-                } else {
-                    // İstifadəçi daxil olubsa, yalnız Profil və Logout göstər
-                    popupMenu.getMenu().findItem(R.id.menu_profile).setVisible(true);
-                    popupMenu.getMenu().findItem(R.id.menu_logout).setVisible(true);
-                    popupMenu.getMenu().findItem(R.id.menu_login).setVisible(false);
-                    popupMenu.getMenu().findItem(R.id.menu_signup).setVisible(false);
-                }
-
-                // PopupMenu itemlərinə klik hadisəsi
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getItemId() == R.id.menu_profile) {
-                            startActivity(new Intent(MainActivity.this, ProfileActivity.class));
-                            return true;
-                        } else if (item.getItemId() == R.id.menu_logout) {
-
-                            // Çıxışdan əvvəl tarixçəni saxlama flagini sıfırlayaq
-                            SharedPreferences prefs = getSharedPreferences("ChatPrefs", MODE_PRIVATE);
-                            prefs.edit().putBoolean("keep_history", false).apply();
-
-
-                            fAuth.signOut();
-                            clearChatHistory(); // Çıxış edildikdə dərhal sil
-                            startActivity(new Intent(MainActivity.this, Login.class));
-                            Toast.makeText(MainActivity.this, "Uğurla çıxış edildi!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(MainActivity.this, Login.class));
-                            userIcon.setVisibility(View.VISIBLE);
-                            return true;
-                        } else if (item.getItemId() == R.id.menu_login) {
-                            startActivity(new Intent(MainActivity.this, Login.class));
-                            return true;
-                        } else if (item.getItemId() == R.id.menu_signup) {
-                            startActivity(new Intent(MainActivity.this, Register.class));
-                            return true;
-                        }
-                        return false;
-                    }
-                });
-
-                // PopupMenu göstər
-                popupMenu.show();
-            }
-        });
-
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-
-        getOnBackPressedDispatcher().addCallback(this, callback);
+        userIcon.setOnClickListener(this::showUserMenu);
     }
 
-    private void initializeViews() {
-        javamain = findViewById(R.id.javamain);
-        pymain = findViewById(R.id.pymain);
-        aimain = findViewById(R.id.aimain);
-        postgresql = findViewById(R.id.postgresql);
-        linuxMain = findViewById(R.id.linuxMain);
-        aboutcard = findViewById(R.id.aboutCard);
-        userIcon = findViewById(R.id.userIcon);
-        helpButton = findViewById(R.id.helpButton);
-        closeHelpButton = findViewById(R.id.closeChatButton);
-        chatContainer = findViewById(R.id.chatContainer);
-        chatRecyclerView = findViewById(R.id.chatRecyclerView);
-        messageInput = findViewById(R.id.messageInput);
-        sendButton = findViewById(R.id.sendButton);
-        mAdView = findViewById(R.id.adView);
+    private void navigateWithAd(Class<?> targetActivity) {
+        loadInterstitialAd();
+        startActivity(new Intent(MainActivity.this, targetActivity));
     }
 
-    private void initializeChatAdapter() {
+    private void showUserMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
+        popupMenu.getMenuInflater().inflate(R.menu.user_menu, popupMenu.getMenu());
+
+        boolean isLoggedIn = fAuth.getCurrentUser() != null;
+        popupMenu.getMenu().findItem(R.id.menu_profile).setVisible(isLoggedIn);
+        popupMenu.getMenu().findItem(R.id.menu_logout).setVisible(isLoggedIn);
+        popupMenu.getMenu().findItem(R.id.menu_login).setVisible(!isLoggedIn);
+        popupMenu.getMenu().findItem(R.id.menu_signup).setVisible(!isLoggedIn);
+
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.menu_profile) {
+                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+            } else if (id == R.id.menu_logout) {
+                logout();
+            } else if (id == R.id.menu_login) {
+                startActivity(new Intent(MainActivity.this, Login.class));
+            } else if (id == R.id.menu_signup) {
+                startActivity(new Intent(MainActivity.this, Register.class));
+            }
+            return true;
+        });
+        popupMenu.show();
+    }
+
+    private void logout() {
+        SharedPreferences prefs = getSharedPreferences("ChatPrefs", MODE_PRIVATE);
+        prefs.edit().putBoolean("keep_history", false).apply();
+        fAuth.signOut();
+        clearChatHistory();
+        Toast.makeText(this, "Uğurla çıxış edildi!", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(MainActivity.this, Login.class));
+        finish();
+    }
+
+    private void setupChat() {
         String currentUserId = fAuth.getCurrentUser() != null ? fAuth.getCurrentUser().getUid() : "";
         chatAdapter = new ChatAdapter(chatMessages, currentUserId);
         chatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         chatRecyclerView.setAdapter(chatAdapter);
-    }
 
-    private void loadChatHistory() {
-        SharedPreferences prefs = getSharedPreferences("ChatPrefs", MODE_PRIVATE);
-        String chatHistoryJson = prefs.getString(CHAT_HISTORY_KEY, null);
-
-        if (chatHistoryJson != null) {
-            try {
-                Type type = new TypeToken<List<ChatMessage>>() {
-                }.getType();
-                List<ChatMessage> savedMessages = new Gson().fromJson(chatHistoryJson, type);
-                if (savedMessages != null) {
-                    chatMessages.clear();
-                    chatMessages.addAll(savedMessages);
-                    // Adapter artıq inisializasiya edilib, birbaşa notify edə bilərik
-                    chatAdapter.notifyDataSetChanged();
-                }
-            } catch (Exception e) {
-                Log.e(TAG, "Chat tarixçəsini yükləyərkən xəta", e);
-            }
-        }
-    }
-
-    private void saveChatHistory() {
-        SharedPreferences prefs = getSharedPreferences("ChatPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        String chatHistoryJson = new Gson().toJson(chatMessages);
-        editor.putString(CHAT_HISTORY_KEY, chatHistoryJson);
-        editor.apply();
-    }
-
-
-    private void toggleChatVisibility() {
-        if (chatContainer.getVisibility() == View.VISIBLE) {
-            chatContainer.setVisibility(View.GONE);
-            firebaseChatHelper.removeListeners(chatRoomId);
-
-            // Chat bağlananda tarixçəni qorumaq üçün flagi true edirik
-            SharedPreferences prefs = getSharedPreferences("ChatPrefs", MODE_PRIVATE);
-            prefs.edit().putBoolean("keep_history", true).apply();
-        } else {
-            chatContainer.setVisibility(View.VISIBLE);
-            setupChat();
-        }
-    }
-
-    private void setupChat() {
-        // Adapter null deyilsə yeniləyin
-        if (chatAdapter != null) {
-            chatAdapter.notifyDataSetChanged();
-        }
-
-        // Yalnız ilk dəfə və boş olduqda salam mesajı əlavə edin
         if (isFirstTime && chatMessages.isEmpty()) {
-            addMessage(new ChatMessage("bot_001", "Salam! Sualınızı yaza bilərsiniz.",
-                    "text", System.currentTimeMillis(), false));
+            addMessage(new ChatMessage("bot_001", "Salam! 👋 Sualınızı yaza bilərsiniz.", "text", System.currentTimeMillis(), false));
             isFirstTime = false;
         }
 
-        // Firebase listenerləri qoşun
         firebaseChatHelper.removeListeners(chatRoomId);
         firebaseChatHelper.listenForMessages(chatRoomId, new FirebaseChatHelper.MessageListener() {
             @Override
@@ -380,20 +269,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void addMessage(ChatMessage message) {
-        // Əvvəlcə mesajı listə əlavə edin
-        chatMessages.add(message);
-
-        // Sonra adapteri yeniləyin
-        if (chatAdapter != null) {
-            chatAdapter.notifyItemInserted(chatMessages.size() - 1);
-            chatRecyclerView.smoothScrollToPosition(chatMessages.size() - 1);
+    private void toggleChatVisibility() {
+        if (chatContainer.getVisibility() == View.VISIBLE) {
+            chatContainer.setVisibility(View.GONE);
+            firebaseChatHelper.removeListeners(chatRoomId);
+            SharedPreferences prefs = getSharedPreferences("ChatPrefs", MODE_PRIVATE);
+            prefs.edit().putBoolean("keep_history", true).apply();
         } else {
-            Log.e(TAG, "Adapter null olduğu üçün mesaj əlavə edilə bilmədi");
+            chatContainer.setVisibility(View.VISIBLE);
+            setupChat();
         }
+    }
 
-        // Tarixçəni saxlayın
-        saveChatHistory();
+    private void closeChat() {
+        chatContainer.setVisibility(View.GONE);
+        firebaseChatHelper.removeListeners(chatRoomId);
     }
 
     private void sendUserMessage() {
@@ -402,30 +292,20 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Mesaj boş ola bilməz", Toast.LENGTH_SHORT).show();
             return;
         }
-
         if (fAuth.getCurrentUser() == null) {
             Toast.makeText(this, "Mesaj göndərmək üçün daxil olmalısınız", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Mesajı yerli olaraq əlavə et
-        ChatMessage userMessage = new ChatMessage(
-                fAuth.getCurrentUser().getUid(),
-                messageText,
-                "text",
-                System.currentTimeMillis(),
-                true
-        );
+        ChatMessage userMessage = new ChatMessage(fAuth.getCurrentUser().getUid(), messageText, "text", System.currentTimeMillis(), true);
         addMessage(userMessage);
         messageInput.setText("");
 
-        // Firebase-ə göndər
         firebaseChatHelper.sendMessage(chatRoomId, messageText, new FirebaseChatHelper.MessageCallback() {
             @Override
             public void onSuccess() {
                 Log.d(TAG, "Mesaj uğurla göndərildi");
             }
-
             @Override
             public void onError(String error) {
                 runOnUiThread(() -> {
@@ -437,16 +317,102 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void addMessage(ChatMessage message) {
+        chatMessages.add(message);
+        if (chatAdapter != null) {
+            chatAdapter.notifyItemInserted(chatMessages.size() - 1);
+            chatRecyclerView.smoothScrollToPosition(chatMessages.size() - 1);
+        }
+        saveChatHistory();
+    }
+
+    private void loadChatHistory() {
+        SharedPreferences prefs = getSharedPreferences("ChatPrefs", MODE_PRIVATE);
+        String chatHistoryJson = prefs.getString(CHAT_HISTORY_KEY, null);
+        if (chatHistoryJson != null) {
+            try {
+                Type type = new TypeToken<List<ChatMessage>>(){}.getType();
+                List<ChatMessage> savedMessages = new Gson().fromJson(chatHistoryJson, type);
+                if (savedMessages != null) {
+                    chatMessages.clear();
+                    chatMessages.addAll(savedMessages);
+                    if (chatAdapter != null) chatAdapter.notifyDataSetChanged();
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Chat tarixçəsini yükləyərkən xəta", e);
+            }
+        }
+    }
+
+    private void saveChatHistory() {
+        SharedPreferences prefs = getSharedPreferences("ChatPrefs", MODE_PRIVATE);
+        prefs.edit().putString(CHAT_HISTORY_KEY, new Gson().toJson(chatMessages)).apply();
+    }
+
     private void clearChatHistory() {
         SharedPreferences prefs = getSharedPreferences("ChatPrefs", MODE_PRIVATE);
-        prefs.edit()
-                .remove(CHAT_HISTORY_KEY)
-                .apply();
+        prefs.edit().remove(CHAT_HISTORY_KEY).apply();
         chatMessages.clear();
+        if (chatAdapter != null) chatAdapter.notifyDataSetChanged();
+    }
 
-        if (chatAdapter != null) {
-            chatAdapter.notifyDataSetChanged();
+    private void loadInterstitialAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        InterstitialAd.load(this, "ca-app-pub-5367924704859976/2123097507", adRequest, new InterstitialAdLoadCallback() {
+            @Override
+            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                mInterstitialAd = interstitialAd;
+                showInterstitialAd();
+                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        mInterstitialAd = null;
+                        loadInterstitialAd();
+                    }
+                    @Override
+                    public void onAdFailedToShowFullScreenContent(AdError adError) {
+                        Log.d("MainActivity", "Reklam göstərilmədi: " + adError.getMessage());
+                    }
+                    @Override
+                    public void onAdShowedFullScreenContent() {
+                        Log.d("MainActivity", "Reklam göstərilir.");
+                    }
+                });
+            }
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                mInterstitialAd = null;
+            }
+        });
+    }
+
+    private void showInterstitialAd() {
+        long currentTime = System.currentTimeMillis();
+        if (mInterstitialAd != null && (currentTime - lastAdShownTime >= AD_INTERVAL)) {
+            mInterstitialAd.show(MainActivity.this);
+            lastAdShownTime = currentTime;
         }
+    }
+
+    private void setupBackPressedCallback() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                new MaterialAlertDialogBuilder(MainActivity.this)
+                        .setTitle("Çıxış")
+                        .setMessage("Proqramdan çıxmaq istədiyinizə əminsiniz?")
+                        .setNegativeButton("Xeyr", (dialog, i) -> dialog.dismiss())
+                        .setPositiveButton("Bəli", (dialog, i) -> {
+                            if (fAuth.getCurrentUser() != null) {
+                                finishAffinity();
+                            } else {
+                                startActivity(new Intent(MainActivity.this, Login.class));
+                                finish();
+                            }
+                        })
+                        .show();
+            }
+        });
     }
 
     @Override
@@ -457,106 +423,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        // YALNIZ tətbiq tam bağlananda tarixçəni sil
         if (isFinishing()) {
             SharedPreferences prefs = getSharedPreferences("ChatPrefs", MODE_PRIVATE);
-            boolean keepHistory = prefs.getBoolean("keep_history", true);
-
-            if (!keepHistory) {
+            if (!prefs.getBoolean("keep_history", true)) {
                 clearChatHistory();
             }
         }
         super.onDestroy();
     }
-
-
-
-    private void loadInterstitialAd() {
-        AdRequest adRequest = new AdRequest.Builder().build();
-        InterstitialAd.load(this, "ca-app-pub-5367924704859976/2123097507", adRequest, new InterstitialAdLoadCallback() {
-            @Override
-            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                mInterstitialAd = interstitialAd;
-                Log.d("MainActivity", "Interstitial reklamı uğurla yükləndi.");
-                showInterstitialAd();
-
-                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                    @Override
-                    public void onAdDismissedFullScreenContent() {
-                        Log.d("MainActivity", "Reklam bağlandı. Yeni reklam yüklənir...");
-                        mInterstitialAd = null; // Mövcud reklam obyektini null edin.
-                        loadInterstitialAd();
-                    }
-
-                    @Override
-                    public void onAdFailedToShowFullScreenContent(AdError adError) {
-                        Log.d("MainActivity", "Reklam göstərilmədi: " + adError.getMessage());
-                    }
-
-                    @Override
-                    public void onAdShowedFullScreenContent() {
-                        Log.d("MainActivity", "Reklam göstərilir.");
-                    }
-
-                });
-
-            }
-
-            @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                mInterstitialAd = null;
-                Log.d("MainActivity", "Interstitial reklamı yüklənmədi: " + loadAdError.getMessage());
-            }
-        });
-
-    }
-
-    private void showInterstitialAd() {
-        long currentTime = System.currentTimeMillis();
-        if (mInterstitialAd != null && (currentTime - lastAdShownTime >= AD_INTERVAL)) {
-            Log.d("MainActivity", "Reklam göstərilir...");
-            mInterstitialAd.show(MainActivity.this);
-            lastAdShownTime = currentTime; // Son reklam göstərilmə vaxtını yeniləyin
-        } else if (mInterstitialAd == null) {
-            Log.d("MainActivity", "Reklam hazır deyil.");
-        } else {
-            Log.d("MainActivity", "Reklam vaxtı tamamlanmayıb. Gözlənilir...");
-        }
-    }
-
-
-    OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-        @Override
-        public void handleOnBackPressed() {
-            MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(MainActivity.this);
-            materialAlertDialogBuilder.setTitle(R.string.app_name);
-            materialAlertDialogBuilder.setMessage("Are you sure want to exit the app?");
-            materialAlertDialogBuilder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int i) {
-                    dialog.dismiss();
-                }
-            });
-            materialAlertDialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int i) {
-
-                    if (fAuth.getCurrentUser() != null) {
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        finish();
-                    }else{
-                        startActivity(new Intent(MainActivity.this, Login.class));
-                        finish();
-                    }
-
-                }
-            });
-            materialAlertDialogBuilder.show();
-        }
-    };
-
-
 }
-
-
-

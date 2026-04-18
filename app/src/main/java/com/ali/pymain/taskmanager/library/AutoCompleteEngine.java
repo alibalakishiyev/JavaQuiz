@@ -1,6 +1,5 @@
 package com.ali.pymain.taskmanager.library;
 
-
 import android.content.Context;
 import android.util.Log;
 
@@ -29,6 +28,9 @@ public class AutoCompleteEngine {
     // Bütün completion məlumatlarını saxlayan siyahılar
     private final List<CompletionItem> allItems = new ArrayList<>();
     private final Map<String, List<CompletionItem>> typeMethodsMap = new HashMap<>();
+
+    // Task-specific suggestions üçün
+    private final Map<Integer, List<CompletionItem>> taskSpecificSuggestions = new HashMap<>();
 
     // ─────────────────────────────────────────────────────────────────────
     // CompletionItem - hər bir autocomplete elementi
@@ -236,6 +238,114 @@ public class AutoCompleteEngine {
         for (String[] d : defaults) {
             allItems.add(new CompletionItem(d[0], d[1], d[2], d[3], d[4], d[5]));
         }
+    }
+
+    // ═════════════════════════════════════════════════════════════════════
+    // YENİ METOD - Task-a uyğun suggestionları yüklə
+    // ═════════════════════════════════════════════════════════════════════
+    public void loadTaskSuggestions(int taskId, String taskTitle, String taskDescription) {
+        List<CompletionItem> taskSpecific = new ArrayList<>();
+
+        String title = taskTitle != null ? taskTitle.toLowerCase() : "";
+        String desc = taskDescription != null ? taskDescription.toLowerCase() : "";
+
+        Log.d(TAG, "Loading suggestions for task: " + taskId + " - " + title);
+
+        // Task başlığına görə xüsusi təkliflər
+        if (title.contains("kvadrat") || desc.contains("kvadrat")) {
+            taskSpecific.add(new CompletionItem("eded ** 2", "snippet", "eded * eded", "Ədədin kvadratı", "📐", ""));
+            taskSpecific.add(new CompletionItem("return eded * eded", "snippet", "return eded * eded", "Kvadrat qaytar", "↩", ""));
+        }
+
+        if (title.contains("faktorial") || desc.contains("faktorial")) {
+            taskSpecific.add(new CompletionItem("faktorial (loop)", "snippet",
+                    "faktorial = 1\nfor i in range(1, n + 1):\n    faktorial *= i\nreturn faktorial",
+                    "Loop ilə faktorial", "🔄", ""));
+            taskSpecific.add(new CompletionItem("faktorial (recursive)", "snippet",
+                    "if n <= 1:\n    return 1\nreturn n * faktorial(n - 1)",
+                    "Rekursiv faktorial", "🔁", ""));
+        }
+
+        if (title.contains("palindrom") || desc.contains("palindrom")) {
+            taskSpecific.add(new CompletionItem("text[::-1]", "snippet", "text == text[::-1]", "Palindrom yoxlaması", "🔄", ""));
+        }
+
+        if (title.contains("tək") || title.contains("cüt") || desc.contains("tək") || desc.contains("cüt")) {
+            taskSpecific.add(new CompletionItem("tək/cüt", "snippet",
+                    "if eded % 2 == 0:\n    return \"Cüt\"\nelse:\n    return \"Tək\"",
+                    "Tək/Cüt yoxlaması", "🔢", ""));
+        }
+
+        if (title.contains("maksimum") || desc.contains("maksimum")) {
+            taskSpecific.add(new CompletionItem("max(a, b)", "builtin", "max(a, b)", "Maksimum dəyər", "📊", "(a, b)"));
+        }
+
+        if (title.contains("rəqəmlərin cəmi") || desc.contains("rəqəm") && desc.contains("cəm")) {
+            taskSpecific.add(new CompletionItem("sum(map(int, str(eded)))", "builtin", "sum(map(int, str(abs(eded))))", "Rəqəmlər cəmi", "➕", ""));
+        }
+
+        if (title.contains("fibonacci") || desc.contains("fibonacci")) {
+            taskSpecific.add(new CompletionItem("fibonacci", "snippet",
+                    "if n <= 1:\n    return n\na, b = 0, 1\nfor i in range(2, n + 1):\n    a, b = b, a + b\nreturn b",
+                    "Fibonacci ədədi", "🔢", ""));
+        }
+
+        if (title.contains("sadə") || desc.contains("sadə") && desc.contains("ədəd")) {
+            taskSpecific.add(new CompletionItem("sadə ədəd", "snippet",
+                    "if eded <= 1:\n    return False\nfor i in range(2, int(eded**0.5) + 1):\n    if eded % i == 0:\n        return False\nreturn True",
+                    "Sadə ədəd yoxlaması", "🔢", ""));
+        }
+
+        if (title.contains("list") && (title.contains("cəm") || desc.contains("cəm"))) {
+            taskSpecific.add(new CompletionItem("sum(lst)", "builtin", "sum(lst)", "Listin cəmi", "➕", "(list)"));
+        }
+
+        if (title.contains("tərsinə") || desc.contains("tərs")) {
+            taskSpecific.add(new CompletionItem("text[::-1]", "snippet", "text[::-1]", "String tərsinə", "🔄", ""));
+        }
+
+        if (title.contains("vurma cədvəli") || desc.contains("vurma")) {
+            taskSpecific.add(new CompletionItem("vurma cədvəli", "snippet",
+                    "[eded * i for i in range(1, 11)]", "Vurma cədvəli", "📊", ""));
+        }
+
+        if (title.contains("böyük hərf") || desc.contains("böyük")) {
+            taskSpecific.add(new CompletionItem("text.upper()", "method", "text.upper()", "Böyük hərflər", "🔠", ""));
+        }
+
+        if (title.contains("fahrenheit") || desc.contains("celsius")) {
+            taskSpecific.add(new CompletionItem("(f - 32) * 5 / 9", "snippet", "(f - 32) * 5 / 9", "Fahrenheit → Celsius", "🌡️", ""));
+        }
+
+        if (title.contains("orta qiymət") || desc.contains("orta")) {
+            taskSpecific.add(new CompletionItem("sum(lst) / len(lst)", "builtin", "sum(lst) / len(lst)", "Orta qiymət", "📊", ""));
+        }
+
+        // Döngü ilə bağlı tasklar
+        if (title.contains("for") || desc.contains("döngü")) {
+            taskSpecific.add(new CompletionItem("for range", "snippet", "for i in range(n):\n    ", "For döngüsü", "🔄", ""));
+        }
+
+        if (title.contains("while") || desc.contains("while")) {
+            taskSpecific.add(new CompletionItem("while", "snippet", "while condition:\n    ", "While döngüsü", "🔄", ""));
+        }
+
+        if (title.contains("comprehension") || desc.contains("comprehension")) {
+            taskSpecific.add(new CompletionItem("list comprehension", "snippet", "[x for x in range(10)]", "List comprehension", "📋", ""));
+        }
+
+        if (!taskSpecific.isEmpty()) {
+            taskSpecificSuggestions.put(taskId, taskSpecific);
+            Log.d(TAG, "Loaded " + taskSpecific.size() + " task-specific suggestions for task " + taskId);
+        }
+    }
+
+    /**
+     * Task-a xüsusi suggestionları qaytarır
+     */
+    public List<CompletionItem> getTaskSuggestions(int taskId) {
+        List<CompletionItem> suggestions = taskSpecificSuggestions.get(taskId);
+        return suggestions != null ? suggestions : new ArrayList<>();
     }
 
     // ─────────────────────────────────────────────────────────────────────

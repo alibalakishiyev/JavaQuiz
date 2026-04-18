@@ -1,135 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/blackbackground2"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@drawable/terminal_bg_gradient">
 
+    <!-- Professional Toolbar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#1E1E1E"
+        app:title="🐧 Linux Terminal"
+        app:titleTextColor="#00FF00"
+        app:menu="@menu/terminal_menu" />
+
+    <!-- Main Content -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="12dp">
 
-        <!-- Sual və terminal hissəsi -->
-        <LinearLayout
-            android:id="@+id/linearLayout3"
+        <!-- Terminal Container -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/terminalCard"
             android:layout_width="match_parent"
-            android:layout_height="590dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="12dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            app:cardBackgroundColor="#0D1117"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/controlPanel"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintEnd_toEndOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/question_text"
+                <!-- Terminal Header -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:background="#161B22"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <!-- Window Buttons -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:background="@drawable/circle_red"
+                            android:layout_marginEnd="8dp" />
+
+                        <View
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:background="@drawable/circle_yellow"
+                            android:layout_marginEnd="8dp" />
+
+                        <View
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:background="@drawable/circle_green" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="terminal@kali:~"
+                        android:textColor="#888888"
+                        android:textSize="12sp"
+                        android:fontFamily="monospace"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:id="@+id/connectionStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="● ONLINE"
+                        android:textColor="#00FF00"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Question Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/questionCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:background="#333333"
-                    android:padding="12dp"
-                    android:text="Sual burda göstəriləcək"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_margin="12dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="2dp"
+                    app:cardBackgroundColor="#1E1E2E"
+                    android:clickable="true"
+                    android:focusable="true">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/question_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="📌 CURRENT TASK"
+                            android:textColor="#FF9800"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/question_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Loading question..."
+                            android:textColor="#E0E0E0"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="monospace" />
+
+                        <TextView
+                            android:id="@+id/answerText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Tap to show answer"
+                            android:textColor="#4CAF50"
+                            android:textSize="13sp"
+                            android:layout_marginTop="12dp"
+                            android:background="#0D1117"
+                            android:padding="12dp"
+                            android:fontFamily="monospace"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Terminal Output -->
                 <ScrollView
                     android:id="@+id/scrollView"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/command_input">
+                    android:layout_weight="1"
+                    android:background="#0D1117"
+                    android:padding="12dp"
+                    android:scrollbars="vertical">
 
                     <TextView
                         android:id="@+id/terminal_output"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#000000"
-                        android:padding="8dp"
+                        android:text="┌────────────────────────────────────────┐\n│   Kali Linux Terminal v1.0              │\n│   Type 'help' for available commands    │\n└────────────────────────────────────────┘\n\n"
                         android:textColor="#00FF00"
-                        android:textSize="18sp" />
+                        android:textSize="13sp"
+                        android:fontFamily="monospace"
+                        android:lineSpacingExtra="4dp" />
                 </ScrollView>
 
-                <EditText
-                    android:id="@+id/command_input"
+                <!-- Command Input Line -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:background="#222222"
-                    android:hint="Enter command..."
-                    android:imeOptions="actionDone"
-                    android:inputType="text"
-                    android:padding="10dp"
-                    android:singleLine="true"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#888888"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/answerText" />
+                    android:orientation="horizontal"
+                    android:background="#161B22"
+                    android:padding="12dp"
+                    android:gravity="center_vertical">
 
-                <TextView
-                    android:id="@+id/answerText"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="4dp"
-                    android:background="#333333"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/question_text" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="$ "
+                        android:textColor="#00FF00"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:fontFamily="monospace" />
+
+                    <EditText
+                        android:id="@+id/command_input"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:hint="Enter command..."
+                        android:textColorHint="#666666"
+                        android:textColor="#00FF00"
+                        android:textSize="14sp"
+                        android:fontFamily="monospace"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:imeOptions="actionDone"
+                        android:padding="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnSendCommand"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:tint="#00FF00"
+                        android:contentDescription="Send" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Control Panel -->
+        <LinearLayout
+            android:id="@+id/controlPanel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/adContainer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPrevQuestion"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="◀ Previous"
+                android:textAllCaps="false"
+                android:backgroundTint="#2C3E50"
+                android:layout_marginEnd="6dp"
+                app:iconGravity="textStart"
+                app:cornerRadius="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNextQuestions"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="Next ▶"
+                android:textAllCaps="false"
+                android:backgroundTint="#2C3E50"
+                android:layout_marginStart="6dp"
+                app:iconGravity="textEnd"
+                app:cornerRadius="8dp" />
         </LinearLayout>
 
-        <!-- Növbəti sual düyməsi -->
-        <ImageButton
-            android:id="@+id/btnNextQuestions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:background="@color/material_on_background_disabled"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        <!-- Progress Bar -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginTop="8dp"
+            android:progressTint="#00FF00"
+            app:layout_constraintTop_toBottomOf="@+id/controlPanel"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/nextquest42" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Reklam banneri -->
+        <!-- Ad Container -->
         <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="0dp"
+            android:id="@+id/adContainer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
             android:gravity="center"
             android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/btnNextQuestions"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintEnd_toEndOf="parent">
 
             <com.google.android.gms.ads.AdView
-                xmlns:ads="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/adView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                ads:adSize="BANNER"
-                ads:adUnitId="ca-app-pub-5367924704859976/8399396085" />
+                app:adSize="BANNER"
+                app:adUnitId="ca-app-pub-5367924704859976/8399396085" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

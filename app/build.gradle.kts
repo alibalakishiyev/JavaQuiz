@@ -12,8 +12,8 @@ android {
         applicationId = "com.ali.systemIn"
         minSdk = 24
         targetSdk = 35
-        versionCode = 4
-        versionName = "0.4"
+        versionCode = 5
+        versionName = "0.5"
 
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -63,8 +63,8 @@ chaquopy {
 
             // These may or may not work depending on version
             install("pandas")     // ⚠️ Limited versions, might work
-            install("matplotlib") // ⚠️ May have issues
-            install("cryptography") // ⚠️ Complex build
+//            install("matplotlib") // ⚠️ May have issues
+//            install("cryptography") // ⚠️ Complex build
 
 
             // These typically DON'T work
@@ -124,6 +124,7 @@ dependencies {
 
 //    terminal
     testImplementation ("junit:junit:4.13.2")
+
 
 
 }

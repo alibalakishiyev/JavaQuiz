@@ -1,35 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/menu_save_project"
-        android:title="💾 Yeni Layihə Saxla"/>
+        android:title="💾 Save Project"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_load_project"
-        android:title="📂 Layihə Yüklə"/>
+        android:title="📂 Load Project"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_clear_code"
-        android:title="🗑️ Kodu Təmizlə"/>
+        android:title="🗑️ Clear Code"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_copy_code"
-        android:title="📋 Kodu Kopyala"/>
+        android:title="📋 Copy Code"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_paste"
-        android:title="📄 Yapışdır"/>
+        android:title="📄 Paste"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_undo"
+        android:title="↩ Undo"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_redo"
+        android:title="↪ Redo"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_check_syntax"
-        android:title="🔍 Sintaksis Yoxla"/>
+        android:title="🔍 Check Syntax"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_settings"
-        android:title="⚙️ Parametrlər"/>
+        android:title="⚙️ Settings"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_about"
-        android:title="ℹ️ Haqqında"/>
+        android:title="ℹ️ About"
+        app:showAsAction="never" />
 </menu>

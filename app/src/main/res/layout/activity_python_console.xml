@@ -4,314 +4,275 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="8dp"
-    android:background="#263238">
+    android:background="#1a1a2e">
 
-    <!-- Başlıq -->
-    <LinearLayout
+    <!-- Professional Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#2196F3"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:titleTextColor="@color/background" />
+
+    <!-- Task Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/taskCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="#37474F"
-        android:gravity="center_vertical">
-
-
-        <!-- YENİ: Menyu Düyməsi (Üç nöqtə) -->
-        <Button
-            android:id="@+id/menuBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="⋮"
-            android:textColor="#FFFFFF"
-            android:textSize="24sp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_margin="4dp"
-            android:padding="8dp"
-            android:visibility="visible"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Python Editor"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:padding="12dp"
-            android:gravity="center"/>
+        android:layout_margin="12dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="#2C3E50">
 
         <LinearLayout
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <Button
-                android:id="@+id/undoBtn"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/taskTitle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="↩ Geri"
-                android:backgroundTint="#FF9800"
-                android:layout_margin="4dp"
-                android:padding="8dp"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:enabled="false" />
+                android:text="Task"
+                android:textColor="#64B5F6"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/redoBtn"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/taskDescription"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="↪ İrəli"
-                android:backgroundTint="#4CAF50"
-                android:layout_margin="4dp"
-                android:padding="8dp"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:enabled="false" />
+                android:text=""
+                android:textColor="#B0BEC5"
+                android:textSize="13sp"
+                android:layout_marginTop="8dp" />
         </LinearLayout>
-    </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-    <!-- Task Description -->
-    <TextView
-        android:id="@+id/taskDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Task Description"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"
-        android:padding="12dp"
-        android:background="#37474F"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"/>
-
-    <!-- Kod Editörü Alanı -->
-    <LinearLayout
-        android:id="@+id/codeEditorLayout"
+    <!-- Code Editor Container -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:orientation="horizontal"
-        android:background="#1E282C"
-        android:layout_marginBottom="8dp">
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp">
 
-        <!-- Satır Numaraları -->
-        <ScrollView
-            android:layout_width="40dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#263238"
-            android:scrollbars="none">
+            android:orientation="horizontal"
+            android:background="#1E1E1E">
 
-            <TextView
-                android:id="@+id/lineNumbers"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="1"
-                android:textColor="#546E7A"
-                android:textSize="14sp"
-                android:fontFamily="monospace"
-                android:gravity="right"
-                android:paddingTop="9dp"
-                android:paddingBottom="9dp"
-                android:paddingRight="8dp"
-                android:lineSpacingExtra="4dp"/>
-        </ScrollView>
+            <!-- Line Numbers - Custom SyncScrollView -->
+            <com.ali.utils.SyncScrollView
+                android:id="@+id/lineNumbersScroll"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:background="#252526"
+                android:scrollbars="none">
 
-        <!-- Kod Editörü -->
-        <HorizontalScrollView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scrollbars="vertical|horizontal">
+                <TextView
+                    android:id="@+id/lineNumbers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textColor="#6A6A6A"
+                    android:textSize="13sp"
+                    android:typeface="monospace"
+                    android:gravity="right"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:paddingRight="8dp"
+                    android:paddingLeft="4dp"
+                    android:lineSpacingExtra="4dp" />
+            </com.ali.utils.SyncScrollView>
 
-            <EditText
-                android:id="@+id/codeInput"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="# Python Code"
-                android:textColorHint="#546E7A"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp"
-                android:inputType="textMultiLine|textNoSuggestions"
-                android:fontFamily="monospace"
-                android:background="@android:color/transparent"
-                android:paddingTop="9dp"
-                android:paddingBottom="9dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="16dp"
-                android:gravity="top|left"
-                android:minWidth="1000dp"
-                android:lineSpacingExtra="4dp"
-                android:breakStrategy="simple"
-                android:autoSizeTextType="none"/>
-        </HorizontalScrollView>
-    </LinearLayout>
+            <!-- Code Input -->
+            <ScrollView
+                android:id="@+id/codeScrollView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scrollbars="vertical">
 
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="horizontal">
+
+                    <EditText
+                        android:id="@+id/codeInput"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="# Write your Python code here..."
+                        android:textColorHint="#6A6A6A"
+                        android:textColor="#D4D4D4"
+                        android:textSize="13sp"
+                        android:inputType="textMultiLine|textNoSuggestions"
+                        android:typeface="monospace"
+                        android:background="@android:color/transparent"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="16dp"
+                        android:gravity="top|left"
+                        android:minWidth="800dp"
+                        android:lineSpacingExtra="4dp" />
+                </HorizontalScrollView>
+            </ScrollView>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
     <!-- Auto-complete Suggestions -->
     <ListView
         android:id="@+id/suggestionsList"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.3"
-        android:background="#37474F"
+        android:layout_height="120dp"
+        android:background="#252526"
         android:visibility="gone"
-        android:layout_marginBottom="4dp"/>
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="4dp"
+        android:divider="#3E3E3E"
+        android:dividerHeight="1dp" />
 
-    <!-- Butonlar (Sadəcə Run və Bilmirəm qalır, digərləri menyuya köçürüldü) -->
+    <!-- Action Buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginBottom="8dp">
 
         <Button
             android:id="@+id/runBtn"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1"
-            android:text="▶ Run"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:background="#2196F3"
-            android:padding="16dp"
-            android:layout_marginEnd="4dp"/>
+            android:text="▶ Run Code"
+            android:textAllCaps="false"
+            android:backgroundTint="#2196F3"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:layout_marginEnd="6dp" />
 
         <Button
             android:id="@+id/dontKnowBtn"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1"
-            android:text="❓ Bilmirəm"
+            android:text="❓ Need Help"
+            android:textAllCaps="false"
             android:backgroundTint="#FF5722"
-            android:layout_marginStart="4dp"
-            android:padding="12dp"
             android:textColor="@android:color/white"
-            android:textStyle="bold" />
+            android:textSize="14sp"
+            android:layout_marginStart="6dp" />
     </LinearLayout>
 
-    <!-- KONSOL / Çıktı Alanı -->
-    <LinearLayout
+    <!-- Output Console -->
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/outputContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.5"
-        android:orientation="vertical"
-        android:background="#1E282C"
-        android:visibility="visible"
-        android:animateLayoutChanges="true">
+        android:layout_weight="1.2"
+        android:layout_margin="12dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        android:visibility="visible">
 
-        <!-- Konsol Başlıq -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="#263238"
-            android:gravity="center_vertical"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="📟 Konsol Çıktısı"
-                android:textColor="#78909C"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:padding="8dp"/>
-
-            <Button
-                android:id="@+id/copyOutputBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="📋 Kopyala"
-                android:textColor="#64B5F6"
-                android:textSize="11sp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="6dp"
-                android:layout_marginEnd="4dp"/>
-
-            <Button
-                android:id="@+id/clearOutputBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="🗑️ Təmizlə"
-                android:textColor="#78909C"
-                android:textSize="11sp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="6dp"
-                android:layout_marginEnd="4dp"/>
-
-            <Button
-                android:id="@+id/hideOutputBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="▼"
-                android:textColor="#78909C"
-                android:textSize="14sp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="6dp"
-                android:layout_marginEnd="4dp"/>
-        </LinearLayout>
-
-        <!-- Konsol Mətn Sahəsi -->
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="#1A1E22"
-            android:padding="8dp"
-            android:scrollbars="vertical">
-
-            <TextView
-                android:id="@+id/outputText"
+            <!-- Console Header -->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="> Proqramı işə salın..."
-                android:textColor="#E0E0E0"
-                android:textSize="13sp"
-                android:fontFamily="monospace"
-                android:background="@android:color/transparent"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:background="#2C2C2C"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Console Output"
+                    android:textColor="#9E9E9E"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/copyOutputBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="Copy"
+                    android:textSize="11sp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:textColor="#64B5F6" />
+
+                <Button
+                    android:id="@+id/clearOutputBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="Clear"
+                    android:textSize="11sp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:textColor="#9E9E9E" />
+
+                <Button
+                    android:id="@+id/hideOutputBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="Hide"
+                    android:textSize="11sp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:textColor="#9E9E9E" />
+            </LinearLayout>
+
+            <!-- Console Content -->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#1E1E1E"
                 android:padding="12dp"
-                android:lineSpacingExtra="4dp"
-                android:lineSpacingMultiplier="1.2"
-                android:textIsSelectable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:clickable="true"
-                android:longClickable="true"
-                android:linksClickable="false"
-                android:cursorVisible="false"
-                android:gravity="top|start"
-                android:scrollbars="vertical"
-                android:maxLines="500"
-                android:scrollHorizontally="false"
-                android:autoLink="none"/>
-        </ScrollView>
+                android:scrollbars="vertical">
 
-        <!-- Reklam Container -->
-        <LinearLayout
-            android:id="@+id/adContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="4dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <com.google.android.gms.ads.AdView
-                android:id="@+id/adPythoneCode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                app:adSize="BANNER"
-                app:adUnitId="ca-app-pub-5367924704859976/8399396085"/>
+                <TextView
+                    android:id="@+id/outputText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="> Ready to run Python code..."
+                    android:textColor="#A9B7C6"
+                    android:textSize="12sp"
+                    android:typeface="monospace"
+                    android:lineSpacingExtra="2dp"
+                    android:textIsSelectable="true" />
+            </ScrollView>
         </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Ad Container -->
+    <LinearLayout
+        android:id="@+id/adContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:gravity="center">
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adPythoneCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:adSize="BANNER"
+            app:adUnitId="ca-app-pub-5367924704859976/8399396085" />
     </LinearLayout>
 </LinearLayout>

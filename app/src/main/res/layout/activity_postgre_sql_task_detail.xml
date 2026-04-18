@@ -1,344 +1,1031 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com"
+    android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/gray_very_light">
+    android:background="@color/bg_dark">
 
-    <!-- Üst Panel -->
-    <LinearLayout
+    <!-- ═══════════════════════════════════════════ -->
+    <!--              APP BAR + TOOLBAR              -->
+    <!-- ═══════════════════════════════════════════ -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/primary"
-        android:padding="12dp"
-        android:elevation="4dp">
+        android:background="@color/surface_dark"
+        app:elevation="0dp">
 
-        <TextView
-            android:id="@+id/taskTitle"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:layout_marginBottom="4dp"/>
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/surface_dark"
+            app:titleTextColor="@color/text_primary"
+            app:subtitleTextColor="@color/text_secondary">
 
-        <TextView
-            android:id="@+id/taskDescription"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- Back button -->
+                <ImageView
+                    android:id="@+id/btnBack"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_arrow_back"
+                    android:padding="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:tint="@color/text_primary"/>
+
+                <!-- Title block -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:id="@+id/toolbarTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SQL Editor"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary"/>
+
+                    <TextView
+                        android:id="@+id/toolbarSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PostgreSQL • Interactive"
+                        android:textSize="11sp"
+                        android:textColor="@color/accent_green"/>
+
+                </LinearLayout>
+
+                <!-- Toolbar actions -->
+                <ImageView
+                    android:id="@+id/btnThemeToggle"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_brightness"
+                    android:padding="6dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:tint="@color/text_secondary"
+                    android:layout_marginEnd="4dp"/>
+
+                <ImageView
+                    android:id="@+id/btnShare"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_share"
+                    android:padding="6dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:tint="@color/text_secondary"
+                    android:layout_marginEnd="4dp"/>
+
+                <ImageView
+                    android:id="@+id/btnSettings"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_more_vert"
+                    android:padding="6dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:tint="@color/text_secondary"
+                    android:layout_marginEnd="8dp"/>
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <!-- Status bar under toolbar -->
+        <LinearLayout
+            android:id="@+id/statusBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="@color/white"
-            android:alpha="0.9"/>
+            android:layout_height="32dp"
+            android:background="@color/surface_dark_2"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp">
 
-    </LinearLayout>
+            <View
+                android:id="@+id/statusDot"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:background="@drawable/circle_green"/>
 
-    <!-- Əsas Məzmun -->
-    <ScrollView
+            <TextView
+                android:id="@+id/connectionStatus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="  Connected to SQLite • In-Memory DB"
+                android:textSize="10sp"
+                android:textColor="@color/text_secondary"
+                android:fontFamily="monospace"/>
+
+            <TextView
+                android:id="@+id/executionTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ready"
+                android:textSize="10sp"
+                android:textColor="@color/accent_blue"
+                android:fontFamily="monospace"/>
+
+        </LinearLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--              MAIN SCROLL AREA               -->
+    <!-- ═══════════════════════════════════════════ -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/mainContainer"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="8dp">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="12dp">
 
-            <!-- İlkin SQL -->
-            <LinearLayout
+            <!-- ─────────────────────────────────── -->
+            <!--          TASK INFO CARD             -->
+            <!-- ─────────────────────────────────── -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/taskInfoCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/card_background"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp">
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/border_color"
+                android:layout_marginBottom="12dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="📝 İlkin SQL Sorğusu:"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:layout_marginBottom="4dp"/>
-
-                <TextView
-                    android:id="@+id/initialQueryText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/gray_light"
-                    android:padding="8dp"
-                    android:textSize="12sp"
-                    android:fontFamily="monospace"
-                    android:textColor="@color/black"/>
-
-            </LinearLayout>
-
-            <!-- SQL Editor -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/card_background"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="✏️ SQL Editor:"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:layout_marginBottom="4dp"/>
-
-                <EditText
-                    android:id="@+id/sqlQueryInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:gravity="top|start"
-                    android:inputType="textMultiLine|textCapSentences"
-                    android:padding="12dp"
-                    android:background="@drawable/edittext_background"
-                    android:textSize="13sp"
-                    android:fontFamily="monospace"
-                    android:scrollbars="vertical"
-                    android:layout_marginBottom="8dp"/>
-
-                <!-- Quick Query Buttons -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
-
-                    <Button
-                        android:id="@+id/btnSelectAll"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="SELECT *"
-                        android:textSize="10sp"
-                        android:layout_marginEnd="2dp"
-                        android:backgroundTint="@color/primary"/>
-
-                    <Button
-                        android:id="@+id/btnWhere"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="WHERE"
-                        android:textSize="10sp"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginEnd="2dp"
-                        android:backgroundTint="@color/orange"/>
-
-                    <Button
-                        android:id="@+id/btnJoin"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="JOIN"
-                        android:textSize="10sp"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginEnd="2dp"
-                        android:backgroundTint="@color/accent"/>
-
-                    <Button
-                        android:id="@+id/btnGroupBy"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="GROUP BY"
-                        android:textSize="10sp"
-                        android:layout_marginStart="2dp"
-                        android:backgroundTint="@color/green"/>
-
-                </LinearLayout>
-
-                <!-- Əsas Butonlar -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="4dp">
-
-                    <Button
-                        android:id="@+id/executeButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="🚀 İcra et"
-                        android:textAllCaps="false"
-                        android:layout_marginEnd="2dp"
-                        android:backgroundTint="@color/primary"/>
-
-                    <Button
-                        android:id="@+id/showTablesButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="📋 Cədvəllər"
-                        android:textAllCaps="false"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginEnd="2dp"
-                        android:backgroundTint="@color/accent"/>
-
-                </LinearLayout>
-
-                <!-- Admin Butonları -->
-                <LinearLayout
-                    android:id="@+id/adminButtons"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:visibility="gone"
-                    android:layout_marginBottom="4dp">
-
-                    <Button
-                        android:id="@+id/resetButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="🔄 Sıfırla"
-                        android:textAllCaps="false"
-                        android:layout_marginEnd="2dp"
-                        android:backgroundTint="@color/red"/>
-
-                    <Button
-                        android:id="@+id/newTableButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="➕ Yeni Cədvəl"
-                        android:textAllCaps="false"
-                        android:layout_marginStart="2dp"
-                        android:backgroundTint="@color/green"/>
-
-                </LinearLayout>
-
-                <!-- Task Butonları -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/checkButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="✅ Taski yoxla"
-                        android:textAllCaps="false"
-                        android:layout_marginEnd="2dp"
-                        android:backgroundTint="@color/green"/>
-
-                    <Button
-                        android:id="@+id/showSolutionButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="💡 Həlli göstər"
-                        android:textAllCaps="false"
-                        android:layout_marginStart="2dp"
-                        android:backgroundTint="@color/orange"/>
-
-                </LinearLayout>
-
-                <!-- Admin Mode Toggle -->
-                <Button
-                    android:id="@+id/adminModeButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="🔒 Admin Modu: BAĞLI"
-                    android:textAllCaps="false"
-                    android:layout_marginTop="8dp"
-                    android:backgroundTint="@color/red"/>
-
-            </LinearLayout>
-
-            <!-- Nəticə Sahəsi Başlığı -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="📊 Nəticə:"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:textColor="@color/black"/>
-
-        </LinearLayout>
-    </ScrollView>
-
-    <!-- Nəticə Konteyneri - Horizontal və Vertical Scroll -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.5"
-        android:orientation="vertical"
-        android:background="@color/white"
-        android:elevation="8dp">
-
-        <!-- Scroll bar göstərici -->
-        <TextView
-            android:id="@+id/scrollHint"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="↔️ Cədvəli sağa-sola sürüşdürə bilərsiniz"
-            android:textSize="10sp"
-            android:textColor="@color/gray_dark"
-            android:gravity="center"
-            android:padding="4dp"
-            android:background="@color/gray_very_light"
-            android:visibility="gone"/>
-
-        <!-- Horizontal və Vertical Scroll -->
-        <HorizontalScrollView
-            android:id="@+id/horizontalScrollView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:scrollbars="horizontal"
-            android:fillViewport="true">
-
-            <ScrollView
-                android:id="@+id/verticalScrollView"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:scrollbars="vertical"
-                android:fillViewport="true">
-
-                <!-- Nəticə konteyneri -->
-                <LinearLayout
-                    android:id="@+id/resultContainer"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="8dp"/>
+                    android:padding="20dp"
+                    android:background="@color/surface_dark">
 
-            </ScrollView>
-        </HorizontalScrollView>
+                    <!-- Header row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
 
-        <!-- AdView aşağıda -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:padding="8dp"
-            android:background="@color/gray_very_light">
+                        <TextView
+                            android:id="@+id/taskNumberBadge"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:gravity="center"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/accent_blue"
+                            android:background="@drawable/badge_background"
+                            android:layout_marginEnd="12dp"/>
 
-            <com.google.android.gms.ads.AdView
-                android:id="@+id/SqlAdView"
-                android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/taskTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="17sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_primary"
+                                android:maxLines="2"/>
+
+                            <TextView
+                                android:id="@+id/taskCategory"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="SQL Query"
+                                android:textSize="11sp"
+                                android:textColor="@color/text_secondary"
+                                android:layout_marginTop="2dp"/>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/taskDifficulty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="10sp"
+                            android:textColor="@color/white"
+                            android:padding="6dp"
+                            android:paddingHorizontal="10dp"
+                            android:background="@drawable/difficulty_badge"
+                            android:visibility="gone"/>
+
+                    </LinearLayout>
+
+                    <!-- Description -->
+                    <TextView
+                        android:id="@+id/taskDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_secondary"
+                        android:lineSpacingMultiplier="1.5"
+                        android:layout_marginBottom="12dp"/>
+
+                    <!-- Progress bar -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Progress"
+                            android:textSize="10sp"
+                            android:textColor="@color/text_secondary"
+                            android:layout_marginEnd="8dp"/>
+
+                        <com.google.android.material.progressindicator.LinearProgressIndicator
+                            android:id="@+id/taskProgress"
+                            android:layout_width="0dp"
+                            android:layout_height="4dp"
+                            android:layout_weight="1"
+                            app:trackColor="@color/surface_dark_2"
+                            app:indicatorColor="@color/accent_green"
+                            app:trackCornerRadius="2dp"/>
+
+                        <TextView
+                            android:id="@+id/taskProgressText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0%"
+                            android:textSize="10sp"
+                            android:textColor="@color/accent_green"
+                            android:layout_marginStart="8dp"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ─────────────────────────────────── -->
+            <!--         SQL EDITOR CARD             -->
+            <!-- ─────────────────────────────────── -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/editorCard"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                ads:adSize="BANNER"
-                ads:adUnitId="ca-app-pub-5367924704859976/8399396085"/>
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/border_color"
+                android:layout_marginBottom="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/surface_dark">
+
+                    <!-- Editor Toolbar -->
+                    <LinearLayout
+                        android:id="@+id/editorToolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="16dp"
+                        android:background="@color/surface_dark_2">
+
+                        <!-- Traffic light buttons -->
+                        <View android:layout_width="10dp" android:layout_height="10dp"
+                            android:background="@drawable/circle_red" android:layout_marginEnd="6dp"/>
+                        <View android:layout_width="10dp" android:layout_height="10dp"
+                            android:background="@drawable/circle_yellow" android:layout_marginEnd="6dp"/>
+                        <View android:layout_width="10dp" android:layout_height="10dp"
+                            android:background="@drawable/circle_green" android:layout_marginEnd="16dp"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="query.sql"
+                            android:textSize="12sp"
+                            android:textColor="@color/text_secondary"
+                            android:fontFamily="monospace"/>
+
+                        <!-- Editor actions -->
+                        <ImageView
+                            android:id="@+id/btnUndo"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/ic_undo"
+                            android:padding="4dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:tint="@color/text_secondary"
+                            android:layout_marginEnd="4dp"/>
+
+                        <ImageView
+                            android:id="@+id/btnRedo"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/ic_redo"
+                            android:padding="4dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:tint="@color/text_secondary"
+                            android:layout_marginEnd="4dp"/>
+
+                        <ImageView
+                            android:id="@+id/btnFormatSql"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/ic_format_align_left"
+                            android:padding="4dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:tint="@color/text_secondary"
+                            android:layout_marginEnd="4dp"/>
+
+                        <ImageView
+                            android:id="@+id/btnHistory"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/ic_history"
+                            android:padding="4dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:tint="@color/text_secondary"
+                            android:layout_marginEnd="4dp"/>
+
+                        <ImageView
+                            android:id="@+id/btnClearQuery"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/ic_clear"
+                            android:padding="4dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:tint="@color/text_secondary"/>
+
+                    </LinearLayout>
+
+                    <!-- Line numbers + Editor -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"
+                        android:orientation="horizontal">
+
+                        <!-- Line numbers gutter -->
+                        <ScrollView
+                            android:id="@+id/lineNumberScroll"
+                            android:layout_width="36dp"
+                            android:layout_height="match_parent"
+                            android:scrollbars="none"
+                            android:overScrollMode="never"
+                            android:background="@color/surface_dark_2">
+
+                            <LinearLayout
+                                android:id="@+id/lineNumberContainer"
+                                android:layout_width="36dp"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingTop="12dp"
+                                android:paddingBottom="12dp"/>
+
+                        </ScrollView>
+
+                        <!-- Vertical divider -->
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/border_color"/>
+
+                        <!-- SQL Input -->
+                        <EditText
+                            android:id="@+id/sqlQueryInput"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="top|start"
+                            android:inputType="textMultiLine|textNoSuggestions"
+                            android:padding="12dp"
+                            android:textSize="13sp"
+                            android:fontFamily="monospace"
+                            android:textColor="@color/text_primary"
+                            android:background="@color/editor_bg"
+                            android:scrollbars="vertical"
+                            android:hint="-- Write your SQL query here..."
+                            android:textColorHint="@color/text_hint"
+                            android:lineSpacingExtra="4dp"
+                            android:imeOptions="flagNoEnterAction"
+                            android:overScrollMode="never"/>
+
+                    </LinearLayout>
+
+                    <!-- Autocomplete suggestions bar -->
+                    <HorizontalScrollView
+                        android:id="@+id/resultsHeader"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none"
+                        android:background="@color/surface_dark_3"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:id="@+id/autoCompleteContainer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingVertical="6dp"
+                            android:paddingHorizontal="8dp"/>
+
+                    </HorizontalScrollView>
+
+                    <!-- SQL Keyword Chips -->
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="8dp"
+                        android:background="@color/surface_dark">
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:chipSpacing="4dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipSelect"
+                                style="@style/Widget.MaterialComponents.Chip.Action"
+                                android:layout_width="wrap_content"
+                                android:layout_height="32dp"
+                                android:text="SELECT"
+                                android:textSize="11sp"
+                                app:chipBackgroundColor="@color/chip_blue"
+                                app:chipTextColor="@color/accent_blue"
+                                app:chipStrokeColor="@color/accent_blue"
+                                app:chipStrokeWidth="1dp"/>
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipWhere"
+                                style="@style/Widget.MaterialComponents.Chip.Action"
+                                android:layout_width="wrap_content"
+                                android:layout_height="32dp"
+                                android:text="WHERE"
+                                android:textSize="11sp"
+                                app:chipBackgroundColor="@color/chip_orange"
+                                app:chipTextColor="@color/accent_orange"
+                                app:chipStrokeColor="@color/accent_orange"
+                                app:chipStrokeWidth="1dp"/>
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipJoin"
+                                style="@style/Widget.MaterialComponents.Chip.Action"
+                                android:layout_width="wrap_content"
+                                android:layout_height="32dp"
+                                android:text="JOIN"
+                                android:textSize="11sp"
+                                app:chipBackgroundColor="@color/chip_purple"
+                                app:chipTextColor="@color/accent_purple"
+                                app:chipStrokeColor="@color/accent_purple"
+                                app:chipStrokeWidth="1dp"/>
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipGroupBy"
+                                style="@style/Widget.MaterialComponents.Chip.Action"
+                                android:layout_width="wrap_content"
+                                android:layout_height="32dp"
+                                android:text="GROUP BY"
+                                android:textSize="11sp"
+                                app:chipBackgroundColor="@color/chip_green"
+                                app:chipTextColor="@color/accent_green"
+                                app:chipStrokeColor="@color/accent_green"
+                                app:chipStrokeWidth="1dp"/>
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipOrderBy"
+                                style="@style/Widget.MaterialComponents.Chip.Action"
+                                android:layout_width="wrap_content"
+                                android:layout_height="32dp"
+                                android:text="ORDER BY"
+                                android:textSize="11sp"
+                                app:chipBackgroundColor="@color/chip_teal"
+                                app:chipTextColor="@color/accent_teal"
+                                app:chipStrokeColor="@color/accent_teal"
+                                app:chipStrokeWidth="1dp"/>
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipHaving"
+                                style="@style/Widget.MaterialComponents.Chip.Action"
+                                android:layout_width="wrap_content"
+                                android:layout_height="32dp"
+                                android:text="HAVING"
+                                android:textSize="11sp"
+                                app:chipBackgroundColor="@color/chip_red"
+                                app:chipTextColor="@color/accent_red"
+                                app:chipStrokeColor="@color/accent_red"
+                                app:chipStrokeWidth="1dp"/>
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipLimit"
+                                style="@style/Widget.MaterialComponents.Chip.Action"
+                                android:layout_width="wrap_content"
+                                android:layout_height="32dp"
+                                android:text="LIMIT"
+                                android:textSize="11sp"
+                                app:chipBackgroundColor="@color/chip_blue"
+                                app:chipTextColor="@color/accent_blue"
+                                app:chipStrokeColor="@color/accent_blue"
+                                app:chipStrokeWidth="1dp"/>
+
+                        </com.google.android.material.chip.ChipGroup>
+
+                    </HorizontalScrollView>
+
+                    <!-- Divider -->
+                    <View android:layout_width="match_parent" android:layout_height="1dp"
+                        android:background="@color/border_color"/>
+
+                    <!-- Action Buttons -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <!-- Primary actions -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp">
+
+                            <!-- Execute button -->
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/executeButton"
+                                android:layout_width="0dp"
+                                android:layout_height="48dp"
+                                android:layout_weight="1"
+                                android:text="Run Query"
+                                android:textAllCaps="false"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:layout_marginEnd="6dp"
+                                android:backgroundTint="@color/accent_blue"
+                                app:cornerRadius="12dp"
+                                app:icon="@drawable/ic_play"
+                                app:iconTint="@color/white"/>
+
+                            <!-- Tables button -->
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/showTablesButton"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:backgroundTint="@color/surface_dark_2"
+                                app:cornerRadius="12dp"
+                                app:icon="@drawable/ic_table"
+                                app:iconTint="@color/text_secondary"
+                                app:iconSize="20dp"
+                                android:layout_marginEnd="6dp"/>
+
+                            <!-- AI Hint button -->
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnAiHint"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:backgroundTint="@color/chip_purple"
+                                app:cornerRadius="12dp"
+                                app:icon="@drawable/ic_lightbulb"
+                                app:iconTint="@color/accent_purple"
+                                app:iconSize="20dp"/>
+
+                        </LinearLayout>
+
+                        <!-- Secondary actions row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/checkButton"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:text="✓ Check"
+                                android:textAllCaps="false"
+                                android:textSize="12sp"
+                                android:layout_marginEnd="4dp"
+                                android:backgroundTint="@color/chip_green"
+                                android:textColor="@color/accent_green"
+                                app:cornerRadius="10dp"
+                                app:strokeColor="@color/accent_green"
+                                app:strokeWidth="1dp"/>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/showSolutionButton"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:text="💡 Solution"
+                                android:textAllCaps="false"
+                                android:textSize="12sp"
+                                android:layout_marginEnd="4dp"
+                                android:backgroundTint="@color/chip_orange"
+                                android:textColor="@color/accent_orange"
+                                app:cornerRadius="10dp"
+                                app:strokeColor="@color/accent_orange"
+                                app:strokeWidth="1dp"/>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/exportButton"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:text="↑ Export"
+                                android:textAllCaps="false"
+                                android:textSize="12sp"
+                                android:backgroundTint="@color/chip_teal"
+                                android:textColor="@color/accent_teal"
+                                app:cornerRadius="10dp"
+                                app:strokeColor="@color/accent_teal"
+                                app:strokeWidth="1dp"
+                                android:visibility="gone"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- ── Admin Section ── -->
+                    <LinearLayout
+                        android:id="@+id/adminSection"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:background="@color/surface_dark_3"
+                        android:paddingHorizontal="12dp"
+                        android:paddingBottom="12dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:paddingVertical="8dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="⚡ Admin Controls"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/accent_red"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/resetButton"
+                                android:layout_width="0dp"
+                                android:layout_height="36dp"
+                                android:layout_weight="1"
+                                android:text="Reset DB"
+                                android:textAllCaps="false"
+                                android:textSize="11sp"
+                                android:layout_marginEnd="6dp"
+                                android:backgroundTint="@color/chip_red"
+                                android:textColor="@color/accent_red"
+                                app:cornerRadius="8dp"
+                                app:strokeColor="@color/accent_red"
+                                app:strokeWidth="1dp"/>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/newTableButton"
+                                android:layout_width="0dp"
+                                android:layout_height="36dp"
+                                android:layout_weight="1"
+                                android:text="+ New Table"
+                                android:textAllCaps="false"
+                                android:textSize="11sp"
+                                android:layout_marginEnd="6dp"
+                                android:backgroundTint="@color/chip_green"
+                                android:textColor="@color/accent_green"
+                                app:cornerRadius="8dp"
+                                app:strokeColor="@color/accent_green"
+                                app:strokeWidth="1dp"/>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnImport"
+                                android:layout_width="0dp"
+                                android:layout_height="36dp"
+                                android:layout_weight="1"
+                                android:text="↓ Import"
+                                android:textAllCaps="false"
+                                android:textSize="11sp"
+                                android:backgroundTint="@color/chip_blue"
+                                android:textColor="@color/accent_blue"
+                                app:cornerRadius="8dp"
+                                app:strokeColor="@color/accent_blue"
+                                app:strokeWidth="1dp"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- Admin toggle -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/adminModeButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:text="🔒  Admin Mode: OFF"
+                        android:textAllCaps="false"
+                        android:textSize="11sp"
+                        android:backgroundTint="@color/surface_dark_2"
+                        android:textColor="@color/text_secondary"
+                        app:cornerRadius="0dp"
+                        app:iconTint="@color/text_secondary"/>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ─────────────────────────────────── -->
+            <!--     QUERY RESULT CARD               -->
+            <!-- ─────────────────────────────────── -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/resultsCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/border_color"
+                android:layout_marginBottom="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/surface_dark">
+
+                    <!-- Result header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="16dp"
+                        android:background="@color/surface_dark_2">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Results"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary"/>
+
+                        <TextView
+                            android:id="@+id/resultStats"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="11sp"
+                            android:textColor="@color/accent_green"
+                            android:fontFamily="monospace"
+                            android:layout_marginEnd="8dp"
+                            android:visibility="gone"/>
+
+                        <ImageView
+                            android:id="@+id/btnChart"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/ic_chart"
+                            android:padding="4dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:tint="@color/text_secondary"
+                            android:visibility="gone"
+                            android:layout_marginEnd="4dp"/>
+
+                        <ImageView
+                            android:id="@+id/btnCopyResult"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/ic_copy"
+                            android:padding="4dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:tint="@color/text_secondary"
+                            android:visibility="gone"/>
+
+                    </LinearLayout>
+
+                    <!-- Scroll hint -->
+                    <TextView
+                        android:id="@+id/scrollHint"
+                        android:layout_width="match_parent"
+                        android:layout_height="24dp"
+                        android:text="↔  Scroll horizontally to see all columns"
+                        android:textSize="10sp"
+                        android:textColor="@color/text_secondary"
+                        android:gravity="center"
+                        android:background="@color/surface_dark_3"
+                        android:fontFamily="monospace"
+                        android:visibility="gone"/>
+
+                    <!-- Result scrollable table - DÜZƏLDİLMİŞ VERSİYA -->
+                    <HorizontalScrollView
+                        android:id="@+id/horizontalScrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="280dp"
+                        android:scrollbars="horizontal"
+                        android:scrollbarStyle="outsideOverlay"
+                        android:nestedScrollingEnabled="true">
+
+                        <!-- Bu ScrollView-i düzgün təyin edin -->
+                        <ScrollView
+                            android:id="@+id/verticalScrollView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:scrollbars="vertical"
+                            android:scrollbarStyle="outsideOverlay">
+
+                            <LinearLayout
+                                android:id="@+id/resultContainer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="8dp"/>
+
+                        </ScrollView>
+
+                    </HorizontalScrollView>
+
+                    <!-- Pagination -->
+                    <LinearLayout
+                        android:id="@+id/paginationContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:paddingHorizontal="16dp"
+                        android:background="@color/surface_dark_2"
+                        android:visibility="gone">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnPrevPage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="32dp"
+                            android:text="◀"
+                            android:textSize="12sp"
+                            android:backgroundTint="@color/surface_dark_3"
+                            android:textColor="@color/text_secondary"
+                            app:cornerRadius="8dp"
+                            android:paddingHorizontal="16dp"/>
+
+                        <TextView
+                            android:id="@+id/pageInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1 / 1"
+                            android:textSize="12sp"
+                            android:textColor="@color/text_secondary"
+                            android:fontFamily="monospace"
+                            android:layout_marginHorizontal="20dp"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnNextPage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="32dp"
+                            android:text="▶"
+                            android:textSize="12sp"
+                            android:backgroundTint="@color/surface_dark_3"
+                            android:textColor="@color/text_secondary"
+                            app:cornerRadius="8dp"
+                            android:paddingHorizontal="16dp"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ─────────────────────────────────── -->
+            <!--      INITIAL QUERY HINT CARD        -->
+            <!-- ─────────────────────────────────── -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/initialQueryCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/chip_blue"
+                android:layout_marginBottom="12dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="12dp"
+                    android:background="@color/chip_blue"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📝"
+                        android:textSize="16sp"
+                        android:layout_marginEnd="8dp"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Starting Query"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/accent_blue"/>
+
+                        <TextView
+                            android:id="@+id/initialQueryText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="11sp"
+                            android:fontFamily="monospace"
+                            android:textColor="@color/text_secondary"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Ad Banner -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="8dp">
+
+                <com.google.android.gms.ads.AdView
+                    xmlns:ads="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/SqlAdView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    ads:adSize="BANNER"
+                    ads:adUnitId="ca-app-pub-5367924704859976/8399396085"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-</LinearLayout>
+    <!-- ═══════════════════════════════════════════ -->
+    <!--         FLOATING EXECUTE BUTTON             -->
+    <!-- ═══════════════════════════════════════════ -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fabExecute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:text="Run"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_play"
+        app:iconTint="@color/white"
+        app:backgroundTint="@color/accent_blue"
+        app:elevation="6dp"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

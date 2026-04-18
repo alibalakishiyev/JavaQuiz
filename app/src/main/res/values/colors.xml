@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Material Design Rənglər -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -8,55 +9,155 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="green">#37cb95</color>
-    <color name="red">#de3c63</color>
+    <!-- Əsas App Rəngləri -->
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#1976D2</color>
+    <color name="colorAccent">#FF5722</color>
 
-    <color name="background">#f2f0f4</color>
-    <color name="card_background">#ffff</color>
-    <color name="text_color">#FFFFFF</color>
-    <color name="text_secondery_color">#44464e</color>
+    <!-- ========== ƏLAVƏ EDİLƏN RƏNGLƏR (activity_postgre_sql_task_detail.xml üçün) ========== -->
+    <color name="primary">#2196F3</color>
+    <color name="accent">#FF5722</color>
+    <color name="primary_dark">#1976D2</color>
 
-
+    <!-- Status və Xəta Rəngləri -->
+    <color name="green">#4CAF50</color>
+    <color name="red">#F44336</color>
     <color name="wrong">#F44336</color>
-    <color name="currect">#8BC34A</color>
-    <color name="metinler">#00BCD4</color>
+    <color name="currect">#4CAF50</color>
 
-    <color name="colorPrimary">#6200EE</color>  <!-- Rəng kodu buraya əlavə olunur -->
-    <color name="colorPrimaryDark">#3700B3</color>  <!-- Tünd rəng -->
-    <color name="colorAccent">#03DAC5</color>
-
-
-    <color name="background_color">#FAFAFA</color>
-    <color name="primary_text">#212121</color>
-    <color name="secondary_text">#757575</color>
-
+    <!-- Doğrulama Rəngləri -->
     <color name="verification_success">#4CAF50</color>
     <color name="verification_error">#F44336</color>
     <color name="verification_neutral">#9E9E9E</color>
-    <color name="text_default">#212121</color>
     <color name="valid">#4CAF50</color>
     <color name="invalid">#F44336</color>
 
-<!--    AI Quiz-->
+    <!-- Mətn Rəngləri -->
+    <color name="text_color">#FFFFFF</color>
+    <color name="text_secondery_color">#757575</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="text_default">#212121</color>
+    <color name="metinler">#00BCD4</color>
+
+    <!-- Fon Rəngləri -->
+    <color name="background">#F5F5F5</color>
+    <color name="background_color">#FAFAFA</color>
+    <color name="card_background">#FFFFFF</color>
     <color name="light_background">#F5F5F5</color>
+
+    <!-- Boz Rənglər -->
     <color name="gray">#9E9E9E</color>
     <color name="gray_light">#E0E0E0</color>
-    <color name="light_blue">#E3F2FD</color>
-
-
-    <!-- Əsas rənglər -->
-    <color name="primary">#3F51B5</color>
-    <color name="primary_dark">#303F9F</color>
-    <color name="accent">#FF4081</color>
-    <color name="orange">#FF9800</color>
     <color name="gray_medium">#E0E0E0</color>
     <color name="gray_very_light">#F9F9F9</color>
-<!--     sql-->
+    <color name="gray_dark">#757575</color>
+
+    <!-- Açıq Rənglər -->
+    <color name="light_blue">#E3F2FD</color>
     <color name="blue_light">#E3F2FD</color>
     <color name="green_light">#E8F5E9</color>
     <color name="orange_light">#FFF3E0</color>
     <color name="purple_light">#F3E5F5</color>
-    <color name="gray_dark">#757575</color>
+
+    <!-- Python Editor Xüsusi Rəngləri -->
+    <color name="editorBackground">#1E1E1E</color>
+    <color name="editorText">#D4D4D4</color>
+    <color name="consoleBackground">#1E1E1E</color>
+    <color name="consoleText">#A9B7C6</color>
+    <color name="lineNumber">#6A6A6A</color>
+
+    <!-- Python Editor Syntax Highlighting Rəngləri -->
+    <color name="syntax_keyword">#82AAFF</color>
+    <color name="syntax_string">#C3E88D</color>
+    <color name="syntax_comment">#546E7A</color>
+    <color name="syntax_number">#F78C6C</color>
+    <color name="syntax_function">#4CAF50</color>
+    <color name="syntax_class">#FF9800</color>
+    <color name="syntax_builtin">#FFCB6B</color>
+
+    <!-- Vurğulama Rəngləri -->
+    <color name="orange">#FF9800</color>
+
+
+    <!-- Editor Rənglər (Dark Theme) -->
+    <color name="editor_background_dark">#1a1a2e</color>
+    <color name="editor_bg">#1E1E1E</color>
+    <color name="editor_panel_bg">#252526</color>
+    <color name="editor_text">#D4D4D4</color>
+    <color name="editor_hint">#6A6A6A</color>
+    <color name="line_number_bg">#252526</color>
+    <color name="line_number_text">#6A6A6A</color>
+
+    <!-- Task Card Rənglər -->
+    <color name="task_card_bg">#2C3E50</color>
+    <color name="task_title">#64B5F6</color>
+    <color name="task_desc">#B0BEC5</color>
+
+    <!-- Button Rənglər -->
+    <color name="btn_run">#2196F3</color>
+    <color name="btn_clear">#FF5722</color>
+
+    <!-- Console Rənglər -->
+    <color name="console_bg">#1E1E1E</color>
+    <color name="console_header_bg">#2C2C2C</color>
+    <color name="console_header_text">#9E9E9E</color>
+    <color name="console_content_bg">#1E1E1E</color>
+    <color name="console_text">#A9B7C6</color>
+    <color name="console_btn">#64B5F6</color>
+    <color name="ad_bg">#1a1a2e</color>
+
+    <!-- Suggestion Rənglər -->
+    <color name="suggestion_bg">#252526</color>
+    <color name="suggestion_divider">#3E3E3E</color>
+
+    <!-- Syntax Highlighting Rənglər -->
+    <color name="syntax_method">#DCDCAA</color>
+    <color name="syntax_annotation">#C586C0</color>
+    <color name="syntax_operator">#D4D4D4</color>
+
+
+<!-- ========== LIGHT THEME RƏNGLƏRİ ========== -->
+    <color name="bg_light">#F8FAFC</color>
+    <color name="surface_light">#FFFFFF</color>
+    <color name="surface_light_2">#F1F5F9</color>
+    <color name="surface_light_3">#E2E8F0</color>
+    <color name="border_light">#CBD5E1</color>
+
+    <color name="text_primary_light">#0F172A</color>
+    <color name="text_secondary_light">#475569</color>
+    <color name="text_hint_light">#94A3B8</color>
+
+    <!-- Editor background light -->
+    <color name="editor_bg_light">#FAFAFA</color>
+
+    <!-- ========== DARK THEME RƏNGLƏRİ ========== -->
+    <color name="bg_dark">#0D1117</color>
+    <color name="surface_dark">#161B22</color>
+    <color name="surface_dark_2">#0D1117</color>
+    <color name="surface_dark_3">#21262D</color>
+    <color name="border_color">#30363D</color>
+
+    <color name="text_primary">#E6EDF3</color>
+    <color name="text_secondary">#7D8590</color>
+    <color name="text_hint">#3D444D</color>
+
+
+    <!-- ========== ORTAQ RƏNGLƏR (hər iki modda işləyir) ========== -->
+    <color name="accent_blue">#3B82F6</color>
+    <color name="accent_green">#10B981</color>
+    <color name="accent_red">#EF4444</color>
+    <color name="accent_orange">#F59E0B</color>
+    <color name="accent_purple">#8B5CF6</color>
+    <color name="accent_teal">#14B8A6</color>
+
+    <!-- Chip background colors (with alpha for light mode) -->
+    <color name="chip_blue">#1A3B82F6</color>
+    <color name="chip_green">#1A10B981</color>
+    <color name="chip_red">#1AEF4444</color>
+    <color name="chip_orange">#1AF59E0B</color>
+    <color name="chip_purple">#1A8B5CF6</color>
+    <color name="chip_teal">#1A14B8A6</color>
 
 
 </resources>
