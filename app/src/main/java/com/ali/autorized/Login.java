@@ -142,6 +142,7 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //close the dialog
+                        finish();
                     }
                 });
 

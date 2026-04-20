@@ -1,0 +1,822 @@
+{
+  "ai_library1": [
+    {
+      "question": "Süni intellektin tərifi hansıdır?",
+      "answer1": "A) Maşınların insan kimi düşünməsi və öyrənməsi",
+      "answer2": "B) Yalnız robot texnologiyası",
+      "answer3": "C) Verilənlər bazasının idarə edilməsi",
+      "answer4": "D) Şəbəkə təhlükəsizliyi",
+      "correct": "A) Maşınların insan kimi düşünməsi və öyrənməsi"
+    },
+    {
+      "question": "Maşın öyrənməsinin əsas növləri hansılardır?",
+      "answer1": "A) Supervisioned, Unsupervisioned, Reinforcement",
+      "answer2": "B) Linear, Quadratic, Exponential",
+      "answer3": "C) Static, Dynamic, Hybrid",
+      "answer4": "D) Fast, Slow, Medium",
+      "correct": "A) Supervisioned, Unsupervisioned, Reinforcement"
+    },
+    {
+      "question": "Supervised learning nədir?",
+      "answer1": "A) Etiketlənmiş verilənlərlə öyrənmə",
+      "answer2": "B) Etiketlənməmiş verilənlərlə öyrənmə",
+      "answer3": "C) Mükafat sistemi ilə öyrənmə",
+      "answer4": "D) Verilənlərsiz öyrənmə",
+      "correct": "A) Etiketlənmiş verilənlərlə öyrənmə"
+    },
+    {
+      "question": "Unsupervised learning-ə aid olan alqoritm hansıdır?",
+      "answer1": "A) Linear Regression",
+      "answer2": "B) Logistic Regression",
+      "answer3": "C) K-Means Clustering",
+      "answer4": "D) Support Vector Machine",
+      "correct": "C) K-Means Clustering"
+    },
+    {
+      "question": "Reinforcement learning-də agent nəyi maksimumlaşdırmağa çalışır?",
+      "answer1": "A) Loss funksiyasını",
+      "answer2": "B) Cumulativ mükafatı",
+      "answer3": "C) Xətanı",
+      "answer4": "D) Zamanı",
+      "correct": "B) Cumulativ mükafatı"
+    },
+    {
+      "question": "Linear Regression hansı tip problem üçün istifadə olunur?",
+      "answer1": "A) Klassifikasiya",
+      "answer2": "B) Reqressiya",
+      "answer3": "C) Klasterləmə",
+      "answer4": "D) Azaltma",
+      "correct": "B) Reqressiya"
+    },
+    {
+      "question": "Logistic Regression hansı problem üçün istifadə olunur?",
+      "answer1": "A) Reqressiya",
+      "answer2": "B) Binarlı Klassifikasiya",
+      "answer3": "C) Klasterləmə",
+      "answer4": "D) Dimensionality Reduction",
+      "correct": "B) Binarlı Klassifikasiya"
+    },
+    {
+      "question": "Overfitting nə deməkdir?",
+      "answer1": "A) Modelin training data-da çox yaxşı, test data-da pis işləməsi",
+      "answer2": "B) Modelin çox sadə olması",
+      "answer3": "C) Modelin heç öyrənə bilməməsi",
+      "answer4": "D) Modelin çox sürətli işləməsi",
+      "correct": "A) Modelin training data-da çox yaxşı, test data-da pis işləməsi"
+    },
+    {
+      "question": "Underfitting nə deməkdir?",
+      "answer1": "A) Modelin çox mürəkkəb olması",
+      "answer2": "B) Modelin həm training, həm test data-da pis işləməsi",
+      "answer3": "C) Modelin çox yaxşı işləməsi",
+      "answer4": "D) Modelin yadda saxlaması",
+      "correct": "B) Modelin həm training, həm test data-da pis işləməsi"
+    },
+    {
+      "question": "Train-test split-in məqsədi nədir?",
+      "answer1": "A) Modelin performansını qiymətləndirmək",
+      "answer2": "B) Verilənləri artırmaq",
+      "answer3": "C) Verilənləri silmək",
+      "answer4": "D) Modeli daha sürətli etmək",
+      "correct": "A) Modelin performansını qiymətləndirmək"
+    }
+  ],
+  "ai_library2": [
+    {
+      "question": "Confusion Matrix nə üçün istifadə olunur?",
+      "answer1": "A) Klassifikasiya modelinin performansını ölçmək",
+      "answer2": "B) Verilənləri vizuallaşdırmaq",
+      "answer3": "C) Modeli yadda saxlamaq",
+      "answer4": "D) Verilənləri təmizləmək",
+      "correct": "A) Klassifikasiya modelinin performansını ölçmək"
+    },
+    {
+      "question": "Accuracy metrikası necə hesablanır?",
+      "answer1": "A) (TP + TN) / (TP + TN + FP + FN)",
+      "answer2": "B) TP / (TP + FN)",
+      "answer3": "C) TP / (TP + FP)",
+      "answer4": "D) TN / (TN + FP)",
+      "correct": "A) (TP + TN) / (TP + TN + FP + FN)"
+    },
+    {
+      "question": "Precision nədir?",
+      "answer1": "A) TP / (TP + FP)",
+      "answer2": "B) TP / (TP + FN)",
+      "answer3": "C) TN / (TN + FP)",
+      "answer4": "D) (TP + TN) / Total",
+      "correct": "A) TP / (TP + FP)"
+    },
+    {
+      "question": "Recall (Sensitivity) nədir?",
+      "answer1": "A) TP / (TP + FN)",
+      "answer2": "B) TP / (TP + FP)",
+      "answer3": "C) TN / (TN + FP)",
+      "answer4": "D) (TP + TN) / Total",
+      "correct": "A) TP / (TP + FN)"
+    },
+    {
+      "question": "F1-Score necə hesablanır?",
+      "answer1": "A) 2 * (Precision * Recall) / (Precision + Recall)",
+      "answer2": "B) (Precision + Recall) / 2",
+      "answer3": "C) Precision * Recall",
+      "answer4": "D) Precision - Recall",
+      "correct": "A) 2 * (Precision * Recall) / (Precision + Recall)"
+    },
+    {
+      "question": "ROC əyrisi nəyi göstərir?",
+      "answer1": "A) True Positive Rate vs False Positive Rate",
+      "answer2": "B) Precision vs Recall",
+      "answer3": "C) Accuracy vs Loss",
+      "answer4": "D) Training vs Test error",
+      "correct": "A) True Positive Rate vs False Positive Rate"
+    },
+    {
+      "question": "AUC (Area Under Curve) nəyi ifadə edir?",
+      "answer1": "A) Modelin sinifləri ayırma qabiliyyətini",
+      "answer2": "B) Modelin sürətini",
+      "answer3": "C) Modelin yaddaşını",
+      "answer4": "D) Verilənlərin ölçüsünü",
+      "correct": "A) Modelin sinifləri ayırma qabiliyyətini"
+    },
+    {
+      "question": "K-Fold Cross Validation nədir?",
+      "answer1": "A) Verilənləri K hissəyə bölüb hər dəfə birini test kimi istifadə etmək",
+      "answer2": "B) Verilənləri iki hissəyə bölmək",
+      "answer3": "C) Yalnız bir dəfə test etmək",
+      "answer4": "D) Verilənləri artırmaq",
+      "correct": "A) Verilənləri K hissəyə bölüb hər dəfə birini test kimi istifadə etmək"
+    },
+    {
+      "question": "Bias və Variance arasındakı əlaqə nədir?",
+      "answer1": "A) Bias-variance tradeoff",
+      "answer2": "B) Bias = Variance",
+      "answer3": "C) Bias > Variance",
+      "answer4": "D) Heç bir əlaqəsi yoxdur",
+      "correct": "A) Bias-variance tradeoff"
+    },
+    {
+      "question": "Regularization nə üçün istifadə olunur?",
+      "answer1": "A) Overfitting-in qarşısını almaq",
+      "answer2": "B) Underfitting-i artırmaq",
+      "answer3": "C) Modeli sürətləndirmək",
+      "answer4": "D) Verilənləri artırmaq",
+      "correct": "A) Overfitting-in qarşısını almaq"
+    }
+  ],
+  "ai_library3": [
+    {
+      "question": "L1 Regularization (Lasso) nə edir?",
+      "answer1": "A) Bəzi əmsalları sıfıra yaxınlaşdırır (feature selection)",
+      "answer2": "B) Bütün əmsalları kiçildir",
+      "answer3": "C) Əmsalları artırır",
+      "answer4": "D) Heç nə etmir",
+      "correct": "A) Bəzi əmsalları sıfıra yaxınlaşdırır (feature selection)"
+    },
+    {
+      "question": "L2 Regularization (Ridge) nə edir?",
+      "answer1": "A) Bütün əmsalları kiçildir, lakin sıfır etmir",
+      "answer2": "B) Əmsalları sıfır edir",
+      "answer3": "C) Əmsalları artırır",
+      "answer4": "D) Yalnız bir əmsalı dəyişir",
+      "correct": "A) Bütün əmsalları kiçildir, lakin sıfır etmir"
+    },
+    {
+      "question": "Decision Tree alqoritmində impurity ölçmək üçün hansı funksiyalar istifadə olunur?",
+      "answer1": "A) Gini impurity, Entropy",
+      "answer2": "B) Mean Squared Error",
+      "answer3": "C) Cross-entropy",
+      "answer4": "D) Hər üçü",
+      "correct": "D) Hər üçü"
+    },
+    {
+      "question": "Random Forest nədir?",
+      "answer1": "A) Çoxlu Decision Tree-lərin ansamblı",
+      "answer2": "B) Tək bir Decision Tree",
+      "answer3": "C) Neural Network",
+      "answer4": "D) SVM modeli",
+      "correct": "A) Çoxlu Decision Tree-lərin ansamblı"
+    },
+    {
+      "question": "Gradient Boosting nə prinsipi ilə işləyir?",
+      "answer1": "A) Səhvləri ardıcıl olaraq düzəldərək",
+      "answer2": "B) Paralel olaraq modellər quraraq",
+      "answer3": "C) Təsadüfi seçim edərək",
+      "answer4": "D) Yalnız bir model quraraq",
+      "correct": "A) Səhvləri ardıcıl olaraq düzəldərək"
+    },
+    {
+      "question": "XGBoost nədir?",
+      "answer1": "A) Gradient Boosting-in optimallaşdırılmış versiyası",
+      "answer2": "B) Random Forest variantı",
+      "answer3": "C) Neural Network",
+      "answer4": "D) SVM alqoritmi",
+      "correct": "A) Gradient Boosting-in optimallaşdırılmış versiyası"
+    },
+    {
+      "question": "Support Vector Machine (SVM) nə üçün istifadə olunur?",
+      "answer1": "A) Klassifikasiya və reqressiya",
+      "answer2": "B) Yalnız reqressiya",
+      "answer3": "C) Yalnız klasterləmə",
+      "answer4": "D) Yalnız vizualizasiya",
+      "correct": "A) Klassifikasiya və reqressiya"
+    },
+    {
+      "question": "Kernel trick nədir?",
+      "answer1": "A) Verilənləri daha yüksək ölçülü fəzaya köçürmək",
+      "answer2": "B) Verilənləri aşağı ölçülü fəzaya köçürmək",
+      "answer3": "C) Verilənləri silmək",
+      "answer4": "D) Verilənləri təkrarlamaq",
+      "correct": "A) Verilənləri daha yüksək ölçülü fəzaya köçürmək"
+    },
+    {
+      "question": "K-Nearest Neighbors (KNN) alqoritmi necə işləyir?",
+      "answer1": "A) Ən yaxın K qonşuya əsasən qərar verir",
+      "answer2": "B) Bütün verilənlərə baxır",
+      "answer3": "C) Təsadüfi seçim edir",
+      "answer4": "D) Yalnız bir qonşuya baxır",
+      "correct": "A) Ən yaxın K qonşuya əsasən qərar verir"
+    },
+    {
+      "question": "KNN alqoritmində K parametri nə deməkdir?",
+      "answer1": "A) Nəzərə alınacaq qonşuların sayı",
+      "answer2": "B) Klasterlərin sayı",
+      "answer3": "C) Feature-lərin sayı",
+      "answer4": "D) Təkrarların sayı",
+      "correct": "A) Nəzərə alınacaq qonşuların sayı"
+    }
+  ],
+  "ai_library4": [
+    {
+      "question": "Naive Bayes alqoritmi hansı fərziyyəyə əsaslanır?",
+      "answer1": "A) Feature-lərin bir-birindən müstəqil olması",
+      "answer2": "B) Feature-lərin asılı olması",
+      "answer3": "C) Bütün feature-lərin eyni olması",
+      "answer4": "D) Feature-lərin təsadüfi olması",
+      "correct": "A) Feature-lərin bir-birindən müstəqil olması"
+    },
+    {
+      "question": "PCA (Principal Component Analysis) nə üçün istifadə olunur?",
+      "answer1": "A) Dimensionality reduction (ölçü azaltma)",
+      "answer2": "B) Klassifikasiya",
+      "answer3": "C) Reqressiya",
+      "answer4": "D) Klasterləmə",
+      "correct": "A) Dimensionality reduction (ölçü azaltma)"
+    },
+    {
+      "question": "t-SNE nə üçün istifadə olunur?",
+      "answer1": "A) Yüksək ölçülü verilənləri vizuallaşdırmaq",
+      "answer2": "B) Klassifikasiya",
+      "answer3": "C) Reqressiya",
+      "answer4": "D) Klasterləmə",
+      "correct": "A) Yüksək ölçülü verilənləri vizuallaşdırmaq"
+    },
+    {
+      "question": "Neural Network-də activation funksiyasının rolu nədir?",
+      "answer1": "A) Qeyri-xəttilik əlavə etmək",
+      "answer2": "B) Xəttilik əlavə etmək",
+      "answer3": "C) Verilənləri azaltmaq",
+      "answer4": "D) Verilənləri artırmaq",
+      "correct": "A) Qeyri-xəttilik əlavə etmək"
+    },
+    {
+      "question": "ReLU activation funksiyasının düsturu hansıdır?",
+      "answer1": "A) f(x) = max(0, x)",
+      "answer2": "B) f(x) = 1 / (1 + e^-x)",
+      "answer3": "C) f(x) = tanh(x)",
+      "answer4": "D) f(x) = x",
+      "correct": "A) f(x) = max(0, x)"
+    },
+    {
+      "question": "Sigmoid activation funksiyasının çıxış diapazonu hansıdır?",
+      "answer1": "A) (0, 1)",
+      "answer2": "B) (-1, 1)",
+      "answer3": "C) (-∞, ∞)",
+      "answer4": "D) (0, ∞)",
+      "correct": "A) (0, 1)"
+    },
+    {
+      "question": "Tanh activation funksiyasının çıxış diapazonu hansıdır?",
+      "answer1": "A) (-1, 1)",
+      "answer2": "B) (0, 1)",
+      "answer3": "C) (-∞, ∞)",
+      "answer4": "D) (0, ∞)",
+      "correct": "A) (-1, 1)"
+    },
+    {
+      "question": "Softmax activation funksiyası harada istifadə olunur?",
+      "answer1": "A) Çox sinifli klassifikasiyanın çıxış qatında",
+      "answer2": "B) Gizli qatlarda",
+      "answer3": "C) Giriş qatında",
+      "answer4": "D) Heç bir yerdə",
+      "correct": "A) Çox sinifli klassifikasiyanın çıxış qatında"
+    },
+    {
+      "question": "Backpropagation nədir?",
+      "answer1": "A) Xətanı geriyə yayaraq çəkiləri yeniləmə alqoritmi",
+      "answer2": "B) İrəli yayılma alqoritmi",
+      "answer3": "C) Verilənlərin hazırlanması",
+      "answer4": "D) Aktivasiya funksiyası",
+      "correct": "A) Xətanı geriyə yayaraq çəkiləri yeniləmə alqoritmi"
+    },
+    {
+      "question": "Gradient descent nədir?",
+      "answer1": "A) Loss funksiyasını minimumlaşdırmaq üçün optimizasiya alqoritmi",
+      "answer2": "B) Aktivasiya funksiyası",
+      "answer3": "C) Regularization metodu",
+      "answer4": "D) Verilənlərin artırılması",
+      "correct": "A) Loss funksiyasını minimumlaşdırmaq üçün optimizasiya alqoritmi"
+    }
+  ],
+  "ai_library5": [
+    {
+      "question": "Learning rate nədir?",
+      "answer1": "A) Gradient descent-də addım ölçüsü",
+      "answer2": "B) Neural Network-də qatların sayı",
+      "answer3": "C) Aktivasiya funksiyası",
+      "answer4": "D) Loss funksiyası",
+      "correct": "A) Gradient descent-də addım ölçüsü"
+    },
+    {
+      "question": "Epoch nədir?",
+      "answer1": "A) Bütün training verilənlərinin bir dəfə modeldən keçməsi",
+      "answer2": "B) Bir batch-in keçməsi",
+      "answer3": "C) Bir neuronun keçməsi",
+      "answer4": "D) Bir qatın keçməsi",
+      "correct": "A) Bütün training verilənlərinin bir dəfə modeldən keçməsi"
+    },
+    {
+      "question": "Batch size nədir?",
+      "answer1": "A) Bir iterasiyada modeldən keçən nümunələrin sayı",
+      "answer2": "B) Ümumi verilənlərin sayı",
+      "answer3": "C) Epoch sayı",
+      "answer4": "D) Qatların sayı",
+      "correct": "A) Bir iterasiyada modeldən keçən nümunələrin sayı"
+    },
+    {
+      "question": "Dropout nə üçün istifadə olunur?",
+      "answer1": "A) Overfitting-in qarşısını almaq",
+      "answer2": "B) Underfitting-i artırmaq",
+      "answer3": "C) Modeli sürətləndirmək",
+      "answer4": "D) Verilənləri artırmaq",
+      "correct": "A) Overfitting-in qarşısını almaq"
+    },
+    {
+      "question": "CNN (Convolutional Neural Network) hansı sahədə daha çox istifadə olunur?",
+      "answer1": "A) Şəkil tanıma və kompüter görüşü",
+      "answer2": "B) Təbii dil emalı",
+      "answer3": "C) Zaman seriyası analizi",
+      "answer4": "D) Klasterləmə",
+      "correct": "A) Şəkil tanıma və kompüter görüşü"
+    },
+    {
+      "question": "RNN (Recurrent Neural Network) hansı tip verilənlər üçün daha uyğundur?",
+      "answer1": "A) Ardıcıl verilənlər (zaman seriyası, mətn)",
+      "answer2": "B) Şəkillər",
+      "answer3": "C) Təsadüfi verilənlər",
+      "answer4": "D) Statik verilənlər",
+      "correct": "A) Ardıcıl verilənlər (zaman seriyası, mətn)"
+    },
+    {
+      "question": "LSTM nədir?",
+      "answer1": "A) Uzunmüddətli asılılıqları öyrənə bilən RNN növü",
+      "answer2": "B) CNN növü",
+      "answer3": "C) Aktivasiya funksiyası",
+      "answer4": "D) Regularization metodu",
+      "correct": "A) Uzunmüddətli asılılıqları öyrənə bilən RNN növü"
+    },
+    {
+      "question": "Transfer learning nədir?",
+      "answer1": "A) Əvvəlcədən öyrədilmiş modeli yeni tapşırıq üçün istifadə etmək",
+      "answer2": "B) Sıfırdan model öyrətmək",
+      "answer3": "C) Modeli silmək",
+      "answer4": "D) Verilənləri köçürmək",
+      "correct": "A) Əvvəlcədən öyrədilmiş modeli yeni tapşırıq üçün istifadə etmək"
+    },
+    {
+      "question": "Fine-tuning nədir?",
+      "answer1": "A) Transfer learning-də modelin son qatlarını yeni verilənlərlə yenidən öyrətmək",
+      "answer2": "B) Bütün modeli sıfırdan öyrətmək",
+      "answer3": "C) Modeli dondurmaq",
+      "answer4": "D) Modeli silmək",
+      "correct": "A) Transfer learning-də modelin son qatlarını yeni verilənlərlə yenidən öyrətmək"
+    },
+    {
+      "question": "NLP (Natural Language Processing) nədir?",
+      "answer1": "A) Təbii dilin kompüterlər tərəfindən işlənməsi",
+      "answer2": "B) Şəkil işlənməsi",
+      "answer3": "C) Səs işlənməsi",
+      "answer4": "D) Verilənlər bazasının işlənməsi",
+      "correct": "A) Təbii dilin kompüterlər tərəfindən işlənməsi"
+    }
+  ],
+  "ai_library6": [
+    {
+      "question": "Word embedding nədir?",
+      "answer1": "A) Sözləri vektorlara çevirmək",
+      "answer2": "B) Sözləri silmək",
+      "answer3": "C) Sözləri təkrarlamaq",
+      "answer4": "D) Sözləri sıralamaq",
+      "correct": "A) Sözləri vektorlara çevirmək"
+    },
+    {
+      "question": "Word2Vec nədir?",
+      "answer1": "A) Söz embedding üçün məşhur alqoritm",
+      "answer2": "B) Klassifikasiya alqoritmi",
+      "answer3": "C) Reqressiya alqoritmi",
+      "answer4": "D) Klasterləmə alqoritmi",
+      "correct": "A) Söz embedding üçün məşhur alqoritm"
+    },
+    {
+      "question": "Attention mechanism nə üçün istifadə olunur?",
+      "answer1": "A) Daxil olan məlumatın müxtəlif hissələrinə fərqli çəkilər vermək",
+      "answer2": "B) Bütün məlumata eyni çəki vermək",
+      "answer3": "C) Məlumatı silmək",
+      "answer4": "D) Məlumatı təkrarlamaq",
+      "correct": "A) Daxil olan məlumatın müxtəlif hissələrinə fərqli çəkilər vermək"
+    },
+    {
+      "question": "Transformer arxitekturası hansı sahədə inqilab etdi?",
+      "answer1": "A) Təbii dil emalı",
+      "answer2": "B) Kompüter görüşü",
+      "answer3": "C) Səs tanıma",
+      "answer4": "D) Robototexnika",
+      "correct": "A) Təbii dil emalı"
+    },
+    {
+      "question": "BERT nədir?",
+      "answer1": "A) Transformer-based language model",
+      "answer2": "B) CNN modeli",
+      "answer3": "C) RNN modeli",
+      "answer4": "D) SVM modeli",
+      "correct": "A) Transformer-based language model"
+    },
+    {
+      "question": "GPT (Generative Pre-trained Transformer) nə üçün istifadə olunur?",
+      "answer1": "A) Mətn generasiyası",
+      "answer2": "B) Şəkil generasiyası",
+      "answer3": "C) Səs generasiyası",
+      "answer4": "D) Video generasiyası",
+      "correct": "A) Mətn generasiyası"
+    },
+    {
+      "question": "Reinforcement learning-də Exploration vs Exploitation nədir?",
+      "answer1": "A) Yeni imkanları kəşf etmək vs məlum olanlardan istifadə etmək",
+      "answer2": "B) Yalnız kəşf etmək",
+      "answer3": "C) Yalnız istifadə etmək",
+      "answer4": "D) Heç birini etməmək",
+      "correct": "A) Yeni imkanları kəşf etmək vs məlum olanlardan istifadə etmək"
+    },
+    {
+      "question": "Q-learning nədir?",
+      "answer1": "A) Reinforcement learning alqoritmi",
+      "answer2": "B) Supervised learning alqoritmi",
+      "answer3": "C) Unsupervised learning alqoritmi",
+      "answer4": "D) Clustering alqoritmi",
+      "correct": "A) Reinforcement learning alqoritmi"
+    },
+    {
+      "question": "Generative Adversarial Network (GAN) nə hissələrdən ibarətdir?",
+      "answer1": "A) Generator və Discriminator",
+      "answer2": "B) Encoder və Decoder",
+      "answer3": "C) CNN və RNN",
+      "answer4": "D) LSTM və GRU",
+      "correct": "A) Generator və Discriminator"
+    },
+    {
+      "question": "Autoencoder nə üçün istifadə olunur?",
+      "answer1": "A) Verilənlərin sıxışdırılması və təkrarlanması",
+      "answer2": "B) Klassifikasiya",
+      "answer3": "C) Reqressiya",
+      "answer4": "D) Klasterləmə",
+      "correct": "A) Verilənlərin sıxışdırılması və təkrarlanması"
+    }
+  ],
+  "ai_library7": [
+    {
+      "question": "Cluster analysis nədir?",
+      "answer1": "A) Verilənləri qruplara ayırmaq",
+      "answer2": "B) Verilənləri sıralamaq",
+      "answer3": "C) Verilənləri silmək",
+      "answer4": "D) Verilənləri artırmaq",
+      "correct": "A) Verilənləri qruplara ayırmaq"
+    },
+    {
+      "question": "K-Means alqoritmində K nə deməkdir?",
+      "answer1": "A) Klasterlərin sayı",
+      "answer2": "B) İterasiyaların sayı",
+      "answer3": "C) Feature-lərin sayı",
+      "answer4": "D) Verilənlərin sayı",
+      "correct": "A) Klasterlərin sayı"
+    },
+    {
+      "question": "Elbow method nə üçün istifadə olunur?",
+      "answer1": "A) K-Means üçün optimal K dəyərini tapmaq",
+      "answer2": "B) Modelin performansını ölçmək",
+      "answer3": "C) Verilənləri vizuallaşdırmaq",
+      "answer4": "D) Feature seçmək",
+      "correct": "A) K-Means üçün optimal K dəyərini tapmaq"
+    },
+    {
+      "question": "DBSCAN nədir?",
+      "answer1": "A) Sıxlıq əsaslı klasterləmə alqoritmi",
+      "answer2": "B) Məsafə əsaslı klasterləmə",
+      "answer3": "C) Hiyerarşik klasterləmə",
+      "answer4": "D) Spektral klasterləmə",
+      "correct": "A) Sıxlıq əsaslı klasterləmə alqoritmi"
+    },
+    {
+      "question": "Hierarchical clustering nədir?",
+      "answer1": "A) Klasterlərin ağac şəklində qurulması",
+      "answer2": "B) Düz xətt üzrə klasterləmə",
+      "answer3": "C) Təsadüfi klasterləmə",
+      "answer4": "D) Sıxlıq əsaslı klasterləmə",
+      "correct": "A) Klasterlərin ağac şəklində qurulması"
+    },
+    {
+      "question": "Dendrogram nədir?",
+      "answer1": "A) Hierarchical clustering-in vizual təsviri",
+      "answer2": "B) K-Means-in nəticəsi",
+      "answer3": "C) DBSCAN-in nəticəsi",
+      "answer4": "D) PCA-nın nəticəsi",
+      "correct": "A) Hierarchical clustering-in vizual təsviri"
+    },
+    {
+      "question": "Silhouette score nəyi ölçür?",
+      "answer1": "A) Klasterləmənin keyfiyyətini",
+      "answer2": "B) Reqressiyanın xətasını",
+      "answer3": "C) Klassifikasiyanın dəqiqliyini",
+      "answer4": "D) Modelin sürətini",
+      "correct": "A) Klasterləmənin keyfiyyətini"
+    },
+    {
+      "question": "Feature engineering nədir?",
+      "answer1": "A) Verilənlərdən yeni feature-lər yaratmaq",
+      "answer2": "B) Verilənləri silmək",
+      "answer3": "C) Model qurmaq",
+      "answer4": "D) Verilənləri vizuallaşdırmaq",
+      "correct": "A) Verilənlərdən yeni feature-lər yaratmaq"
+    },
+    {
+      "question": "One-hot encoding nə üçün istifadə olunur?",
+      "answer1": "A) Kateqoriyalı dəyişənləri rəqəmsal dəyərlərə çevirmək",
+      "answer2": "B) Verilənləri normallaşdırmaq",
+      "answer3": "C) Verilənləri standartlaşdırmaq",
+      "answer4": "D) Verilənləri silmək",
+      "correct": "A) Kateqoriyalı dəyişənləri rəqəmsal dəyərlərə çevirmək"
+    },
+    {
+      "question": "Label encoding nədir?",
+      "answer1": "A) Hər kateqoriyaya unikal ədəd vermək",
+      "answer2": "B) İkili vektor yaratmaq",
+      "answer3": "C) Verilənləri normallaşdırmaq",
+      "answer4": "D) Verilənləri standartlaşdırmaq",
+      "correct": "A) Hər kateqoriyaya unikal ədəd vermək"
+    }
+  ],
+  "ai_library8": [
+    {
+      "question": "Normalization nədir?",
+      "answer1": "A) Verilənləri [0, 1] intervalına gətirmək",
+      "answer2": "B) Verilənləri orta 0, standart sapma 1 etmək",
+      "answer3": "C) Verilənləri silmək",
+      "answer4": "D) Verilənləri təkrarlamaq",
+      "correct": "A) Verilənləri [0, 1] intervalına gətirmək"
+    },
+    {
+      "question": "Standardization (Z-score) nədir?",
+      "answer1": "A) Verilənləri orta 0, standart sapma 1 etmək",
+      "answer2": "B) Verilənləri [0, 1] intervalına gətirmək",
+      "answer3": "C) Verilənləri silmək",
+      "answer4": "D) Verilənləri təkrarlamaq",
+      "correct": "A) Verilənləri orta 0, standart sapma 1 etmək"
+    },
+    {
+      "question": "Outlier nədir?",
+      "answer1": "A) Verilənlər dəstindəki anormal dəyərlər",
+      "answer2": "B) Orta dəyərlər",
+      "answer3": "C) Median dəyərlər",
+      "answer4": "D) Mod dəyərlər",
+      "correct": "A) Verilənlər dəstindəki anormal dəyərlər"
+    },
+    {
+      "question": "Missing value-ları doldurmaq üçün hansı üsullar var?",
+      "answer1": "A) Mean, median, mode ilə doldurma",
+      "answer2": "B) Yalnız silmə",
+      "answer3": "C) Yalnız təkrarlama",
+      "answer4": "D) Heç biri",
+      "correct": "A) Mean, median, mode ilə doldurma"
+    },
+    {
+      "question": "Hyperparameter tuning nədir?",
+      "answer1": "A) Modelin ən yaxşı parametrlərini tapmaq",
+      "answer2": "B) Modelin çəkilərini tapmaq",
+      "answer3": "C) Verilənləri hazırlamaq",
+      "answer4": "D) Modeli qiymətləndirmək",
+      "correct": "A) Modelin ən yaxşı parametrlərini tapmaq"
+    },
+    {
+      "question": "Grid Search nədir?",
+      "answer1": "A) Hyperparameter-lərin bütün kombinasiyalarını sınamaq",
+      "answer2": "B) Təsadüfi seçim etmək",
+      "answer3": "C) Yalnız bir parametri sınamaq",
+      "answer4": "D) Parametrləri tapmaq",
+      "correct": "A) Hyperparameter-lərin bütün kombinasiyalarını sınamaq"
+    },
+    {
+      "question": "Random Search nədir?",
+      "answer1": "A) Hyperparameter-lərin təsadüfi kombinasiyalarını sınamaq",
+      "answer2": "B) Bütün kombinasiyaları sınamaq",
+      "answer3": "C) Yalnız bir parametri sınamaq",
+      "answer4": "D) Heç nə sınamamaq",
+      "correct": "A) Hyperparameter-lərin təsadüfi kombinasiyalarını sınamaq"
+    },
+    {
+      "question": "Bayesian optimization nədir?",
+      "answer1": "A) Hyperparameter tuning üçün ehtimal modeli əsaslı metod",
+      "answer2": "B) Grid search",
+      "answer3": "C) Random search",
+      "answer4": "D) Manual tuning",
+      "correct": "A) Hyperparameter tuning üçün ehtimal modeli əsaslı metod"
+    },
+    {
+      "question": "Early stopping nədir?",
+      "answer1": "A) Validation loss artmağa başlayanda training-i dayandırmaq",
+      "answer2": "B) Training-i çox erkən dayandırmaq",
+      "answer3": "C) Training-i heç dayandırmamaq",
+      "answer4": "D) Training-i çox gec dayandırmaq",
+      "correct": "A) Validation loss artmağa başlayanda training-i dayandırmaq"
+    },
+    {
+      "question": "Model ensembling nədir?",
+      "answer1": "A) Birdən çox modeli birləşdirmək",
+      "answer2": "B) Tək model istifadə etmək",
+      "answer3": "C) Modeli silmək",
+      "answer4": "D) Modeli təkrarlamaq",
+      "correct": "A) Birdən çox modeli birləşdirmək"
+    }
+  ],
+  "ai_library9": [
+    {
+      "question": "Bagging (Bootstrap Aggregating) nədir?",
+      "answer1": "A) Verilənlərdən təsadüfi nümunələr götürərək modellər qurmaq",
+      "answer2": "B) Ardıcıl olaraq səhvləri düzəltmək",
+      "answer3": "C) Tək model qurmaq",
+      "answer4": "D) Verilənləri silmək",
+      "correct": "A) Verilənlərdən təsadüfi nümunələr götürərək modellər qurmaq"
+    },
+    {
+      "question": "Boosting nədir?",
+      "answer1": "A) Ardıcıl olaraq səhvləri düzəldən modellər qurmaq",
+      "answer2": "B) Paralel modellər qurmaq",
+      "answer3": "C) Təsadüfi nümunələr götürmək",
+      "answer4": "D) Verilənləri artırmaq",
+      "correct": "A) Ardıcıl olaraq səhvləri düzəldən modellər qurmaq"
+    },
+    {
+      "question": "Stacking nədir?",
+      "answer1": "A) Fərqli modellərin çıxışlarını meta-model ilə birləşdirmək",
+      "answer2": "B) Eyni modelləri təkrarlamaq",
+      "answer3": "C) Tək model istifadə etmək",
+      "answer4": "D) Modeli silmək",
+      "correct": "A) Fərqli modellərin çıxışlarını meta-model ilə birləşdirmək"
+    },
+    {
+      "question": "Voting classifier nədir?",
+      "answer1": "A) Birdən çox modelin səs çoxluğu ilə qərar verməsi",
+      "answer2": "B) Tək modelin qərar verməsi",
+      "answer3": "C) Modelin səs verməsi",
+      "answer4": "D) Heç bir modelin qərar verməməsi",
+      "correct": "A) Birdən çox modelin səs çoxluğu ilə qərar verməsi"
+    },
+    {
+      "question": "Time series analysis nədir?",
+      "answer1": "A) Zamanla dəyişən verilənlərin analizi",
+      "answer2": "B) Statik verilənlərin analizi",
+      "answer3": "C) Şəkillərin analizi",
+      "answer4": "D) Mətnin analizi",
+      "correct": "A) Zamanla dəyişən verilənlərin analizi"
+    },
+    {
+      "question": "ARIMA modeli nə üçün istifadə olunur?",
+      "answer1": "A) Zaman seriyası proqnozlaşdırması",
+      "answer2": "B) Klassifikasiya",
+      "answer3": "C) Klasterləmə",
+      "answer4": "D) Reqressiya",
+      "correct": "A) Zaman seriyası proqnozlaşdırması"
+    },
+    {
+      "question": "Stationarity (dəyişməzlik) nə deməkdir?",
+      "answer1": "A) Zaman seriyasının statistik xüsusiyyətlərinin zamanla dəyişməməsi",
+      "answer2": "B) Zaman seriyasının dəyişməsi",
+      "answer3": "C) Verilənlərin sıfır olması",
+      "answer4": "D) Verilənlərin təkrar olması",
+      "correct": "A) Zaman seriyasının statistik xüsusiyyətlərinin zamanla dəyişməməsi"
+    },
+    {
+      "question": "Recommendation system nədir?",
+      "answer1": "A) İstifadəçilərə məhsul və ya məzmun tövsiyə edən sistem",
+      "answer2": "B) Klassifikasiya sistemi",
+      "answer3": "C) Reqressiya sistemi",
+      "answer4": "D) Klasterləmə sistemi",
+      "correct": "A) İstifadəçilərə məhsul və ya məzmun tövsiyə edən sistem"
+    },
+    {
+      "question": "Collaborative filtering nədir?",
+      "answer1": "A) İstifadəçilərin davranışlarına əsasən tövsiyə etmək",
+      "answer2": "B) Məhsulların xüsusiyyətlərinə əsasən tövsiyə etmək",
+      "answer3": "C) Təsadüfi tövsiyə etmək",
+      "answer4": "D) Heç nə tövsiyə etməmək",
+      "correct": "A) İstifadəçilərin davranışlarına əsasən tövsiyə etmək"
+    },
+    {
+      "question": "Content-based filtering nədir?",
+      "answer1": "A) Məhsulların xüsusiyyətlərinə əsasən tövsiyə etmək",
+      "answer2": "B) İstifadəçilərin davranışlarına əsasən tövsiyə etmək",
+      "answer3": "C) Təsadüfi tövsiyə etmək",
+      "answer4": "D) Heç nə tövsiyə etməmək",
+      "correct": "A) Məhsulların xüsusiyyətlərinə əsasən tövsiyə etmək"
+    }
+  ],
+  "ai_library10": [
+    {
+      "question": "Explainable AI (XAI) nədir?",
+      "answer1": "A) AI modellərinin qərarlarını izah edə bilən sistemlər",
+      "answer2": "B) Qara qutu AI sistemləri",
+      "answer3": "C) Sadə AI sistemləri",
+      "answer4": "D) Sürətli AI sistemləri",
+      "correct": "A) AI modellərinin qərarlarını izah edə bilən sistemlər"
+    },
+    {
+      "question": "SHAP nədir?",
+      "answer1": "A) Model çıxışlarını izah etmək üçün metod",
+      "answer2": "B) Klassifikasiya alqoritmi",
+      "answer3": "C) Reqressiya alqoritmi",
+      "answer4": "D) Klasterləmə alqoritmi",
+      "correct": "A) Model çıxışlarını izah etmək üçün metod"
+    },
+    {
+      "question": "LIME nədir?",
+      "answer1": "A) Lokal olaraq modelləri izah edən metod",
+      "answer2": "B) Qlobal izah metodu",
+      "answer3": "C) Klassifikasiya alqoritmi",
+      "answer4": "D) Reqressiya alqoritmi",
+      "correct": "A) Lokal olaraq modelləri izah edən metod"
+    },
+    {
+      "question": "Ethics in AI nəyi əhatə edir?",
+      "answer1": "A) AI-nin ədalətli, şəffaf və təhlükəsiz olması",
+      "answer2": "B) Yalnız sürətli olması",
+      "answer3": "C) Yalnız dəqiq olması",
+      "answer4": "D) Yalnız ucuz olması",
+      "correct": "A) AI-nin ədalətli, şəffaf və təhlükəsiz olması"
+    },
+    {
+      "question": "Bias in AI nə deməkdir?",
+      "answer1": "A) Modelin müəyyən qruplara qarşı qərəzli olması",
+      "answer2": "B) Modelin çox sürətli olması",
+      "answer3": "C) Modelin çox dəqiq olması",
+      "answer4": "D) Modelin çox yavaş olması",
+      "correct": "A) Modelin müəyyən qruplara qarşı qərəzli olması"
+    },
+    {
+      "question": "Federated Learning nədir?",
+      "answer1": "A) Verilənləri mərkəzləşdirmədən model öyrətmək",
+      "answer2": "B) Verilənləri mərkəzləşdirərək öyrətmək",
+      "answer3": "C) Verilənləri silmək",
+      "answer4": "D) Verilənləri təkrarlamaq",
+      "correct": "A) Verilənləri mərkəzləşdirmədən model öyrətmək"
+    },
+    {
+      "question": "Edge AI nədir?",
+      "answer1": "A) AI modellərini cihazların özündə işlətmək",
+      "answer2": "B) AI modellərini buludda işlətmək",
+      "answer3": "C) AI modellərini silmək",
+      "answer4": "D) AI modellərini təkrarlamaq",
+      "correct": "A) AI modellərini cihazların özündə işlətmək"
+    },
+    {
+      "question": "MLOps nədir?",
+      "answer1": "A) ML modellərinin deploy və idarə olunması praktikası",
+      "answer2": "B) ML modellərinin öyrədilməsi",
+      "answer3": "C) ML modellərinin silinməsi",
+      "answer4": "D) ML modellərinin təkrarlanması",
+      "correct": "A) ML modellərinin deploy və idarə olunması praktikası"
+    },
+    {
+      "question": "Data drift nədir?",
+      "answer1": "A) Modelin giriş verilənlərinin zamanla dəyişməsi",
+      "answer2": "B) Modelin çəkilərinin dəyişməsi",
+      "answer3": "C) Modelin çıxışlarının dəyişməsi",
+      "answer4": "D) Heç nəyin dəyişməməsi",
+      "correct": "A) Modelin giriş verilənlərinin zamanla dəyişməsi"
+    },
+    {
+      "question": "Model drift nədir?",
+      "answer1": "A) Modelin performansının zamanla azalması",
+      "answer2": "B) Modelin sürətinin artması",
+      "answer3": "C) Modelin dəqiqliyinin artması",
+      "answer4": "D) Heç nəyin dəyişməməsi",
+      "correct": "A) Modelin performansının zamanla azalması"
+    }
+  ]
+}

@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ali.MainActivity;
-import com.ali.javaquizbyali.JuniorQuiz;
+import com.ali.pymain.quiz.PythonQuiz;
 import com.ali.pymain.taskmanager.PythonConsole;
 import com.ali.pymain.taskmanager.PythonTask;
 import com.ali.systemIn.R;
@@ -24,7 +24,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class PythonMain extends AppCompatActivity implements AlgoListener {
 
@@ -34,13 +33,12 @@ public class PythonMain extends AppCompatActivity implements AlgoListener {
         setContentView(R.layout.activity_pymain);
 
         ArrayList<Algo> arrayList = new ArrayList<>();
-        arrayList.add(new Algo(R.drawable.junior64, "Tezlikle", null));
-        arrayList.add(new Algo(R.drawable.pythoncon48, "Python Console", PythonConsole.class));
-        arrayList.add(new Algo(R.drawable.taskpython, "Python Task", PythonTask.class));
 
-
-
-
+        // Hər Algo üçün JSON fayl adını da əlavə edirik
+        arrayList.add(new Algo(R.drawable.junior64, "PandasQuiz", PythonQuiz.class, "dataPython/pandas_library.json"));
+        arrayList.add(new Algo(R.drawable.junior64, "NumPyQuiz", PythonQuiz.class, "dataPython/numpy_library.json"));
+        arrayList.add(new Algo(R.drawable.pythoncon48, "Python Console", PythonConsole.class, null));
+        arrayList.add(new Algo(R.drawable.taskpython, "Python Task", PythonTask.class, null));
 
         AlgoAdapter algoAdapter = new AlgoAdapter(arrayList, this);
         RecyclerView recyclerView = findViewById(R.id.main_recycler_view);
@@ -54,6 +52,8 @@ public class PythonMain extends AppCompatActivity implements AlgoListener {
     public void onAlgoSelected(Algo algo) {
         Intent intent = new Intent(this, algo.activityClazz);
         intent.putExtra("name", algo.algoText);
+        intent.putExtra("QUIZ_TYPE", algo.algoText);        // Quiz adı
+        intent.putExtra("JSON_FILE", algo.jsonFileName);   // JSON fayl adı
         startActivity(intent);
     }
 
@@ -62,7 +62,7 @@ public class PythonMain extends AppCompatActivity implements AlgoListener {
         public void handleOnBackPressed() {
             MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(PythonMain.this);
             materialAlertDialogBuilder.setTitle(R.string.app_name);
-            materialAlertDialogBuilder.setMessage("Are you sure want to exit the quiz?");
+            materialAlertDialogBuilder.setMessage("Are you sure want to exit?");
             materialAlertDialogBuilder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int i) {
@@ -72,19 +72,16 @@ public class PythonMain extends AppCompatActivity implements AlgoListener {
             materialAlertDialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int i) {
-                    startActivity(new Intent(PythonMain.this , MainActivity.class));
+                    startActivity(new Intent(PythonMain.this, MainActivity.class));
                     finish();
                 }
             });
-
             materialAlertDialogBuilder.show();
         }
-
     };
 }
 
 class AlgoAdapter extends RecyclerView.Adapter<AlgoViewHolder> {
-
     private List<Algo> algoList;
     private AlgoListener algoListener;
 
@@ -112,7 +109,6 @@ class AlgoAdapter extends RecyclerView.Adapter<AlgoViewHolder> {
 }
 
 class AlgoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
     private ImageView iconImageView;
     private TextView algoTextView;
     private AlgoListener algoListener;
@@ -122,7 +118,6 @@ class AlgoViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
         super(itemView);
         itemView.setOnClickListener(this);
         this.algoListener = algoListener;
-
         iconImageView = itemView.findViewById(R.id.iconImageView);
         algoTextView = itemView.findViewById(R.id.algoTextView);
     }
@@ -139,19 +134,19 @@ class AlgoViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
             algoListener.onAlgoSelected(algo);
         }
     }
-
-
 }
 
-class Algo<T extends JuniorQuiz> {
+class Algo {
     public int iconResourceId = R.drawable.ic_launcher_foreground;
     public String algoText = "";
-    public Class<T> activityClazz;
+    public Class<?> activityClazz;
+    public String jsonFileName = null;  // JSON fayl adı
 
-    public Algo(int iconResourceId, String algoText, Class<T> activityClazz) {
+    public Algo(int iconResourceId, String algoText, Class<?> activityClazz, String jsonFileName) {
         this.iconResourceId = iconResourceId;
         this.algoText = algoText;
         this.activityClazz = activityClazz;
+        this.jsonFileName = jsonFileName;
     }
 }
 

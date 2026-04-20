@@ -1,0 +1,494 @@
+{
+  "pandas_library1": [
+    {
+      "question": "Pandas kitabxanasını import etmək üçün hansı ifadə istifadə olunur?",
+      "answer1": "A) import pandas",
+      "answer2": "B) import pd",
+      "answer3": "C) import pandas as pd",
+      "answer4": "D) include pandas",
+      "correct": "C) import pandas as pd"
+    },
+    {
+      "question": "Pandas-da DataFrame yaratmaq üçün hansı funksiya istifadə olunur?",
+      "answer1": "A) pd.DataFrame()",
+      "answer2": "B) pd.createDataFrame()",
+      "answer3": "C) pd.newDataFrame()",
+      "answer4": "D) pd.makeDataFrame()",
+      "correct": "A) pd.DataFrame()"
+    },
+    {
+      "question": "pandas Series nədir?",
+      "answer1": "A) 2D ölçülü data strukturu",
+      "answer2": "B) 1D ölçülü etiketli array",
+      "answer3": "C) 3D ölçülü data strukturu",
+      "answer4": "D) SQL cədvəli",
+      "correct": "B) 1D ölçülü etiketli array"
+    },
+    {
+      "question": "CSV faylını oxumaq üçün pandas-da hansı funksiya istifadə olunur?",
+      "answer1": "A) pd.read_csv()",
+      "answer2": "B) pd.load_csv()",
+      "answer3": "C) pd.import_csv()",
+      "answer4": "D) pd.open_csv()",
+      "correct": "A) pd.read_csv()"
+    },
+    {
+      "question": "DataFrame-in ilk 5 sətirini göstərmək üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.first()",
+      "answer2": "B) df.head()",
+      "answer3": "C) df.tail()",
+      "answer4": "D) df.top()",
+      "correct": "B) df.head()"
+    },
+    {
+      "question": "DataFrame-in son 5 sətirini göstərmək üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.last()",
+      "answer2": "B) df.head()",
+      "answer3": "C) df.tail()",
+      "answer4": "D) df.bottom()",
+      "correct": "C) df.tail()"
+    },
+    {
+      "question": "DataFrame haqqında ümumi məlumat almaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.describe()",
+      "answer2": "B) df.info()",
+      "answer3": "C) df.summary()",
+      "answer4": "D) Həm A, həm B",
+      "correct": "D) Həm A, həm B"
+    },
+    {
+      "question": "DataFrame-də boş (null) dəyərləri tapmaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.isnull()",
+      "answer2": "B) df.empty()",
+      "answer3": "C) df.nan()",
+      "answer4": "D) df.null()",
+      "correct": "A) df.isnull()"
+    },
+    {
+      "question": "DataFrame-də boş dəyərləri silmək üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.remove_na()",
+      "answer2": "B) df.dropna()",
+      "answer3": "C) df.delete_na()",
+      "answer4": "D) df.clean()",
+      "correct": "B) df.dropna()"
+    },
+    {
+      "question": "DataFrame-də boş dəyərləri doldurmaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.fill()",
+      "answer2": "B) df.replace_na()",
+      "answer3": "C) df.fillna()",
+      "answer4": "D) df.complete()",
+      "correct": "C) df.fillna()"
+    }
+  ],
+  "pandas_library2": [
+    {
+      "question": "DataFrame-də sütun seçmək üçün hansı üsul istifadə olunur?",
+      "answer1": "A) df['column_name']",
+      "answer2": "B) df.column_name",
+      "answer3": "C) df.select('column_name')",
+      "answer4": "D) Həm A, həm B",
+      "correct": "D) Həm A, həm B"
+    },
+    {
+      "question": "DataFrame-də sətir seçmək üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.row()",
+      "answer2": "B) df.loc[]",
+      "answer3": "C) df.iloc[]",
+      "answer4": "D) Həm B, həm C",
+      "correct": "D) Həm B, həm C"
+    },
+    {
+      "question": "DataFrame-də label ilə sətir seçmək üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.iloc[]",
+      "answer2": "B) df.loc[]",
+      "answer3": "C) df.at[]",
+      "answer4": "D) df.iat[]",
+      "correct": "B) df.loc[]"
+    },
+    {
+      "question": "DataFrame-də index ilə sətir seçmək üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.loc[]",
+      "answer2": "B) df.iloc[]",
+      "answer3": "C) df.at[]",
+      "answer4": "D) df.iat[]",
+      "correct": "B) df.iloc[]"
+    },
+    {
+      "question": "DataFrame-də şərtə əsasən filtrasiya etmək üçün hansı üsul istifadə olunur?",
+      "answer1": "A) df.filter()",
+      "answer2": "B) df[df['column'] > value]",
+      "answer3": "C) df.where()",
+      "answer4": "D) df.query()",
+      "correct": "B) df[df['column'] > value]"
+    },
+    {
+      "question": "DataFrame-də qruplaşdırma əməliyyatı üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.group()",
+      "answer2": "B) df.groupby()",
+      "answer3": "C) df.aggregate()",
+      "answer4": "D) df.partition()",
+      "correct": "B) df.groupby()"
+    },
+    {
+      "question": "DataFrame-də sütunların statistik məlumatlarını almaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.stats()",
+      "answer2": "B) df.summary()",
+      "answer3": "C) df.describe()",
+      "answer4": "D) df.analyze()",
+      "correct": "C) df.describe()"
+    },
+    {
+      "question": "DataFrame-də sütunların sayını tapmaq üçün hansı atribut istifadə olunur?",
+      "answer1": "A) df.columns",
+      "answer2": "B) df.column_count",
+      "answer3": "C) df.shape[1]",
+      "answer4": "D) Həm A, həm C",
+      "correct": "D) Həm A, həm C"
+    },
+    {
+      "question": "DataFrame-də sətirlərin sayını tapmaq üçün hansı atribut istifadə olunur?",
+      "answer1": "A) df.rows",
+      "answer2": "B) df.shape[0]",
+      "answer3": "C) df.count()",
+      "answer4": "D) Həm B, həm C",
+      "correct": "D) Həm B, həm C"
+    },
+    {
+      "question": "DataFrame-də təkrarlanan sətirləri silmək üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.unique()",
+      "answer2": "B) df.drop_duplicates()",
+      "answer3": "C) df.remove_duplicates()",
+      "answer4": "D) df.deduplicate()",
+      "correct": "B) df.drop_duplicates()"
+    }
+  ],
+  "pandas_library3": [
+    {
+      "question": "DataFrame-də yeni sütun əlavə etmək üçün hansı üsul istifadə olunur?",
+      "answer1": "A) df.add_column()",
+      "answer2": "B) df['new_column'] = values",
+      "answer3": "C) df.insert()",
+      "answer4": "D) Həm B, həm C",
+      "correct": "D) Həm B, həm C"
+    },
+    {
+      "question": "DataFrame-də sütunu silmək üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.delete()",
+      "answer2": "B) df.remove()",
+      "answer3": "C) df.drop()",
+      "answer4": "D) df.pop()",
+      "correct": "C) df.drop()"
+    },
+    {
+      "question": "İki DataFrame-i birləşdirmək (merge) üçün hansı metod istifadə olunur?",
+      "answer1": "A) pd.concat()",
+      "answer2": "B) pd.merge()",
+      "answer3": "C) df.join()",
+      "answer4": "D) Hər üçü",
+      "correct": "D) Hər üçü"
+    },
+    {
+      "question": "DataFrame-də sütun adlarını dəyişdirmək üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.rename()",
+      "answer2": "B) df.columns = ['new1', 'new2']",
+      "answer3": "C) df.set_columns()",
+      "answer4": "D) Həm A, həm B",
+      "correct": "D) Həm A, həm B"
+    },
+    {
+      "question": "DataFrame-də index-i dəyişdirmək üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.set_index()",
+      "answer2": "B) df.reset_index()",
+      "answer3": "C) df.index = new_index",
+      "answer4": "D) Hər üçü",
+      "correct": "D) Hər üçü"
+    },
+    {
+      "question": "DataFrame-i müəyyən sütuna görə sıralamaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.sort()",
+      "answer2": "B) df.sort_values()",
+      "answer3": "C) df.order_by()",
+      "answer4": "D) df.arrange()",
+      "correct": "B) df.sort_values()"
+    },
+    {
+      "question": "DataFrame-də index-ə görə sıralamaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.sort_index()",
+      "answer2": "B) df.sort_values()",
+      "answer3": "C) df.order_index()",
+      "answer4": "D) df.sort_by_index()",
+      "correct": "A) df.sort_index()"
+    },
+    {
+      "question": "DataFrame-də pivot cədvəl yaratmaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.pivot()",
+      "answer2": "B) df.pivot_table()",
+      "answer3": "C) pd.pivot()",
+      "answer4": "D) Həm A, həm B",
+      "correct": "D) Həm A, həm B"
+    },
+    {
+      "question": "DataFrame-də bir sütuna funksiya tətbiq etmək üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.apply()",
+      "answer2": "B) df.map()",
+      "answer3": "C) df.transform()",
+      "answer4": "D) Hər üçü",
+      "correct": "D) Hər üçü"
+    },
+    {
+      "question": "DataFrame-də lambda funksiyası ilə əməliyyat aparmaq üçün hansı metod ən uyğundur?",
+      "answer1": "A) df.apply(lambda x: x*2)",
+      "answer2": "B) df.map(lambda x: x*2)",
+      "answer3": "C) df.transform(lambda x: x*2)",
+      "answer4": "D) Hər üçü",
+      "correct": "D) Hər üçü"
+    }
+  ],
+  "pandas_library4": [
+    {
+      "question": "Excel faylını oxumaq üçün pandas-da hansı funksiya istifadə olunur?",
+      "answer1": "A) pd.read_excel()",
+      "answer2": "B) pd.load_excel()",
+      "answer3": "C) pd.import_excel()",
+      "answer4": "D) pd.open_excel()",
+      "correct": "A) pd.read_excel()"
+    },
+    {
+      "question": "DataFrame-i CSV faylına yazmaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.write_csv()",
+      "answer2": "B) df.to_csv()",
+      "answer3": "C) df.save_csv()",
+      "answer4": "D) df.export_csv()",
+      "correct": "B) df.to_csv()"
+    },
+    {
+      "question": "DataFrame-i Excel faylına yazmaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.write_excel()",
+      "answer2": "B) df.to_excel()",
+      "answer3": "C) df.save_excel()",
+      "answer4": "D) df.export_excel()",
+      "correct": "B) df.to_excel()"
+    },
+    {
+      "question": "DataFrame-də bütün dəyərlərin cəmini hesablamaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.total()",
+      "answer2": "B) df.sum()",
+      "answer3": "C) df.aggregate('sum')",
+      "answer4": "D) Həm B, həm C",
+      "correct": "D) Həm B, həm C"
+    },
+    {
+      "question": "DataFrame-də hər sütunun maksimum dəyərini tapmaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.max()",
+      "answer2": "B) df.maximum()",
+      "answer3": "C) df.peak()",
+      "answer4": "D) df.top()",
+      "correct": "A) df.max()"
+    },
+    {
+      "question": "DataFrame-də hər sütunun minimum dəyərini tapmaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.min()",
+      "answer2": "B) df.minimum()",
+      "answer3": "C) df.bottom()",
+      "answer4": "D) df.lowest()",
+      "correct": "A) df.min()"
+    },
+    {
+      "question": "DataFrame-də hər sütunun orta dəyərini tapmaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.avg()",
+      "answer2": "B) df.mean()",
+      "answer3": "C) df.average()",
+      "answer4": "D) Həm B, həm C",
+      "correct": "D) Həm B, həm C"
+    },
+    {
+      "question": "DataFrame-də hər sütunun median dəyərini tapmaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.median()",
+      "answer2": "B) df.middle()",
+      "answer3": "C) df.central()",
+      "answer4": "D) df.mid()",
+      "correct": "A) df.median()"
+    },
+    {
+      "question": "DataFrame-də hər sütunun standart sapmasını tapmaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.std()",
+      "answer2": "B) df.stdev()",
+      "answer3": "C) df.standard()",
+      "answer4": "D) df.sd()",
+      "correct": "A) df.std()"
+    },
+    {
+      "question": "DataFrame-də sütunlar arasında korrelyasiya hesablamaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.corr()",
+      "answer2": "B) df.correlation()",
+      "answer3": "C) df.cov()",
+      "answer4": "D) df.relate()",
+      "correct": "A) df.corr()"
+    }
+  ],
+  "pandas_library5": [
+    {
+      "question": "DataFrame-də unikal dəyərləri tapmaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.unique()",
+      "answer2": "B) df.nunique()",
+      "answer3": "C) df.distinct()",
+      "answer4": "D) Həm A, həm B",
+      "correct": "D) Həm A, həm B"
+    },
+    {
+      "question": "DataFrame-də hər bir unikal dəyərin sayını tapmaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.count()",
+      "answer2": "B) df.value_counts()",
+      "answer3": "C) df.frequency()",
+      "answer4": "D) df.tally()",
+      "correct": "B) df.value_counts()"
+    },
+    {
+      "question": "DataFrame-də sətir və sütun sayını (shape) tapmaq üçün hansı atribut istifadə olunur?",
+      "answer1": "A) df.shape",
+      "answer2": "B) df.size",
+      "answer3": "C) df.dimensions",
+      "answer4": "D) df.format()",
+      "correct": "A) df.shape"
+    },
+    {
+      "question": "DataFrame-də ümumi element sayını tapmaq üçün hansı atribut istifadə olunur?",
+      "answer1": "A) df.shape",
+      "answer2": "B) df.size",
+      "answer3": "C) df.count()",
+      "answer4": "D) df.total()",
+      "correct": "B) df.size"
+    },
+    {
+      "question": "DataFrame-də məlumat tiplərini görmək üçün hansı atribut istifadə olunur?",
+      "answer1": "A) df.types",
+      "answer2": "B) df.dtypes",
+      "answer3": "C) df.datatypes",
+      "answer4": "D) df.info()",
+      "correct": "B) df.dtypes"
+    },
+    {
+      "question": "DataFrame-də sütunun tipini dəyişdirmək üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.convert_dtypes()",
+      "answer2": "B) df.astype()",
+      "answer3": "C) df.change_type()",
+      "answer4": "D) df.cast()",
+      "correct": "B) df.astype()"
+    },
+    {
+      "question": "DataFrame-də təsadüfi nümunə götürmək üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.sample()",
+      "answer2": "B) df.random()",
+      "answer3": "C) df.take()",
+      "answer4": "D) df.choose()",
+      "correct": "A) df.sample()"
+    },
+    {
+      "question": "DataFrame-də məlumatları təsadüfi olaraq qarışdırmaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.shuffle()",
+      "answer2": "B) df.sample(frac=1)",
+      "answer3": "C) df.mix()",
+      "answer4": "D) df.randomize()",
+      "correct": "B) df.sample(frac=1)"
+    },
+    {
+      "question": "DataFrame-də index-i sıfırlamaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.reset_index()",
+      "answer2": "B) df.drop_index()",
+      "answer3": "C) df.clear_index()",
+      "answer4": "D) df.remove_index()",
+      "correct": "A) df.reset_index()"
+    },
+    {
+      "question": "DataFrame-də müəyyən sütunu index etmək üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.index_column()",
+      "answer2": "B) df.set_index()",
+      "answer3": "C) df.make_index()",
+      "answer4": "D) df.create_index()",
+      "correct": "B) df.set_index()"
+    }
+  ],
+  "pandas_library6": [
+    {
+      "question": "DataFrame-də datetime məlumatları ilə işləmək üçün hansı metod istifadə olunur?",
+      "answer1": "A) pd.to_datetime()",
+      "answer2": "B) df.to_datetime()",
+      "answer3": "C) pd.datetime()",
+      "answer4": "D) df.datetime()",
+      "correct": "A) pd.to_datetime()"
+    },
+    {
+      "question": "DataFrame-də sütunları tətbiq etməklə yeni sütun yaratmaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.assign()",
+      "answer2": "B) df.add()",
+      "answer3": "C) df.create()",
+      "answer4": "D) df.new()",
+      "correct": "A) df.assign()"
+    },
+    {
+      "question": "DataFrame-də kateqoriyalı məlumatlar üçün hansı tip istifadə olunur?",
+      "answer1": "A) category",
+      "answer2": "B) categorical",
+      "answer3": "C) cat",
+      "answer4": "D) enum",
+      "correct": "A) category"
+    },
+    {
+      "question": "DataFrame-də yaddaşı optimallaşdırmaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.memory_usage()",
+      "answer2": "B) df.info()",
+      "answer3": "C) df.optimize()",
+      "answer4": "D) df.compress()",
+      "correct": "A) df.memory_usage()"
+    },
+    {
+      "question": "DataFrame-də böyük məlumatları hissə-hissə oxumaq üçün hansı parametr istifadə olunur?",
+      "answer1": "A) chunksize",
+      "answer2": "B) blocksize",
+      "answer3": "C) partsize",
+      "answer4": "D) segments",
+      "correct": "A) chunksize"
+    },
+    {
+      "question": "DataFrame-də sətirləri təkrarlamaq (iterate) üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.iterrows()",
+      "answer2": "B) df.itertuples()",
+      "answer3": "C) df.iteritems()",
+      "answer4": "D) Hər üçü",
+      "correct": "D) Hər üçü"
+    },
+    {
+      "question": "DataFrame-də çoxlu index (MultiIndex) yaratmaq üçün hansı funksiya istifadə olunur?",
+      "answer1": "A) pd.MultiIndex()",
+      "answer2": "B) pd.MultiIndex.from_tuples()",
+      "answer3": "C) pd.MultiIndex.from_arrays()",
+      "answer4": "D) Hər üçü",
+      "correct": "D) Hər üçü"
+    },
+    {
+      "question": "DataFrame-də şərtə əsasən dəyərləri dəyişdirmək üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.where()",
+      "answer2": "B) df.mask()",
+      "answer3": "C) np.where()",
+      "answer4": "D) Hər üçü",
+      "correct": "D) Hər üçü"
+    },
+    {
+      "question": "DataFrame-də kumulyativ cəmi hesablamaq üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.cumsum()",
+      "answer2": "B) df.cumulative_sum()",
+      "answer3": "C) df.partial_sum()",
+      "answer4": "D) df.running_sum()",
+      "correct": "A) df.cumsum()"
+    },
+    {
+      "question": "DataFrame-də yuvarlaqlaşdırma əməliyyatı üçün hansı metod istifadə olunur?",
+      "answer1": "A) df.round()",
+      "answer2": "B) df.ceil()",
+      "answer3": "C) df.floor()",
+      "answer4": "D) Hər üçü",
+      "correct": "D) Hər üçü"
+    }
+  ]
+}

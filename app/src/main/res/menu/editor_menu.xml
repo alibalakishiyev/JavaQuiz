@@ -12,6 +12,13 @@
         android:title="📂 Load Project"
         app:showAsAction="never" />
 
+    <!-- ========== SİSTEM İDARƏETMƏ ========== -->
+    <item
+        android:id="@+id/menu_system_manage"
+        android:title="📁 Sistem İdarə"
+        app:showAsAction="never" />
+    <!-- ==================================== -->
+
     <item
         android:id="@+id/menu_clear_code"
         android:title="🗑️ Clear Code"

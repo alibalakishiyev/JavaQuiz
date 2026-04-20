@@ -1,111 +1,358 @@
 {
-  "available_types": ["NLP", "TTS", "SST", "ASR", "Vision"],
+  "available_types": ["NLP", "TTS", "ASR", "Vision", "Multimodal", "Recommendation"],
   "default_type": "NLP",
+
+  "pytorch_methods": {
+    "NLP": [
+      {"name": "Transformer", "description": "Original Transformer architecture with encoder-decoder", "params": {"n_layer": 6, "n_head": 8, "n_embd": 512}, "memory_gb": 4.2},
+      {"name": "BERT", "description": "Bidirectional Encoder Representations from Transformers", "params": {"n_layer": 12, "n_head": 12, "n_embd": 768}, "memory_gb": 8.5},
+      {"name": "GPT-2", "description": "Generative Pre-trained Transformer for language modeling", "params": {"n_layer": 12, "n_head": 12, "n_embd": 768}, "memory_gb": 9.2},
+      {"name": "RoBERTa", "description": "Robustly optimized BERT approach", "params": {"n_layer": 12, "n_head": 12, "n_embd": 768}, "memory_gb": 8.8},
+      {"name": "DistilBERT", "description": "Distilled version of BERT (60% faster)", "params": {"n_layer": 6, "n_head": 8, "n_embd": 512}, "memory_gb": 4.5},
+      {"name": "ALBERT", "description": "A Lite BERT with parameter sharing", "params": {"n_layer": 12, "n_head": 12, "n_embd": 768}, "memory_gb": 3.2},
+      {"name": "XLNet", "description": "Generalized autoregressive pretraining", "params": {"n_layer": 12, "n_head": 12, "n_embd": 768}, "memory_gb": 10.5},
+      {"name": "ELECTRA", "description": "Efficiently learning an encoder that classifies token replacements", "params": {"n_layer": 12, "n_head": 12, "n_embd": 768}, "memory_gb": 7.8},
+      {"name": "T5", "description": "Text-to-Text Transfer Transformer", "params": {"n_layer": 12, "n_head": 12, "n_embd": 768}, "memory_gb": 11.2},
+      {"name": "LLaMA", "description": "Large Language Model Meta AI", "params": {"n_layer": 32, "n_head": 32, "n_embd": 4096}, "memory_gb": 28.5},
+      {"name": "Mistral", "description": "Efficient 7B parameter model with sliding window attention", "params": {"n_layer": 32, "n_head": 32, "n_embd": 4096}, "memory_gb": 15.8},
+      {"name": "Gemma", "description": "Google's lightweight open LLM", "params": {"n_layer": 18, "n_head": 8, "n_embd": 2048}, "memory_gb": 6.5}
+    ],
+    "Vision": [
+      {"name": "ResNet-50", "description": "Residual Network with 50 layers", "params": {"n_layer": 50, "n_head": 0, "n_embd": 2048}, "memory_gb": 3.5},
+      {"name": "ResNet-101", "description": "Deeper ResNet architecture", "params": {"n_layer": 101, "n_head": 0, "n_embd": 2048}, "memory_gb": 5.2},
+      {"name": "ViT-Base", "description": "Vision Transformer Base (patch size 16)", "params": {"n_layer": 12, "n_head": 12, "n_embd": 768}, "memory_gb": 4.8},
+      {"name": "ViT-Large", "description": "Vision Transformer Large", "params": {"n_layer": 24, "n_head": 16, "n_embd": 1024}, "memory_gb": 12.5},
+      {"name": "Swin-T", "description": "Swin Transformer Tiny", "params": {"n_layer": 12, "n_head": 6, "n_embd": 768}, "memory_gb": 3.2},
+      {"name": "Swin-B", "description": "Swin Transformer Base", "params": {"n_layer": 24, "n_head": 8, "n_embd": 1024}, "memory_gb": 8.5},
+      {"name": "ConvNeXt-T", "description": "Modernized ConvNet Tiny", "params": {"n_layer": 18, "n_head": 0, "n_embd": 768}, "memory_gb": 3.8},
+      {"name": "ConvNeXt-B", "description": "Modernized ConvNet Base", "params": {"n_layer": 36, "n_head": 0, "n_embd": 1024}, "memory_gb": 7.2},
+      {"name": "EfficientNet-B0", "description": "Efficient scaling network", "params": {"n_layer": 16, "n_head": 0, "n_embd": 1280}, "memory_gb": 2.1},
+      {"name": "EfficientNet-B4", "description": "Larger EfficientNet", "params": {"n_layer": 24, "n_head": 0, "n_embd": 1792}, "memory_gb": 4.5},
+      {"name": "YOLOv8", "description": "Real-time object detection", "params": {"n_layer": 24, "n_head": 8, "n_embd": 512}, "memory_gb": 3.8},
+      {"name": "DETR", "description": "Detection Transformer", "params": {"n_layer": 6, "n_head": 8, "n_embd": 256}, "memory_gb": 4.2}
+    ],
+    "TTS": [
+      {"name": "Tacotron2", "description": "Text-to-Speech using sequence-to-sequence", "params": {"n_layer": 6, "n_head": 4, "n_embd": 512}, "memory_gb": 3.2},
+      {"name": "WaveGlow", "description": "Flow-based vocoder", "params": {"n_layer": 12, "n_head": 0, "n_embd": 512}, "memory_gb": 4.5},
+      {"name": "FastSpeech2", "description": "Non-autoregressive TTS", "params": {"n_layer": 6, "n_head": 4, "n_embd": 384}, "memory_gb": 2.8},
+      {"name": "HiFi-GAN", "description": "High-fidelity GAN vocoder", "params": {"n_layer": 4, "n_head": 0, "n_embd": 256}, "memory_gb": 2.1},
+      {"name": "VITS", "description": "End-to-end TTS with GAN", "params": {"n_layer": 6, "n_head": 4, "n_embd": 384}, "memory_gb": 3.5},
+      {"name": "NaturalSpeech", "description": "High-quality TTS with diffusion", "params": {"n_layer": 8, "n_head": 6, "n_embd": 512}, "memory_gb": 4.8},
+      {"name": "YourTTS", "description": "Zero-shot multi-speaker TTS", "params": {"n_layer": 8, "n_head": 6, "n_embd": 512}, "memory_gb": 5.2},
+      {"name": "Bark", "description": "Generative audio model by Suno", "params": {"n_layer": 12, "n_head": 12, "n_embd": 1024}, "memory_gb": 12.5}
+    ],
+    "ASR": [
+      {"name": "Whisper-Tiny", "description": "Multilingual speech recognition (39M params)", "params": {"n_layer": 4, "n_head": 6, "n_embd": 384}, "memory_gb": 1.2},
+      {"name": "Whisper-Base", "description": "Base Whisper model (74M params)", "params": {"n_layer": 6, "n_head": 8, "n_embd": 512}, "memory_gb": 1.8},
+      {"name": "Whisper-Small", "description": "Small Whisper (244M params)", "params": {"n_layer": 12, "n_head": 12, "n_embd": 768}, "memory_gb": 3.5},
+      {"name": "Whisper-Medium", "description": "Medium Whisper (769M params)", "params": {"n_layer": 24, "n_head": 16, "n_embd": 1024}, "memory_gb": 8.5},
+      {"name": "Whisper-Large", "description": "Large Whisper (1.55B params)", "params": {"n_layer": 32, "n_head": 20, "n_embd": 1280}, "memory_gb": 15.8},
+      {"name": "Wav2Vec2-Base", "description": "Self-supervised speech representation", "params": {"n_layer": 12, "n_head": 8, "n_embd": 768}, "memory_gb": 2.8},
+      {"name": "Wav2Vec2-Large", "description": "Large Wav2Vec2", "params": {"n_layer": 24, "n_head": 16, "n_embd": 1024}, "memory_gb": 6.5},
+      {"name": "HuBERT-Base", "description": "Hidden-unit BERT for speech", "params": {"n_layer": 12, "n_head": 8, "n_embd": 768}, "memory_gb": 3.2},
+      {"name": "HuBERT-Large", "description": "Large HuBERT model", "params": {"n_layer": 24, "n_head": 16, "n_embd": 1024}, "memory_gb": 7.8},
+      {"name": "Conformer", "description": "Convolution-augmented Transformer", "params": {"n_layer": 16, "n_head": 8, "n_embd": 512}, "memory_gb": 4.5}
+    ],
+    "Multimodal": [
+      {"name": "CLIP", "description": "Contrastive Language-Image Pre-training", "params": {"n_layer": 12, "n_head": 12, "n_embd": 768}, "memory_gb": 6.5},
+      {"name": "LLaVA", "description": "Large Language and Vision Assistant", "params": {"n_layer": 32, "n_head": 32, "n_embd": 4096}, "memory_gb": 32.5},
+      {"name": "Flamingo", "description": "Visual language model by DeepMind", "params": {"n_layer": 24, "n_head": 16, "n_embd": 2048}, "memory_gb": 18.5},
+      {"name": "BLIP-2", "description": "Bootstrapping Language-Image Pre-training", "params": {"n_layer": 12, "n_head": 12, "n_embd": 768}, "memory_gb": 8.2},
+      {"name": "ImageBind", "description": "Bind multiple modalities (image, text, audio)", "params": {"n_layer": 12, "n_head": 12, "n_embd": 1024}, "memory_gb": 9.5},
+      {"name": "GATO", "description": "Generalist agent by DeepMind", "params": {"n_layer": 24, "n_head": 16, "n_embd": 2048}, "memory_gb": 22.5}
+    ],
+    "Recommendation": [
+      {"name": "DCN-V2", "description": "Deep & Cross Network for CTR prediction", "params": {"n_layer": 6, "n_head": 0, "n_embd": 512}, "memory_gb": 1.8},
+      {"name": "DeepFM", "description": "Factorization machines with deep learning", "params": {"n_layer": 4, "n_head": 0, "n_embd": 256}, "memory_gb": 1.2},
+      {"name": "BST", "description": "Behavioral Sequence Transformer", "params": {"n_layer": 4, "n_head": 4, "n_embd": 256}, "memory_gb": 1.5},
+      {"name": "DIN", "description": "Deep Interest Network", "params": {"n_layer": 3, "n_head": 0, "n_embd": 256}, "memory_gb": 1.1},
+      {"name": "DIEN", "description": "Deep Interest Evolution Network", "params": {"n_layer": 4, "n_head": 4, "n_embd": 256}, "memory_gb": 1.6}
+    ]
+  },
+
+  "optimizers": {
+    "AdamW": {"default_lr": 1e-4, "weight_decay": 0.01, "betas": [0.9, 0.999]},
+    "Adam": {"default_lr": 1e-4, "weight_decay": 0.0, "betas": [0.9, 0.999]},
+    "SGD": {"default_lr": 0.01, "momentum": 0.9, "weight_decay": 0.0001},
+    "LAMB": {"default_lr": 1e-3, "weight_decay": 0.01, "betas": [0.9, 0.999]},
+    "Lion": {"default_lr": 1e-4, "weight_decay": 0.01},
+    "Adafactor": {"default_lr": 1e-3, "weight_decay": 0.0},
+    "RMSprop": {"default_lr": 1e-4, "alpha": 0.99, "momentum": 0.0}
+  },
+
+  "loss_functions": {
+    "NLP": ["CrossEntropyLoss", "LabelSmoothingCrossEntropy", "CTCLoss", "MSELoss"],
+    "Vision": ["CrossEntropyLoss", "FocalLoss", "DiceLoss", "MSELoss", "L1Loss"],
+    "TTS": ["L1Loss", "MSELoss", "MelSpectrogramLoss", "STFTLoss", "MultiResolutionSTFTLoss"],
+    "ASR": ["CTCLoss", "CrossEntropyLoss", "TransducerLoss"],
+    "Multimodal": ["ContrastiveLoss", "InfoNCE", "TripletLoss"],
+    "Recommendation": ["BCELoss", "MSELoss", "BPRLoss"]
+  },
+
+  "schedulers": {
+    "CosineAnnealing": {"T_max": 100, "eta_min": 1e-6},
+    "LinearWarmup": {"warmup_steps": 1000, "total_steps": 10000},
+    "StepLR": {"step_size": 30, "gamma": 0.1},
+    "ReduceLROnPlateau": {"factor": 0.5, "patience": 5},
+    "OneCycleLR": {"max_lr": 1e-3, "total_steps": 10000},
+    "CosineAnnealingWarmRestarts": {"T_0": 50, "T_mult": 2, "eta_min": 1e-6}
+  },
+
+  "hardware_profiles": {
+    "T4": {"memory_gb": 16, "compute_capability": "7.5", "tf32": true},
+    "V100": {"memory_gb": 32, "compute_capability": "7.0", "tf32": true},
+    "A100": {"memory_gb": 40, "compute_capability": "8.0", "tf32": true, "bf16": true},
+    "H100": {"memory_gb": 80, "compute_capability": "9.0", "tf32": true, "bf16": true, "fp8": true},
+    "RTX3090": {"memory_gb": 24, "compute_capability": "8.6", "tf32": true},
+    "RTX4090": {"memory_gb": 24, "compute_capability": "8.9", "tf32": true, "bf16": true},
+    "M1Pro": {"memory_gb": 16, "compute_capability": "mps", "bf16": false},
+    "M2Max": {"memory_gb": 32, "compute_capability": "mps", "bf16": true},
+    "CPU": {"memory_gb": 32, "compute_capability": "cpu", "bf16": false}
+  },
+
   "type_specific_rules": {
     "NLP": {
       "model_architecture": {
-        "n_head": {
-          "base_formula": "round(log(data_size) * 1.5)",
-          "minimum": 4,
-          "maximum": 32
-        },
-        "n_layer": {
-          "base_formula": "round(sqrt(data_size) / 1000)",
-          "minimum": 6,
-          "maximum": 24
-        },
+        "n_head": {"base_formula": "round(log(data_size) * 1.5)", "minimum": 4, "maximum": 32, "step": 2},
+        "n_layer": {"base_formula": "round(sqrt(data_size) / 1000)", "minimum": 6, "maximum": 48, "step": 2},
+        "n_embd": {"base_formula": "round(n_layer * 64)", "minimum": 256, "maximum": 8192, "step": 64},
         "use_rotary": true,
-        "bias": false
+        "bias": false,
+        "attention_type": "flash",
+        "norm_type": "LayerNorm"
       },
       "training_parameters": {
-        "batch_size": {
-          "base_formula": "8 * log(data_size + 1)",
-          "minimum": 4,
-          "maximum": 64
-        },
-        "block_size": 1024
+        "batch_size": {"base_formula": "8 * log(data_size + 1)", "minimum": 4, "maximum": 128, "step": 4},
+        "block_size": 1024,
+        "learning_rate": {"base": 6e-5, "max": 1e-3, "min": 1e-6},
+        "warmup_steps": {"base_formula": "round(max_iters * 0.1)", "minimum": 100, "maximum": 5000},
+        "weight_decay": 0.01,
+        "gradient_clipping": 1.0,
+        "precision": "fp16"
       }
     },
     "TTS": {
       "model_architecture": {
-        "n_head": {
-          "base_formula": "round(log(data_size) * 1.2)",
-          "minimum": 2,
-          "maximum": 16
-        },
-        "n_layer": {
-          "base_formula": "round(sqrt(data_size) / 1500)",
-          "minimum": 4,
-          "maximum": 16
-        },
+        "n_head": {"base_formula": "round(log(data_size) * 1.2)", "minimum": 2, "maximum": 16, "step": 2},
+        "n_layer": {"base_formula": "round(sqrt(data_size) / 1500)", "minimum": 4, "maximum": 24, "step": 2},
+        "n_embd": {"base_formula": "round(n_layer * 64)", "minimum": 192, "maximum": 4096, "step": 64},
         "use_rotary": false,
-        "bias": true
+        "bias": true,
+        "attention_type": "mha",
+        "norm_type": "LayerNorm"
       },
       "training_parameters": {
-        "batch_size": {
-          "base_formula": "4 * log(data_size + 1)",
-          "minimum": 2,
-          "maximum": 32
-        },
-        "block_size": 512
+        "batch_size": {"base_formula": "4 * log(data_size + 1)", "minimum": 2, "maximum": 64, "step": 2},
+        "block_size": 512,
+        "learning_rate": {"base": 2e-4, "max": 5e-4, "min": 1e-6},
+        "warmup_steps": {"base_formula": "round(max_iters * 0.05)", "minimum": 50, "maximum": 2000},
+        "weight_decay": 0.001,
+        "gradient_clipping": 0.5,
+        "precision": "fp32"
+      }
+    },
+    "ASR": {
+      "model_architecture": {
+        "n_head": {"base_formula": "round(log(data_size) * 1.4)", "minimum": 4, "maximum": 24, "step": 2},
+        "n_layer": {"base_formula": "round(sqrt(data_size) / 1200)", "minimum": 6, "maximum": 32, "step": 2},
+        "n_embd": {"base_formula": "round(n_layer * 64)", "minimum": 384, "maximum": 6144, "step": 64},
+        "use_rotary": true,
+        "bias": false,
+        "attention_type": "flash",
+        "norm_type": "LayerNorm"
+      },
+      "training_parameters": {
+        "batch_size": {"base_formula": "6 * log(data_size + 1)", "minimum": 4, "maximum": 96, "step": 4},
+        "block_size": 2048,
+        "learning_rate": {"base": 1e-4, "max": 5e-4, "min": 1e-7},
+        "warmup_steps": {"base_formula": "round(max_iters * 0.08)", "minimum": 100, "maximum": 3000},
+        "weight_decay": 0.005,
+        "gradient_clipping": 0.8,
+        "precision": "fp16"
       }
     },
     "Vision": {
       "model_architecture": {
-        "n_head": {
-          "base_formula": "round(log(data_size) * 0.8)",
-          "minimum": 2,
-          "maximum": 12
-        },
-        "n_layer": {
-          "base_formula": "round(sqrt(data_size) / 2000)",
-          "minimum": 4,
-          "maximum": 12
-        },
+        "n_head": {"base_formula": "round(log(data_size) * 0.8)", "minimum": 2, "maximum": 16, "step": 2},
+        "n_layer": {"base_formula": "round(sqrt(data_size) / 2000)", "minimum": 4, "maximum": 56, "step": 2},
+        "n_embd": {"base_formula": "round(n_layer * 48)", "minimum": 128, "maximum": 4096, "step": 64},
         "use_rotary": false,
-        "bias": true
+        "bias": true,
+        "attention_type": "mha",
+        "norm_type": "BatchNorm"
       },
       "training_parameters": {
-        "batch_size": {
-          "base_formula": "16 * log(data_size + 1)",
-          "minimum": 8,
-          "maximum": 128
-        },
-        "block_size": 256
+        "batch_size": {"base_formula": "16 * log(data_size + 1)", "minimum": 8, "maximum": 256, "step": 8},
+        "block_size": 256,
+        "learning_rate": {"base": 1e-3, "max": 1e-2, "min": 1e-5},
+        "warmup_steps": {"base_formula": "round(max_iters * 0.05)", "minimum": 50, "maximum": 1000},
+        "weight_decay": 0.0001,
+        "gradient_clipping": 2.0,
+        "precision": "fp16"
+      }
+    },
+    "Multimodal": {
+      "model_architecture": {
+        "n_head": {"base_formula": "round(log(data_size) * 1.6)", "minimum": 8, "maximum": 48, "step": 4},
+        "n_layer": {"base_formula": "round(sqrt(data_size) / 800)", "minimum": 12, "maximum": 64, "step": 4},
+        "n_embd": {"base_formula": "round(n_layer * 128)", "minimum": 512, "maximum": 16384, "step": 128},
+        "use_rotary": true,
+        "bias": false,
+        "attention_type": "flash",
+        "norm_type": "RMSNorm"
+      },
+      "training_parameters": {
+        "batch_size": {"base_formula": "2 * log(data_size + 1)", "minimum": 2, "maximum": 32, "step": 2},
+        "block_size": 4096,
+        "learning_rate": {"base": 3e-5, "max": 2e-4, "min": 1e-7},
+        "warmup_steps": {"base_formula": "round(max_iters * 0.15)", "minimum": 200, "maximum": 10000},
+        "weight_decay": 0.02,
+        "gradient_clipping": 0.5,
+        "precision": "bf16"
+      }
+    },
+    "Recommendation": {
+      "model_architecture": {
+        "n_head": {"base_formula": "round(log(data_size) * 1.0)", "minimum": 2, "maximum": 12, "step": 2},
+        "n_layer": {"base_formula": "round(sqrt(data_size) / 3000)", "minimum": 3, "maximum": 12, "step": 1},
+        "n_embd": {"base_formula": "round(n_layer * 64)", "minimum": 128, "maximum": 1024, "step": 32},
+        "use_rotary": false,
+        "bias": true,
+        "attention_type": "mha",
+        "norm_type": "LayerNorm"
+      },
+      "training_parameters": {
+        "batch_size": {"base_formula": "32 * log(data_size + 1)", "minimum": 16, "maximum": 512, "step": 16},
+        "block_size": 128,
+        "learning_rate": {"base": 1e-3, "max": 5e-3, "min": 1e-5},
+        "warmup_steps": {"base_formula": "round(max_iters * 0.1)", "minimum": 100, "maximum": 2000},
+        "weight_decay": 0.00001,
+        "gradient_clipping": 5.0,
+        "precision": "fp32"
       }
     }
   },
+
   "common_parameters": {
     "n_embd": {
       "base_formula": "round(data_size / 10000) * 64",
       "minimum": 128,
-      "maximum": 4096,
+      "maximum": 8192,
       "divisible_by": "n_head"
     },
     "learning_rate": {
       "base_formula": "6e-5 * (1 - log(data_size + 1) / 20)",
-      "minimum": 1e-6,
-      "maximum": 1e-3
+      "minimum": 1e-7,
+      "maximum": 1e-2
     },
     "dropout": {
-      "base_formula": "max(0.1, min(0.3, 0.2 - (data_size / 100000000)))"
+      "base_formula": "max(0.05, min(0.4, 0.2 - (data_size / 100000000)))"
+    },
+    "attention_dropout": {
+      "base_formula": "dropout * 0.8",
+      "minimum": 0.05,
+      "maximum": 0.3
+    },
+    "residual_dropout": {
+      "base_formula": "dropout * 0.5",
+      "minimum": 0.0,
+      "maximum": 0.2
     }
   },
+
   "presets": {
     "NLP": {
-      "small": {"n_layer": 6, "n_head": 4, "n_embd": 256},
-      "medium": {"n_layer": 12, "n_head": 8, "n_embd": 512},
-      "large": {"n_layer": 24, "n_head": 16, "n_embd": 1024}
+      "tiny": {"n_layer": 4, "n_head": 4, "n_embd": 256, "batch_size": 16},
+      "small": {"n_layer": 6, "n_head": 6, "n_embd": 384, "batch_size": 24},
+      "base": {"n_layer": 12, "n_head": 12, "n_embd": 768, "batch_size": 32},
+      "medium": {"n_layer": 18, "n_head": 14, "n_embd": 1024, "batch_size": 48},
+      "large": {"n_layer": 24, "n_head": 16, "n_embd": 1536, "batch_size": 64},
+      "xl": {"n_layer": 32, "n_head": 20, "n_embd": 2048, "batch_size": 96}
     },
     "TTS": {
-      "small": {"n_layer": 4, "n_head": 2, "n_embd": 192},
-      "medium": {"n_layer": 8, "n_head": 4, "n_embd": 384},
-      "large": {"n_layer": 16, "n_head": 8, "n_embd": 768}
+      "tiny": {"n_layer": 3, "n_head": 2, "n_embd": 144, "batch_size": 8},
+      "small": {"n_layer": 4, "n_head": 4, "n_embd": 256, "batch_size": 16},
+      "base": {"n_layer": 6, "n_head": 6, "n_embd": 384, "batch_size": 24},
+      "medium": {"n_layer": 8, "n_head": 8, "n_embd": 512, "batch_size": 32},
+      "large": {"n_layer": 12, "n_head": 10, "n_embd": 768, "batch_size": 48}
+    },
+    "ASR": {
+      "tiny": {"n_layer": 4, "n_head": 4, "n_embd": 256, "batch_size": 12},
+      "small": {"n_layer": 6, "n_head": 6, "n_embd": 384, "batch_size": 24},
+      "base": {"n_layer": 12, "n_head": 12, "n_embd": 768, "batch_size": 32},
+      "medium": {"n_layer": 18, "n_head": 14, "n_embd": 1024, "batch_size": 48},
+      "large": {"n_layer": 24, "n_head": 16, "n_embd": 1280, "batch_size": 64}
     },
     "Vision": {
-      "small": {"n_layer": 4, "n_head": 2, "n_embd": 128},
-      "medium": {"n_layer": 6, "n_head": 4, "n_embd": 256},
-      "large": {"n_layer": 8, "n_head": 6, "n_embd": 512}
+      "tiny": {"n_layer": 4, "n_head": 2, "n_embd": 128, "batch_size": 32},
+      "small": {"n_layer": 6, "n_head": 4, "n_embd": 256, "batch_size": 64},
+      "base": {"n_layer": 12, "n_head": 8, "n_embd": 512, "batch_size": 128},
+      "medium": {"n_layer": 18, "n_head": 12, "n_embd": 768, "batch_size": 192},
+      "large": {"n_layer": 24, "n_head": 16, "n_embd": 1024, "batch_size": 256}
+    },
+    "Multimodal": {
+      "small": {"n_layer": 12, "n_head": 12, "n_embd": 768, "batch_size": 8},
+      "base": {"n_layer": 24, "n_head": 16, "n_embd": 1024, "batch_size": 16},
+      "large": {"n_layer": 32, "n_head": 24, "n_embd": 2048, "batch_size": 32}
+    },
+    "Recommendation": {
+      "small": {"n_layer": 3, "n_head": 2, "n_embd": 128, "batch_size": 128},
+      "base": {"n_layer": 4, "n_head": 4, "n_embd": 256, "batch_size": 256},
+      "large": {"n_layer": 6, "n_head": 6, "n_embd": 512, "batch_size": 512}
+    }
+  },
+
+  "training_guidelines": {
+    "general": [
+      "Use mixed precision (fp16/bf16) for 2x speedup and 50% memory reduction",
+      "Enable gradient checkpointing for large models (30-50% memory saving)",
+      "Use Flash Attention when available (2-4x faster, 30% memory saving)",
+      "Monitor loss curves to detect overfitting/underfitting",
+      "Use gradient accumulation for large effective batch sizes",
+      "Implement early stopping based on validation loss",
+      "Save checkpoints regularly during training"
+    ],
+    "NLP": [
+      "Use AdamW optimizer with linear warmup + cosine decay schedule",
+      "Typical batch sizes: 32-512, effective batch size: 256-4096",
+      "Sequence length: 512-2048 for most tasks",
+      "Use label smoothing (0.05-0.1) for better generalization"
+    ],
+    "Vision": [
+      "Use SGD with momentum or AdamW with cosine annealing",
+      "Data augmentation: RandomResizedCrop, HorizontalFlip, ColorJitter",
+      "Label smoothing: 0.05-0.1",
+      "MixUp and CutMix for better performance on small datasets"
+    ],
+    "TTS": [
+      "Use L1 or Mel-Spectrogram loss for mel generation",
+      "Phoneme-level alignment helps with long utterances",
+      "Typical sample rate: 22050-24000 Hz",
+      "Mel spectrogram parameters: n_mels=80, hop_length=256, win_length=1024"
+    ],
+    "ASR": [
+      "Use CTC loss with blank token or Transducer loss",
+      "SpecAugment for speech augmentation (time warping, frequency masking)",
+      "Typical sample rate: 16000 Hz",
+      "Context length: 2-20 seconds of audio"
+    ]
+  },
+
+  "gpu_memory_estimation": {
+    "formula": "params_in_billions * 4 * 1.2 + batch_size * seq_len * hidden_size * 4 / 1e9",
+    "factors": {
+      "optimizer_state": 2.0,
+      "gradients": 1.0,
+      "activations": 0.5,
+      "overhead": 0.2
+    }
+  },
+
+  "performance_metrics": {
+    "target_values": {
+      "gpu_utilization": {"min": 70, "max": 95, "optimal": 85},
+      "loss_ratio": {"underfit": 0.7, "optimal": 1.0, "overfit": 1.5},
+      "training_speed": {"min_tokens_per_sec": 10000, "optimal_tokens_per_sec": 50000}
     }
   }
 }

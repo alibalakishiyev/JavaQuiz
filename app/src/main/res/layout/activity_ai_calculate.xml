@@ -1,367 +1,596 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:background="?attr/colorSurface">
 
-    <LinearLayout
+    <!-- AppBar with title -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:fitsSystemWindows="true">
 
-        <!-- Model Type Selection -->
-        <com.google.android.material.card.MaterialCardView
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="AI Model Calculator"
+            app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            app:navigationIconTint="?attr/colorOnSurface"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Scrollable content -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:fillViewport="true"
+        android:clipToPadding="false"
+        android:paddingBottom="24dp">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardElevation="4dp"
-            app:cardCornerRadius="8dp"
-            android:layout_marginBottom="16dp">
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="12dp">
 
-            <LinearLayout
+            <!-- ═══════════════════════════════════════════════════
+                 CARD 1 — MODEL CONFIGURATION
+            ══════════════════════════════════════════════════════ -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutlineVariant"
+                app:cardCornerRadius="16dp"
+                android:layout_marginBottom="12dp">
 
-                <TextView
-                    style="@style/SectionHeader"
-                    android:text="Model Configuration"/>
-
-                <TextView
-                    style="@style/InputLabel"
-                    android:text="Model Type"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/InputFieldLayout"
-                    android:hint="Select model type"
-                    app:endIconMode="dropdown_menu">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/spinner_model_type"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none"
-                        android:completionThreshold="1"
-                        android:dropDownHeight="wrap_content"
-                        android:dropDownWidth="match_parent"
-                        android:tooltipText="Select the type of model you want to configure"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    style="@style/InputLabel"
-                    android:text="Preset Configuration"
-                    android:layout_marginTop="8dp"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/InputFieldLayout"
-                    android:hint="Select preset (optional)"
-                    app:endIconMode="dropdown_menu">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/spinner_preset"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none"
-                        android:completionThreshold="1"
-                        android:dropDownHeight="wrap_content"
-                        android:dropDownWidth="match_parent"
-                        android:tooltipText="Select a preset configuration to apply"/>
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Calculation Section -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/calculation_card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardElevation="4dp"
-            app:cardCornerRadius="8dp"
-            android:layout_marginBottom="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <!-- Data Input Fields -->
-                <TextView
-                    style="@style/InputLabel"
-                    android:text="Data size"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/InputFieldLayout"
-                    android:hint="Enter data size"
-                    app:endIconMode="custom"
-                    app:endIconDrawable="@drawable/ic_error"
-                    app:endIconContentDescription="Məlumat ölçüsü üçün izah"
-                    app:endIconTint="@color/red">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_data_size"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:tooltipText="Buraya modelin işləyəcəyi məlumatların ümumi ölçüsünü daxil edin (MB və ya GB ilə)"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    style="@style/InputLabel"
-                    android:text="Correct answers"
-                    android:layout_marginTop="8dp"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/InputFieldLayout"
-                    android:hint="Enter correct answers"
-                    app:endIconMode="custom"
-                    app:endIconDrawable="@drawable/ic_error"
-                    app:endIconContentDescription="Düzgün cavablar üçün izah"
-                    app:endIconTint="@color/red">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_correct_answers"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:tooltipText="Modelin düzgün cavab verdiyi sualların sayını daxil edin"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    style="@style/InputLabel"
-                    android:text="Total questions"
-                    android:layout_marginTop="8dp"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/InputFieldLayout"
-                    android:hint="Enter total questions"
-                    app:endIconMode="custom"
-                    app:endIconDrawable="@drawable/ic_error"
-                    app:endIconContentDescription="Ümumi suallar üçün izah"
-                    app:endIconTint="@color/red">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_total_questions"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:tooltipText="Modelin test edildiyi ümumi sualların sayını daxil edin"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Advanced Inputs -->
-                <TextView
-                    style="@style/SectionHeader"
-                    android:text="Advanced Settings"
-                    android:layout_marginTop="16dp"/>
-
-                <TextView
-                    style="@style/InputLabel"
-                    android:text="GPU Memory (GB)"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/InputFieldLayout"
-                    android:hint="Enter GPU memory"
-                    app:endIconMode="custom"
-                    app:endIconDrawable="@drawable/ic_error"
-                    app:endIconContentDescription="GPU yaddaşı üçün izah"
-                    app:endIconTint="@color/red">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_gpu_memory"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:tooltipText="İstifadə etdiyiniz GPU-nun yaddaş həcmini GB ilə daxil edin (məsələn: 8, 16)"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    style="@style/InputLabel"
-                    android:text="Current Loss"
-                    android:layout_marginTop="8dp"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/InputFieldLayout"
-                    android:hint="Enter current loss"
-                    app:endIconMode="custom"
-                    app:endIconDrawable="@drawable/ic_error"
-                    app:endIconContentDescription="Cari loss üçün izah"
-                    app:endIconTint="@color/red">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_current_loss"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:tooltipText="Modelin hazırkı loss dəyərini daxil edin (məsələn: 0.45)"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    style="@style/InputLabel"
-                    android:text="Validation Loss"
-                    android:layout_marginTop="8dp"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/InputFieldLayout"
-                    android:hint="Enter validation loss"
-                    app:endIconMode="custom"
-                    app:endIconDrawable="@drawable/ic_error"
-                    app:endIconContentDescription="Validasiya loss üçün izah"
-                    app:endIconTint="@color/red">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_val_loss"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:tooltipText="Modelin validasiya loss dəyərini daxil edin"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    style="@style/InputLabel"
-                    android:text="PyTorch Method"
-                    android:layout_marginTop="8dp"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/InputFieldLayout"
-                    android:hint="Enter method name"
-                    app:endIconMode="custom"
-                    app:endIconDrawable="@drawable/ic_error"
-                    app:endIconContentDescription="Metod adı üçün izah"
-                    app:endIconTint="@color/red">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_method_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:tooltipText="İstifadə etdiyiniz PyTorch metodunun adını daxil edin (məsələn: Adam, SGD)"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Results Section -->
-                <TextView
-                    style="@style/SectionHeader"
-                    android:text="Results"
-                    android:layout_marginTop="16dp"/>
-
-                <TextView
-                    android:id="@+id/tv_batch_size"
-                    style="@style/ResultText"
-                    android:text="Batch Size: -"/>
-
-                <TextView
-                    android:id="@+id/tv_loss"
-                    style="@style/ResultText"
-                    android:text="Loss: -"/>
-
-                <TextView
-                    android:id="@+id/tv_n_head"
-                    style="@style/ResultText"
-                    android:text="N Head: -"/>
-
-                <TextView
-                    android:id="@+id/tv_n_layer"
-                    style="@style/ResultText"
-                    android:text="N Layer: -"/>
-
-                <TextView
-                    android:id="@+id/tv_gpu_util"
-                    style="@style/ResultText"
-                    android:text="GPU Utilization: -"
-                    android:visibility="gone"/>
-
-                <TextView
-                    android:id="@+id/tv_loss_analysis"
-                    style="@style/ResultText"
-                    android:text="Loss Analysis: -"
-                    android:visibility="gone"/>
-
-                <TextView
-                    android:id="@+id/tv_gradient_status"
-                    style="@style/ResultText"
-                    android:text="Gradient Status: -"
-                    android:visibility="gone"/>
-
-                <TextView
-                    android:id="@+id/tv_method_info"
-                    style="@style/ResultText"
-                    android:text="Method Info: -"
-                    android:visibility="gone"/>
-
-                <TextView
-                    android:id="@+id/tv_n_emb"
-                    style="@style/ResultText"
-                    android:text="Embedding Dim: -"/>
-                <TextView
-                    android:id="@+id/tv_learning_rate"
-                    style="@style/ResultText"
-                    android:text="Learning Rate: -"/>
-                <TextView
-                    android:id="@+id/tv_dropout"
-                    style="@style/ResultText"
-                    android:text="Dropout: -"/>
-                <TextView
-                    android:id="@+id/tv_block_size"
-                    style="@style/ResultText"
-                    android:text="Block Size: -"/>
-                <TextView
-                    android:id="@+id/tv_grad_accum"
-                    style="@style/ResultText"
-                    android:text="Grad Accum Steps: -"/>
-                <TextView
-                    android:id="@+id/tv_max_iters"
-                    style="@style/ResultText"
-                    android:text="Max Iters: -"/>
-
-                <TextView
-                    android:id="@+id/tv_result"
-                    style="@style/ResultText.Verification"
-                    android:text="Results will appear here"
-                    android:layout_marginTop="8dp"/>
-
-                <!-- Calculation Buttons -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="16dp"
-                    android:weightSum="2">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                    <Button
-                        android:id="@+id/btn_calculate"
-                        android:layout_width="0dp"
+                    <!-- Section header row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Calculate"
-                        android:layout_marginEnd="8dp"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
 
-                    <Button
-                        android:id="@+id/btn_validate"
-                        android:layout_width="0dp"
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_model"
+                            android:layout_marginEnd="8dp"
+                            app:tint="?attr/colorPrimary"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Model Configuration"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <!-- Model Type dropdown -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Validate"
-                        style="@style/Widget.MaterialComponents.Button"/>
+                        android:hint="Model type"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_marginBottom="12dp">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/spinner_model_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:completionThreshold="1"
+                            android:dropDownHeight="wrap_content"
+                            android:dropDownWidth="match_parent"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Preset dropdown -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Preset configuration (optional)"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/spinner_preset"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:completionThreshold="1"
+                            android:dropDownHeight="wrap_content"
+                            android:dropDownWidth="match_parent"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
                 </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                <!-- Advanced Buttons -->
-                <Button
-                    android:id="@+id/btn_advanced_calc"
+            <!-- ═══════════════════════════════════════════════════
+                 CARD 2 — BASIC INPUTS
+            ══════════════════════════════════════════════════════ -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutlineVariant"
+                app:cardCornerRadius="16dp"
+                android:layout_marginBottom="12dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Advanced Calculation"
-                    android:layout_marginTop="8dp"
-                    style="@style/Widget.MaterialComponents.Button"/>
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                <Button
-                    android:id="@+id/btn_method_info"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_input"
+                            android:layout_marginEnd="8dp"
+                            app:tint="?attr/colorPrimary"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Training Data"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <!-- Data size -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_data_size"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Dataset size (tokens / samples)"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_marginBottom="12dp"
+                        app:startIconDrawable="@drawable/ic_data"
+                        app:startIconTint="?attr/colorPrimary">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_data_size"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:imeOptions="actionNext"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Correct answers / Total questions in a row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/til_correct_answers"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="Correct answers"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_marginEnd="6dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_correct_answers"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberDecimal"
+                                android:imeOptions="actionNext"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/til_total_questions"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="Total questions"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_marginStart="6dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_total_questions"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberDecimal"
+                                android:imeOptions="actionDone"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <!-- Primary action buttons -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp"
+                        android:weightSum="2">
+
+                        <Button
+                            android:id="@+id/btn_calculate"
+                            android:layout_width="0dp"
+                            android:layout_height="52dp"
+                            android:layout_weight="1"
+                            android:text="Calculate"
+                            android:textSize="14sp"
+                            android:layout_marginEnd="6dp"
+                            android:fontFamily="sans-serif-medium"
+                            style="@style/Widget.MaterialComponents.Button"/>
+
+                        <Button
+                            android:id="@+id/btn_validate"
+                            android:layout_width="0dp"
+                            android:layout_height="52dp"
+                            android:layout_weight="1"
+                            android:text="Validate"
+                            android:textSize="14sp"
+                            android:layout_marginStart="6dp"
+                            android:fontFamily="sans-serif-medium"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ═══════════════════════════════════════════════════
+                 CARD 3 — RESULTS
+            ══════════════════════════════════════════════════════ -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_results"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutlineVariant"
+                app:cardCornerRadius="16dp"
+                android:layout_marginBottom="12dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Get Method Info"
-                    android:layout_marginTop="8dp"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-    </LinearLayout>
-</ScrollView>
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_result"
+                            android:layout_marginEnd="8dp"
+                            app:tint="?attr/colorPrimary"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Computed Parameters"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <!-- 2-column metric grid -->
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnCount="2"
+                        android:rowCount="5"
+                        android:useDefaultMargins="true"
+                        android:layout_marginBottom="12dp">
+
+                        <!-- Batch size chip -->
+                        <LinearLayout style="@style/MetricCell">
+                            <TextView style="@style/MetricLabel" android:text="Batch size"/>
+                            <TextView android:id="@+id/tv_batch_size"
+                                style="@style/MetricValue" android:text="—"/>
+                        </LinearLayout>
+
+                        <!-- Loss chip -->
+                        <LinearLayout style="@style/MetricCell">
+                            <TextView style="@style/MetricLabel" android:text="Loss"/>
+                            <TextView android:id="@+id/tv_loss"
+                                style="@style/MetricValue" android:text="—"/>
+                        </LinearLayout>
+
+                        <!-- N Head -->
+                        <LinearLayout style="@style/MetricCell">
+                            <TextView style="@style/MetricLabel" android:text="Attn heads"/>
+                            <TextView android:id="@+id/tv_n_head"
+                                style="@style/MetricValue" android:text="—"/>
+                        </LinearLayout>
+
+                        <!-- N Layer -->
+                        <LinearLayout style="@style/MetricCell">
+                            <TextView style="@style/MetricLabel" android:text="Layers"/>
+                            <TextView android:id="@+id/tv_n_layer"
+                                style="@style/MetricValue" android:text="—"/>
+                        </LinearLayout>
+
+                        <!-- n_emb -->
+                        <LinearLayout style="@style/MetricCell">
+                            <TextView style="@style/MetricLabel" android:text="Embed dim"/>
+                            <TextView android:id="@+id/tv_n_emb"
+                                style="@style/MetricValue" android:text="—"/>
+                        </LinearLayout>
+
+                        <!-- Learning rate -->
+                        <LinearLayout style="@style/MetricCell">
+                            <TextView style="@style/MetricLabel" android:text="Learning rate"/>
+                            <TextView android:id="@+id/tv_learning_rate"
+                                style="@style/MetricValue" android:text="—"/>
+                        </LinearLayout>
+
+                        <!-- Dropout -->
+                        <LinearLayout style="@style/MetricCell">
+                            <TextView style="@style/MetricLabel" android:text="Dropout"/>
+                            <TextView android:id="@+id/tv_dropout"
+                                style="@style/MetricValue" android:text="—"/>
+                        </LinearLayout>
+
+                        <!-- Block size -->
+                        <LinearLayout style="@style/MetricCell">
+                            <TextView style="@style/MetricLabel" android:text="Block size"/>
+                            <TextView android:id="@+id/tv_block_size"
+                                style="@style/MetricValue" android:text="—"/>
+                        </LinearLayout>
+
+                        <!-- Grad accum -->
+                        <LinearLayout style="@style/MetricCell">
+                            <TextView style="@style/MetricLabel" android:text="Grad steps"/>
+                            <TextView android:id="@+id/tv_grad_accum"
+                                style="@style/MetricValue" android:text="—"/>
+                        </LinearLayout>
+
+                        <!-- Max iters -->
+                        <LinearLayout style="@style/MetricCell">
+                            <TextView style="@style/MetricLabel" android:text="Max iters"/>
+                            <TextView android:id="@+id/tv_max_iters"
+                                style="@style/MetricValue" android:text="—"/>
+                        </LinearLayout>
+                    </GridLayout>
+
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?attr/colorOutlineVariant"
+                        android:layout_marginBottom="12dp"/>
+
+                    <!-- Advanced metric rows (hidden until advanced calc) -->
+                    <TextView
+                        android:id="@+id/tv_gpu_util"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="GPU utilization: —"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                        android:padding="8dp"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:id="@+id/tv_loss_analysis"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Loss ratio: —"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                        android:padding="8dp"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:id="@+id/tv_gradient_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Gradient: —"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                        android:padding="8dp"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:id="@+id/tv_method_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                        android:padding="8dp"
+                        android:background="@drawable/bg_method_info"
+                        android:layout_marginTop="4dp"
+                        android:visibility="gone"/>
+
+                    <!-- Status result -->
+                    <TextView
+                        android:id="@+id/tv_result"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Parametrləri seçib Calculate edin"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:padding="12dp"
+                        android:background="@drawable/bg_result_surface"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="monospace"/>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ═══════════════════════════════════════════════════
+                 CARD 4 — ADVANCED SETTINGS
+            ══════════════════════════════════════════════════════ -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_advanced"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutlineVariant"
+                app:cardCornerRadius="16dp"
+                android:layout_marginBottom="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_advanced"
+                            android:layout_marginEnd="8dp"
+                            app:tint="?attr/colorSecondary"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Advanced Settings"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <!-- GPU Memory -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_gpu_memory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="GPU memory (GB)"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_marginBottom="12dp"
+                        app:startIconDrawable="@drawable/ic_gpu"
+                        app:startIconTint="?attr/colorSecondary"
+                        app:suffixText="GB">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_gpu_memory"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:imeOptions="actionNext"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Loss row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_marginBottom="12dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/til_current_loss"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="Train loss"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_marginEnd="6dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_current_loss"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberDecimal"
+                                android:imeOptions="actionNext"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/til_val_loss"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="Val loss"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_marginStart="6dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_val_loss"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberDecimal"
+                                android:imeOptions="actionDone"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <!-- PyTorch method - Dropdown kimi -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="PyTorch method"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@drawable/ic_code"
+                        app:startIconTint="?attr/colorSecondary">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/et_method_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:completionThreshold="1"
+                            android:dropDownHeight="wrap_content"
+                            android:dropDownWidth="match_parent"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Advanced action buttons -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <Button
+                            android:id="@+id/btn_advanced_calc"
+                            android:layout_width="0dp"
+                            android:layout_height="52dp"
+                            android:layout_weight="1"
+                            android:text="Advanced Calc"
+                            android:textSize="13sp"
+                            android:layout_marginEnd="6dp"
+                            style="@style/Widget.MaterialComponents.Button"/>
+
+                        <Button
+                            android:id="@+id/btn_method_info"
+                            android:layout_width="0dp"
+                            android:layout_height="52dp"
+                            android:layout_weight="1"
+                            android:text="Method Info"
+                            android:textSize="13sp"
+                            android:layout_marginStart="6dp"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

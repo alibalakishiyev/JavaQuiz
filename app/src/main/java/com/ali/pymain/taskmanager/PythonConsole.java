@@ -81,6 +81,9 @@ public class PythonConsole extends AppCompatActivity {
     private AdView mAdPythonCode;
     private Toolbar toolbar;
 
+    private static final String SYSTEM_STORAGE_DIR = "PythonEditorSystem";
+    private static final String AUTO_SAVE_FILE = "autosave.pysave";
+
     // Data
     private Python py;
     private FirebaseAuth fAuth;
@@ -156,6 +159,10 @@ public class PythonConsole extends AppCompatActivity {
         saveToUndoStack();
         displayTaskInfo();
 
+        // ========== SİSTEM QOVLUĞU - AVTOMATİK İŞƏ SAL ==========
+        createSystemFolder();      // 1. Qovluğu yarat
+        autoLoadFromSystem();      // 2. Əgər varsa avtomatik yüklə
+
         // Task-specific auto complete suggestions yüklə
         if (acEngine != null && taskTitleText != null) {
             acEngine.loadTaskSuggestions(currentTaskId, taskTitleText, taskDescriptionText);
@@ -181,6 +188,168 @@ public class PythonConsole extends AppCompatActivity {
         clearOutputBtn = findViewById(R.id.clearOutputBtn);
         hideOutputBtn = findViewById(R.id.hideOutputBtn);
         mAdPythonCode = findViewById(R.id.adPythoneCode);
+    }
+
+    private void createSystemFolder() {
+        try {
+            File systemDir = new File(getFilesDir(), SYSTEM_STORAGE_DIR);
+            if (!systemDir.exists()) {
+                boolean created = systemDir.mkdirs();
+                if (created) {
+                    Log.d("SystemFolder", "✅ Sistem qovluğu yaradıldı: " + systemDir.getAbsolutePath());
+                }
+            }
+        } catch (Exception e) {
+            Log.e("SystemFolder", "Xəta: " + e.getMessage());
+        }
+    }
+    // 2. Faylı saxla (avtomatik)
+    private void saveToSystemFolder(String content) {
+        try {
+            File systemDir = new File(getFilesDir(), SYSTEM_STORAGE_DIR);
+            if (!systemDir.exists()) {
+                createSystemFolder();
+            }
+
+            File file = new File(systemDir, AUTO_SAVE_FILE);
+            FileOutputStream fos = new FileOutputStream(file);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            writer.write(content);
+            writer.close();
+            fos.close();
+
+            Log.d("SystemFolder", "💾 Avtomatik saxlanıldı");
+
+        } catch (Exception e) {
+            Log.e("SystemFolder", "Saxlama xətası: " + e.getMessage());
+        }
+    }
+    // 3. Faylı yüklə (avtomatik)
+    private String loadFromSystemFolder() {
+        try {
+            File systemDir = new File(getFilesDir(), SYSTEM_STORAGE_DIR);
+            File file = new File(systemDir, AUTO_SAVE_FILE);
+
+            if (!file.exists()) {
+                Log.d("SystemFolder", "Heç bir saxlanmış fayl yoxdur");
+                return null;
+            }
+
+            FileInputStream fis = new FileInputStream(file);
+            InputStreamReader reader = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(reader);
+            StringBuilder content = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+            br.close();
+            reader.close();
+            fis.close();
+
+            Log.d("SystemFolder", "📂 Avtomatik yükləndi");
+            return content.toString();
+
+        } catch (Exception e) {
+            Log.e("SystemFolder", "Yükləmə xətası: " + e.getMessage());
+            return null;
+        }
+    }
+
+    // 4. Avtomatik yükləmə (onCreate üçün)
+    private void autoLoadFromSystem() {
+        String savedCode = loadFromSystemFolder();
+
+        if (savedCode != null && !savedCode.isEmpty()) {
+            codeInput.setText(savedCode);
+            updateLineNumbers(savedCode);
+            if (syntaxHighlightingEnabled) {
+                applySyntaxHighlighting(codeInput.getText());
+            }
+            Log.d("SystemFolder", "✅ Son kod avtomatik yükləndi");
+        } else if (isTaskMode && initialCode != null && !initialCode.isEmpty()) {
+            // Task rejimindədirsə və heç bir saxlanmış kod yoxdursa, ilkin kodu yüklə
+            codeInput.setText(initialCode);
+            updateLineNumbers(initialCode);
+            Log.d("SystemFolder", "📋 İlkin task kodu yükləndi");
+        }
+    }
+
+    // 5. Avtomatik saxlama (hər dəfə kod dəyişdikdə)
+    private void autoSaveToSystem() {
+        String currentCode = codeInput.getText().toString();
+        if (!currentCode.isEmpty()) {
+            saveToSystemFolder(currentCode);
+        }
+    }
+
+    private void setupEventListeners() {
+        runBtn.setOnClickListener(v -> runPythonCode());
+
+        if (dontKnowBtn != null) {
+            if (isTaskMode) {
+                dontKnowBtn.setOnClickListener(v -> showSolutionInCode());
+            } else {
+                dontKnowBtn.setOnClickListener(v -> showHelpForConsole());
+            }
+        }
+
+        clearOutputBtn.setOnClickListener(v -> {
+            outputText.setText("> Console cleared. Ready to run code...");
+            Toast.makeText(this, "Console cleared", Toast.LENGTH_SHORT).show();
+        });
+
+        copyOutputBtn.setOnClickListener(v -> {
+            String output = outputText.getText().toString();
+            if (!output.isEmpty()) {
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                android.content.ClipData clip = android.content.ClipData.newPlainText("Output", output);
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(this, "Output copied", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        hideOutputBtn.setOnClickListener(v -> {
+            if (outputContainer.getVisibility() == View.VISIBLE) {
+                outputContainer.setVisibility(View.GONE);
+                hideOutputBtn.setText("Show");
+            } else {
+                outputContainer.setVisibility(View.VISIBLE);
+                hideOutputBtn.setText("Hide");
+            }
+        });
+
+        codeInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if (!isUndoRedoOp) saveToUndoStack();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                updateLineNumbers(s.toString());
+                int cursor = start + count;
+                if (cursor > s.length()) cursor = s.length();
+                if (before > count && count == 0) {
+                    hideSuggestions();
+                } else {
+                    updateSuggestions(s.toString(), cursor);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!isApplyingHighlight && syntaxHighlightingEnabled) {
+                    applySyntaxHighlighting(s);
+                }
+                saveCode();
+
+                // ========== HƏR DƏFƏ KOD DƏYİŞDİKDƏ AVTOMATİK SAXLA ==========
+                autoSaveToSystem();
+            }
+        });
+
+        setupAutoIndent();
     }
 
     private void setupToolbar() {
@@ -216,6 +385,9 @@ public class PythonConsole extends AppCompatActivity {
             return true;
         } else if (id == R.id.menu_load_project) {
             showLoadProjectDialog();
+            return true;
+        } else if (id == R.id.menu_system_manage) {  // <--- YENİ
+            showSystemManagementDialog();
             return true;
         } else if (id == R.id.menu_clear_code) {
             clearCurrentCode();
@@ -415,72 +587,6 @@ public class PythonConsole extends AppCompatActivity {
         return text.substring(start, cursor);
     }
 
-    private void setupEventListeners() {
-        runBtn.setOnClickListener(v -> runPythonCode());
-
-        // Task rejimində deyilsə "Need Help" düyməsinin funksiyasını dəyiş
-        if (dontKnowBtn != null) {
-            if (isTaskMode) {
-                dontKnowBtn.setOnClickListener(v -> showSolutionInCode());
-            } else {
-                dontKnowBtn.setOnClickListener(v -> showHelpForConsole());
-            }
-        }
-
-        clearOutputBtn.setOnClickListener(v -> {
-            outputText.setText("> Console cleared. Ready to run code...");
-            Toast.makeText(this, "Console cleared", Toast.LENGTH_SHORT).show();
-        });
-
-        copyOutputBtn.setOnClickListener(v -> {
-            String output = outputText.getText().toString();
-            if (!output.isEmpty()) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                android.content.ClipData clip = android.content.ClipData.newPlainText("Output", output);
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(this, "Output copied", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        hideOutputBtn.setOnClickListener(v -> {
-            if (outputContainer.getVisibility() == View.VISIBLE) {
-                outputContainer.setVisibility(View.GONE);
-                hideOutputBtn.setText("Show");
-            } else {
-                outputContainer.setVisibility(View.VISIBLE);
-                hideOutputBtn.setText("Hide");
-            }
-        });
-
-        codeInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if (!isUndoRedoOp) saveToUndoStack();
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                updateLineNumbers(s.toString());
-                int cursor = start + count;
-                if (cursor > s.length()) cursor = s.length();
-                if (before > count && count == 0) {
-                    hideSuggestions();
-                } else {
-                    updateSuggestions(s.toString(), cursor);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!isApplyingHighlight && syntaxHighlightingEnabled) {
-                    applySyntaxHighlighting(s);
-                }
-                saveCode();
-            }
-        });
-
-        setupAutoIndent();
-    }
 
     // Console rejimi üçün kömək
     private void showHelpForConsole() {
@@ -722,6 +828,290 @@ public class PythonConsole extends AppCompatActivity {
         }
     }
 
+    // 1. Sistem qovluğundakı bütün faylları siyahılaşdır
+    private List<String> listAllSystemFiles() {
+        List<String> files = new ArrayList<>();
+        try {
+            File systemDir = new File(getFilesDir(), SYSTEM_STORAGE_DIR);
+            if (systemDir.exists()) {
+                File[] fileList = systemDir.listFiles();
+                if (fileList != null) {
+                    for (File file : fileList) {
+                        if (file.isFile()) {
+                            files.add(file.getName());
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e("SystemFolder", "Listeleme xətası: " + e.getMessage());
+        }
+        return files;
+    }
+
+    // 2. Spesifik faylı sil
+    private void deleteFileFromSystem(String fileName) {
+        try {
+            File systemDir = new File(getFilesDir(), SYSTEM_STORAGE_DIR);
+            File file = new File(systemDir, fileName);
+
+            if (file.exists()) {
+                boolean deleted = file.delete();
+                if (deleted) {
+                    Toast.makeText(this, "🗑️ Silindi: " + fileName, Toast.LENGTH_SHORT).show();
+                    Log.d("SystemFolder", "Fayl silindi: " + file.getAbsolutePath());
+                } else {
+                    Toast.makeText(this, "❌ Silinə bilmədi: " + fileName, Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "❌ Fayl tapılmadı: " + fileName, Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            Log.e("SystemFolder", "Silinmə xətası: " + e.getMessage());
+            Toast.makeText(this, "Xəta: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // 3. Bütün sistem qovluğunu təmizlə
+    private void clearAllSystemFiles() {
+        try {
+            File systemDir = new File(getFilesDir(), SYSTEM_STORAGE_DIR);
+            if (systemDir.exists()) {
+                File[] fileList = systemDir.listFiles();
+                if (fileList != null) {
+                    int deletedCount = 0;
+                    for (File file : fileList) {
+                        if (file.isFile() && file.delete()) {
+                            deletedCount++;
+                        }
+                    }
+                    Toast.makeText(this, "✅ " + deletedCount + " fayl silindi", Toast.LENGTH_SHORT).show();
+                    Log.d("SystemFolder", "Bütün fayllar silindi. Silinən sayı: " + deletedCount);
+                }
+            }
+        } catch (Exception e) {
+            Log.e("SystemFolder", "Təmizləmə xətası: " + e.getMessage());
+            Toast.makeText(this, "Xəta: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // 4. Sistem qovluğunun ünvanını göstər
+    private void showSystemFolderPath() {
+        File systemDir = new File(getFilesDir(), SYSTEM_STORAGE_DIR);
+        String path = systemDir.getAbsolutePath();
+
+        // Fayl ölçüsünü hesabla
+        long totalSize = 0;
+        if (systemDir.exists()) {
+            File[] files = systemDir.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isFile()) {
+                        totalSize += file.length();
+                    }
+                }
+            }
+        }
+
+        String sizeText = formatFileSize(totalSize);
+        int fileCount = systemDir.exists() ? (systemDir.listFiles() != null ? systemDir.listFiles().length : 0) : 0;
+
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("📁 Sistem Qovluğu Məlumatı")
+                .setMessage("📍 Ünvan:\n" + path + "\n\n" +
+                        "📄 Fayl sayı: " + fileCount + "\n" +
+                        "💾 Ümumi ölçü: " + sizeText + "\n\n" +
+                        "💡 Bu ünvanı kopyalaya bilərsiniz")
+                .setPositiveButton("📋 Kopyala", (d, w) -> {
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    android.content.ClipData clip = android.content.ClipData.newPlainText("Path", path);
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(this, "Ünvan kopyalandı", Toast.LENGTH_SHORT).show();
+                })
+                .setNeutralButton("🗑️ Təmizlə", (d, w) -> {
+                    new MaterialAlertDialogBuilder(this)
+                            .setTitle("Təsdiq")
+                            .setMessage("Bütün faylları silmək istədiyinizə əminsiniz?")
+                            .setPositiveButton("Bəli", (d2, w2) -> clearAllSystemFiles())
+                            .setNegativeButton("Xeyr", null)
+                            .show();
+                })
+                .setNegativeButton("Bağla", null)
+                .show();
+    }
+
+    // 5. Bütün faylları göstərən dialoq (silme seçimi ilə)
+    private void showAllFilesWithDeleteOption() {
+        List<String> files = listAllSystemFiles();
+
+        if (files.isEmpty()) {
+            Toast.makeText(this, "📁 Sistem qovluğunda heç bir fayl yoxdur", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Fayl adlarını ölçüləri ilə birlikdə göstər
+        String[] fileArray = new String[files.size()];
+        for (int i = 0; i < files.size(); i++) {
+            String fileName = files.get(i);
+            long fileSize = getFileSize(fileName);
+            fileArray[i] = fileName + " (" + formatFileSize(fileSize) + ")";
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("📁 Sistem Qovluğu (" + files.size() + " fayl)");
+        builder.setItems(fileArray, (dialog, which) -> {
+            String selectedFile = files.get(which);
+
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Fayl: " + selectedFile)
+                    .setMessage("Nə etmək istəyirsiniz?")
+                    .setPositiveButton("📂 Yüklə", (d, w) -> {
+                        String content = loadFromSystemFolder(); // Bu ən son avtomatik saxlanmış faylı yükləyir
+                        if (content != null) {
+                            saveToUndoStack();
+                            redoStack.clear();
+                            codeInput.setText(content);
+                            updateLineNumbers(content);
+                            if (syntaxHighlightingEnabled) {
+                                applySyntaxHighlighting(codeInput.getText());
+                            }
+                            Toast.makeText(this, "✅ Yükləndi: " + selectedFile, Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNeutralButton("🗑️ Sil", (d, w) -> {
+                        deleteFileFromSystem(selectedFile);
+                    })
+                    .setNegativeButton("❌ Ləğv", null)
+                    .show();
+        });
+        builder.setNegativeButton("Bağla", null);
+        builder.show();
+    }
+
+    // 6. Fayl ölçüsünü almaq
+    private long getFileSize(String fileName) {
+        try {
+            File systemDir = new File(getFilesDir(), SYSTEM_STORAGE_DIR);
+            File file = new File(systemDir, fileName);
+            if (file.exists()) {
+                return file.length();
+            }
+        } catch (Exception e) {
+            Log.e("SystemFolder", "Ölçü hesablama xətası: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    // 7. Fayl ölçüsünü formatla (KB, MB, GB)
+    private String formatFileSize(long size) {
+        if (size <= 0) return "0 B";
+        final String[] units = new String[] { "B", "KB", "MB", "GB", "TB" };
+        int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
+        return String.format(Locale.getDefault(), "%.1f %s", size / Math.pow(1024, digitGroups), units[digitGroups]);
+    }
+
+    // 8. Cari fayl haqqında məlumat (hansı fayl saxlanılır)
+    private void showCurrentFileInfo() {
+        File systemDir = new File(getFilesDir(), SYSTEM_STORAGE_DIR);
+        File currentFile = new File(systemDir, AUTO_SAVE_FILE);
+
+        String status = currentFile.exists() ? "✅ Mövcuddur" : "❌ Mövcud deyil";
+        String size = currentFile.exists() ? formatFileSize(currentFile.length()) : "0 B";
+        String lastModified = currentFile.exists() ?
+                new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault()).format(new Date(currentFile.lastModified())) :
+                "Yoxdur";
+
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("📄 Cari Fayl Məlumatı")
+                .setMessage("📁 Fayl adı: " + AUTO_SAVE_FILE + "\n" +
+                        "📍 Tam ünvan:\n" + currentFile.getAbsolutePath() + "\n\n" +
+                        "📊 Vəziyyət: " + status + "\n" +
+                        "💾 Ölçü: " + size + "\n" +
+                        "🕐 Son dəyişiklik: " + lastModified + "\n\n" +
+                        "💡 Qeyd: Hər kod dəyişikliyində avtomatik saxlanılır")
+                .setPositiveButton("📂 Qovluğu Aç", (d, w) -> {
+                    showSystemFolderPath();
+                })
+                .setNegativeButton("Bağla", null)
+                .show();
+    }
+
+    // 9. Menyudan çağırmaq üçün dialoq (BÜTÜN ƏMƏLİYYATLAR BİR YERDƏ)
+    private void showSystemManagementDialog() {
+        String[] options = {
+                "📁 Qovluq Məlumatı (Ünvan)",
+                "📄 Cari Fayl Məlumatı",
+                "📋 Bütün Faylları Göstər",
+                "🗑️ Bütün Faylları Sil",
+                "💾 Yaddaş Məlumatı"
+        };
+
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("📁 Sistem Qovluğu İdarəetmə")
+                .setItems(options, (dialog, which) -> {
+                    switch (which) {
+                        case 0:
+                            showSystemFolderPath();
+                            break;
+                        case 1:
+                            showCurrentFileInfo();
+                            break;
+                        case 2:
+                            showAllFilesWithDeleteOption();
+                            break;
+                        case 3:
+                            new MaterialAlertDialogBuilder(this)
+                                    .setTitle("⚠️ Təsdiq")
+                                    .setMessage("BÜTÜN sistem fayllarını silmək istədiyinizə əminsiniz?\nBu əməliyyat geri alına bilməz!")
+                                    .setPositiveButton("Bəli, Sil", (d, w) -> clearAllSystemFiles())
+                                    .setNegativeButton("Xeyr", null)
+                                    .show();
+                            break;
+                        case 4:
+                            showStorageInfo();
+                            break;
+                    }
+                })
+                .setNegativeButton("Bağla", null)
+                .show();
+    }
+
+    // 10. Yaddaş məlumatını göstər
+    private void showStorageInfo() {
+        File systemDir = new File(getFilesDir(), SYSTEM_STORAGE_DIR);
+
+        // Ümumi və boş yaddaş
+        long totalSpace = getFilesDir().getTotalSpace();
+        long freeSpace = getFilesDir().getFreeSpace();
+        long usedSpace = totalSpace - freeSpace;
+
+        // Sistem qovluğunun ölçüsü
+        long systemFolderSize = 0;
+        int fileCount = 0;
+        if (systemDir.exists()) {
+            File[] files = systemDir.listFiles();
+            if (files != null) {
+                fileCount = files.length;
+                for (File file : files) {
+                    if (file.isFile()) {
+                        systemFolderSize += file.length();
+                    }
+                }
+            }
+        }
+
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("💾 Yaddaş Məlumatı")
+                .setMessage("📱 Ümumi yaddaş: " + formatFileSize(totalSpace) + "\n" +
+                        "✅ Boş yaddaş: " + formatFileSize(freeSpace) + "\n" +
+                        "📊 İstifadə olunan: " + formatFileSize(usedSpace) + "\n\n" +
+                        "📁 Sistem qovluğu: " + formatFileSize(systemFolderSize) + "\n" +
+                        "📄 Fayl sayı: " + fileCount + "\n\n" +
+                        "📍 Qovluq ünvanı:\n" + systemDir.getAbsolutePath())
+                .setPositiveButton("OK", null)
+                .show();
+    }
+
     private void checkSyntax() {
         String code = codeInput.getText().toString();
         if (code.trim().isEmpty()) {
@@ -783,6 +1173,7 @@ public class PythonConsole extends AppCompatActivity {
 
     private void saveProject(String projectName) {
         try {
+            // 1. Öz qovluğuna saxla (.pyproj)
             File projectsDir = new File(getFilesDir(), PROJECTS_DIR);
             if (!projectsDir.exists()) projectsDir.mkdirs();
 
@@ -802,7 +1193,35 @@ public class PythonConsole extends AppCompatActivity {
             writer.close();
             fos.close();
 
-            Toast.makeText(this, "Project saved: " + projectName, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "✅ Project saved: " + projectName, Toast.LENGTH_LONG).show();
+
+            // 2. DOWNLOADS QOVLUĞUNA .py UZANTISI İLƏ YAZ
+            String downloadsFileName = projectName + ".py";  // <--- .py uzantısı
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                android.content.ContentValues values = new android.content.ContentValues();
+                values.put(android.provider.MediaStore.MediaColumns.DISPLAY_NAME, downloadsFileName);
+                values.put(android.provider.MediaStore.MediaColumns.MIME_TYPE, "text/x-python");
+                values.put(android.provider.MediaStore.MediaColumns.RELATIVE_PATH, android.os.Environment.DIRECTORY_DOWNLOADS);
+
+                android.net.Uri uri = getContentResolver().insert(android.provider.MediaStore.Files.getContentUri("external"), values);
+                if (uri != null) {
+                    java.io.OutputStream os = getContentResolver().openOutputStream(uri);
+                    os.write(codeInput.getText().toString().getBytes());
+                    os.close();
+                    Toast.makeText(this, "✅ Downloads-a yazıldı: " + downloadsFileName, Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                File downloadsDir = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DOWNLOADS);
+                File downloadsFile = new File(downloadsDir, downloadsFileName);
+                FileOutputStream fos2 = new FileOutputStream(downloadsFile);
+                OutputStreamWriter writer2 = new OutputStreamWriter(fos2);
+                writer2.write(codeInput.getText().toString());
+                writer2.close();
+                fos2.close();
+                Toast.makeText(this, "✅ Downloads-a yazıldı: " + downloadsFileName, Toast.LENGTH_SHORT).show();
+            }
+
         } catch (Exception e) {
             Toast.makeText(this, "Save error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -1036,6 +1455,9 @@ public class PythonConsole extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         saveCode();
+
+        // ========== ÇIXIŞ ZAMANI SON VƏZİYYƏTİ SAXLA ==========
+        autoSaveToSystem();
     }
 
     // ProjectData inner class

@@ -63,8 +63,8 @@ chaquopy {
 
             // These may or may not work depending on version
             install("pandas")     // ⚠️ Limited versions, might work
-//            install("matplotlib") // ⚠️ May have issues
-//            install("cryptography") // ⚠️ Complex build
+            install("matplotlib") // ⚠️ May have issues
+            install("cryptography") // ⚠️ Complex build
 
 
             // These typically DON'T work

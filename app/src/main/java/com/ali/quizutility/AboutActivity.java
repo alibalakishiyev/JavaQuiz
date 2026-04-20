@@ -103,14 +103,13 @@ public class AboutActivity extends AppCompatActivity {
             }
         });
 
-        home = findViewById(R.id.returnHome);
+        home = findViewById(R.id.returnHomeQuiz);
 
 
 
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(AboutActivity.this , MainActivity.class));
                 finish();
             }
         });

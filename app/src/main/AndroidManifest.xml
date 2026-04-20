@@ -37,6 +37,12 @@
             android:name="com.ali.postgresql.SqlHazirliq"
             android:exported="false" />
         <activity
+            android:name="com.ali.pymain.quiz.PythonQuiz"
+            android:exported="false" />
+        <activity
+            android:name="com.ali.aimain.AiQuiz.AiQuiz"
+            android:exported="false" />
+        <activity
             android:name="com.ali.postgresql.SqlQuiz"
             android:exported="false" />
         <activity

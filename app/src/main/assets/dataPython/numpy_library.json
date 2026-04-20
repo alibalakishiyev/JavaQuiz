@@ -1,0 +1,496 @@
+{
+  "numpy_library1": [
+    {
+      "question": "NumPy kitabxanasını import etmək üçün hansı ifadə istifadə olunur?",
+      "answer1": "A) import numpy",
+      "answer2": "B) import np",
+      "answer3": "C) import numpy as np",
+      "answer4": "D) include numpy",
+      "correct": "C) import numpy as np"
+    },
+    {
+      "question": "np.array([1, 2, 3]) ifadəsinin tipi nədir?",
+      "answer1": "A) list",
+      "answer2": "B) tuple",
+      "answer3": "C) numpy.ndarray",
+      "answer4": "D) numpy.array",
+      "correct": "C) numpy.ndarray"
+    },
+    {
+      "question": "Bir NumPy array-inin bütün elementlərini 2 ilə vurmaq üçün hansı üsullar doğrudur?",
+      "answer1": "A) arr * 2",
+      "answer2": "B) arr.multiply(2)",
+      "answer3": "C) np.multiply(arr, 2)",
+      "answer4": "D) Həm A, həm C",
+      "correct": "D) Həm A, həm C"
+    },
+    {
+      "question": "np.zeros((2, 3)) ifadəsi ilə neçə elementdən ibarət array yaradılır?",
+      "answer1": "A) 5",
+      "answer2": "B) 6",
+      "answer3": "C) 2",
+      "answer4": "D) 3",
+      "correct": "B) 6"
+    },
+    {
+      "question": "np.ones((3, 3)) ifadəsinin bütün elementləri hansı qiymətə malikdir?",
+      "answer1": "A) 0",
+      "answer2": "B) 1",
+      "answer3": "C) random",
+      "answer4": "D) None",
+      "correct": "B) 1"
+    },
+    {
+      "question": "np.eye(4) ifadəsi ilə yaradılan matrisin forması (shape) hansıdır?",
+      "answer1": "A) (4,)",
+      "answer2": "B) (4, 4)",
+      "answer3": "C) (1, 4)",
+      "answer4": "D) (4, 1)",
+      "correct": "B) (4, 4)"
+    },
+    {
+      "question": "np.arange(10) ifadəsinin nəticəsi hansı array-dir?",
+      "answer1": "A) [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
+      "answer2": "B) [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]",
+      "answer3": "C) [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
+      "answer4": "D) [1, 2, 3, 4, 5, 6, 7, 8, 9]",
+      "correct": "B) [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]"
+    },
+    {
+      "question": "np.linspace(0, 10, 6) ifadəsi ilə yaradılan array-in 3-cü elementi (indeks 2) nədir?",
+      "answer1": "A) 2.0",
+      "answer2": "B) 4.0",
+      "answer3": "C) 6.0",
+      "answer4": "D) 8.0",
+      "correct": "B) 4.0"
+    },
+    {
+      "question": "Bir array-in ölçülərini (dimension sayını) tapmaq üçün hansı atributdan istifadə olunur?",
+      "answer1": "A) .size",
+      "answer2": "B) .dim",
+      "answer3": "C) .ndim",
+      "answer4": "D) .shape",
+      "correct": "C) .ndim"
+    },
+    {
+      "question": "arr = np.array([[1, 2, 3], [4, 5, 6]]) - arr.shape ifadəsinin nəticəsi nədir?",
+      "answer1": "A) (2, 3)",
+      "answer2": "B) (3, 2)",
+      "answer3": "C) (6,)",
+      "answer4": "D) (1, 6)",
+      "correct": "A) (2, 3)"
+    }
+  ],
+  "numpy_library2": [
+    {
+      "question": "arr = np.array([10, 20, 30, 40, 50]) - arr[1:4] ifadəsinin nəticəsi nədir?",
+      "answer1": "A) [10, 20, 30]",
+      "answer2": "B) [20, 30, 40]",
+      "answer3": "C) [30, 40, 50]",
+      "answer4": "D) [10, 20, 30, 40]",
+      "correct": "B) [20, 30, 40]"
+    },
+    {
+      "question": "arr = np.array([1, 2, 3, 4, 5, 6]) - arr[::2] ifadəsinin nəticəsi nədir?",
+      "answer1": "A) [1, 3, 5]",
+      "answer2": "B) [2, 4, 6]",
+      "answer3": "C) [1, 2, 3]",
+      "answer4": "D) [4, 5, 6]",
+      "correct": "A) [1, 3, 5]"
+    },
+    {
+      "question": "arr = np.array([[1, 2, 3], [4, 5, 6]]) - arr[0, 2] ifadəsinin nəticəsi nədir?",
+      "answer1": "A) 1",
+      "answer2": "B) 2",
+      "answer3": "C) 3",
+      "answer4": "D) 4",
+      "correct": "C) 3"
+    },
+    {
+      "question": "arr = np.array([1, 2, 3, 4, 5]) - arr[arr > 3] ifadəsinin nəticəsi nədir?",
+      "answer1": "A) [1, 2, 3]",
+      "answer2": "B) [3, 4, 5]",
+      "answer3": "C) [4, 5]",
+      "answer4": "D) [1, 2]",
+      "correct": "C) [4, 5]"
+    },
+    {
+      "question": "İki NumPy array-ini element bazasında (element-wise) toplamaq üçün hansı operator istifadə olunur?",
+      "answer1": "A) np.dot(a, b)",
+      "answer2": "B) a @ b",
+      "answer3": "C) a + b",
+      "answer4": "D) np.matmul(a, b)",
+      "correct": "C) a + b"
+    },
+    {
+      "question": "a = np.array([1, 2, 3]); b = np.array([4, 5, 6]) - a * b ifadəsinin nəticəsi nədir?",
+      "answer1": "A) [4, 10, 18]",
+      "answer2": "B) [5, 7, 9]",
+      "answer3": "C) [1*4, 2*5, 3*6]",
+      "answer4": "D) Həm A, həm C",
+      "correct": "D) Həm A, həm C"
+    },
+    {
+      "question": "a = np.array([1, 2]); b = np.array([3, 4]) - np.dot(a, b) ifadəsinin nəticəsi nədir?",
+      "answer1": "A) 7",
+      "answer2": "B) 10",
+      "answer3": "C) 11",
+      "answer4": "D) 14",
+      "correct": "C) 11"
+    },
+    {
+      "question": "a = np.array([[1, 2], [3, 4]]) - a.T ifadəsi nə edir?",
+      "answer1": "A) Matrisin tərsini alır",
+      "answer2": "B) Matrisin transpozunu alır",
+      "answer3": "C) Matrisi sıfırlayır",
+      "answer4": "D) Matrisin determinantını hesablayır",
+      "correct": "B) Matrisin transpozunu alır"
+    },
+    {
+      "question": "np.random.rand(4) ifadəsi hansı diapazonda ədədlər yaradır?",
+      "answer1": "A) 0 ilə 1 arası",
+      "answer2": "B) 1 ilə 10 arası",
+      "answer3": "C) 0 ilə 100 arası",
+      "answer4": "D) -1 ilə 1 arası",
+      "correct": "A) 0 ilə 1 arası"
+    },
+    {
+      "question": "np.random.randint(0, 10, size=(2, 4)) ifadəsi neçə element yaradır?",
+      "answer1": "A) 6",
+      "answer2": "B) 8",
+      "answer3": "C) 2",
+      "answer4": "D) 4",
+      "correct": "B) 8"
+    }
+  ],
+  "numpy_library3": [
+    {
+      "question": "Bir NumPy array-inin bütün elementlərinin cəmini hesablamaq üçün hansı funksiya istifadə olunur?",
+      "answer1": "A) np.total()",
+      "answer2": "B) np.add()",
+      "answer3": "C) np.sum()",
+      "answer4": "D) np.cumsum()",
+      "correct": "C) np.sum()"
+    },
+    {
+      "question": "arr = np.array([1, 2, 3, 4, 5]) - np.sum(arr) ifadəsinin nəticəsi nədir?",
+      "answer1": "A) 10",
+      "answer2": "B) 12",
+      "answer3": "C) 14",
+      "answer4": "D) 15",
+      "correct": "D) 15"
+    },
+    {
+      "question": "Bir array-in elementlərinin orta qiymətini (mean) tapmaq üçün hansı funksiya istifadə olunur?",
+      "answer1": "A) np.average()",
+      "answer2": "B) np.mean()",
+      "answer3": "C) np.median()",
+      "answer4": "D) Həm A, həm B",
+      "correct": "D) Həm A, həm B"
+    },
+    {
+      "question": "arr = np.array([2, 4, 6, 8, 10]) - np.mean(arr) ifadəsinin nəticəsi nədir?",
+      "answer1": "A) 4",
+      "answer2": "B) 5",
+      "answer3": "C) 6",
+      "answer4": "D) 7",
+      "correct": "C) 6"
+    },
+    {
+      "question": "Bir array-in standart sapmasını (standard deviation) hesablamaq üçün hansı funksiya istifadə olunur?",
+      "answer1": "A) np.std()",
+      "answer2": "B) np.var()",
+      "answer3": "C) np.mean()",
+      "answer4": "D) np.cov()",
+      "correct": "A) np.std()"
+    },
+    {
+      "question": "Bir array-in maksimum elementini tapmaq üçün hansı funksiya istifadə olunur?",
+      "answer1": "A) np.max()",
+      "answer2": "B) np.amax()",
+      "answer3": "C) Həm A, həm B",
+      "answer4": "D) np.top()",
+      "correct": "C) Həm A, həm B"
+    },
+    {
+      "question": "arr = np.array([5, 1, 8, 3, 9, 2]) - np.argmax(arr) ifadəsinin nəticəsi nədir?",
+      "answer1": "A) 9",
+      "answer2": "B) 8",
+      "answer3": "C) 5",
+      "answer4": "D) 4",
+      "correct": "D) 4"
+    },
+    {
+      "question": "arr = np.array([5, 1, 8, 3, 9, 2]) - np.argmin(arr) ifadəsinin nəticəsi nədir?",
+      "answer1": "A) 5",
+      "answer2": "B) 1",
+      "answer3": "C) 2",
+      "answer4": "D) 3",
+      "correct": "B) 1"
+    },
+    {
+      "question": "İki array-i şaquli birləşdirmək (vertical stacking) üçün hansı funksiya istifadə olunur?",
+      "answer1": "A) np.hstack()",
+      "answer2": "B) np.vstack()",
+      "answer3": "C) np.concat()",
+      "answer4": "D) np.append()",
+      "correct": "B) np.vstack()"
+    },
+    {
+      "question": "İki array-i üfüqi birləşdirmək (horizontal stacking) üçün hansı funksiya istifadə olunur?",
+      "answer1": "A) np.hstack()",
+      "answer2": "B) np.vstack()",
+      "answer3": "C) np.row_stack()",
+      "answer4": "D) np.column_stack()",
+      "correct": "A) np.hstack()"
+    }
+  ],
+  "numpy_library4": [
+    {
+      "question": "arr = np.array([1, 2, 3, 4, 5, 6]) - arr.reshape(2, 3) ifadəsinin nəticəsi hansı formada olur?",
+      "answer1": "A) [[1, 2], [3, 4], [5, 6]]",
+      "answer2": "B) [[1, 2, 3], [4, 5, 6]]",
+      "answer3": "C) [[1, 3, 5], [2, 4, 6]]",
+      "answer4": "D) [1, 2, 3, 4, 5, 6]",
+      "correct": "B) [[1, 2, 3], [4, 5, 6]]"
+    },
+    {
+      "question": "arr = np.array([1, 2, 3, 4, 5, 6]) - arr.reshape(3, -1) ifadəsində -1 nə məna daşıyır?",
+      "answer1": "A) Xəta verir",
+      "answer2": "B) Ölçünü avtomatik hesablayır",
+      "answer3": "C) -1-ci indeksi göstərir",
+      "answer4": "D) Son elementi təkrarlayır",
+      "correct": "B) Ölçünü avtomatik hesablayır"
+    },
+    {
+      "question": "np.sqrt(np.array([1, 4, 9, 16])) ifadəsinin nəticəsi nədir?",
+      "answer1": "A) [1, 2, 3, 4]",
+      "answer2": "B) [1, 4, 9, 16]",
+      "answer3": "C) [1, 16, 81, 256]",
+      "answer4": "D) [1, 2, 3, 4]",
+      "correct": "A) [1, 2, 3, 4]"
+    },
+    {
+      "question": "np.exp(np.array([0, 1, 2])) ifadəsinin nəticəsinə yaxın olan hansıdır?",
+      "answer1": "A) [1, 2.718, 7.389]",
+      "answer2": "B) [0, 1, 4]",
+      "answer3": "C) [1, 1, 1]",
+      "answer4": "D) [0, 0, 0]",
+      "correct": "A) [1, 2.718, 7.389]"
+    },
+    {
+      "question": "np.log(np.array([1, np.e, np.e**2])) ifadəsinin nəticəsinə yaxın olan hansıdır?",
+      "answer1": "A) [0, 1, 2]",
+      "answer2": "B) [1, 2, 3]",
+      "answer3": "C) [0, 0, 0]",
+      "answer4": "D) [1, 1, 1]",
+      "correct": "A) [0, 1, 2]"
+    },
+    {
+      "question": "arr = np.array([1, 2, 2, 3, 3, 3, 4]) - np.unique(arr) ifadəsinin nəticəsi nədir?",
+      "answer1": "A) [1, 2, 3, 4]",
+      "answer2": "B) [1, 2, 2, 3, 3, 3, 4]",
+      "answer3": "C) [4, 3, 2, 1]",
+      "answer4": "D) [1, 2, 3]",
+      "correct": "A) [1, 2, 3, 4]"
+    },
+    {
+      "question": "arr = np.array([10, 20, 30, 40, 50]) - np.where(arr > 25) ifadəsi nə qaytarır?",
+      "answer1": "A) [30, 40, 50]",
+      "answer2": "B) [2, 3, 4]",
+      "answer3": "C) [True, False, True, True, True]",
+      "answer4": "D) [False, False, True, True, True]",
+      "correct": "B) [2, 3, 4]"
+    },
+    {
+      "question": "arr = np.array([1, 2, 3, 4, 5]) - np.where(arr % 2 == 0, arr, 0) ifadəsinin nəticəsi nədir?",
+      "answer1": "A) [0, 2, 0, 4, 0]",
+      "answer2": "B) [1, 0, 3, 0, 5]",
+      "answer3": "C) [0, 0, 0, 0, 0]",
+      "answer4": "D) [1, 2, 3, 4, 5]",
+      "correct": "A) [0, 2, 0, 4, 0]"
+    },
+    {
+      "question": "np.full((2, 3), 7) ifadəsi nə yaradır?",
+      "answer1": "A) 2x3 ölçülü sıfır matrisi",
+      "answer2": "B) 2x3 ölçülü bir matrisi",
+      "answer3": "C) 2x3 ölçülü bütün elementləri 7 olan matris",
+      "answer4": "D) 2x3 ölçülü təsadüfi matris",
+      "correct": "C) 2x3 ölçülü bütün elementləri 7 olan matris"
+    },
+    {
+      "question": "np.diag([1, 2, 3]) ifadəsi nə yaradır?",
+      "answer1": "A) [1, 2, 3] vektoru",
+      "answer2": "B) Diaqonalında 1, 2, 3 olan 3x3 matris",
+      "answer3": "C) 1x3 ölçülü matris",
+      "answer4": "D) 3x1 ölçülü matris",
+      "correct": "B) Diaqonalında 1, 2, 3 olan 3x3 matris"
+    }
+  ],
+  "numpy_library5": [
+    {
+      "question": "arr = np.array([1, 2, 3, 4, 5]) - np.cumsum(arr) ifadəsinin nəticəsi nədir?",
+      "answer1": "A) [1, 3, 6, 10, 15]",
+      "answer2": "B) [1, 2, 3, 4, 5]",
+      "answer3": "C) [15, 14, 12, 9, 5]",
+      "answer4": "D) [1, 3, 5, 7, 9]",
+      "correct": "A) [1, 3, 6, 10, 15]"
+    },
+    {
+      "question": "arr = np.array([[1, 2, 3], [4, 5, 6]]) - np.sum(arr, axis=0) ifadəsinin nəticəsi nədir?",
+      "answer1": "A) [5, 7, 9]",
+      "answer2": "B) [6, 15]",
+      "answer3": "C) [1+4, 2+5, 3+6]",
+      "answer4": "D) Həm A, həm C",
+      "correct": "D) Həm A, həm C"
+    },
+    {
+      "question": "arr = np.array([[1, 2, 3], [4, 5, 6]]) - np.sum(arr, axis=1) ifadəsinin nəticəsi nədir?",
+      "answer1": "A) [5, 7, 9]",
+      "answer2": "B) [6, 15]",
+      "answer3": "C) [1+2+3, 4+5+6]",
+      "answer4": "D) Həm B, həm C",
+      "correct": "D) Həm B, həm C"
+    },
+    {
+      "question": "np.random.seed(42) funksiyasının məqsədi nədir?",
+      "answer1": "A) Təsadüfi ədədləri silmək",
+      "answer2": "B) Təsadüfi ədəd generatorunu başlanğıc dəyərlə təyin etmək",
+      "answer3": "C) Array-i sıralamaq",
+      "answer4": "D) Təsadüfi ədədləri çap etmək",
+      "correct": "B) Təsadüfi ədəd generatorunu başlanğıc dəyərlə təyin etmək"
+    },
+    {
+      "question": "np.sort(np.array([3, 1, 4, 1, 5, 9])) ifadəsinin nəticəsi nədir?",
+      "answer1": "A) [3, 1, 4, 1, 5, 9]",
+      "answer2": "B) [1, 1, 3, 4, 5, 9]",
+      "answer3": "C) [9, 5, 4, 3, 1, 1]",
+      "answer4": "D) [1, 3, 4, 5, 9]",
+      "correct": "B) [1, 1, 3, 4, 5, 9]"
+    },
+    {
+      "question": "arr = np.array([[3, 1, 4], [1, 5, 9]]) - np.sort(arr, axis=1) ifadəsinin nəticəsi nədir?",
+      "answer1": "A) Hər sətri ayrı-ayrılıqda sıralayır",
+      "answer2": "B) Hər sütunu ayrı-ayrılıqda sıralayır",
+      "answer3": "C) Bütün array-i sıralayır",
+      "answer4": "D) Xəta verir",
+      "correct": "A) Hər sətri ayrı-ayrılıqda sıralayır"
+    },
+    {
+      "question": "np.concatenate([arr1, arr2], axis=0) nə edir?",
+      "answer1": "A) Array-ləri üfüqi birləşdirir",
+      "answer2": "B) Array-ləri şaquli birləşdirir",
+      "answer3": "C) Array-ləri element bazasında toplayır",
+      "answer4": "D) Array-ləri çıxarır",
+      "correct": "B) Array-ləri şaquli birləşdirir"
+    },
+    {
+      "question": "arr = np.array([1, 2, 3, 4, 5]) - np.append(arr, [6, 7]) ifadəsinin nəticəsi nədir?",
+      "answer1": "A) [1, 2, 3, 4, 5]",
+      "answer2": "B) [6, 7]",
+      "answer3": "C) [1, 2, 3, 4, 5, 6, 7]",
+      "answer4": "D) Xəta verir",
+      "correct": "C) [1, 2, 3, 4, 5, 6, 7]"
+    },
+    {
+      "question": "np.delete(arr, [0, 2]) ifadəsi nə edir?",
+      "answer1": "A) Array-in 0 və 2-ci indekslərindəki elementləri silir",
+      "answer2": "B) Array-in 0 və 2-ci elementlərini saxlayır",
+      "answer3": "C) Array-i tərsinə çevirir",
+      "answer4": "D) Array-i sıralayır",
+      "correct": "A) Array-in 0 və 2-ci indekslərindəki elementləri silir"
+    },
+    {
+      "question": "np.clip(arr, min, max) funksiyası nə edir?",
+      "answer1": "A) Array-in elementlərini min və max arasında məhdudlaşdırır",
+      "answer2": "B) Array-i kəsir",
+      "answer3": "C) Array-in surətini yaradır",
+      "answer4": "D) Array-i sıralayır",
+      "correct": "A) Array-in elementlərini min və max arasında məhdudlaşdırır"
+    }
+  ],
+  "numpy_library6": [
+    {
+      "question": "np.broadcasting nə deməkdir?",
+      "answer1": "A) Müxtəlif ölçülü array-lər üzərində element əməliyyatları aparmaq",
+      "answer2": "B) Array-ləri şaquli birləşdirmək",
+      "answer3": "C) Array-ləri sıralamaq",
+      "answer4": "D) Array-ləri çap etmək",
+      "correct": "A) Müxtəlif ölçülü array-lər üzərində element əməliyyatları aparmaq"
+    },
+    {
+      "question": "a = np.array([1, 2, 3]); b = 2 - a + b ifadəsinin nəticəsi nədir?",
+      "answer1": "A) [3, 4, 5]",
+      "answer2": "B) [2, 4, 6]",
+      "answer3": "C) Broadcasting ilə [1+2, 2+2, 3+2]",
+      "answer4": "D) Həm A, həm C",
+      "correct": "A) [3, 4, 5]"
+    },
+    {
+      "question": "np.linalg.inv() funksiyası nə üçün istifadə olunur?",
+      "answer1": "A) Matrisin determinantını tapmaq",
+      "answer2": "B) Matrisin tərsini tapmaq",
+      "answer3": "C) Matrisin transpozunu tapmaq",
+      "answer4": "D) Matrisin izini tapmaq",
+      "correct": "B) Matrisin tərsini tapmaq"
+    },
+    {
+      "question": "np.linalg.det() funksiyası nə üçün istifadə olunur?",
+      "answer1": "A) Matrisin determinantını tapmaq",
+      "answer2": "B) Matrisin tərsini tapmaq",
+      "answer3": "C) Matrisin dərəcəsini (rank) tapmaq",
+      "answer4": "D) Matrisin xüsusi dəyərlərini tapmaq",
+      "correct": "A) Matrisin determinantını tapmaq"
+    },
+    {
+      "question": "np.linalg.eig() funksiyası nə qaytarır?",
+      "answer1": "A) Matrisin xüsusi dəyərlərini (eigenvalues) və xüsusi vektorlarını (eigenvectors)",
+      "answer2": "B) Matrisin tərsini",
+      "answer3": "C) Matrisin determinantını",
+      "answer4": "D) Matrisin normunu",
+      "correct": "A) Matrisin xüsusi dəyərlərini (eigenvalues) və xüsusi vektorlarını (eigenvectors)"
+    },
+    {
+      "question": "np.corrcoef() funksiyası nə hesablayır?",
+      "answer1": "A) Kovariasiya matrisi",
+      "answer2": "B) Korrelyasiya matrisi",
+      "answer3": "C) Standart sapma",
+      "answer4": "D) Variasiya",
+      "correct": "B) Korrelyasiya matrisi"
+    },
+    {
+      "question": "arr.astype(np.float32) nə edir?",
+      "answer1": "A) Array-in tipini dəyişir",
+      "answer2": "B) Array-i sıralayır",
+      "answer3": "C) Array-i kəsir",
+      "answer4": "D) Array-in surətini yaradır",
+      "correct": "A) Array-in tipini dəyişir"
+    },
+    {
+      "question": "np.save('file.npy', arr) və np.load('file.npy') nə üçün istifadə olunur?",
+      "answer1": "A) Array-i faylda saxlamaq və yükləmək",
+      "answer2": "B) Array-i çap etmək",
+      "answer3": "C) Array-i silmək",
+      "answer4": "D) Array-i çevirmək",
+      "correct": "A) Array-i faylda saxlamaq və yükləmək"
+    },
+    {
+      "question": "np.savetxt('file.txt', arr) nə edir?",
+      "answer1": "A) Array-i mətn faylına yazır",
+      "answer2": "B) Array-i sıralayır",
+      "answer3": "C) Array-i çap edir",
+      "answer4": "D) Array-i silir",
+      "correct": "A) Array-i mətn faylına yazır"
+    },
+    {
+      "question": "np.pad(arr, pad_width, mode='constant') funksiyası nə edir?",
+      "answer1": "A) Array-in elementlərini silir",
+      "answer2": "B) Array-in ətrafına sıfır və ya verilmiş qiymətlə əlavə edir",
+      "answer3": "C) Array-i sıralayır",
+      "answer4": "D) Array-i çevirir",
+      "correct": "B) Array-in ətrafına sıfır və ya verilmiş qiymətlə əlavə edir"
+    }
+  ]
+
+
+}
