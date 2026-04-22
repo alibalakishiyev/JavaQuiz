@@ -1,91 +1,108 @@
 import sys
 import io
-import math
-import random
+import math, random, json, re
 from datetime import datetime
-import json
-import re
+import time
+from threading import Event
 
-def run_code(code, user_input=None):
+_input_queue = None
+_prompt_queue = None
+_stop_event = Event()  # STOP siqnalı üçün
+
+def set_input_queue(queue):
+    global _input_queue
+    _input_queue = queue
+
+def set_prompt_queue(queue):
+    global _prompt_queue
+    _prompt_queue = queue
+
+def stop_execution():
+    """İcra edən thread-i dayandır"""
+    _stop_event.set()
+
+def reset_stop():
+    """Stop siqnalını sıfırla"""
+    _stop_event.clear()
+
+def run_code(code, stdin_data=""):
+    old_stdout = sys.stdout
+    old_stderr = sys.stderr
+    old_stdin  = sys.stdin
+
+    output_buffer = io.StringIO()
+    sys.stdout = output_buffer
+    sys.stderr = output_buffer
+
+    global_namespace = {
+        '__builtins__': __builtins__,
+        'math': math, 'random': random,
+        'datetime': datetime, 'json': json, 're': re,
+    }
+
+    for mod, alias in [('numpy','np'),('pandas','pd'),('scipy','scipy')]:
+        try:
+            m = __import__(mod)
+            global_namespace[alias] = m
+            global_namespace[mod] = m
+        except ImportError:
+            pass
+
     try:
-        # Output'u yönləndir
-        old_stdout = sys.stdout
-        old_stderr = sys.stderr
-        output_buffer = io.StringIO()
-        sys.stdout = output_buffer
-        sys.stderr = output_buffer
+        import matplotlib.pyplot as plt
+        global_namespace['plt'] = plt
+    except ImportError:
+        pass
 
-        # BÜTÜN KİTABXANALARI GLOBAL NAMESPACE-Ə ƏLAVƏ ET
-        global_namespace = {
-            '__builtins__': __builtins__,
-            'math': math,
-            'random': random,
-            'datetime': datetime,
-            'json': json,
-            're': re
-        }
+    def dynamic_input(prompt=""):
+        """Timeout və stop ilə input funksiyası"""
+        if prompt:
+            sys.stdout.write(str(prompt))
+            sys.stdout.flush()
 
-        # KİTABXANALARI IMPORT ET
-        try:
-            import numpy as np
-            global_namespace['np'] = np
-            global_namespace['numpy'] = np
-        except ImportError:
-            pass
+        # Prompt-u Java-ya göndər
+        if _prompt_queue is not None:
+            try:
+                _prompt_queue.put(str(prompt) if str(prompt).strip() else " ")
+            except:
+                pass
 
-        try:
-            import torch
-            global_namespace['torch'] = torch
-        except ImportError:
-            pass
+        # Cavabı timeout ilə gözlə (30 saniyə)
+        if _input_queue is not None:
+            try:
+                # poll(timeout, unit) - timeout ilə oxu
+                # SynchronousQueue üçün poll() istifadə et
+                val = _input_queue.poll(30, java.util.concurrent.TimeUnit.SECONDS)
 
-        try:
-            import matplotlib.pyplot as plt
-            global_namespace['plt'] = plt
-            global_namespace['matplotlib'] = plt
-        except ImportError:
-            pass
+                # Stop siqnalını yoxla
+                if _stop_event.is_set():
+                    return ""
 
-        try:
-            from PIL import Image
-            global_namespace['Image'] = Image
-            global_namespace['PIL'] = Image
-        except ImportError:
-            pass
+                if val is None:
+                    # Timeout baş verdi
+                    raise TimeoutError("Input timeout (30 seconds)")
 
-        try:
-            import pandas as pd
-            global_namespace['pd'] = pd
-            global_namespace['pandas'] = pd
-        except ImportError:
-            pass
+                return str(val)
+            except Exception as e:
+                if "Timeout" in str(e) or isinstance(e, TimeoutError):
+                    raise RuntimeError("⏰ Input timeout! İstifadəçi 30 saniyə ərzində cavab vermədi.")
+                raise RuntimeError(f"Input error: {e}")
 
-        try:
-            import scipy
-            global_namespace['scipy'] = scipy
-        except ImportError:
-            pass
+        return ""
 
-        # Əgər input varsa, onu emulyasiya et
-        if user_input:
-            def custom_input(prompt=""):
-                print(prompt, end='')
-                return user_input
-            global_namespace['input'] = custom_input
+    global_namespace['input'] = dynamic_input
+    reset_stop()  # Stop siqnalını sıfırla
 
-        # Kodu icra et
-        exec(code, global_namespace)
-
-        # Output'u geri qaytar
+    try:
+        exec(compile(code, '<string>', 'exec'), global_namespace)
+    except TimeoutError as e:
+        output_buffer.write(f"\n⏰ {str(e)}")
+    except Exception as e:
+        output_buffer.write(f"\n❌ Xəta: {type(e).__name__}: {str(e)}")
+    finally:
         sys.stdout = old_stdout
         sys.stderr = old_stderr
+        sys.stdin  = old_stdin
 
-        result = output_buffer.getvalue()
-        return result if result else "> Kod uğurla icra olundu"
-
-    except Exception as e:
-        # Error halında output'u geri qaytar
-        if 'old_stdout' in locals():
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-        return f"Xəta: {str(e)}"
+    result = output_buffer.getvalue()
+    return result if result.strip() else "> Kod uğurla icra olundu"

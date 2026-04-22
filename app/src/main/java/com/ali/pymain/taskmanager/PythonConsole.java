@@ -6,9 +6,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -68,7 +69,7 @@ public class PythonConsole extends AppCompatActivity {
     private TextView lineNumbers;
     private TextView taskDescription;
     private TextView taskTitle;
-    private MaterialCardView taskCard;      // <--- YENİ: Task Card
+    private MaterialCardView taskCard;
     private ListView suggestionsList;
     private MaterialCardView outputContainer;
     private SyncScrollView lineNumbersScroll;
@@ -98,7 +99,15 @@ public class PythonConsole extends AppCompatActivity {
     private String taskTitleText;
     private String taskDescriptionText;
 
-    private boolean isTaskMode = false;  // <--- YENİ: Task rejimi yoxlamaq üçün
+    // Task rejimi
+    private boolean isTaskMode = false;
+
+    // Input queue-ları
+    private final java.util.concurrent.SynchronousQueue<String> inputQueue =
+            new java.util.concurrent.SynchronousQueue<>();
+    private final java.util.concurrent.LinkedBlockingQueue<String> promptQueue =
+            new java.util.concurrent.LinkedBlockingQueue<>();
+    private Thread promptWatcherThread;
 
     // AutoComplete
     private AutoCompleteEngine acEngine;
@@ -146,7 +155,7 @@ public class PythonConsole extends AppCompatActivity {
 
         initViews();
         setupToolbar();
-        setupTaskData();      // Task datasını yüklə
+        setupTaskData();
         setupFirebase();
         setupPython();
         setupPreferences();
@@ -159,11 +168,9 @@ public class PythonConsole extends AppCompatActivity {
         saveToUndoStack();
         displayTaskInfo();
 
-        // ========== SİSTEM QOVLUĞU - AVTOMATİK İŞƏ SAL ==========
-        createSystemFolder();      // 1. Qovluğu yarat
-        autoLoadFromSystem();      // 2. Əgər varsa avtomatik yüklə
+        createSystemFolder();
+        autoLoadFromSystem();
 
-        // Task-specific auto complete suggestions yüklə
         if (acEngine != null && taskTitleText != null) {
             acEngine.loadTaskSuggestions(currentTaskId, taskTitleText, taskDescriptionText);
         }
@@ -179,7 +186,7 @@ public class PythonConsole extends AppCompatActivity {
         suggestionsList = findViewById(R.id.suggestionsList);
         taskDescription = findViewById(R.id.taskDescription);
         taskTitle = findViewById(R.id.taskTitle);
-        taskCard = findViewById(R.id.taskCard);      // <--- YENİ
+        taskCard = findViewById(R.id.taskCard);
         toolbar = findViewById(R.id.toolbar);
 
         runBtn = findViewById(R.id.runBtn);
@@ -203,38 +210,31 @@ public class PythonConsole extends AppCompatActivity {
             Log.e("SystemFolder", "Xəta: " + e.getMessage());
         }
     }
-    // 2. Faylı saxla (avtomatik)
+
     private void saveToSystemFolder(String content) {
         try {
             File systemDir = new File(getFilesDir(), SYSTEM_STORAGE_DIR);
-            if (!systemDir.exists()) {
-                createSystemFolder();
-            }
-
+            if (!systemDir.exists()) createSystemFolder();
             File file = new File(systemDir, AUTO_SAVE_FILE);
             FileOutputStream fos = new FileOutputStream(file);
             OutputStreamWriter writer = new OutputStreamWriter(fos);
             writer.write(content);
             writer.close();
             fos.close();
-
             Log.d("SystemFolder", "💾 Avtomatik saxlanıldı");
-
         } catch (Exception e) {
             Log.e("SystemFolder", "Saxlama xətası: " + e.getMessage());
         }
     }
-    // 3. Faylı yüklə (avtomatik)
+
     private String loadFromSystemFolder() {
         try {
             File systemDir = new File(getFilesDir(), SYSTEM_STORAGE_DIR);
             File file = new File(systemDir, AUTO_SAVE_FILE);
-
             if (!file.exists()) {
                 Log.d("SystemFolder", "Heç bir saxlanmış fayl yoxdur");
                 return null;
             }
-
             FileInputStream fis = new FileInputStream(file);
             InputStreamReader reader = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(reader);
@@ -246,41 +246,31 @@ public class PythonConsole extends AppCompatActivity {
             br.close();
             reader.close();
             fis.close();
-
             Log.d("SystemFolder", "📂 Avtomatik yükləndi");
             return content.toString();
-
         } catch (Exception e) {
             Log.e("SystemFolder", "Yükləmə xətası: " + e.getMessage());
             return null;
         }
     }
 
-    // 4. Avtomatik yükləmə (onCreate üçün)
     private void autoLoadFromSystem() {
         String savedCode = loadFromSystemFolder();
-
         if (savedCode != null && !savedCode.isEmpty()) {
             codeInput.setText(savedCode);
             updateLineNumbers(savedCode);
-            if (syntaxHighlightingEnabled) {
-                applySyntaxHighlighting(codeInput.getText());
-            }
+            if (syntaxHighlightingEnabled) applySyntaxHighlighting(codeInput.getText());
             Log.d("SystemFolder", "✅ Son kod avtomatik yükləndi");
         } else if (isTaskMode && initialCode != null && !initialCode.isEmpty()) {
-            // Task rejimindədirsə və heç bir saxlanmış kod yoxdursa, ilkin kodu yüklə
             codeInput.setText(initialCode);
             updateLineNumbers(initialCode);
             Log.d("SystemFolder", "📋 İlkin task kodu yükləndi");
         }
     }
 
-    // 5. Avtomatik saxlama (hər dəfə kod dəyişdikdə)
     private void autoSaveToSystem() {
         String currentCode = codeInput.getText().toString();
-        if (!currentCode.isEmpty()) {
-            saveToSystemFolder(currentCode);
-        }
+        if (!currentCode.isEmpty()) saveToSystemFolder(currentCode);
     }
 
     private void setupEventListeners() {
@@ -343,8 +333,6 @@ public class PythonConsole extends AppCompatActivity {
                     applySyntaxHighlighting(s);
                 }
                 saveCode();
-
-                // ========== HƏR DƏFƏ KOD DƏYİŞDİKDƏ AVTOMATİK SAXLA ==========
                 autoSaveToSystem();
             }
         });
@@ -357,8 +345,6 @@ public class PythonConsole extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-
-        // Task yoxdursa toolbar başlığını dəyiş
         if (!isTaskMode) {
             toolbar.setTitle("Python Console");
         } else {
@@ -369,13 +355,18 @@ public class PythonConsole extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.editor_menu, menu);
+        for (int i = 0; i < menu.size(); i++) {
+            MenuItem item = menu.getItem(i);
+            SpannableString spannable = new SpannableString(item.getTitle());
+            spannable.setSpan(new ForegroundColorSpan(Color.BLUE), 0, spannable.length(), 0);
+            item.setTitle(spannable);
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-
         if (id == android.R.id.home) {
             saveCode();
             finish();
@@ -386,7 +377,7 @@ public class PythonConsole extends AppCompatActivity {
         } else if (id == R.id.menu_load_project) {
             showLoadProjectDialog();
             return true;
-        } else if (id == R.id.menu_system_manage) {  // <--- YENİ
+        } else if (id == R.id.menu_system_manage) {
             showSystemManagementDialog();
             return true;
         } else if (id == R.id.menu_clear_code) {
@@ -414,7 +405,6 @@ public class PythonConsole extends AppCompatActivity {
             showAbout();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -422,27 +412,19 @@ public class PythonConsole extends AppCompatActivity {
         if (codeScrollView != null && lineNumbersScroll != null) {
             lineNumbersScroll.setSyncedScrollView(codeScrollView);
         }
-
         codeInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
                 updateLineNumbers(s.toString());
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
+            @Override public void afterTextChanged(Editable s) {}
         });
     }
 
     private void updateLineNumbers(String text) {
         if (lineNumbers == null) return;
-
         int lineCount = text.split("\n", -1).length;
         if (text.endsWith("\n")) lineCount++;
-
         StringBuilder numbers = new StringBuilder();
         for (int i = 1; i <= lineCount; i++) {
             numbers.append(i).append("\n");
@@ -451,39 +433,21 @@ public class PythonConsole extends AppCompatActivity {
     }
 
     private void displayTaskInfo() {
-        // Əgər task rejimi DEYİLSE, task card-ı GİZLƏT
         if (!isTaskMode) {
-            if (taskCard != null) {
-                taskCard.setVisibility(View.GONE);
-            }
-            // "Need Help" düyməsini də gizlət (task olmayanda lazım deyil)
-            if (dontKnowBtn != null) {
-                dontKnowBtn.setVisibility(View.GONE);
-            }
+            if (taskCard != null) taskCard.setVisibility(View.GONE);
+            if (dontKnowBtn != null) dontKnowBtn.setVisibility(View.GONE);
             return;
         }
-
-        // Task rejimindədirsə, card-ı göstər və məlumatları yenilə
-        if (taskCard != null) {
-            taskCard.setVisibility(View.VISIBLE);
-        }
-        if (dontKnowBtn != null) {
-            dontKnowBtn.setVisibility(View.VISIBLE);
-        }
-
-        if (taskTitle != null && taskTitleText != null) {
-            taskTitle.setText(taskTitleText);
-        }
-        if (taskDescription != null && taskDescriptionText != null) {
-            taskDescription.setText(taskDescriptionText);
-        }
+        if (taskCard != null) taskCard.setVisibility(View.VISIBLE);
+        if (dontKnowBtn != null) dontKnowBtn.setVisibility(View.VISIBLE);
+        if (taskTitle != null && taskTitleText != null) taskTitle.setText(taskTitleText);
+        if (taskDescription != null && taskDescriptionText != null) taskDescription.setText(taskDescriptionText);
     }
 
     private void setupAutoComplete() {
         acEngine = new AutoCompleteEngine(this);
         acAdapter = new AutoCompleteAdapter(this, currentSuggestions);
         suggestionsList.setAdapter(acAdapter);
-
         suggestionsList.setOnItemClickListener((parent, view, pos, id) -> {
             if (pos >= 0 && pos < currentSuggestions.size()) {
                 insertCompletion(currentSuggestions.get(pos));
@@ -496,13 +460,11 @@ public class PythonConsole extends AppCompatActivity {
         try {
             int cursor = codeInput.getSelectionStart();
             String text = codeInput.getText().toString();
-
             int wordStart = cursor - 1;
             while (wordStart >= 0 && (Character.isLetterOrDigit(text.charAt(wordStart)) || text.charAt(wordStart) == '_')) {
                 wordStart--;
             }
             wordStart = Math.max(0, wordStart + 1);
-
             Editable editable = codeInput.getText();
             String insertText = item.getInsertText();
             editable.replace(wordStart, cursor, insertText);
@@ -512,48 +474,27 @@ public class PythonConsole extends AppCompatActivity {
     }
 
     private void updateSuggestions(String fullText, int cursor) {
-        if (!autoCompleteEnabled) {
-            hideSuggestions();
-            return;
-        }
-
-        if (fullText == null || fullText.isEmpty() || cursor <= 0) {
-            hideSuggestions();
-            return;
-        }
-
+        if (!autoCompleteEnabled) { hideSuggestions(); return; }
+        if (fullText == null || fullText.isEmpty() || cursor <= 0) { hideSuggestions(); return; }
         try {
             String prefix = getLastWord(fullText, cursor);
-            if (prefix.length() < 1) {
-                hideSuggestions();
-                return;
-            }
-
+            if (prefix.length() < 1) { hideSuggestions(); return; }
             List<AutoCompleteEngine.CompletionItem> filtered = new ArrayList<>();
-
-            // Task rejimindədirsə, task-specific suggestion-ları göstər
             if (isTaskMode && acEngine != null) {
                 List<AutoCompleteEngine.CompletionItem> taskResults = acEngine.getTaskSuggestions(currentTaskId);
                 for (AutoCompleteEngine.CompletionItem item : taskResults) {
-                    // DÜZƏLİŞ: item.label istifadə et (getText() yox)
                     if (item.label.toLowerCase().startsWith(prefix.toLowerCase())) {
                         filtered.add(item);
                         if (filtered.size() >= MAX_SUGGESTIONS) break;
                     }
                 }
             }
-
-            // Global suggestionlar
             if (filtered.size() < MAX_SUGGESTIONS && acEngine != null) {
                 List<AutoCompleteEngine.CompletionItem> globalResults = acEngine.getSuggestions(prefix, MAX_SUGGESTIONS - filtered.size());
                 filtered.addAll(globalResults);
             }
-
-            if (filtered.isEmpty()) {
-                hideSuggestions();
-            } else {
-                showSuggestionList(filtered);
-            }
+            if (filtered.isEmpty()) hideSuggestions();
+            else showSuggestionList(filtered);
         } catch (Exception e) {
             Log.e("PythonConsole", "updateSuggestions error: " + e.getMessage());
             hideSuggestions();
@@ -587,55 +528,38 @@ public class PythonConsole extends AppCompatActivity {
         return text.substring(start, cursor);
     }
 
-
-    // Console rejimi üçün kömək
     private void showHelpForConsole() {
         new MaterialAlertDialogBuilder(this)
                 .setTitle("Python Console Help")
                 .setMessage("Python Console - İstənilən Python kodunu yazıb işlədə bilərsiniz.\n\n" +
-                        "📝 İpuçları:\n" +
-                        "• print() ilə nəticələri görə bilərsiniz\n" +
-                        "• Ctrl+Z - Undo\n" +
-                        "• Ctrl+Y - Redo\n" +
-                        "• Ctrl+R - Run code\n" +
-                        "• Ctrl+S - Save project\n\n" +
-                        "💡 Misal:\n" +
-                        "print('Salam Dünya!')\n" +
-                        "x = 5 + 3\n" +
-                        "print(x)")
+                        "📝 İpuçları:\n• print() ilə nəticələri görə bilərsiniz\n" +
+                        "• Ctrl+Z - Undo\n• Ctrl+Y - Redo\n• Ctrl+R - Run code\n• Ctrl+S - Save project\n\n" +
+                        "💡 Misal:\nprint('Salam Dünya!')\nx = 5 + 3\nprint(x)")
                 .setPositiveButton("OK", null)
                 .show();
     }
 
     private void setupAutoIndent() {
         codeInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (autoIndentEnabled && before == 0 && count == 1) {
                     char ch = s.charAt(start);
                     if (ch == '\n') autoIndent(start + 1, s.toString(), start);
                 }
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
+            @Override public void afterTextChanged(Editable s) {}
         });
     }
 
     private void autoIndent(int pos, String fullText, int newlinePos) {
         Editable ed = codeInput.getText();
         if (pos <= 0) return;
-
         int lineStart = fullText.lastIndexOf('\n', newlinePos - 1);
         if (lineStart == -1) lineStart = 0; else lineStart++;
-
         String prevLine = fullText.substring(lineStart, Math.min(newlinePos, fullText.length())).trim();
         int level = calcIndentLevel(fullText, newlinePos);
         if (prevLine.endsWith(":")) level = Math.max(0, level);
-
         StringBuilder indent = new StringBuilder();
         for (int i = 0; i < level; i++) indent.append("    ");
         if (pos <= ed.length()) ed.insert(pos, indent);
@@ -661,7 +585,6 @@ public class PythonConsole extends AppCompatActivity {
             for (ForegroundColorSpan s : ed.getSpans(0, ed.length(), ForegroundColorSpan.class))
                 ed.removeSpan(s);
             if (ed.length() == 0) return;
-
             ed.setSpan(new ForegroundColorSpan(Color.WHITE), 0, ed.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             hlPattern(ed, "#[^\\n]*", C_COMMENT);
             hlPattern(ed, "\"\"\"[\\s\\S]*?\"\"\"", C_COMMENT);
@@ -725,34 +648,173 @@ public class PythonConsole extends AppCompatActivity {
         }
     }
 
+    // ========== RUN / EXECUTE ==========
+
     private void runPythonCode() {
         String code = codeInput.getText().toString();
         if (code.trim().isEmpty()) {
             showOutput("Please write some Python code first", true);
             return;
         }
+        executeCode(code);
+    }
 
+    private void executeCode(String code) {
         runBtn.setEnabled(false);
         runBtn.setText("Running...");
 
-        new Handler().postDelayed(() -> {
+        // Queue-ları təmizlə
+        promptQueue.clear();
+        try {
+            while (inputQueue.poll() != null) {}
+        } catch (Exception ignored) {}
+
+        py.getModule("executor").callAttr("set_input_queue", inputQueue);
+        py.getModule("executor").callAttr("set_prompt_queue", promptQueue);
+
+        // Prompt izləyici thread - STOP mexanizmi ilə
+        final boolean[] isRunning = {true};
+
+        promptWatcherThread = new Thread(() -> {
+            while (isRunning[0]) {
+                try {
+                    String prompt = promptQueue.poll(100, java.util.concurrent.TimeUnit.MILLISECONDS);
+                    if (prompt == null) continue;
+
+                    if (prompt.equals("__DONE__")) break;
+
+                    // Input dialogunu göstər
+                    runOnUiThread(() -> {
+                        showDynamicInputDialog(prompt, () -> {
+                            // Dialog ləğv edildikdə STOP siqnalı
+                            isRunning[0] = false;
+                            try {
+                                // İstifadəçi ləğv etdikdə boş string göndər
+                                inputQueue.offer("", 100, java.util.concurrent.TimeUnit.MILLISECONDS);
+                            } catch (InterruptedException e) {
+                                Thread.currentThread().interrupt();
+                            }
+                        });
+                    });
+                } catch (InterruptedException e) {
+                    break;
+                }
+            }
+        });
+        promptWatcherThread.setDaemon(true);
+        promptWatcherThread.start();
+
+        // Kod icra thread-i
+        new Thread(() -> {
             try {
                 StringBuilder out = new StringBuilder();
                 out.append("═══════════════════════════════\n");
                 out.append("         EXECUTION RESULT        \n");
                 out.append("═══════════════════════════════\n\n");
 
-                String result = py.getModule("executor").callAttr("run_code", code, "").toString();
-                out.append(result.isEmpty() ? "Code executed successfully\n" : result);
+                // Timeout ilə icra (30 saniyə)
+                java.util.concurrent.Future<String> future = java.util.concurrent.Executors
+                        .newSingleThreadExecutor()
+                        .submit(() -> py.getModule("executor")
+                                .callAttr("run_code", code, "").toString());
+
+                String result;
+                try {
+                    result = future.get(30, java.util.concurrent.TimeUnit.SECONDS);
+                } catch (java.util.concurrent.TimeoutException e) {
+                    future.cancel(true);
+                    result = "Error: Code execution timeout (30 seconds)";
+                    showOutput(result, true);
+                    return;
+                }
+
+                out.append(result.isEmpty() ? "Kod uğurla icra olundu\n" : result);
                 out.append("\n═══════════════════════════════\n");
                 showOutput(out.toString(), false);
             } catch (Exception e) {
                 showOutput("Error: " + e.getMessage(), true);
             } finally {
-                runBtn.setEnabled(true);
-                runBtn.setText("Run Code");
+                try {
+                    promptQueue.put("__DONE__");
+                } catch (InterruptedException ignored) {}
+                runOnUiThread(() -> {
+                    runBtn.setEnabled(true);
+                    runBtn.setText("Run Code");
+                });
             }
-        }, 100);
+        }).start();
+    }
+
+    // Dialog metodu - cancel callback ilə
+    private void showDynamicInputDialog(String prompt, Runnable onCancel) {
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(50, 30, 50, 10);
+        layout.setBackgroundColor(Color.parseColor("#1E1E1E"));
+
+        if (!prompt.trim().isEmpty()) {
+            TextView promptText = new TextView(this);
+            promptText.setText(prompt);
+            promptText.setTextColor(Color.parseColor("#64B5F6"));
+            promptText.setTextSize(14f);
+            promptText.setPadding(0, 0, 0, 12);
+            layout.addView(promptText);
+        }
+
+        final EditText inputField = new EditText(this);
+        inputField.setHint("Type here...");
+        inputField.setHintTextColor(Color.parseColor("#666666"));
+        inputField.setTextColor(Color.parseColor("#E0E0E0"));
+        inputField.setBackgroundColor(Color.parseColor("#2C2C2C"));
+        inputField.setPadding(24, 16, 24, 16);
+        inputField.setTextSize(15f);
+        inputField.setSingleLine(true);
+        inputField.setImeOptions(android.view.inputmethod.EditorInfo.IME_ACTION_DONE);
+        layout.addView(inputField);
+
+        AlertDialog dialog = new MaterialAlertDialogBuilder(this)
+                .setTitle("⌨ Input")
+                .setView(layout)
+                .setCancelable(true)  // Cancelable et
+                .setPositiveButton("OK", (d, w) -> {
+                    try {
+                        inputQueue.offer(inputField.getText().toString(), 100, java.util.concurrent.TimeUnit.MILLISECONDS);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                })
+                .setNegativeButton("Cancel", (d, w) -> {
+                    // Ləğv edildikdə stop siqnalı
+                    if (onCancel != null) onCancel.run();
+                    try {
+                        inputQueue.offer("", 100, java.util.concurrent.TimeUnit.MILLISECONDS);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                })
+                .create();
+
+        dialog.setOnCancelListener(d -> {
+            if (onCancel != null) onCancel.run();
+        });
+
+        dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#2196F3"));
+
+        inputField.requestFocus();
+        inputField.postDelayed(() -> {
+            android.view.inputmethod.InputMethodManager imm =
+                    (android.view.inputmethod.InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(inputField, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT);
+        }, 150);
+
+        inputField.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE) {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
+                return true;
+            }
+            return false;
+        });
     }
 
     private void showOutput(String text, boolean isError) {
@@ -771,7 +833,6 @@ public class PythonConsole extends AppCompatActivity {
             Toast.makeText(this, "No solution available!", Toast.LENGTH_SHORT).show();
             return;
         }
-
         new MaterialAlertDialogBuilder(this)
                 .setTitle("Show Solution")
                 .setMessage("This will replace your current code. Are you sure?")
@@ -828,7 +889,8 @@ public class PythonConsole extends AppCompatActivity {
         }
     }
 
-    // 1. Sistem qovluğundakı bütün faylları siyahılaşdır
+    // ========== SYSTEM FOLDER ==========
+
     private List<String> listAllSystemFiles() {
         List<String> files = new ArrayList<>();
         try {
@@ -837,9 +899,7 @@ public class PythonConsole extends AppCompatActivity {
                 File[] fileList = systemDir.listFiles();
                 if (fileList != null) {
                     for (File file : fileList) {
-                        if (file.isFile()) {
-                            files.add(file.getName());
-                        }
+                        if (file.isFile()) files.add(file.getName());
                     }
                 }
             }
@@ -849,20 +909,13 @@ public class PythonConsole extends AppCompatActivity {
         return files;
     }
 
-    // 2. Spesifik faylı sil
     private void deleteFileFromSystem(String fileName) {
         try {
             File systemDir = new File(getFilesDir(), SYSTEM_STORAGE_DIR);
             File file = new File(systemDir, fileName);
-
             if (file.exists()) {
                 boolean deleted = file.delete();
-                if (deleted) {
-                    Toast.makeText(this, "🗑️ Silindi: " + fileName, Toast.LENGTH_SHORT).show();
-                    Log.d("SystemFolder", "Fayl silindi: " + file.getAbsolutePath());
-                } else {
-                    Toast.makeText(this, "❌ Silinə bilmədi: " + fileName, Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(this, deleted ? "🗑️ Silindi: " + fileName : "❌ Silinə bilmədi: " + fileName, Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "❌ Fayl tapılmadı: " + fileName, Toast.LENGTH_SHORT).show();
             }
@@ -872,7 +925,6 @@ public class PythonConsole extends AppCompatActivity {
         }
     }
 
-    // 3. Bütün sistem qovluğunu təmizlə
     private void clearAllSystemFiles() {
         try {
             File systemDir = new File(getFilesDir(), SYSTEM_STORAGE_DIR);
@@ -881,12 +933,9 @@ public class PythonConsole extends AppCompatActivity {
                 if (fileList != null) {
                     int deletedCount = 0;
                     for (File file : fileList) {
-                        if (file.isFile() && file.delete()) {
-                            deletedCount++;
-                        }
+                        if (file.isFile() && file.delete()) deletedCount++;
                     }
                     Toast.makeText(this, "✅ " + deletedCount + " fayl silindi", Toast.LENGTH_SHORT).show();
-                    Log.d("SystemFolder", "Bütün fayllar silindi. Silinən sayı: " + deletedCount);
                 }
             }
         } catch (Exception e) {
@@ -895,33 +944,24 @@ public class PythonConsole extends AppCompatActivity {
         }
     }
 
-    // 4. Sistem qovluğunun ünvanını göstər
     private void showSystemFolderPath() {
         File systemDir = new File(getFilesDir(), SYSTEM_STORAGE_DIR);
         String path = systemDir.getAbsolutePath();
-
-        // Fayl ölçüsünü hesabla
         long totalSize = 0;
         if (systemDir.exists()) {
             File[] files = systemDir.listFiles();
             if (files != null) {
                 for (File file : files) {
-                    if (file.isFile()) {
-                        totalSize += file.length();
-                    }
+                    if (file.isFile()) totalSize += file.length();
                 }
             }
         }
-
         String sizeText = formatFileSize(totalSize);
-        int fileCount = systemDir.exists() ? (systemDir.listFiles() != null ? systemDir.listFiles().length : 0) : 0;
+        int fileCount = systemDir.exists() && systemDir.listFiles() != null ? systemDir.listFiles().length : 0;
 
         new MaterialAlertDialogBuilder(this)
                 .setTitle("📁 Sistem Qovluğu Məlumatı")
-                .setMessage("📍 Ünvan:\n" + path + "\n\n" +
-                        "📄 Fayl sayı: " + fileCount + "\n" +
-                        "💾 Ümumi ölçü: " + sizeText + "\n\n" +
-                        "💡 Bu ünvanı kopyalaya bilərsiniz")
+                .setMessage("📍 Ünvan:\n" + path + "\n\n📄 Fayl sayı: " + fileCount + "\n💾 Ümumi ölçü: " + sizeText)
                 .setPositiveButton("📋 Kopyala", (d, w) -> {
                     ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     android.content.ClipData clip = android.content.ClipData.newPlainText("Path", path);
@@ -940,47 +980,36 @@ public class PythonConsole extends AppCompatActivity {
                 .show();
     }
 
-    // 5. Bütün faylları göstərən dialoq (silme seçimi ilə)
     private void showAllFilesWithDeleteOption() {
         List<String> files = listAllSystemFiles();
-
         if (files.isEmpty()) {
             Toast.makeText(this, "📁 Sistem qovluğunda heç bir fayl yoxdur", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        // Fayl adlarını ölçüləri ilə birlikdə göstər
         String[] fileArray = new String[files.size()];
         for (int i = 0; i < files.size(); i++) {
             String fileName = files.get(i);
-            long fileSize = getFileSize(fileName);
-            fileArray[i] = fileName + " (" + formatFileSize(fileSize) + ")";
+            fileArray[i] = fileName + " (" + formatFileSize(getFileSize(fileName)) + ")";
         }
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("📁 Sistem Qovluğu (" + files.size() + " fayl)");
         builder.setItems(fileArray, (dialog, which) -> {
             String selectedFile = files.get(which);
-
             new MaterialAlertDialogBuilder(this)
                     .setTitle("Fayl: " + selectedFile)
                     .setMessage("Nə etmək istəyirsiniz?")
                     .setPositiveButton("📂 Yüklə", (d, w) -> {
-                        String content = loadFromSystemFolder(); // Bu ən son avtomatik saxlanmış faylı yükləyir
+                        String content = loadFromSystemFolder();
                         if (content != null) {
                             saveToUndoStack();
                             redoStack.clear();
                             codeInput.setText(content);
                             updateLineNumbers(content);
-                            if (syntaxHighlightingEnabled) {
-                                applySyntaxHighlighting(codeInput.getText());
-                            }
+                            if (syntaxHighlightingEnabled) applySyntaxHighlighting(codeInput.getText());
                             Toast.makeText(this, "✅ Yükləndi: " + selectedFile, Toast.LENGTH_SHORT).show();
                         }
                     })
-                    .setNeutralButton("🗑️ Sil", (d, w) -> {
-                        deleteFileFromSystem(selectedFile);
-                    })
+                    .setNeutralButton("🗑️ Sil", (d, w) -> deleteFileFromSystem(selectedFile))
                     .setNegativeButton("❌ Ləğv", null)
                     .show();
         });
@@ -988,104 +1017,72 @@ public class PythonConsole extends AppCompatActivity {
         builder.show();
     }
 
-    // 6. Fayl ölçüsünü almaq
     private long getFileSize(String fileName) {
         try {
             File systemDir = new File(getFilesDir(), SYSTEM_STORAGE_DIR);
             File file = new File(systemDir, fileName);
-            if (file.exists()) {
-                return file.length();
-            }
+            if (file.exists()) return file.length();
         } catch (Exception e) {
             Log.e("SystemFolder", "Ölçü hesablama xətası: " + e.getMessage());
         }
         return 0;
     }
 
-    // 7. Fayl ölçüsünü formatla (KB, MB, GB)
     private String formatFileSize(long size) {
         if (size <= 0) return "0 B";
-        final String[] units = new String[] { "B", "KB", "MB", "GB", "TB" };
+        final String[] units = new String[]{"B", "KB", "MB", "GB", "TB"};
         int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
         return String.format(Locale.getDefault(), "%.1f %s", size / Math.pow(1024, digitGroups), units[digitGroups]);
     }
 
-    // 8. Cari fayl haqqında məlumat (hansı fayl saxlanılır)
     private void showCurrentFileInfo() {
         File systemDir = new File(getFilesDir(), SYSTEM_STORAGE_DIR);
         File currentFile = new File(systemDir, AUTO_SAVE_FILE);
-
         String status = currentFile.exists() ? "✅ Mövcuddur" : "❌ Mövcud deyil";
         String size = currentFile.exists() ? formatFileSize(currentFile.length()) : "0 B";
         String lastModified = currentFile.exists() ?
-                new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault()).format(new Date(currentFile.lastModified())) :
-                "Yoxdur";
-
+                new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault()).format(new Date(currentFile.lastModified())) : "Yoxdur";
         new MaterialAlertDialogBuilder(this)
                 .setTitle("📄 Cari Fayl Məlumatı")
-                .setMessage("📁 Fayl adı: " + AUTO_SAVE_FILE + "\n" +
-                        "📍 Tam ünvan:\n" + currentFile.getAbsolutePath() + "\n\n" +
-                        "📊 Vəziyyət: " + status + "\n" +
-                        "💾 Ölçü: " + size + "\n" +
-                        "🕐 Son dəyişiklik: " + lastModified + "\n\n" +
-                        "💡 Qeyd: Hər kod dəyişikliyində avtomatik saxlanılır")
-                .setPositiveButton("📂 Qovluğu Aç", (d, w) -> {
-                    showSystemFolderPath();
-                })
+                .setMessage("📁 Fayl adı: " + AUTO_SAVE_FILE + "\n📍 Tam ünvan:\n" + currentFile.getAbsolutePath() +
+                        "\n\n📊 Vəziyyət: " + status + "\n💾 Ölçü: " + size + "\n🕐 Son dəyişiklik: " + lastModified)
+                .setPositiveButton("📂 Qovluğu Aç", (d, w) -> showSystemFolderPath())
                 .setNegativeButton("Bağla", null)
                 .show();
     }
 
-    // 9. Menyudan çağırmaq üçün dialoq (BÜTÜN ƏMƏLİYYATLAR BİR YERDƏ)
     private void showSystemManagementDialog() {
         String[] options = {
-                "📁 Qovluq Məlumatı (Ünvan)",
-                "📄 Cari Fayl Məlumatı",
-                "📋 Bütün Faylları Göstər",
-                "🗑️ Bütün Faylları Sil",
-                "💾 Yaddaş Məlumatı"
+                "📁 Qovluq Məlumatı (Ünvan)", "📄 Cari Fayl Məlumatı",
+                "📋 Bütün Faylları Göstər", "🗑️ Bütün Faylları Sil", "💾 Yaddaş Məlumatı"
         };
-
         new MaterialAlertDialogBuilder(this)
                 .setTitle("📁 Sistem Qovluğu İdarəetmə")
                 .setItems(options, (dialog, which) -> {
                     switch (which) {
-                        case 0:
-                            showSystemFolderPath();
-                            break;
-                        case 1:
-                            showCurrentFileInfo();
-                            break;
-                        case 2:
-                            showAllFilesWithDeleteOption();
-                            break;
+                        case 0: showSystemFolderPath(); break;
+                        case 1: showCurrentFileInfo(); break;
+                        case 2: showAllFilesWithDeleteOption(); break;
                         case 3:
                             new MaterialAlertDialogBuilder(this)
                                     .setTitle("⚠️ Təsdiq")
-                                    .setMessage("BÜTÜN sistem fayllarını silmək istədiyinizə əminsiniz?\nBu əməliyyat geri alına bilməz!")
+                                    .setMessage("BÜTÜN sistem fayllarını silmək istədiyinizə əminsiniz?")
                                     .setPositiveButton("Bəli, Sil", (d, w) -> clearAllSystemFiles())
                                     .setNegativeButton("Xeyr", null)
                                     .show();
                             break;
-                        case 4:
-                            showStorageInfo();
-                            break;
+                        case 4: showStorageInfo(); break;
                     }
                 })
                 .setNegativeButton("Bağla", null)
                 .show();
     }
 
-    // 10. Yaddaş məlumatını göstər
     private void showStorageInfo() {
         File systemDir = new File(getFilesDir(), SYSTEM_STORAGE_DIR);
-
-        // Ümumi və boş yaddaş
         long totalSpace = getFilesDir().getTotalSpace();
         long freeSpace = getFilesDir().getFreeSpace();
         long usedSpace = totalSpace - freeSpace;
-
-        // Sistem qovluğunun ölçüsü
         long systemFolderSize = 0;
         int fileCount = 0;
         if (systemDir.exists()) {
@@ -1093,36 +1090,27 @@ public class PythonConsole extends AppCompatActivity {
             if (files != null) {
                 fileCount = files.length;
                 for (File file : files) {
-                    if (file.isFile()) {
-                        systemFolderSize += file.length();
-                    }
+                    if (file.isFile()) systemFolderSize += file.length();
                 }
             }
         }
-
         new MaterialAlertDialogBuilder(this)
                 .setTitle("💾 Yaddaş Məlumatı")
                 .setMessage("📱 Ümumi yaddaş: " + formatFileSize(totalSpace) + "\n" +
                         "✅ Boş yaddaş: " + formatFileSize(freeSpace) + "\n" +
                         "📊 İstifadə olunan: " + formatFileSize(usedSpace) + "\n\n" +
                         "📁 Sistem qovluğu: " + formatFileSize(systemFolderSize) + "\n" +
-                        "📄 Fayl sayı: " + fileCount + "\n\n" +
-                        "📍 Qovluq ünvanı:\n" + systemDir.getAbsolutePath())
+                        "📄 Fayl sayı: " + fileCount)
                 .setPositiveButton("OK", null)
                 .show();
     }
 
     private void checkSyntax() {
         String code = codeInput.getText().toString();
-        if (code.trim().isEmpty()) {
-            showOutput("No code to check", true);
-            return;
-        }
-
+        if (code.trim().isEmpty()) { showOutput("No code to check", true); return; }
         StringBuilder errors = new StringBuilder();
         String[] lines = code.split("\n");
         boolean hasError = false;
-
         for (int i = 0; i < lines.length; i++) {
             String line = lines[i];
             int lineNum = i + 1;
@@ -1135,75 +1123,123 @@ public class PythonConsole extends AppCompatActivity {
                 hasError = true;
             }
         }
-
-        if (hasError) {
-            showOutput("Syntax Errors:\n" + errors.toString(), true);
-        } else {
-            showOutput("No syntax errors found!", false);
-        }
+        if (hasError) showOutput("Syntax Errors:\n" + errors.toString(), true);
+        else showOutput("No syntax errors found!", false);
     }
 
     private int countOcc(String str, String sub) {
         int count = 0, idx = 0;
-        while ((idx = str.indexOf(sub, idx)) != -1) {
-            count++;
-            idx += sub.length();
-        }
+        while ((idx = str.indexOf(sub, idx)) != -1) { count++; idx += sub.length(); }
         return count;
     }
 
     private void showSaveProjectDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Save Project");
-        final EditText input = new EditText(this);
-        input.setHint("Project name...");
-        String defaultName = "project_" + new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        if (isTaskMode) {
-            defaultName = "task_" + currentTaskId + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        File projectsDir = new File(getFilesDir(), PROJECTS_DIR);
+        if (!projectsDir.exists()) projectsDir.mkdirs();
+        File[] projectFiles = projectsDir.listFiles((dir, name) -> name.endsWith(".pyproj"));
+        List<String> existingNames = new ArrayList<>();
+        if (projectFiles != null) {
+            for (File f : projectFiles) existingNames.add(f.getName().replace(".pyproj", ""));
         }
-        input.setText(defaultName);
-        builder.setView(input);
-        builder.setPositiveButton("Save", (dialog, which) -> {
-            String projectName = input.getText().toString().trim();
-            if (!projectName.isEmpty()) saveProject(projectName);
-        });
-        builder.setNegativeButton("Cancel", null);
-        builder.show();
+
+        LinearLayout mainLayout = new LinearLayout(this);
+        mainLayout.setOrientation(LinearLayout.VERTICAL);
+        mainLayout.setPadding(40, 20, 40, 20);
+
+        TextView newNameLabel = new TextView(this);
+        newNameLabel.setText("💾 Fayl adı:");
+        newNameLabel.setTextColor(Color.parseColor("#64B5F6"));
+        newNameLabel.setTextSize(13f);
+        mainLayout.addView(newNameLabel);
+
+        final EditText nameInput = new EditText(this);
+        String defaultName = isTaskMode
+                ? "task_" + currentTaskId + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date())
+                : "project_" + new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        nameInput.setText(defaultName);
+        nameInput.setSelectAllOnFocus(true);
+        mainLayout.addView(nameInput);
+
+        if (!existingNames.isEmpty()) {
+            TextView existingLabel = new TextView(this);
+            existingLabel.setText("\n📁 Mövcud fayllar (üzərinə yazmaq üçün seç):");
+            existingLabel.setTextColor(Color.parseColor("#9E9E9E"));
+            existingLabel.setTextSize(12f);
+            mainLayout.addView(existingLabel);
+
+            for (String name : existingNames) {
+                Button fileBtn = new Button(this);
+                fileBtn.setText("📄 " + name);
+                fileBtn.setTextSize(11f);
+                fileBtn.setAllCaps(false);
+                fileBtn.setBackgroundColor(Color.parseColor("#2C3E50"));
+                fileBtn.setTextColor(Color.parseColor("#B0BEC5"));
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                params.setMargins(0, 6, 0, 0);
+                fileBtn.setLayoutParams(params);
+                fileBtn.setOnClickListener(v -> {
+                    nameInput.setText(name);
+                    nameInput.setSelection(name.length());
+                    for (int i = 0; i < mainLayout.getChildCount(); i++) {
+                        View child = mainLayout.getChildAt(i);
+                        if (child instanceof Button) child.setBackgroundColor(Color.parseColor("#2C3E50"));
+                    }
+                    fileBtn.setBackgroundColor(Color.parseColor("#1565C0"));
+                });
+                mainLayout.addView(fileBtn);
+            }
+        }
+
+        AlertDialog dialog = new MaterialAlertDialogBuilder(this)
+                .setTitle("💾 Proyekti Saxla")
+                .setView(mainLayout)
+                .setPositiveButton("Saxla", (d, w) -> {
+                    String projectName = nameInput.getText().toString().trim();
+                    if (!projectName.isEmpty()) {
+                        boolean exists = existingNames.contains(projectName);
+                        if (exists) {
+                            new MaterialAlertDialogBuilder(this)
+                                    .setTitle("Üzərinə yaz?")
+                                    .setMessage("\"" + projectName + "\" artıq mövcuddur.\nÜzərinə yazılsın?")
+                                    .setPositiveButton("Bəli", (d2, w2) -> saveProject(projectName))
+                                    .setNegativeButton("Xeyr", null)
+                                    .show();
+                        } else {
+                            saveProject(projectName);
+                        }
+                    }
+                })
+                .setNegativeButton("Ləğv et", null)
+                .create();
+        dialog.show();
     }
 
     private void saveProject(String projectName) {
         try {
-            // 1. Öz qovluğuna saxla (.pyproj)
             File projectsDir = new File(getFilesDir(), PROJECTS_DIR);
             if (!projectsDir.exists()) projectsDir.mkdirs();
-
             String safeFileName = projectName.replaceAll("[^a-zA-Z0-9_.-]", "_");
             File projectFile = new File(projectsDir, safeFileName + ".pyproj");
-
             Gson gson = new Gson();
             ProjectData projectData = new ProjectData();
             projectData.name = projectName;
             projectData.code = codeInput.getText().toString();
             projectData.taskId = isTaskMode ? currentTaskId : -1;
             projectData.timestamp = System.currentTimeMillis();
-
             FileOutputStream fos = new FileOutputStream(projectFile);
             OutputStreamWriter writer = new OutputStreamWriter(fos);
             writer.write(gson.toJson(projectData));
             writer.close();
             fos.close();
-
             Toast.makeText(this, "✅ Project saved: " + projectName, Toast.LENGTH_LONG).show();
 
-            // 2. DOWNLOADS QOVLUĞUNA .py UZANTISI İLƏ YAZ
-            String downloadsFileName = projectName + ".py";  // <--- .py uzantısı
-
+            String downloadsFileName = projectName + ".py";
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
                 android.content.ContentValues values = new android.content.ContentValues();
                 values.put(android.provider.MediaStore.MediaColumns.DISPLAY_NAME, downloadsFileName);
                 values.put(android.provider.MediaStore.MediaColumns.MIME_TYPE, "text/x-python");
                 values.put(android.provider.MediaStore.MediaColumns.RELATIVE_PATH, android.os.Environment.DIRECTORY_DOWNLOADS);
-
                 android.net.Uri uri = getContentResolver().insert(android.provider.MediaStore.Files.getContentUri("external"), values);
                 if (uri != null) {
                     java.io.OutputStream os = getContentResolver().openOutputStream(uri);
@@ -1221,7 +1257,6 @@ public class PythonConsole extends AppCompatActivity {
                 fos2.close();
                 Toast.makeText(this, "✅ Downloads-a yazıldı: " + downloadsFileName, Toast.LENGTH_SHORT).show();
             }
-
         } catch (Exception e) {
             Toast.makeText(this, "Save error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -1230,25 +1265,12 @@ public class PythonConsole extends AppCompatActivity {
     private void showLoadProjectDialog() {
         try {
             File projectsDir = new File(getFilesDir(), PROJECTS_DIR);
-            if (!projectsDir.exists()) {
-                Toast.makeText(this, "No projects found", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
+            if (!projectsDir.exists()) { Toast.makeText(this, "No projects found", Toast.LENGTH_SHORT).show(); return; }
             File[] projectFiles = projectsDir.listFiles((dir, name) -> name.endsWith(".pyproj"));
-            if (projectFiles == null || projectFiles.length == 0) {
-                Toast.makeText(this, "No projects found", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
+            if (projectFiles == null || projectFiles.length == 0) { Toast.makeText(this, "No projects found", Toast.LENGTH_SHORT).show(); return; }
             List<String> projectNames = new ArrayList<>();
             List<File> files = new ArrayList<>();
-
-            for (File file : projectFiles) {
-                projectNames.add(file.getName().replace(".pyproj", ""));
-                files.add(file);
-            }
-
+            for (File file : projectFiles) { projectNames.add(file.getName().replace(".pyproj", "")); files.add(file); }
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Load Project");
             builder.setItems(projectNames.toArray(new String[0]), (dialog, which) -> loadProject(files.get(which)));
@@ -1267,13 +1289,9 @@ public class PythonConsole extends AppCompatActivity {
             StringBuilder json = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) json.append(line);
-            br.close();
-            reader.close();
-            fis.close();
-
+            br.close(); reader.close(); fis.close();
             Gson gson = new Gson();
             ProjectData data = gson.fromJson(json.toString(), ProjectData.class);
-
             if (data != null) {
                 saveToUndoStack();
                 redoStack.clear();
@@ -1298,9 +1316,7 @@ public class PythonConsole extends AppCompatActivity {
                     switch (which) {
                         case 0:
                             syntaxHighlightingEnabled = !syntaxHighlightingEnabled;
-                            if (syntaxHighlightingEnabled) {
-                                applySyntaxHighlighting(codeInput.getText());
-                            }
+                            if (syntaxHighlightingEnabled) applySyntaxHighlighting(codeInput.getText());
                             Toast.makeText(this, "Syntax highlighting: " + (syntaxHighlightingEnabled ? "ON" : "OFF"), Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
@@ -1335,15 +1351,11 @@ public class PythonConsole extends AppCompatActivity {
 
     private void loadSavedCode() {
         if (preferences == null) return;
-
         String key = isTaskMode ? "task_" + currentTaskId + "_code" : "console_code";
         String saved = preferences.getString(key, "");
-
-        // Əgər saved code yoxdursa və task rejimindədirsə, INITIAL CODE-dan istifadə et
         if (saved.isEmpty() && isTaskMode && initialCode != null && !initialCode.isEmpty()) {
             saved = initialCode;
         }
-
         if (!saved.isEmpty()) {
             codeInput.setText(saved);
             updateLineNumbers(saved);
@@ -1351,17 +1363,10 @@ public class PythonConsole extends AppCompatActivity {
         }
     }
 
-    // ═════════════════════════════════════════════════════════════════════
-    // TASK DATA - Task rejimini yoxla
-    // ═════════════════════════════════════════════════════════════════════
     private void setupTaskData() {
         Intent intent = getIntent();
         if (intent == null) return;
-
-        // Task ID -1 və ya yoxdursa, console rejimi
         currentTaskId = intent.getIntExtra("TASK_ID", -1);
-
-        // Əgər TASK_ID varsa və -1 deyilsə, task rejimi
         if (currentTaskId != -1) {
             isTaskMode = true;
             taskTitleText = intent.getStringExtra("TASK_TITLE");
@@ -1369,11 +1374,7 @@ public class PythonConsole extends AppCompatActivity {
             initialCode = intent.getStringExtra("INITIAL_CODE");
             solution = intent.getStringExtra("TASK_SOLUTION");
             String testsJson = intent.getStringExtra("TASK_TESTS");
-
             Log.d("PythonConsole", "Task Mode ACTIVE - ID: " + currentTaskId);
-            Log.d("PythonConsole", "Task Title: " + taskTitleText);
-            Log.d("PythonConsole", "Initial Code: " + (initialCode != null ? initialCode.substring(0, Math.min(100, initialCode.length())) : "NULL"));
-
             if (testsJson != null && !testsJson.isEmpty()) {
                 Type type = new TypeToken<List<AiTaskModel.Test>>() {}.getType();
                 tests = new Gson().fromJson(testsJson, type);
@@ -1413,10 +1414,7 @@ public class PythonConsole extends AppCompatActivity {
                 new MaterialAlertDialogBuilder(PythonConsole.this)
                         .setTitle("Exit")
                         .setMessage("Save your code before exiting?")
-                        .setPositiveButton("Save & Exit", (d, i) -> {
-                            saveCode();
-                            finish();
-                        })
+                        .setPositiveButton("Save & Exit", (d, i) -> { saveCode(); finish(); })
                         .setNegativeButton("Exit", (d, i) -> finish())
                         .setNeutralButton("Cancel", (d, i) -> d.dismiss())
                         .show();
@@ -1428,18 +1426,10 @@ public class PythonConsole extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (event.isCtrlPressed()) {
             switch (keyCode) {
-                case KeyEvent.KEYCODE_Z:
-                    undo();
-                    return true;
-                case KeyEvent.KEYCODE_Y:
-                    redo();
-                    return true;
-                case KeyEvent.KEYCODE_R:
-                    runPythonCode();
-                    return true;
-                case KeyEvent.KEYCODE_S:
-                    showSaveProjectDialog();
-                    return true;
+                case KeyEvent.KEYCODE_Z: undo(); return true;
+                case KeyEvent.KEYCODE_Y: redo(); return true;
+                case KeyEvent.KEYCODE_R: runPythonCode(); return true;
+                case KeyEvent.KEYCODE_S: showSaveProjectDialog(); return true;
             }
         }
         return super.onKeyDown(keyCode, event);
@@ -1455,12 +1445,10 @@ public class PythonConsole extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         saveCode();
-
-        // ========== ÇIXIŞ ZAMANI SON VƏZİYYƏTİ SAXLA ==========
         autoSaveToSystem();
+        if (promptWatcherThread != null) promptWatcherThread.interrupt();
     }
 
-    // ProjectData inner class
     private static class ProjectData {
         String name;
         String code;

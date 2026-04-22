@@ -159,6 +159,14 @@
     <color name="chip_purple">#1A8B5CF6</color>
     <color name="chip_teal">#1A14B8A6</color>
 
+    <!-- Bu rəngləri əlavə edin -->
+    <color name="menu_bg_color">#2C3E50</color>
+    <color name="menu_text_color">#FFFFFF</color>
+    <color name="menu_item_bg">#34495E</color>
+
+
+
+
 
 
 </resources>
